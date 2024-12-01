@@ -1544,7 +1544,7 @@ ProfessionLevelUpMenu(client, which) {
     UniqueItem item;
     GetItemProperties(item, reagents[i]);
     new has = GetAmountOfItems(client, reagents[i]);
-    Format(buffer,sizeof(buffer),"%T","reagent reqhave",client,item[Item_Name],reagents2[i],has);
+    Format(buffer,sizeof(buffer),"%T","reagent reqhave",client,item.Item_Name,reagents2[i],has);
     if(has < reagents2[i])  {
       canLevelUp=false;
     }
@@ -1675,7 +1675,7 @@ ProfessionMenu(client,which, iMin=0, iMax=9999)
    IntToString(which,Sid,sizeof(Sid));
 
    Recipe hRecipe;
-   hRecipe[Recipe_skill]=1;
+   hRecipe.Recipe_skill=1;
    new Handle:array = CreateArray(sizeof(hRecipe));
 
    for(new x=1;x<=400;x++)
@@ -1692,10 +1692,10 @@ ProfessionMenu(client,which, iMin=0, iMax=9999)
       Format(info,sizeof(info),"%i %i",which,x);
       //AddMenuItem(menu_prof,info,Sname);
 
-      hRecipe[Recipe_skill]=GetRequiredSkill(recipe);
-      strcopy(hRecipe[Recipe_name], 50, item[Item_Name]);
-      strcopy(hRecipe[Recipe_info], 20, info);
-      if( (hRecipe[Recipe_skill] >= iMin) && (hRecipe[Recipe_skill] <= iMax))  {
+      hRecipe.Recipe_skill=GetRequiredSkill(recipe);
+      strcopy(hRecipe.Recipe_name, 50, item.Item_Name);
+      strcopy(hRecipe.Recipe_info, 20, info);
+      if( (hRecipe.Recipe_skill >= iMin) && (hRecipe.Recipe_skill <= iMax))  {
         PushArrayArray(array, hRecipe[0]);
         total++;
       }
@@ -1708,7 +1708,7 @@ ProfessionMenu(client,which, iMin=0, iMax=9999)
 
    for(new i=0; i < GetArraySize(array); i++) {
       GetArrayArray(array, i, hRecipe[0]);
-      AddMenuItem(menu_prof,hRecipe[Recipe_info],hRecipe[Recipe_name]);
+      AddMenuItem(menu_prof,hRecipe.Recipe_info,hRecipe.Recipe_name);
    }
 
    CloseHandle(array);
@@ -1941,7 +1941,7 @@ public MenuProfRecipeHandle(Handle:menu_prof,MenuAction:action,client,slot)
       GetItemProperties(uitem, createid,0);
       new uslot;
       if(!(uslot=GiveItem(client, uitem, 1, "profession")))
-        LogError("[WC] Error m.1481: item id = %d, char = %d", uitem[Item_defId], characterids[client][0]);
+        LogError("[WC] Error m.1481: item id = %d, char = %d", uitem.Item_defId, characterids[client][0]);
 
       soulbound*=-1;
       if(soulbound!=0)
@@ -2112,11 +2112,11 @@ AuctionMenu(client, id[300],item[300],uni[300],bidid[300],timeleft[300],bid[300]
       decl String:sGold[20],String:sGoldBuy[20];
       IntToStringfloat(gold[x], sGold, 20);
       IntToStringfloat(goldBuyout[x], sGoldBuy, 20);
-      Format(buffer,sizeof(buffer),"%T","auction index gold",client,uitem[Item_Name],sGold,sGoldBuy,uitem[Item_level],timeleft[x],iamount[x]
+      Format(buffer,sizeof(buffer),"%T","auction index gold",client,uitem.Item_Name,sGold,sGoldBuy,uitem.Item_level,timeleft[x],iamount[x]
            );
     }
     else
-      Format(buffer,sizeof(buffer),"%T","auction index",client,uitem[Item_Name],bid[x],buyout[x],uitem[Item_level],timeleft[x],iamount[x]);
+      Format(buffer,sizeof(buffer),"%T","auction index",client,uitem.Item_Name,bid[x],buyout[x],uitem.Item_level,timeleft[x],iamount[x]);
     if(bidid[x]==characterids[client][0])
       Format(buffer,sizeof(buffer),"%s %T",buffer,"your bid",client);
     AddMenuItem(menu_auction,Sid,buffer);
@@ -2165,8 +2165,8 @@ public MenuReadAuction(client, Id,fromId,time,bid,buyout,UniqueItem item,String:
   new Handle:menu_auction=CreateMenu(MenuAuctionReadHandle);
   SetMenuExitBackButton(menu_auction,true);
 
-  new itemlvl=item[Item_level];
-  Format(title,sizeof(title),"%T","read auction title",client,item[Item_Name],amount,itemlvl);
+  new itemlvl=item.Item_level;
+  Format(title,sizeof(title),"%T","read auction title",client,item.Item_Name,amount,itemlvl);
   SetMenuTitle(menu_auction,title);
   decl String:SId[20];
   IntToString(Id,SId,sizeof(SId));
@@ -2219,7 +2219,7 @@ public MenuReadAuction(client, Id,fromId,time,bid,buyout,UniqueItem item,String:
   else
     AddMenuItem(menu_auction,"0",buffer,ITEMDRAW_DISABLED);
   Format(buffer,sizeof(buffer),"%T","information",client);
-  Format(SId,sizeof(SId),"%i %i",item[Item_defId], item[Item_id]);
+  Format(SId,sizeof(SId),"%i %i",item.Item_defId, item.Item_id);
   AddMenuItem(menu_auction,SId,buffer);
   DisplayMenu(menu_auction,client,MENU_TIME_FOREVER);
 }
@@ -2553,13 +2553,13 @@ public MenuSendAuction(client)
         UniqueItem item;
         GetInvItem(item, client, y);
         new iamount=GetSlotItemAmount(client,y);
-        TranslateCategory(item[Item_category],Scategory, client);
+        TranslateCategory(item.Item_category,Scategory, client);
         if(iamount>0)
-          Format(buffer,sizeof(buffer),"%s (%s) x%i",item[Item_Name],Scategory,iamount);
+          Format(buffer,sizeof(buffer),"%s (%s) x%i",item.Item_Name,Scategory,iamount);
         else  if(iamount==-1)
-          Format(buffer,sizeof(buffer),"%s (%s) (Soulbound)",item[Item_Name],Scategory);
+          Format(buffer,sizeof(buffer),"%s (%s) (Soulbound)",item.Item_Name,Scategory);
         else
-          Format(buffer,sizeof(buffer),"%s (%s) (Player Bound)",item[Item_Name],Scategory);
+          Format(buffer,sizeof(buffer),"%s (%s) (Player Bound)",item.Item_Name,Scategory);
         if(iamount>0)
           AddMenuItem(menu_auction,Sx,buffer);
         else
@@ -2574,7 +2574,7 @@ public MenuSendAuction(client)
       UniqueItem item;
       GetInvItem(item,client,slot);
       decl String:Scategory[255];
-      TranslateCategory(item[Item_category],Scategory, client);
+      TranslateCategory(item.Item_category,Scategory, client);
       new iamount=GetSlotItemAmount(client,slot);
       if(iamount<=0)
       {
@@ -2583,9 +2583,9 @@ public MenuSendAuction(client)
         AuctionsMenu(client);
         return;
       }
-      new willcost=item[Item_cost];
+      new willcost=item.Item_cost;
       willcost=RoundToNearest(float(willcost)*AUCTION_TAX)*iamount;
-      Format(buffer,sizeof(buffer),"%T","auction item",client,item[Item_Name],Scategory,iamount,willcost);
+      Format(buffer,sizeof(buffer),"%T","auction item",client,item.Item_Name,Scategory,iamount,willcost);
       AddMenuItem(menu_auction,"0",buffer,ITEMDRAW_DISABLED);
       //end of item write
       Format(buffer,sizeof(buffer),"%T","choose silver",client);
@@ -2603,7 +2603,7 @@ public MenuSendAuction(client)
       UniqueItem item;
       GetInvItem(item,client,slot);
       decl String:Scategory[255];
-      TranslateCategory(item[Item_category],Scategory, client);
+      TranslateCategory(item.Item_category,Scategory, client);
       new iamount=GetSlotItemAmount(client,slot);
       if(iamount<=0)
       {
@@ -2612,9 +2612,9 @@ public MenuSendAuction(client)
         AuctionsMenu(client);
         return;
       }
-      new willcost=item[Item_cost];
+      new willcost=item.Item_cost;
       willcost=RoundToNearest(float(willcost)*AUCTION_TAX)*iamount;
-      Format(buffer,sizeof(buffer),"%T","auction item",client,item[Item_Name],Scategory,iamount,willcost);
+      Format(buffer,sizeof(buffer),"%T","auction item",client,item.Item_Name,Scategory,iamount,willcost);
       AddMenuItem(menu_auction,"0",buffer,ITEMDRAW_DISABLED);
       if(!gold)
         Format(buffer, sizeof(buffer), "%T", "using silver", client);
@@ -2639,7 +2639,7 @@ public MenuSendAuction(client)
       UniqueItem item;
       GetInvItem(item,client,slot);
       decl String:Scategory[255];
-      TranslateCategory(item[Item_category],Scategory, client);
+      TranslateCategory(item.Item_category,Scategory, client);
       new iamount=GetSlotItemAmount(client,slot);
       if(iamount<=0)
       {
@@ -2648,9 +2648,9 @@ public MenuSendAuction(client)
         AuctionsMenu(client);
         return;
       }
-      new willcost=item[Item_cost];
+      new willcost=item.Item_cost;
       willcost=RoundToNearest(float(willcost)*AUCTION_TAX)*iamount;
-      Format(buffer,sizeof(buffer),"%T","auction item",client,item[Item_Name],Scategory,iamount,willcost);
+      Format(buffer,sizeof(buffer),"%T","auction item",client,item.Item_Name,Scategory,iamount,willcost);
       AddMenuItem(menu_auction,"0",buffer,ITEMDRAW_DISABLED);
       if(!gold)
         Format(buffer, sizeof(buffer), "%T", "using silver", client);
@@ -2683,7 +2683,7 @@ public MenuSendAuction(client)
       UniqueItem item;
       GetInvItem(item,client,slot);
       decl String:Scategory[255];
-      TranslateCategory(item[Item_category],Scategory, client);
+      TranslateCategory(item.Item_category,Scategory, client);
       new iamount=GetSlotItemAmount(client,slot);
       if(iamount<=0)
       {
@@ -2692,9 +2692,9 @@ public MenuSendAuction(client)
         AuctionsMenu(client);
         return;
       }
-      new willcost=item[Item_cost];
+      new willcost=item.Item_cost;
       willcost=RoundToNearest(float(willcost)*AUCTION_TAX)*iamount;
-      Format(buffer,sizeof(buffer),"%T","auction item",client,item[Item_Name],Scategory,iamount,willcost);
+      Format(buffer,sizeof(buffer),"%T","auction item",client,item.Item_Name,Scategory,iamount,willcost);
       AddMenuItem(menu_auction,"0",buffer,ITEMDRAW_DISABLED);
       if(!gold)
         Format(buffer, sizeof(buffer), "%T", "using silver", client);
@@ -2791,18 +2791,18 @@ public MenuSendAuctionHandle(Handle:menu_auction,MenuAction:action,client,slot)
         {
           GetInvItem(item,client,slot2);
           amount=GetSlotItemAmount(client,slot2);
-          if(amount<=0 || item[Item_noTrade] == 1)
+          if(amount<=0 || item.Item_noTrade == 1)
           {
             WCMessage(client,"can't send this item",client);
             RefreshAuctionData(client);
             AuctionsMenu(client);
           }
         }
-        if(amount>0 && item[Item_noTrade] == 0)
+        if(amount>0 && item.Item_noTrade == 0)
         {
         new String:clientname[20];
         GetClientName(client,clientname,sizeof(clientname));
-        new willcost=item[Item_cost];
+        new willcost=item.Item_cost;
         willcost=RoundToNearest(float(willcost)*AUCTION_TAX)*amount;
         if(GetMoney(client)>=willcost)
         {
@@ -2972,24 +2972,24 @@ public MenuSendMail(client)
         IntToString(y,Sx,sizeof(Sx));
         UniqueItem uitem;
         GetInvItem(uitem, client, y);
-        new category=uitem[Item_category];
+        new category=uitem.Item_category;
         new iamount=GetSlotItemAmount(client,y);
         TranslateCategory(category,Scategory, client);
         if(iamount>0)
-          Format(buffer,sizeof(buffer),"%s (%s) x%i",uitem[Item_Name],Scategory,iamount);
+          Format(buffer,sizeof(buffer),"%s (%s) x%i",uitem.Item_Name,Scategory,iamount);
         else if(iamount==-1)  {
            Format(buffer, sizeof(buffer), "%T", "Item Soulbound", client);
-           Format(buffer,sizeof(buffer),"%s (%s) (%s)",uitem[Item_Name],Scategory,buffer);
+           Format(buffer,sizeof(buffer),"%s (%s) (%s)",uitem.Item_Name,Scategory,buffer);
          }
         else  {
           Format(buffer, sizeof(buffer), "%T", "Item Player Bound", client);
-          Format(buffer,sizeof(buffer),"%s (%s) (%s)",uitem[Item_Name],Scategory,buffer);
+          Format(buffer,sizeof(buffer),"%s (%s) (%s)",uitem.Item_Name,Scategory,buffer);
           }
         if( (iamount>0) || (iamount==-2) )  {
-         if(uitem[Item_noTrade] == 1) {
+         if(uitem.Item_noTrade == 1) {
            Format(buffer, sizeof(buffer), "%s (Not Tradable)", buffer);
          }
-         if(uitem[Item_noTrade] == 1 && (!sendingToOwnCharacter))
+         if(uitem.Item_noTrade == 1 && (!sendingToOwnCharacter))
            AddMenuItem(menu_mail,Sx,buffer,ITEMDRAW_DISABLED);
          else
            AddMenuItem(menu_mail,Sx,buffer);
@@ -3024,7 +3024,7 @@ public MenuSendMail(client)
         decl String:Scategory[255];
         UniqueItem item;
         GetInvItem(item, client, slot);
-        new category=item[Item_category];
+        new category=item.Item_category;
         TranslateCategory(category,Scategory, client);
         new iamount=GetSlotItemAmount(client,slot);
         if(iamount<=0)
@@ -3034,7 +3034,7 @@ public MenuSendMail(client)
           MenuSendMail(client);
           return;
         }
-        Format(buffer,sizeof(buffer),"%T","mail item",client,item[Item_Name],Scategory,iamount);
+        Format(buffer,sizeof(buffer),"%T","mail item",client,item.Item_Name,Scategory,iamount);
         AddMenuItem(menu_mail,"0",buffer,ITEMDRAW_DISABLED);
       }
       else
@@ -3073,7 +3073,7 @@ public MenuSendMail(client)
         decl String:Scategory[255];
         UniqueItem item;
         GetInvItem(item,client,slot);
-        new category=item[Item_category];
+        new category=item.Item_category;
         TranslateCategory(category,Scategory, client);
         new iamount=GetSlotItemAmount(client,slot);
         if(iamount<=0)
@@ -3083,7 +3083,7 @@ public MenuSendMail(client)
           MenuSendMail(client);
           return;
         }
-        Format(buffer,sizeof(buffer),"%T","mail item",client,item[Item_Name],Scategory,iamount);
+        Format(buffer,sizeof(buffer),"%T","mail item",client,item.Item_Name,Scategory,iamount);
         AddMenuItem(menu_mail,"0",buffer,ITEMDRAW_DISABLED);
       }
       else
@@ -3210,7 +3210,7 @@ public MenuSendMailHandle(Handle:menu_mail,MenuAction:action,client,slot)
           SQL_UpdateMoney(client);
           wcSetStaticSlot(client,slot2,0);
           SetInvUnique(client, slot2, 0);
-          UpdateUniqueState(item[Item_id], 3);
+          UpdateUniqueState(item.Item_id, 3);
           wcSetStaticSlotAmount(client,slot2,0);
           if(slot2 > 0 )
             SQL_UpdateSlot(client,slot2);
@@ -3338,7 +3338,7 @@ public MenuReadMailDisplay(Handle:db,Handle:query,String:error[],any:client)
    {
      UniqueItem uitem;
      GetItemProperties(uitem, item, unique);
-     Format(buffer,sizeof(buffer),"%T","item attached",client,uitem[Item_Name],amount);
+     Format(buffer,sizeof(buffer),"%T","item attached",client,uitem.Item_Name,amount);
      AddMenuItem(menu_mail,SmailId,buffer);
    }
    else
@@ -3516,9 +3516,9 @@ public TGetItemMail(Handle:db,Handle:query,String:error[],any:client)
         if(GiveItem(client, uitem, amount, "mail",true)>=0)
         {
             decl String:category[255];
-            IdToCategory(uitem[Item_category], category);
+            IdToCategory(uitem.Item_category, category);
             Format(category, sizeof(category), "%T", category, client);
-            WCMessage(client,"obtained item",client,uitem[Item_Name],category,amount);
+            WCMessage(client,"obtained item",client,uitem.Item_Name,category,amount);
             wcUpdatePlayerInt(mailId,"item",0,"mailId","wc_Mail");
             wcUpdatePlayerInt(mailId,"unique",0,"mailId","wc_Mail");
             MenuReadMail(client,mailId);
@@ -4184,13 +4184,13 @@ public ChooseGlyphSlot(client, slot, UniqueItem item)  {
   new Handle:menu = CreateMenu(ChooseGlyphSlotHandle);
   SetMenuExitBackButton(menu, true);
   decl String:title[128],String:line[128];
-  Format(title, sizeof(title), "%T", "wc choose glyph slot", client, item[Item_Name]);
+  Format(title, sizeof(title), "%T", "wc choose glyph slot", client, item.Item_Name);
   SetMenuTitle(menu, title);
 
   for(new i=0; i<GetGlyphSlots(client); i++) {
     UniqueItem slotItem;
     if(GetGlyphFull(client, i, slotItem))
-      Format(line, sizeof(line), "%T", "glyph slot", client, i+1, slotItem[Item_Name]);
+      Format(line, sizeof(line), "%T", "glyph slot", client, i+1, slotItem.Item_Name);
     else
       Format(line, sizeof(line), "%T", "glyph slot", client, i+1, "Empty");
     AddMenuItem(menu, "equip", line);
@@ -4221,7 +4221,7 @@ public ChooseGlyphSlotHandle(Handle:menu,
     //Place Glyph
     UniqueItem item;
     GetInvItem(item, client, invSlot);
-    WCMessage(client, "equipped glyph", client, item[Item_Name]);
+    WCMessage(client, "equipped glyph", client, item.Item_Name);
     GetGlyphOnStatic(client, glyphSlot, invSlot);
     InventoryMenu(client);
 
@@ -4337,11 +4337,11 @@ public InventoryMenu(client)
 	{
                 UniqueItem item;
                 GetInvItem(item, client, x);
-                category = item[Item_category];
+                category = item.Item_category;
 
 		if (invSorting[client] > 0)
                 {
-                  new quality = item[Item_quality];
+                  new quality = item.Item_quality;
                   switch (invSorting[client])
                   {
                     /*case Sortable_NoSort:
@@ -4425,28 +4425,28 @@ public InventoryMenu(client)
 		IdToCategory(category, Scategory);
 		if (StrEqual(Scategory, "no category"))
 		  Format(Scategory, sizeof(Scategory), "%T", "Item No Category", client);
-		if (item[Item_defId] == 0) {
-                  Format(item[Item_Name], 50, "%T", "empty", client);
+		if (item.Item_defId == 0) {
+                  Format(item.Item_Name, 50, "%T", "empty", client);
                 }
 		new amount = GetSlotItemAmount(client, x);
 		decl String: buffer[255];
 		if (amount > 0)
 		{
 			if (category > 9 && category < 24)  {
-				Format(buffer, sizeof(buffer), "%T", "Item Level", client, item[Item_level]);
-				Format(line, sizeof(line), "%s (%s) x%i %s", item[Item_Name], Scategory, amount, buffer);
+				Format(buffer, sizeof(buffer), "%T", "Item Level", client, item.Item_level);
+				Format(line, sizeof(line), "%s (%s) x%i %s", item.Item_Name, Scategory, amount, buffer);
 				}
 			else
-				Format(line, sizeof(line), "%s (%s) x%i", item[Item_Name], Scategory, amount);
+				Format(line, sizeof(line), "%s (%s) x%i", item.Item_Name, Scategory, amount);
 		}
 		else
 			if (amount == -1)  {
 				Format(buffer, sizeof(buffer), "%T", "Item Soulbound", client);
-				Format(line, sizeof(line), "%s (%s) (%s)", item[Item_Name], Scategory, buffer);
+				Format(line, sizeof(line), "%s (%s) (%s)", item.Item_Name, Scategory, buffer);
                 }
 			else  {
 				Format(buffer, sizeof(buffer), "%T", "Item Player Bound", client);
-				Format(line, sizeof(line), "%s (%s) (%s)", item[Item_Name], Scategory, buffer);
+				Format(line, sizeof(line), "%s (%s) (%s)", item.Item_Name, Scategory, buffer);
                 }
 		IntToString(x, sslot, 8);
 		AddMenuItem(menu_inventory, sslot, line);
@@ -4778,127 +4778,127 @@ public CharacterMenu(client)
   new id = client;
   UniqueItem item;
   GetCharItem(item, id, 22);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Right Hand: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"22",line); // 1
 
   GetCharItem(item, id, 18);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Left Hand: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"18",line); // 2
 
   GetCharItem(item, id, 14);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Helmet: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"14",line); // 3
 
   GetCharItem(item, id, 16);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Neck: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"16",line); // 4
 
   GetCharItem(item, id, 19);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Shoulders: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"19",line); // 5
 
   GetCharItem(item, id, 10);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Back: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"10",line); // 6
 
   GetCharItem(item, id, 11);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Chest: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"11",line); // 7
 
   GetCharItem(item, id, 23);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Wrist: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"23",line); // 8
   GetCharItem(item, id, 13);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Hands: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"13",line); // 9
 
   GetCharItem(item, id, 21);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Waist: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"21",line); // 10
 
   GetCharItem(item, id, 15);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Legs: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"15",line); // 11
 
   GetCharItem(item, id, 12);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Boots: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"12",line); // 12
 
   GetCharItem(item, id, 17);
-  IdToCategory(item[Item_category],Scategory);
+  IdToCategory(item.Item_category,Scategory);
   if((item[Item_defId]==0) && (item[Item_id]==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Ring: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"17",line); // 13
 
   GetCharItem(item, id, 20);
-  IdToCategory(item[Item_category],Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  IdToCategory(item.Item_category,Scategory);
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
-  Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+  Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
   Format(line,sizeof(line),"Trinket: %s (%s)",Sitem,Scategory);
   AddMenuItem(menu_character,"20",line); // 14
 
@@ -4906,7 +4906,7 @@ public CharacterMenu(client)
     new bool:has=false;
     if(GetGlyphFull(client, i, item)) {
       has=true;
-      Format(line, sizeof(line), "Glyph Slot %d: %s", i+1, item[Item_Name]);
+      Format(line, sizeof(line), "Glyph Slot %d: %s", i+1, item.Item_Name);
     }
     else
       Format(line, sizeof(line), "Glyph Slot %d: Empty", i+1);
@@ -4954,12 +4954,12 @@ public CharItemOpt(client,ID)
   GetCharItem(item,client,ID);
   IdToCategory(ID,Scategory);
   IntToString(ID,IDstr,sizeof(IDstr));
-  if(item[Item_defId]==0)
+  if(item.Item_defId==0)
     Format(title,sizeof(title),"%T","empty",client);
   else
-    Format(title,sizeof(title),"%T","charitem menu",client,item[Item_Name],Scategory);
+    Format(title,sizeof(title),"%T","charitem menu",client,item.Item_Name,Scategory);
   SetMenuTitle(menu_charitem,title);
-  if (item[Item_defId]==0)
+  if (item.Item_defId==0)
   {
     Format(line,sizeof(line),"%T","put into inventory",client,0);
     AddMenuItem(menu_charitem,IDstr,line,ITEMDRAW_DISABLED);
@@ -4969,7 +4969,7 @@ public CharItemOpt(client,ID)
     Format(line,sizeof(line),"%T","put into inventory",client,0);
     AddMenuItem(menu_charitem,IDstr,line);
   }
-  if (item[Item_defId]==0)
+  if (item.Item_defId==0)
   {
     Format(line,sizeof(line),"%T","information",client);
     AddMenuItem(menu_charitem,IDstr,line,ITEMDRAW_DISABLED);
@@ -5035,7 +5035,7 @@ public InvItemMenu(client,slot)
   UniqueItem item;
 
   GetInvItem(item, client, slot);
-  new cat=item[Item_category];
+  new cat=item.Item_category;
   //DebugItem(item);  //For testing
   //new uniqueId = item[Item_id];
   IdToCategory(cat,Scategory);
@@ -5043,27 +5043,27 @@ public InvItemMenu(client,slot)
     Format(Scategory, sizeof(Scategory), "%T", "Item No Category", client);
   new iamount=GetSlotItemAmount(client,slot);
   switch(iamount) {
-    case -1:  Format(title,sizeof(title),"%T","wc invitem menu noamount",client,slot,item[Item_Name],Scategory);
-    case -2:  Format(title,sizeof(title),"%T","wc invitem menu pl bound",client,slot,item[Item_Name],Scategory);
-    default:  Format(title,sizeof(title),"%T","wc invitem menu",client,slot,item[Item_Name],Scategory,iamount);
+    case -1:  Format(title,sizeof(title),"%T","wc invitem menu noamount",client,slot,item.Item_Name,Scategory);
+    case -2:  Format(title,sizeof(title),"%T","wc invitem menu pl bound",client,slot,item.Item_Name,Scategory);
+    default:  Format(title,sizeof(title),"%T","wc invitem menu",client,slot,item.Item_Name,Scategory,iamount);
   }
   SetMenuTitle(menu_invitem,title);
   IntToString(slot,slotname,sizeof(slotname));
-  if ( (item[Item_defId]==0) && (item[Item_id]==0))
+  if ( (item.Item_defId==0) && (item.Item_id==0))
   {
     Format(line,sizeof(line),"%T","sell item",client,0);
     AddMenuItem(menu_invitem,slotname,line,ITEMDRAW_DISABLED);
   }
   else
   {
-    new amount=RoundToNearest(float(RoundToNearest(float(item[Item_cost])*SELL_PERCENT))*float(iamount));
+    new amount=RoundToNearest(float(RoundToNearest(float(item.Item_cost)*SELL_PERCENT))*float(iamount));
     if(amount<0)
       amount*=-1;
     Format(line,sizeof(line),"%T","sell item",client,amount);
     AddMenuItem(menu_invitem,slotname,line);
   }
   new bool:dEnch=false;
-  if ( (item[Item_defId]==0) && (item[Item_id]==0))
+  if ( (item.Item_defId==0) && (item.Item_id==0))
   {
     Format(line,sizeof(line),"%T","get item on",client, 0.0);
     AddMenuItem(menu_invitem,slotname,line,ITEMDRAW_DISABLED);
@@ -5098,13 +5098,13 @@ public InvItemMenu(client,slot)
     else
     {
       Format(line,sizeof(line),"%T","use item",client);
-      if(item[Item_use]!=0)
+      if(item.Item_use!=0)
         AddMenuItem(menu_invitem,slotname,line);
       else
         AddMenuItem(menu_invitem,slotname,line,ITEMDRAW_DISABLED);
     }
   }
-  if ( (item[Item_defId]==0) && (item[Item_id]==0))
+  if ( (item.Item_defId==0) && (item.Item_id==0))
   {
     Format(line,sizeof(line),"%T","information",client);
     AddMenuItem(menu_invitem,slotname,line,ITEMDRAW_DISABLED);
@@ -5114,7 +5114,7 @@ public InvItemMenu(client,slot)
     Format(line,sizeof(line),"%T","information",client);
     AddMenuItem(menu_invitem,slotname,line);
   }
-  new max=GetItemMaxAmount(item[Item_defId]);
+  new max=GetItemMaxAmount(item.Item_defId);
   if (max==0)
   {
     Format(line,sizeof(line),"%T","merge item",client,max);
@@ -5150,7 +5150,7 @@ public InvItemMenu(client,slot)
     AddMenuItem(menu_invitem,slotname,line,ITEMDRAW_DISABLED);
 
   //No disenchant of shop items
-  if(dEnch && item[Item_quality] == 0)  {
+  if(dEnch && item.Item_quality == 0)  {
     dEnch=false;
   }
   if(dEnch) {
@@ -5170,7 +5170,7 @@ public InvItemMenu(client,slot)
     AddMenuItem(menu_invitem,slotname,line,ITEMDRAW_DISABLED);
   }
 
-  if ( (item[Item_defId]<=1) || (item[Item_id]>0))
+  if ( (item.Item_defId<=1) || (item.Item_id>0))
   {
     Format(line,sizeof(line),"%T","sell all",client,0);
     AddMenuItem(menu_invitem,slotname,line,ITEMDRAW_DISABLED);
@@ -5178,8 +5178,8 @@ public InvItemMenu(client,slot)
   else
   {
 
-    new has = GetAmountOfItems(client,item[Item_defId]);
-    new amount=RoundToNearest(float(item[Item_cost])*SELL_PERCENT)*has;
+    new has = GetAmountOfItems(client,item.Item_defId);
+    new amount=RoundToNearest(float(item.Item_cost)*SELL_PERCENT)*has;
     Format(line,sizeof(line),"%T","sell all",client,amount);
     AddMenuItem(menu_invitem,slotname,line);
   }
@@ -5235,7 +5235,7 @@ public InvItemMenuHandle(Handle:menu_invitem,MenuAction:action,client,slot)
         new slot2=StringToInt(buffer);
         UniqueItem item;
         GetInvItem(item, client, slot2);
-        if(CanDisenchant(item[Item_category])) {
+        if(CanDisenchant(item.Item_category)) {
           TriggerDisEnch(client, item, slot2);
           InventoryMenu(client);
         }
@@ -5292,11 +5292,11 @@ stock SellItem(client,slot, bool:all=false)
   new itemam=GetSlotItemAmount(client,slot);
   if(itemam==-1)
     itemam=1;
-  IdToCategory(item[Item_category], Scategory);
-  Format(title,sizeof(title),"%T","wc sellitem menu",client,slot,item[Item_Name],Scategory,itemam);
+  IdToCategory(item.Item_category, Scategory);
+  Format(title,sizeof(title),"%T","wc sellitem menu",client,slot,item.Item_Name,Scategory,itemam);
   SetMenuTitle(menu_sellitem,title);
   IntToString(slot,slotname,sizeof(slotname));
-  if ((item[Item_id]==0) && (item[Item_defId]==0))
+  if ((item.Item_id==0) && (item.Item_defId==0))
   {
     Format(line,sizeof(line),"%T","sell item",client,0);
     AddMenuItem(menu_sellitem,"0",line,ITEMDRAW_DISABLED);
@@ -5308,10 +5308,10 @@ stock SellItem(client,slot, bool:all=false)
     if (amount<0)
       amount*=-1;
     if(all) {
-      amount = GetAmountOfItems(client,item[Item_defId]);
+      amount = GetAmountOfItems(client,item.Item_defId);
     }
 
-    amount=RoundToNearest(float(item[Item_cost]*amount)*SELL_PERCENT);
+    amount=RoundToNearest(float(item.Item_cost*amount)*SELL_PERCENT);
     if(all) {
       Format(line,sizeof(line),"%T","sell all items confirm",client,amount);
     }
@@ -5332,13 +5332,13 @@ public SellItemMenuHandle(Handle:menu_sellitem,MenuAction:action,client,slot)
     new all = g_ffSellItem[client];
     UniqueItem item;
     GetInvItem(item, client, itemslot);
-    if ((item[Item_id]==0) && (item[Item_defId]==0))
+    if ((item.Item_id==0) && (item.Item_defId==0))
     {
       WCMessage(client,"cant sell",client);
     }
     else  if(!all)
     {
-      new amount=RoundToNearest(float(item[Item_cost])*SELL_PERCENT)*GetSlotItemAmount(client,itemslot);
+      new amount=RoundToNearest(float(item.Item_cost)*SELL_PERCENT)*GetSlotItemAmount(client,itemslot);
       if (amount<0)
         amount*=-1;
       if (amount>=0)
@@ -5352,10 +5352,10 @@ public SellItemMenuHandle(Handle:menu_sellitem,MenuAction:action,client,slot)
       }
     }
     else  {
-      new  amount = GetAmountOfItems(client,item[Item_defId]);
-      amount=RoundToNearest(float(item[Item_cost])*SELL_PERCENT)*amount;
+      new  amount = GetAmountOfItems(client,item.Item_defId);
+      amount=RoundToNearest(float(item.Item_cost)*SELL_PERCENT)*amount;
 
-      AllItemsSold(client, item[Item_defId], amount);
+      AllItemsSold(client, item.Item_defId, amount);
       InventoryMenu(client);
     }
   }
@@ -5793,19 +5793,19 @@ public ItemMenuHandle(Handle:menu_item,MenuAction:action,client,slot)
 
 public ItemInfMenu(client,UniqueItem item,bool:back)
 {
-   /*PrintToServer("Item ID: %d", item[Item_id]);*/
-   if((item[Item_id]>0) || (item[Item_defId]>0))
+   /*PrintToServer("Item ID: %d", item.Item_id);*/
+   if((item.Item_id>0) || (item.Item_defId>0))
    {
    new Handle:menu_iteminf=CreateMenu(ItemInfHandle);
    SetMenuExitBackButton(menu_iteminf,true);
    //if(back)
    //   SetMenuExitBackButton(menu_iteminf,true);
    decl String:iteminftitle[255],String:info[10];
-   IntToString(item[Item_defId], info, sizeof(info));
-   IntToString(item[Item_defId],info,sizeof(info));
+   IntToString(item.Item_defId, info, sizeof(info));
+   IntToString(item.Item_defId,info,sizeof(info));
    new String:inf[30]="information";
    Format(inf,sizeof(inf),"%T",inf,client);
-   Format(iteminftitle,sizeof(iteminftitle),"%s %s",item[Item_Name],inf);
+   Format(iteminftitle,sizeof(iteminftitle),"%s %s",item.Item_Name,inf);
    SetMenuTitle(menu_iteminf,iteminftitle);
 
    new bufferi,Float:bufferf,String:fbuffer[255],String:trans[255];
@@ -5814,9 +5814,9 @@ public ItemInfMenu(client,UniqueItem item,bool:back)
    Format(trans, sizeof(trans), "%T", "rating", client, rating);
    AddMenuItem(menu_iteminf, info, trans, ITEMDRAW_DISABLED);
 
-   new category=item[Item_category];
+   new category=item.Item_category;
    new classes[10];
-   new clamount=ConvertBitToClasses(item[Item_class], classes);
+   new clamount=ConvertBitToClasses(item.Item_class, classes);
    if (classes[0]>0)
    {
       decl String:cl_n[255];
@@ -5832,19 +5832,19 @@ public ItemInfMenu(client,UniqueItem item,bool:back)
       Format(cl_n,sizeof(cl_n),"%s)",cl_n);
       AddMenuItem(menu_iteminf,info,cl_n,ITEMDRAW_DISABLED);
    }
-   if(!StrEqual(item[Item_Descr],""))
-      AddMenuItem(menu_iteminf,info,item[Item_Descr],ITEMDRAW_DISABLED);
-   bufferi=item[Item_quality];
+   if(!StrEqual(item.Item_Descr,""))
+      AddMenuItem(menu_iteminf,info,item.Item_Descr,ITEMDRAW_DISABLED);
+   bufferi=item.Item_quality;
    decl String:catname[255];
    IdToCategory(category,catname);
    Format(catname,sizeof(catname),"%T",catname,client);
    AddMenuItem(menu_iteminf,info,catname,ITEMDRAW_DISABLED);
-   if(item[Item_EnchBit]>0) {
+   if(item.Item_EnchBit>0) {
     UniqueItem enchItem;
-    GetItemProperties(enchItem, item[Item_EnchBit]);
-    if(enchItem[Item_defId]>0)  {
-      Format(fbuffer, sizeof(fbuffer), "%s", enchItem[Item_Name]);
-      IntToString(enchItem[Item_defId], info, sizeof(info));
+    GetItemProperties(enchItem, item.Item_EnchBit);
+    if(enchItem.Item_defId>0)  {
+      Format(fbuffer, sizeof(fbuffer), "%s", enchItem.Item_Name);
+      IntToString(enchItem.Item_defId, info, sizeof(info));
       AddMenuItem(menu_iteminf,info,fbuffer);
     }
 
@@ -5932,28 +5932,28 @@ public ItemInfMenu(client,UniqueItem item,bool:back)
    }
 
 
-   bufferi=item[Item_cost];
-   if(item[Item_gold]<=0)
+   bufferi=item.Item_cost;
+   if(item.Item_gold<=0)
     Format(fbuffer, sizeof(fbuffer), "%T", "cost", client, bufferi);
    else {
     decl String:sgold[20];
-    IntToStringfloat(item[Item_gold], sgold, 20);
+    IntToStringfloat(item.Item_gold, sgold, 20);
     Format(fbuffer, sizeof(fbuffer), "%T", "cost gold2", client, sgold);
    }
    AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
 
 
-   bufferi=item[Item_honor];
+   bufferi=item.Item_honor;
    if(bufferi>0) {
       Format(fbuffer, sizeof(fbuffer), "%T", "cost honor", client, bufferi, GetHonor(client));
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   if(item[Item_justice]>0) {
-     Format(fbuffer, sizeof(fbuffer), "%T", "cost justice", client, item[Item_justice], GetJustice(client));
+   if(item.Item_justice>0) {
+     Format(fbuffer, sizeof(fbuffer), "%T", "cost justice", client, item.Item_justice, GetJustice(client));
      AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   if(item[Item_valor]>0) {
-     Format(fbuffer, sizeof(fbuffer), "%T", "cost valor", client, item[Item_valor], GetValor(client));
+   if(item.Item_valor>0) {
+     Format(fbuffer, sizeof(fbuffer), "%T", "cost valor", client, item.Item_valor, GetValor(client));
      AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
 
@@ -5965,13 +5965,13 @@ public ItemInfMenu(client,UniqueItem item,bool:back)
       Format(fbuffer, sizeof(fbuffer), "%T", "2hand", client);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   else if (bufferi==0 && item[Item_category] == 22)
+   else if (bufferi==0 && item.Item_category == 22)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "1hand", client);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
 
-   bufferi=item[Item_weapon_ap];
+   bufferi=item.Item_weapon_ap;
 
    if (bufferi>0)
    {
@@ -5979,7 +5979,7 @@ public ItemInfMenu(client,UniqueItem item,bool:back)
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
 
-   bufferi=item[Item_weapon_sp];
+   bufferi=item.Item_weapon_sp;
 
    if (bufferi>0)
    {
@@ -5989,38 +5989,38 @@ public ItemInfMenu(client,UniqueItem item,bool:back)
 
 
 
-   bufferi=item[Item_damage];
+   bufferi=item.Item_damage;
 
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "damage", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferf=item[Item_ws];
+   bufferf=item.Item_ws;
    if (bufferf>0.0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "weapon speed", client, RoundToNearest(bufferf*100.0));
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferf=item[Item_cs];
+   bufferf=item.Item_cs;
    if (bufferf>0.0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "critical", client, RoundToNearest(bufferf*100.0));
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_resilence];
+   bufferi=item.Item_resilence;
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "resilence no comm", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferf=item[Item_acc];
+   bufferf=item.Item_acc;
    if (bufferf>0.0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "accuracy no comm", client, RoundToNearest(bufferf*100.0));
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_armor_type];
+   bufferi=item.Item_armor_type;
    if (bufferi>0)
    {
      decl String:armorType[30];
@@ -6030,85 +6030,85 @@ public ItemInfMenu(client,UniqueItem item,bool:back)
      AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
 
-   bufferi=item[Item_armor];
+   bufferi=item.Item_armor;
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "armor", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_res];
+   bufferi=item.Item_res;
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "resistance", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_str];
+   bufferi=item.Item_str;
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "bonus str", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_agi];
+   bufferi=item.Item_agi;
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "bonus agi", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_int];
+   bufferi=item.Item_int;
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "bonus int", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_sta];
+   bufferi=item.Item_sta;
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "bonus sta", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_ai];
+   bufferi=item.Item_ai;
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "ai", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_regen];
+   bufferi=item.Item_regen;
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "mregen", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferf=item[Item_as];
+   bufferf=item.Item_as;
    if (bufferf!=0.0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "bonus as", client, RoundToNearest(bufferf*100.0));
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_spelldmg];
+   bufferi=item.Item_spelldmg;
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "bonus spelldmg", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferf=item[Item_speed];
+   bufferf=item.Item_speed;
    if (bufferf!=0.0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "bonus speed", client, RoundToNearest(bufferf*100.0));
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_haste];
+   bufferi=item.Item_haste;
    if (bufferi>0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "bonus haste", client, bufferi);
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferf=item[Item_parry];
+   bufferf=item.Item_parry;
    if (bufferf>0.0)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "bonus parry", client, RoundToNearest(bufferf*100.0));
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_effect];
+   bufferi=item.Item_effect;
    if (bufferi>0)
    {
             //Firstly check what effects.txt has
@@ -6173,7 +6173,7 @@ public ItemPurchase(client,itemid)
    GetItemProperties(item, itemid);
    new Handle:menu_itempurchase=CreateMenu(MenuItemPurchaseHandle);
    SetMenuExitBackButton(menu_itempurchase,true);
-   SetMenuTitle(menu_itempurchase,"%T (%s)","purchase",client,item[Item_Name],item[Item_Descr]);
+   SetMenuTitle(menu_itempurchase,"%T (%s)","purchase",client,item.Item_Name,item.Item_Descr);
    new money=GetMoney(client);
    new bufferi,String:fbuffer[255];
 
@@ -6228,7 +6228,7 @@ public ItemPurchase(client,itemid)
                  if(item.Item_category == 8) {
                    //Reagent, add purchase multiple options
                    new stack = 5;
-                   if((GetGold(client) - gold * stack) >= 0 && (money - item[Item_cost] * stack) >= 0 && GetHonor(client) - honor * stack >= 0)  {
+                   if((GetGold(client) - gold * stack) >= 0 && (money - item.Item_cost * stack) >= 0 && GetHonor(client) - honor * stack >= 0)  {
                      Format(buffer,sizeof(buffer), "%T", "purchase stack", client, item.Item_Name, stack);
                      AddMenuItem(menu_itempurchase,"purchase 5",buffer);
                    }
