@@ -19,7 +19,7 @@ public noCall()	{
   //vectors alive?
   SpawnAmmo(INVALID_HANDLE, 1);
   wcCalculateStats(1);
-  new item[UniqueItem];
+  UniqueItem item;
   new iTmp;
   new Float:fTmp;
   AddItemBonuses(1, item, iTmp, fTmp);
@@ -79,7 +79,7 @@ public noCall()	{
 
   //Item functions
   CreateItemsArray();
-  new uitem[UniqueItem];
+  UniqueItem uitem;
   SetRandomValues(uitem);
 
   //talents

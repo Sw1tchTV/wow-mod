@@ -6,10 +6,6 @@
 
 #pragma semicolon 1
 
-// Colors
-#define COLOR_DEFAULT 0x01
-#define COLOR_LIGHTGREEN 0x03
-#define COLOR_GREEN 0x04 // DOD = Red
 
 public LoadTranslationFile()
 {
@@ -826,7 +822,7 @@ stock _displayTodoMenu(client, Handle:query)
       { //Check if we wear better then continue
         new itemid2 = GetCharItemId(client, cat);
         if(itemid2>0) {
-          new uitemOld[UniqueItem];
+          UniqueItem uitemOld;
           GetItemProperties(uitemOld, itemid2);
 
           if(GetItemRating(uitemOld) >= GetSQLDataFloat(query, "rating") ) //we have better
@@ -844,7 +840,7 @@ stock _displayTodoMenu(client, Handle:query)
             new mainhandId = GetCharItemId(client, 22);
             if(mainhandId > 0)
             {
-              new mainhand[UniqueItem];
+              UniqueItem mainhand;
               GetItemProperties(mainhand, mainhandId);
               if(mainhand[Item_2hand])
                 continue;
@@ -855,7 +851,7 @@ stock _displayTodoMenu(client, Handle:query)
       else if (getCatType(cat) == CT_Recipe)
       {
         //Check if it's not other class
-        new uitem[UniqueItem];
+        UniqueItem uitem;
         new icreate = getItemCreates(itemid);
         GetItemProperties(uitem, icreate);
         new bitflags = uitem[Item_class];

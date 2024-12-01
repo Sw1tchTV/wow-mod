@@ -273,11 +273,11 @@ enum Chat {
   Chat_Spawn
 };
 
-enum Temp {
-  Float:Temp_None,
-  Float:Temp_DropRate,
-  Float:Temp_XPRate
-};
+enum struct Temp {
+  float Temp_None;
+  float Temp_DropRate;
+  float Temp_XPRate;
+}
 
 enum Profession {
   Prof_ExtraDrop,
@@ -299,11 +299,11 @@ new Float:UserTemps[65][Temp];
 
 new String:g_sEventMessage[255]="";
 
-enum Recipe {
-  Recipe_skill,
-  String:Recipe_name[255],
-  String:Recipe_info[20]
-};
+enum struct Recipe {
+  int Recipe_skill;
+  char Recipe_name[255];
+  char Recipe_info[20];
+}
 
 //string variables
 new String:RANKING_PAGE[355], String:ACCOUNT_PAGE[355], String:WIKI_PAGE[355],

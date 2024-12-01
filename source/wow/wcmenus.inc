@@ -621,7 +621,7 @@ public OtherPlayerMenu(client,id)
    }
    // items
    decl String:Scategory[255],String:Sitem[255];
-   new item[UniqueItem];
+   UniqueItem item;
    GetCharItem(item, id, 22);
    IdToCategory(item[Item_category],Scategory);
    if((item[Item_defId]==0) && (item[Item_id]==0))
@@ -780,7 +780,7 @@ public OtherPlayerHandle(Handle:menu_character,MenuAction:action,client,slot)
       new ID=StringToInt(buffer);
       GetMenuItem(menu_character,0,buffer,sizeof(buffer));
       new target=StringToInt(buffer);
-      new item[UniqueItem];
+      UniqueItem item;
       if(ID>=600)
       {
         ID-=600;
@@ -1541,7 +1541,7 @@ ProfessionLevelUpMenu(client, which) {
   if(silverNeeded > silverHas)  canLevelUp=false;
 
   for(new i=0; i<amount; i++) {
-    new item[UniqueItem];
+    UniqueItem item;
     GetItemProperties(item, reagents[i]);
     new has = GetAmountOfItems(client, reagents[i]);
     Format(buffer,sizeof(buffer),"%T","reagent reqhave",client,item[Item_Name],reagents2[i],has);
@@ -1674,7 +1674,7 @@ ProfessionMenu(client,which, iMin=0, iMax=9999)
    decl String:Sid[10];
    IntToString(which,Sid,sizeof(Sid));
 
-   decl hRecipe[Recipe];
+   Recipe hRecipe;
    hRecipe[Recipe_skill]=1;
    new Handle:array = CreateArray(sizeof(hRecipe));
 
@@ -1685,7 +1685,7 @@ ProfessionMenu(client,which, iMin=0, iMax=9999)
     {
       decl String:info[20];
       //decl String:Sname[255];
-      decl item[UniqueItem];
+      UniqueItem item;
       GetItemProperties(item, recipe);
 
 
@@ -1885,7 +1885,7 @@ public MenuProfRecipeHandle(Handle:menu_prof,MenuAction:action,client,slot)
       KvJumpToKey(items,Sid);
       new createid=KvGetNum(items,"itemid");
       lastMenu[client]=2;
-      new uitem[UniqueItem];
+      UniqueItem uitem;
       GetItemProperties(uitem, createid);
       ItemInfMenu(client,uitem,false);
     }
@@ -1937,7 +1937,7 @@ public MenuProfRecipeHandle(Handle:menu_prof,MenuAction:action,client,slot)
         if(!RemoveItem(client,reagents[x],nreagents[x]))
           LogError("[WC] Error removing item!!");
       }
-      new uitem[UniqueItem];
+      UniqueItem uitem;
       GetItemProperties(uitem, createid,0);
       new uslot;
       if(!(uslot=GiveItem(client, uitem, 1, "profession")))
@@ -2105,7 +2105,7 @@ AuctionMenu(client, id[300],item[300],uni[300],bidid[300],timeleft[300],bid[300]
    new String:Sid[20];
    for(new x=1;x<=amount;x++)
    {
-    new uitem[UniqueItem];
+    UniqueItem uitem;
     GetItemProperties(uitem, item[x], uni[x]);
     Format(Sid,sizeof(Sid),"%i %i",id[x],filter);
     if(gold[x]>0 || goldBuyout[x] > 0 )	{
@@ -2159,7 +2159,7 @@ public PrepareMenuReadAuction(client, id, filter)	{
 
 }
 
-public MenuReadAuction(client, Id,fromId,time,bid,buyout,item[UniqueItem],String:fromname[],amount,bidId, gold, goldBuyout)
+public MenuReadAuction(client, Id,fromId,time,bid,buyout,UniqueItem item,String:fromname[],amount,bidId, gold, goldBuyout)
 {
   decl String:title[255];
   new Handle:menu_auction=CreateMenu(MenuAuctionReadHandle);
@@ -2308,7 +2308,7 @@ public MenuAuctionReadHandle(Handle:menu_auction,MenuAction:action,client,slot)
       case 5:  {
 
         lastMenu[client]=3;
-        new uitem[UniqueItem];
+        UniqueItem uitem;
         GetItemProperties(uitem, Id, unique);
         ItemInfMenu(client,uitem,false);
       }
@@ -2550,7 +2550,7 @@ public MenuSendAuction(client)
       {
         decl String:Scategory[255];
         IntToString(y,Sx,sizeof(Sx));
-        new item[UniqueItem];
+        UniqueItem item;
         GetInvItem(item, client, y);
         new iamount=GetSlotItemAmount(client,y);
         TranslateCategory(item[Item_category],Scategory, client);
@@ -2571,7 +2571,7 @@ public MenuSendAuction(client)
       ResetPack(g_auction_pack[client]);
       //item write
       new slot=ReadPackCell(g_auction_pack[client]);
-      new item[UniqueItem];
+      UniqueItem item;
       GetInvItem(item,client,slot);
       decl String:Scategory[255];
       TranslateCategory(item[Item_category],Scategory, client);
@@ -2600,7 +2600,7 @@ public MenuSendAuction(client)
       //item write
       new slot=ReadPackCell(g_auction_pack[client]);
       new bool:gold = bool:ReadPackCell(g_auction_pack[client]);
-      new item[UniqueItem];
+      UniqueItem item;
       GetInvItem(item,client,slot);
       decl String:Scategory[255];
       TranslateCategory(item[Item_category],Scategory, client);
@@ -2636,7 +2636,7 @@ public MenuSendAuction(client)
       //case 2
       new bid=ReadPackCell(g_auction_pack[client]);
       //end
-      new item[UniqueItem];
+      UniqueItem item;
       GetInvItem(item,client,slot);
       decl String:Scategory[255];
       TranslateCategory(item[Item_category],Scategory, client);
@@ -2680,7 +2680,7 @@ public MenuSendAuction(client)
       new bid=ReadPackCell(g_auction_pack[client]);
       new buyout=ReadPackCell(g_auction_pack[client]);
       //end
-      new item[UniqueItem];
+      UniqueItem item;
       GetInvItem(item,client,slot);
       decl String:Scategory[255];
       TranslateCategory(item[Item_category],Scategory, client);
@@ -2785,7 +2785,7 @@ public MenuSendAuctionHandle(Handle:menu_auction,MenuAction:action,client,slot)
         new bool:gold = bool:ReadPackCell(g_auction_pack[client]);
         new bid=ReadPackCell(g_auction_pack[client]);
         new buyout=ReadPackCell(g_auction_pack[client]);
-        new item[UniqueItem];
+        UniqueItem item;
         new amount;
         if((slot2>=0) && (slot2 <=100))
         {
@@ -2970,7 +2970,7 @@ public MenuSendMail(client)
       {
         decl String:Scategory[255];
         IntToString(y,Sx,sizeof(Sx));
-        new uitem[UniqueItem];
+        UniqueItem uitem;
         GetInvItem(uitem, client, y);
         new category=uitem[Item_category];
         new iamount=GetSlotItemAmount(client,y);
@@ -3022,7 +3022,7 @@ public MenuSendMail(client)
       if(slot>0)
       {
         decl String:Scategory[255];
-        new item[UniqueItem];
+        UniqueItem item;
         GetInvItem(item, client, slot);
         new category=item[Item_category];
         TranslateCategory(category,Scategory, client);
@@ -3071,7 +3071,7 @@ public MenuSendMail(client)
       if(slot>0)
       {
         decl String:Scategory[255];
-        new item[UniqueItem];
+        UniqueItem item;
         GetInvItem(item,client,slot);
         new category=item[Item_category];
         TranslateCategory(category,Scategory, client);
@@ -3186,7 +3186,7 @@ public MenuSendMailHandle(Handle:menu_mail,MenuAction:action,client,slot)
         new real=ReadPackCell(g_mail_pack[client]);
         new slot2=ReadPackCell(g_mail_pack[client]);
         ReadPackString(g_mail_pack[client],text,sizeof(text));
-        new item[UniqueItem];
+        UniqueItem item;
         new amount;
         if((slot2>=0) && (slot2 <=100))
         {
@@ -3336,7 +3336,7 @@ public MenuReadMailDisplay(Handle:db,Handle:query,String:error[],any:client)
     AddMenuItem(menu_mail,SmailId,buffer,ITEMDRAW_DISABLED);
    if(item>0)
    {
-     new uitem[UniqueItem];
+     UniqueItem uitem;
      GetItemProperties(uitem, item, unique);
      Format(buffer,sizeof(buffer),"%T","item attached",client,uitem[Item_Name],amount);
      AddMenuItem(menu_mail,SmailId,buffer);
@@ -3511,7 +3511,7 @@ public TGetItemMail(Handle:db,Handle:query,String:error[],any:client)
       new mailId=GetSQLDataInt(query,"mailId");
       if(item>0)
       {
-        new uitem[UniqueItem];
+        UniqueItem uitem;
         GetItemProperties(uitem, item, unique);
         if(GiveItem(client, uitem, amount, "mail",true)>=0)
         {
@@ -4179,7 +4179,7 @@ public InvSortMenuHandle(Handle:menu,MenuAction:action,client,slot)
 }
 
 new g_ff_glyphSlot[65];
-public ChooseGlyphSlot(client, slot, item[UniqueItem])  {
+public ChooseGlyphSlot(client, slot, UniqueItem item)  {
   g_ff_glyphSlot[client] = slot;
   new Handle:menu = CreateMenu(ChooseGlyphSlotHandle);
   SetMenuExitBackButton(menu, true);
@@ -4188,7 +4188,7 @@ public ChooseGlyphSlot(client, slot, item[UniqueItem])  {
   SetMenuTitle(menu, title);
 
   for(new i=0; i<GetGlyphSlots(client); i++) {
-    decl slotItem[UniqueItem];
+    UniqueItem slotItem;
     if(GetGlyphFull(client, i, slotItem))
       Format(line, sizeof(line), "%T", "glyph slot", client, i+1, slotItem[Item_Name]);
     else
@@ -4219,7 +4219,7 @@ public ChooseGlyphSlotHandle(Handle:menu,
       SetGlyphSlots(client, GetGlyphSlots(client)+1);
     }
     //Place Glyph
-    new item[UniqueItem];
+    UniqueItem item;
     GetInvItem(item, client, invSlot);
     WCMessage(client, "equipped glyph", client, item[Item_Name]);
     GetGlyphOnStatic(client, glyphSlot, invSlot);
@@ -4335,7 +4335,7 @@ public InventoryMenu(client)
 	new ix=0;
 	for (new x = 1; x <= 100; x++)
 	{
-                new item[UniqueItem];
+                UniqueItem item;
                 GetInvItem(item, client, x);
                 category = item[Item_category];
 
@@ -4776,7 +4776,7 @@ public CharacterMenu(client)
 
   // items
   new id = client;
-  new item[UniqueItem];
+  UniqueItem item;
   GetCharItem(item, id, 22);
   IdToCategory(item[Item_category],Scategory);
   if((item[Item_defId]==0) && (item[Item_id]==0))
@@ -4950,7 +4950,7 @@ public CharItemOpt(client,ID)
   new Handle:menu_charitem=CreateMenu(CharItemMenuHandle);
   SetMenuExitBackButton(menu_charitem,true);
   decl String:title[255],String:line[255],String:Scategory[255],String:IDstr[10];
-  new item[UniqueItem];
+  UniqueItem item;
   GetCharItem(item,client,ID);
   IdToCategory(ID,Scategory);
   IntToString(ID,IDstr,sizeof(IDstr));
@@ -5009,7 +5009,7 @@ public CharItemMenuHandle(Handle:menu_charitem,MenuAction:action,client,slot)
       {
         lastMenu[client]=4;
         lastMenu2[client]=ID;
-        new item[UniqueItem];
+        UniqueItem item;
         GetCharItem(item, client, ID);
         ItemInfMenu(client,item,false);
       }
@@ -5032,7 +5032,7 @@ public InvItemMenu(client,slot)
   new Handle:menu_invitem=CreateMenu(InvItemMenuHandle);
   SetMenuExitBackButton(menu_invitem,true);
   decl String:title[255],String:line[255],String:Scategory[255],String:slotname[5];
-  new item[UniqueItem];
+  UniqueItem item;
 
   GetInvItem(item, client, slot);
   new cat=item[Item_category];
@@ -5073,7 +5073,7 @@ public InvItemMenu(client,slot)
     if ((cat>9) && (cat <24))
     {
       dEnch=CanDisenchant(cat);
-      new equippeditem[UniqueItem];
+      UniqueItem equippeditem;
       GetCharItem(equippeditem,client,cat);
       new Float:oldrating=GetItemRating(equippeditem);
       new Float:ratingdiff=GetItemRating(item);
@@ -5210,7 +5210,7 @@ public InvItemMenuHandle(Handle:menu_invitem,MenuAction:action,client,slot)
       {
         GetMenuItem(menu_invitem,slot,buffer,sizeof(buffer));
         new slot2=StringToInt(buffer);
-        new item[UniqueItem];
+        UniqueItem item;
         GetInvItem(item, client, slot2);
         lastMenu[client]=5;
         ItemInfMenu(client,item,false);
@@ -5233,7 +5233,7 @@ public InvItemMenuHandle(Handle:menu_invitem,MenuAction:action,client,slot)
       {
         GetMenuItem(menu_invitem,slot,buffer,sizeof(buffer));
         new slot2=StringToInt(buffer);
-        new item[UniqueItem];
+        UniqueItem item;
         GetInvItem(item, client, slot2);
         if(CanDisenchant(item[Item_category])) {
           TriggerDisEnch(client, item, slot2);
@@ -5287,7 +5287,7 @@ stock SellItem(client,slot, bool:all=false)
   new Handle:menu_sellitem=CreateMenu(SellItemMenuHandle);
   SetMenuExitBackButton(menu_sellitem,true);
   decl String:title[255],String:line[255],String:Scategory[255],String:slotname[255];
-  new item[UniqueItem];
+  UniqueItem item;
   GetInvItem(item, client,slot);
   new itemam=GetSlotItemAmount(client,slot);
   if(itemam==-1)
@@ -5330,7 +5330,7 @@ public SellItemMenuHandle(Handle:menu_sellitem,MenuAction:action,client,slot)
   if(action==MenuAction_Select)
   {
     new all = g_ffSellItem[client];
-    new item[UniqueItem];
+    UniqueItem item;
     GetInvItem(item, client, itemslot);
     if ((item[Item_id]==0) && (item[Item_defId]==0))
     {
@@ -5769,7 +5769,7 @@ public ItemMenuHandle(Handle:menu_item,MenuAction:action,client,slot)
       {
         lastMenu[client]=6;
         lastMenu2[client]=item;
-        new uitem[UniqueItem];
+        UniqueItem uitem;
         GetItemProperties(uitem, item);
         ItemInfMenu(client,uitem,true);
       }
@@ -5791,7 +5791,7 @@ public ItemMenuHandle(Handle:menu_item,MenuAction:action,client,slot)
       CloseHandle(menu_item);
 }
 
-public ItemInfMenu(client,item[UniqueItem],bool:back)
+public ItemInfMenu(client,UniqueItem item,bool:back)
 {
    /*PrintToServer("Item ID: %d", item[Item_id]);*/
    if((item[Item_id]>0) || (item[Item_defId]>0))
@@ -5840,7 +5840,7 @@ public ItemInfMenu(client,item[UniqueItem],bool:back)
    Format(catname,sizeof(catname),"%T",catname,client);
    AddMenuItem(menu_iteminf,info,catname,ITEMDRAW_DISABLED);
    if(item[Item_EnchBit]>0) {
-    new enchItem[UniqueItem];
+    UniqueItem enchItem;
     GetItemProperties(enchItem, item[Item_EnchBit]);
     if(enchItem[Item_defId]>0)  {
       Format(fbuffer, sizeof(fbuffer), "%s", enchItem[Item_Name]);
@@ -6145,7 +6145,7 @@ public ItemInfHandle(Handle:menu_iteminf,MenuAction:action,client,slot)
     GetMenuItem(menu_iteminf,slot,Sitem,sizeof(Sitem));
     item=StringToInt(Sitem);
     lastMenu[client]=-1;
-    new uitem[UniqueItem];
+    UniqueItem uitem;
     GetItemProperties(uitem, item);
     ItemInfMenu(client,uitem,false);
    }
@@ -6169,7 +6169,7 @@ public ItemPurchase(client,itemid)
 {
    decl String:buffer[255],String:key[10];
    IntToString(itemid, key, sizeof(key));
-   new item[UniqueItem];
+   UniqueItem item;
    GetItemProperties(item, itemid);
    new Handle:menu_itempurchase=CreateMenu(MenuItemPurchaseHandle);
    SetMenuExitBackButton(menu_itempurchase,true);
@@ -6784,7 +6784,7 @@ public RefreshAccData(client) {
 }
 
 public EnchantMenu(client, slot)  {
-  new item[UniqueItem];
+  UniqueItem item;
   GetInvItem(item, client, slot);
   KvRewind(items);
   decl String:Sid[20];
@@ -6852,7 +6852,8 @@ public EnchantMenuHandler(Handle:menu,MenuAction:action,client,slot)
     GetMenuItem(menu,slot,buffer,sizeof(buffer));
     new enchSlot = StringToInt(buffer);
     slot++;
-    new enchant[UniqueItem], item[UniqueItem];
+    UniqueItem enchant; 
+	UniqueItem item;
     GetInvItem(enchant, client, enchSlot);
     GetInvItem(item, client, slot);
     KvRewind(items);

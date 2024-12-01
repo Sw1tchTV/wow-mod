@@ -29,20 +29,20 @@ enum MType {
 }
 
 //MenuLoader class
-enum MLoader {
-  ML_Id,
-  ML_client,
-  String:ML_query[300],
-  String:ML_callback[100],
-  String:ML_callbackError[100],
-  Handle:ML_returns,
-  Handle:ML_retClass,
-  Handle:ML_sidePack, //Just to carry information through
-  bool:ML_error,
-  bool:ML_retry,
-  String:ML_errorMsg[255]
+enum struct MLoader {
+  int ML_Id;
+  int ML_client;
+  char ML_query[300];
+  char ML_callback[100];
+  char ML_callbackError[100];
+  Handle ML_returns;
+  Handle ML_retClass;
+  Handle ML_sidePack; //Just to carry information through
+  bool ML_error;
+  bool ML_retry;
+  char ML_errorMsg[255];
   
-};
+}
 
 new g_ML_id=1;
 new Handle:g_ML=INVALID_HANDLE;
@@ -52,12 +52,12 @@ CreateAbstractArrays()  {
 }
 
 Handle:MLoader_CreateArray()   {
-   decl ml[MLoader];
+   MLoader ml;
    ml[ML_Id]=1;
    return CreateArray(sizeof(ml));
 }
 
-stock MLoader_free(ml[MLoader]) {
+stock MLoader_free(MLoader ml) {
   MLoader_DeleteById(ml[ML_Id]);
   if(ml[ML_returns]!=INVALID_HANDLE)
     CloseHandle(ml[ML_returns]);
@@ -86,7 +86,7 @@ stock bool:MLoader_DeleteById(id)   {
    return false;
 }
 
-bool:MLoader_FindById(ml[MLoader], id) {
+bool:MLoader_FindById(MLoader ml, id) {
    ml[ML_Id] = 0;
    for (new i=0; i<GetArraySize(g_ML); i++)   {
       if(GetArrayCell(g_ML, i, 0) == id)   {
@@ -97,7 +97,7 @@ bool:MLoader_FindById(ml[MLoader], id) {
    return false;
 }
 
-stock MLoader_Construct(ml[MLoader], client, String:callback[], String:callbackError[], String:query[]) {
+stock MLoader_Construct(MLoader ml, client, String:callback[], String:callbackError[], String:query[]) {
   if(GetArraySize(g_ML) > 500)  {
     decl String:err[500];
     Format(err, 500, "Leaking... Size: %d", GetArraySize(g_ML));
@@ -124,7 +124,7 @@ MLoader_GenerateId()  {
    return g_ML_id;
 }
 
-MLoader_generateProcedureQuery(ml[MLoader]) {
+MLoader_generateProcedureQuery(MLoader ml) {
 
   //ask for returns
   ml[ML_returns]=CreateDataPack();
@@ -142,7 +142,7 @@ MLoader_generateProcedureQuery(ml[MLoader]) {
   SetArrayArray(g_ML, index, ml[0]);
 }
 
-stock MLoader_generateAuctionQuery(ml[MLoader], id) {
+stock MLoader_generateAuctionQuery(MLoader ml, id) {
   decl String:query[300];
   Format(query,300,"SELECT *, HOUR(TIMEDIFF(time, NOW())) AS timediff FROM wc_Auction WHERE `Id`=%i",id);
   strcopy(ml[ML_query], 300, query);
@@ -190,8 +190,8 @@ stock MLoader_generateAuctionQuery(ml[MLoader], id) {
   new index = MLoader_FindIndex(ml[ML_Id]);
   SetArrayArray(g_ML, index, ml[0]);
 }
-
-MLoader_execute(ml[MLoader])  {
+MLoader ml;
+MLoader_execute(ml)  {
   if(DEBUG) {
     PrintToServer("[DEBUG] executing menu loader class");
     
@@ -207,24 +207,24 @@ MLoader_execute(ml[MLoader])  {
 public MLoader_executorCallback(Handle:db,Handle:query,String:error[],any:ml_id)
 {
   new bool:cont=true;
-  new bool:delete=true;
+  new bool:del=true;
   //first of all get ML class
-  new ml[MLoader];
+  MLoader ml;
   MLoader_FindById(ml,ml_id);
-  if(ml[ML_Id]<=0)  {
+  if(ml.ML_Id<=0)  {
     Logger_log(LogType:LT_file, LogLevel:LL_error, "MenuLoader", "MLoader class is lost after query callback");
     cont=false;
   }
   if(query==INVALID_HANDLE) {
     cont=false;
-    if( (StrContains(error, "Lost connection", false)>=0) && ml[ML_retry] )   {
+    if( (StrContains(error, "Lost connection", false)>=0) && ml.ML_retry )   {
       //Update class
-      new index = MLoader_FindIndex(ml[ML_Id]);
+      new index = MLoader_FindIndex(ml.ML_Id);
       SetArrayCell(g_ML, index, false, MLOADER_RETRY_CELL);
       
       //Reexecute class
       Logger_log(LogType:LT_file, LogLevel:LL_warning, "MenuLoader", "query lost connection, retrying…");
-      delete=false;
+      del=false;
       MLoader_execute(ml);
     }
     else  {
@@ -237,12 +237,12 @@ public MLoader_executorCallback(Handle:db,Handle:query,String:error[],any:ml_id)
   }
   if(!SQL_FetchRow(query))  {
     //Start callback
-    new Function:func = GetFunctionByName(INVALID_HANDLE, ml[ML_callbackError]);
+    new Function:func = GetFunctionByName(INVALID_HANDLE, ml.ML_callbackError);
     Call_StartFunction(INVALID_HANDLE, func);
     Call_PushArray(ml[0], sizeof(ml));
     if(Call_Finish() != SP_ERROR_NONE)  {
       decl String:err[500];
-      Format(err,500,"Could not callback the function: %s",ml[ML_callbackError]);
+      Format(err,500,"Could not callback the function: %s",ml.ML_callbackError);
       Logger_log(LogType:LT_file, LogLevel:LL_warning, "MenuLoader", err);
     }
   
@@ -254,50 +254,50 @@ public MLoader_executorCallback(Handle:db,Handle:query,String:error[],any:ml_id)
     return;
   }
   //Free array
-  if(delete)  MLoader_DeleteById(ml_id);
+  if(del)  MLoader_DeleteById(ml_id);
   if(!cont)
     return;
     
   //Write information
   new Handle:results = CreateDataPack();
-  new Handle:names = ml[ML_returns];
-  new Handle:types = ml[ML_retClass];
+  new Handle:names = ml.ML_returns;
+  new Handle:types = ml.ML_retClass;
   ResetPack(names);
   ResetPack(types);
   while(IsPackReadable(types,1))  {
-    decl String:var[50];
-    ReadPackString(names, var, 50);
+    decl String:param[50];
+    ReadPackString(names, param, 50);
     new MType:type = MType:ReadPackCell(types);
     
     switch(type)  {
       case T_int: {
-        new ret = GetSQLDataInt(query,var);
+        new ret = GetSQLDataInt(query,param);
         WritePackCell(results, ret);
       }
       case T_float: {
-        new Float:ret = GetSQLDataFloat(query,var);
+        new Float:ret = GetSQLDataFloat(query,param);
         WritePackFloat(results, ret);
       }
       case T_str: {
         new String:ret[100];
-        GetSQLDataStr(query, var, ret, 100);
+        GetSQLDataStr(query, param, ret, 100);
         WritePackString(results, ret);
       }
       
     }
   }
   ResetPack(results);
-  CloseHandle(ml[ML_returns]);
+  CloseHandle(ml.ML_returns);
   
-  ml[ML_returns] = results;
+  ml.ML_returns = results;
   
   //Start callback
-  new Function:func = GetFunctionByName(INVALID_HANDLE, ml[ML_callback]);
+  new Function:func = GetFunctionByName(INVALID_HANDLE, ml.ML_callback);
   Call_StartFunction(INVALID_HANDLE, func);
   Call_PushArray(ml[0], sizeof(ml));
   if(Call_Finish() != SP_ERROR_NONE)  {
     decl String:err[500];
-    Format(err,500,"Could not callback the function: %s",ml[ML_callback]);
+    Format(err,500,"Could not callback the function: %s",ml.ML_callback);
     Logger_log(LogType:LT_file, LogLevel:LL_warning, "MenuLoader", err);
   }
   MLoader_free(ml);

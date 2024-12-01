@@ -6833,7 +6833,7 @@ stock wcRunTalent_GiveItem(client, race, tree, tier, talent)  {
   new itemid = StringToInt(line);
   wcGetTalentInfo(race,tree,tier,talent,client,"duration",line);
   new Float:duration = StringToFloat(line);
-  new item[UniqueItem];
+  UniqueItem item;
   GetItemProperties(item, itemid);
 
   AddTemporaryItem(client, item, duration, true);

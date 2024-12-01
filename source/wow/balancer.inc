@@ -420,7 +420,7 @@ public TItemDrop(Handle:db, Handle:query, String:error[], any:client)  {
     SQL_Rewind(query);
     if(SQL_FetchRow(query)) {
       new itemid = GetSQLDataInt(query, "itemid");
-      new item[UniqueItem];
+      UniqueItem item;
       GetItemProperties(item, itemid);
       if(GiveItem(client, item, 1, "Balancer", false, true) >= 0)
       setDroppedItems(client, GetDroppedItems(client)+1);

@@ -209,7 +209,7 @@ public Float:wcCalculateStats(client)
   new Float:rating=0.0;
   for (new ID=10;ID<=23;ID++)
   {
-    new item[UniqueItem];
+    UniqueItem item;
     GetCharItem(item, client, ID);
     AddItemBonuses(client, item, effect, rating);
   }
@@ -244,7 +244,7 @@ public Float:wcCalculateStats(client)
   return rating;
 }
 
-AddItemBonuses(id, item[UniqueItem], &effect, &Float:rating)  {
+AddItemBonuses(id, UniqueItem item, &effect, &Float:rating)  {
   if ((item[Item_id]>0) || (item[Item_defId] > 0))
   {
     if(item[Item_2hand]==1)
@@ -346,14 +346,14 @@ AddItemBonuses(id, item[UniqueItem], &effect, &Float:rating)  {
     }
     new id2 = item[Item_EnchBit]; //Enchant is separate item, rating will be added recursively.
     if(id2>0)  {
-      new recItem[UniqueItem];
+      UniqueItem recItem;
       GetItemProperties(recItem, id2);
       AddItemBonuses(id, recItem, effect, rating);
     }
   }
 }
 
-Float:GetItemRating(item[UniqueItem])  {
+Float:GetItemRating(UniqueItem item)  {
   new Float:rating;
   if ((item[Item_id]>0) || (item[Item_defId] > 0))
   {
@@ -439,7 +439,7 @@ Float:GetItemRating(item[UniqueItem])  {
 
     new id2 = item[Item_EnchBit]; //enchant is separate item, rating will be added recursively.
     if(id2>0)  {
-      new recItem[UniqueItem];
+      UniqueItem recItem;
       GetItemProperties(recItem, id2);
       rating += GetItemRating(recItem);
     }

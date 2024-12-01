@@ -23,11 +23,11 @@ enum LogLevel {
 
 
 //not used yet
-enum Log  {
-  LogType:Log_type,
-  LogLevel:Log_level,
-  String:Log_cl[50],
-  String:Log_msg[500]
+enum struct Log  {
+  LogType Log_type;
+  LogLevel Log_level;
+  char Log_cl[50];
+  char Log_msg[500];
 }
 
 /*

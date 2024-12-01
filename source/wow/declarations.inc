@@ -61,14 +61,14 @@ enum Seal
   SEAL_Insight=9 //21 Extra crit healing
 }
 
-enum PremiumData
+enum struct PremiumData
 {
-	PD_modules,
-	String:PD_sExpires[50],
-	bool:PD_subscribed,
-	PD_costs,
-  PD_daysLeft
-};
+	int PD_modules;
+	char PD_sExpires[50];
+	bool PD_subscribed;
+	int PD_costs;
+  int PD_daysLeft;
+}
 
 enum Slide  {
   SLIDE_NONE,
@@ -83,30 +83,30 @@ new String:g_ffSlidePath[65][63];
 new g_ffSlideHook[65];
 
 
-enum CachedPlayer {
-  CP_id,
-  Float:CP_time,
+enum struct CachedPlayer {
+  int CP_id;
+  float CP_time;
 
-  CP_playerId, //playerids[client]
-  CP_premiumData[PremiumData],  //?
-  CP_arenaPoints, //GetPlayerPoints(client)
-  CP_arenaPlayed, //GetArenaPlayed(client)
-  CP_threat, //SetThreatSettingsInt
-  CP_honor, //SetHonor
-  CP_rank, //SetRank
-  CP_newbie, //SetNewbie
-  CP_newbie2, //SetNewbie2
-  CP_usekeyspellbar, //SetUsekeySpellbar
-  CP_chatVictim, //SetChat
-  CP_chatTarget,
-  CP_chatAttacker,
-  CP_chatSpawn,
-  CP_gold, //setGold
-  CP_chars[16], //characterids[client][x] 0-15
-  CP_restXp, //setRestXp
+ int CP_playerId; //playerids[client]
+ PremiumData CP_premiumdata;  //?
+ int CP_arenaPoints; //GetPlayerPoints(client)
+ int CP_arenaPlayed; //GetArenaPlayed(client)
+ int CP_threat; //SetThreatSettingsInt
+ int CP_honor; //SetHonor
+ int CP_rank; //SetRank
+ int CP_newbie; //SetNewbie
+ int CP_newbie2; //SetNewbie2
+ int CP_usekeyspellbar; //SetUsekeySpellbar
+ int CP_chatVictim; //SetChat
+ int CP_chatTarget;
+ int CP_chatAttacker;
+ int CP_chatSpawn;
+ int CP_gold; //setGold
+ int CP_chars[16]; //characterids[client][x] 0-15
+ int CP_restXp; //setRestXp
   //Stopped at line 1690 mysql.inc
 
-  CP_data[100]
+ int CP_data[100];
 }
 
 
@@ -118,14 +118,14 @@ enum QueryType
 }
 
 
-enum Query
+enum struct Query
 {
-	Q_Id,
-	Q_Var,
-	QueryType:Q_Type,
-	Q_Repeats,
-	String:Q_Line[4000]	
-};
+	int Q_Id;
+	int Q_Var;
+	QueryType Q_Type;
+	int Q_Repeats;
+	char Q_Line[4000];
+}
 
 
 new Handle:hSQL; //instant queries
@@ -192,35 +192,35 @@ enum BuffCallReason {
 }
 
 
-enum Buff {
+enum struct Buff {
   //Base Info
-  Buff_id,  //id in array
-  Buff_caster,
-  Buff_target,
+  int Buff_id;  //id in array
+  int Buff_caster;
+ int Buff_target;
 
   //Tick info
-  Float:Buff_began, //Buff_start will set Buff_began to engine time
-  Float:Buff_nextTick,  //Defines when next time buff function should be fired
-  Buff_totalTicks,  //will be '1' for non-tick buffs like sprint, evade.
-  Buff_ticksLeft, //during last tick it will be equal to 0 at callback call
+  float Buff_began; //Buff_start will set Buff_began to engine time
+  float Buff_nextTick;  //Defines when next time buff function should be fired
+  int Buff_totalTicks;  //will be '1' for non-tick buffs like sprint, evade.
+  int Buff_ticksLeft; //during last tick it will be equal to 0 at callback call
   //Essential
-  Buff_uniqueId,  //Might be needed
-  Buff_Faction:Buff_faction,
-  Buff_Type:Buff_type,
-  String:Buff_name[50],
+  int Buff_uniqueId;  //Might be needed
+  Buff_Faction Buff_faction;
+  Buff_Type Buff_type;
+  char Buff_name[50];
 
   //Important for a function callback, but not used by buff class functions
-  String:Buff_callback[50],
-  Handle:Buff_datapack,
+  char Buff_callback[50];
+  Handle Buff_datapack;
 
   //Fields used in maintaining/affecting buff life
-  bool:Buff_dispellable,
+  bool Buff_dispellable;
 
   //Stacking policy
-  Buff_priority,
-  //bool:Buff_overridable, - aren't all going to be true?
+  int Buff_priority;
+  //bool:Buff_overridable; - aren't all going to be true?
   //bool:Buff_overrides,  - all must be true as well?
-  String:Buff_overrideFunction[50]
+  char Buff_overrideFunction[50];
 
 }
 
@@ -247,75 +247,75 @@ new g_ef_train;
 //pain suppression
 new g_ef_rollermine;
 
-enum UniqueItem
+enum struct UniqueItem
 {
-  Item_id,
+  int Item_id;
 
-  Item_defId,
-  Float:Item_version,
-  Item_class,
-  Item_level,  //Required level to equip
-  Item_ilevel, //True item level
-  Item_cost,
-  Item_honor,
-  Item_quality,
-  Item_category,
-  Item_2hand,
+  int Item_defId;
+  float Item_version;
+  int Item_class;
+  int Item_level;  //Required level to equip
+  int Item_ilevel; //True item level
+  int Item_cost;
+  int Item_honor;
+  int Item_quality;
+  int Item_category;
+  int Item_2hand;
 
-  Item_reqstr,
-  Item_reqagi,
-  Item_reqsta,
-  Item_reqint,
+  int Item_reqstr;
+  int Item_reqagi;
+  int Item_reqsta;
+  int Item_reqint;
 
-  Item_str,
-  Item_agi,
-  Item_sta,
-  Item_int,
-  Item_res,
-  Item_regen,
-  Item_ai,
-  Item_haste,
+  int Item_str;
+  int Item_agi;
+  int Item_sta;
+  int Item_int;
+  int Item_res;
+  int Item_regen;
+  int Item_ai;
+  int Item_haste;
 
-  Item_gold,
-  Item_forGold,
-  Item_noTrade,
+  int Item_gold;
+  int Item_forGold;
+  int Item_noTrade;
 
-  Float:Item_as,
-  Float:Item_cs,
-  Float:Item_speed,
-  Float:Item_acc,
-  Float:Item_parry,
+  float Item_as;
+  float Item_cs;
+  float Item_speed;
+  float Item_acc;
+  float Item_parry;
 
-  Item_resilence,
-  Item_armor,      //Non weapon
-  Item_armor_type, //1 Cloth, 2 Leather, 3 Plate, 0 None
+  int Item_resilence;
+  int Item_armor;      //Non weapon
+  int Item_armor_type; //1 Cloth; 2 Leather; 3 Plate; 0 None
 
   //Weapon settings
-  Item_weapon_ap, //Weapon attack power
-  Item_weapon_sp, //Weapon spell power
-  Float:Item_ws,  //Weapon speed
-  Item_damage,    //Bonus attack power
-  Item_spelldmg,  //Bonus spell power
-  Item_effect,    //On-hit effect
+  int Item_weapon_ap; //Weapon attack power
+  int Item_weapon_sp; //Weapon spell power
+  float Item_ws;  //Weapon speed
+  int Item_damage;    //Bonus attack power
+  int Item_spelldmg;  //Bonus spell power
+  int Item_effect;    //On-hit effect
 
-  String:Item_Name[50],
-  String:Item_Descr[70],
+  char Item_Name[50];
+  char Item_Descr[70];
 
   //Unique specific
-  Item_owner,
-  Item_EnchBit,
+  int Item_owner;
+  int Item_EnchBit;
 
   //Server specific
-  Float:Item_LastUpdate,
-  Float:Item_LastUsage,
+  float Item_LastUpdate;
+  float Item_LastUsage;
 
   //Only for standard
-  String:Item_message[50],
-  Item_use,
-  Item_amount,
-  Item_justice,
-  Item_valor
-};
+  char Item_message[50];
+  int Item_use;
+  int Item_amount;
+  int Item_justice;
+  int Item_valor;
+}
 
 //DK effect models
 new AMSSprite;

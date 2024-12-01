@@ -933,7 +933,7 @@ public InvPrint(client,rarity,category)
   {
     decl String:line[1020],String:RL[80];
     Format(line, sizeof(line),"");
-    new item[UniqueItem];
+    UniqueItem item;
     new cate;
     new rare;
     new Float:duration=0.2;
@@ -2062,7 +2062,7 @@ public Action:AdminCmd_Give(client,argc)
     new iamount=StringToInt(Sitem);
     if(iamount<=0)
       iamount=1;
-    new uitem[UniqueItem];
+    UniqueItem uitem;
     GetItemProperties(uitem, item, 0);
     if((item>0) && CheckIfItem(item))
     {

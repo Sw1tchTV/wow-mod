@@ -591,7 +591,7 @@ public GoldShopPremium0(client) {
   getPremiumData(client, "GoldShopPremium");
 }
 
-public GoldShopPremium(client, data[PremiumData])  {
+public GoldShopPremium(client, PremiumData data)  {
   SetMenuOff(client, 0.0);
   new Handle:menu=CreateMenu(GoldShopPremiumHandle);
   SetMenuExitBackButton(menu,true);
@@ -675,12 +675,12 @@ public GoldShopPremiumHandle(Handle:menu,MenuAction:action,client,slot)
     decl String:chosen[255];
     GetMenuItem(menu,slot,chosen,sizeof(chosen));
     if(StrEqual("renew", chosen)) {
-      new pd[PremiumData];
+      PremiumData pd;
       getCachedPD(client, pd);
       askRenew(client, pd);
     }
     else if(StrEqual("subscribe", chosen))  {
-      new pd[PremiumData];
+      PremiumData pd;
       getCachedPD(client, pd);
       askSubscribe(client, pd);
       //triggerSubscribe(client, pd);
@@ -777,7 +777,7 @@ public moreAboutPremiumHandler(Handle:menu, //rename
 
 
 
-askRenew(client, pd[PremiumData]) {
+askRenew(client, PremiumData pd) {
   new Handle:menu=CreateMenu(RenewPremiumHandle);
   SetMenuExitBackButton(menu,true);
   SetMenuTitle(menu,"%T","Premium Account Renew",  client);
@@ -813,7 +813,7 @@ public RenewPremiumHandle(Handle:menu,MenuAction:action,client,slot)
 {
   if(action==MenuAction_Select)
   {
-    new pd[PremiumData];
+    PremiumData pd;
     getCachedPD(client, pd);
     decl String:chosen[255];
     GetMenuItem(menu,slot,chosen,sizeof(chosen));
@@ -836,7 +836,7 @@ public RenewPremiumHandle(Handle:menu,MenuAction:action,client,slot)
 }
 
 
-askSubscribe(client, pd[PremiumData]) {
+askSubscribe(client, PremiumData pd) {
   new Handle:menu=CreateMenu(SubscribePremiumHandle);
   SetMenuExitBackButton(menu,true);
   SetMenuTitle(menu,"Premium Account Subscription");
@@ -874,7 +874,7 @@ public SubscribePremiumHandle(Handle:menu,MenuAction:action,client,slot)
 {
   if(action==MenuAction_Select)
   {
-    new pd[PremiumData];
+    PremiumData pd;
     getCachedPD(client, pd);
     decl String:chosen[255];
     GetMenuItem(menu,slot,chosen,sizeof(chosen));
@@ -899,7 +899,7 @@ public SubscribePremiumHandle(Handle:menu,MenuAction:action,client,slot)
 new PDModule:g_ff_lastmodule[65];
 stock GoldShopModule(client, PDModule:module) {
   g_ff_lastmodule[client] = module;
-  new pd[PremiumData];
+  PremiumData pd;
   getCachedPD(client, pd);
 
   new Handle:menu=CreateMenu(ModuleShopMenuHandler); //EDIT !!
@@ -944,7 +944,7 @@ public ModuleShopMenuHandler(Handle:menu,
     decl String:buffer[100];
     GetMenuItem(menu,slot,buffer,sizeof(buffer));
 
-    new data[PremiumData];
+    PremiumData data;
     getCachedPD(client, data);
 
     if(StrEqual(buffer, "accept"))  {
@@ -970,19 +970,19 @@ public ModuleShopMenuHandler(Handle:menu,
 getPremiumData(client, String:callback[],bool:preload=false)  {
   if((!preload) && (playerloaded[client]!=1) )
     return;
-  new object[MLoader];
-  MLoader_Construct(object, client, "getPremiumData2", "getPremiumError", "query"); //Construct class
-  MLoader_generatePremiumQuery(object, client, callback);
+  MLoader obj;
+  MLoader_Construct(obj, client, "getPremiumData2", "getPremiumError", "query"); //Construct class
+  MLoader_generatePremiumQuery(obj, client, callback);
   //Execute object
-  MLoader_execute(object);
+  MLoader_execute(obj);
 }
 
-public getPremiumError(ml[MLoader]) {
+public getPremiumError(MLoader ml) {
   ResetPack(ml[ML_sidePack]);
   new client = ReadPackCell(ml[ML_sidePack]);
   new String:callback[100];
   ReadPackString(ml[ML_sidePack], callback, 100);
-  new pd[PremiumData];
+  PremiumData pd;
   pd[PD_costs] = gPDModules[PDM_base];
   updateCachedPD(client, pd);
   //Call function
@@ -997,7 +997,7 @@ public getPremiumError(ml[MLoader]) {
   }
 }
 
-public getPremiumData2(ml[MLoader]) {
+public getPremiumData2(MLoader ml) {
   ResetPack(ml[ML_sidePack]);
   new client = ReadPackCell(ml[ML_sidePack]);
   new String:callback[100];
@@ -1013,7 +1013,7 @@ public getPremiumData2(ml[MLoader]) {
   new costs = ReadPackCell(ml[ML_returns]);
 
 
-  new pd[PremiumData];
+  PremiumData pd;
   PD_Construct(pd, modules, due, (subscribed!=0), costs, daysLeft);
 
   //safer
@@ -1039,7 +1039,7 @@ public getPremiumData2(ml[MLoader]) {
 
 }
 
-PD_Construct(pd[PremiumData], modules, String:expires[],
+PD_Construct(PremiumData pd, modules, String:expires[],
             bool:subscribed, costs, daysLeft) {
   pd[PD_modules] = modules;
   strcopy(pd[PD_sExpires],50,expires);
@@ -1049,7 +1049,7 @@ PD_Construct(pd[PremiumData], modules, String:expires[],
 }
 
 //insert into wc_premium values (10, NOW(), 4, 1, 500);
-stock MLoader_generatePremiumQuery(ml[MLoader], client, String:callback[]) {
+stock MLoader_generatePremiumQuery(MLoader ml, client, String:callback[]) {
   decl String:query[300];
   Format(query,300,"SELECT DATEDIFF(due, now()) AS `days_left`, wc_premium.* FROM wc_premium WHERE playerId = %d", playerids[client]);
   strcopy(ml[ML_query], 300, query);
@@ -1080,13 +1080,13 @@ stock MLoader_generatePremiumQuery(ml[MLoader], client, String:callback[]) {
   SetArrayArray(g_ML, index, ml[0]);
 }
 
-bool:isPDModuleEnabled(pd[PremiumData], any:module) {
+bool:isPDModuleEnabled(PremiumData pd, any:module) {
   if(module == PDM_base)
     return true;
   return ( (pd[PD_modules] & (1<<module))==(1<<module));
 }
 
-bool:renewSubscribe(client, pd[PremiumData]) {
+bool:renewSubscribe(client, PremiumData pd) {
   if(playerloaded[client]!=1) {
     LogError("error #773");
     return false;
@@ -1152,7 +1152,7 @@ bool:renewSubscribe(client, pd[PremiumData]) {
 }
 
 
-bool:triggerSubscribe(client, pd[PremiumData]) {
+bool:triggerSubscribe(client, PremiumData pd) {
   if(playerloaded[client]!=1) {
     LogError("error #773");
     return false;
@@ -1195,7 +1195,7 @@ bool:triggerSubscribe(client, pd[PremiumData]) {
   return true; //success
 }
 
-enablePD(client, pd[PremiumData])  {
+enablePD(client, PremiumData pd)  {
   //update sql
   if(playerloaded[client]!=1) {
     LogError("Tried to enable PD of unloaded player");
@@ -1218,7 +1218,7 @@ enablePD(client, pd[PremiumData])  {
   GoldShopPremium0(client);
 }
 
-bool:triggerPDModule(client, pd[PremiumData], any:module) {
+bool:triggerPDModule(client, PremiumData pd, any:module) {
   new bool:isEnabled = isPDModuleEnabled(pd, module);
   if(isEnabled) {
     pd[PD_modules] = pd[PD_modules] & ~(1 << module);
@@ -1250,7 +1250,7 @@ bool:triggerPDModule(client, pd[PremiumData], any:module) {
   return true; //success
 }
 
-savePD(client, pd[PremiumData]) {
+savePD(client, PremiumData pd) {
   if(playerloaded[client]!=1) {
     LogError("Tried to save PD of unloaded player");
     return;
@@ -1269,7 +1269,7 @@ savePD(client, pd[PremiumData]) {
   updateCachedPD(client, pd);
 }
 
-public loadPD(client, pd[PremiumData]) {
+public loadPD(client, PremiumData pd) {
   //updateCachedPD(client, pd); //it is already included in algorithm
 
 }
@@ -1282,7 +1282,7 @@ resetCachedPD(client) {
 }
 
 
-updateCachedPD(client, pd[PremiumData]) {
+updateCachedPD(client, PremiumData pd) {
   g_ff_hasCachedPD[client]=true;
   g_ff_cachedPD[client][PD_modules] = pd[PD_modules];
   g_ff_cachedPD[client][PD_sExpires] = pd[PD_sExpires];
@@ -1298,7 +1298,7 @@ updateCachedPD(client, pd[PremiumData]) {
   g_ff_cachedPD[client][PD_daysLeft] = pd[PD_daysLeft];
 }
 
-bool:getCachedPD(client, pd[PremiumData]) {
+bool:getCachedPD(client, PremiumData pd) {
   if(!g_ff_hasCachedPD[client])
     return false;
   pd[PD_modules] = g_ff_cachedPD[client][PD_modules];
@@ -1313,7 +1313,7 @@ bool:isClientPDModule(client, PDModule:module=PDM_base)  {
   if(!IsClientConnected(client))
     return false;
 
-  new pd[PremiumData];
+  PremiumData pd;
   if(!getCachedPD(client, pd)) {
     getOutdatedPD(client, pd);
   }
@@ -1380,7 +1380,7 @@ public getPDs2(Handle:db,Handle:query,String:error[],any:datapack)  {
 
 }
 
-getOutdatedPD(client, pd[PremiumData])  {
+getOutdatedPD(client, PremiumData pd)  {
   if(outdatedPD == INVALID_HANDLE)  {
     return;
   }
@@ -1985,6 +1985,6 @@ stock OpenCP(client, String:login[], String:key[], String:path[]) {
 }
 
 
-stock GetPremiumCost(client, data[PremiumData]) {
+stock GetPremiumCost(client, PremiumData data) {
   return 500; //let's say it's 5g now / month. TODO unfinished
 }

@@ -118,7 +118,7 @@ stock HNSWon(who) {
             if(!first)  {
               Format(wins, sizeof(wins), "%s, ", wins);
             }
-            new uitem[UniqueItem];
+            UniqueItem uitem;
             GetItemProperties(uitem, g_hns_itemId);
             Format(wins, sizeof(wins), "%s%s x%d", wins, uitem[Item_Name], g_hns_itemAmount);
             first = false;
@@ -302,7 +302,7 @@ public Action:RunQuiz(client, args)
 public Action:EndQuiz(Handle:timer, any:trash)
 {
    new total,totalC;
-   new uitem[UniqueItem];
+   UniqueItem uitem;
    if(g_quizItemId>0)
     GetItemProperties(uitem, g_quizItemId);
    for(new i=1;i<=GetMaxClients();i++) {
@@ -2925,7 +2925,7 @@ stock TreasureChestOpen(client,chestrarity)
     wcGiveXp(client,experience,true);
     WCMessage(client,"experience chest",client,experience);
   }
-  new uitem[UniqueItem];
+  UniqueItem uitem;
   decl String:itemname[255];
   if(item>0) {
     GetItemProperties(uitem, item, 0);

@@ -551,7 +551,7 @@ public GetBoss(client)
 
 public PutIntoInventory(client,category)
 {
-  new item[UniqueItem];
+  UniqueItem item;
   GetCharItem(item, client,category);
   new free=wcCheckFreeSlot(client);
   wcSetStaticSlot(client,free,item[Item_defId]);
@@ -667,7 +667,7 @@ public GetGlyphOn(client,slot)
     WCMessage(client, "cata expansion required", client);
     return;
   }
-  new item[UniqueItem];
+  UniqueItem item;
   GetInvItem(item, client, slot);
   if(wcCheckStats(client,item)==1)
   {
@@ -718,7 +718,7 @@ public wcCheckFilledSlot(client)
 
 public GetItemCat(item, unique)
 {
-  new uitem[UniqueItem];
+  UniqueItem uitem;
   GetItemProperties(uitem, item, unique);
   return uitem[Item_category];
 }
@@ -745,7 +745,7 @@ stock GetItemQuality(item)
 
 public GetItemMaxAmount(item)
 {
-  new uitem[UniqueItem];
+  UniqueItem uitem;
   GetItemProperties(uitem, item);
   return uitem[Item_amount];
 }
@@ -773,7 +773,7 @@ stock bool:ItemUsable(item)
 
 public GetSlotCat(client,ID)
 {
-  new item[UniqueItem];
+  UniqueItem item;
   GetInvItem(item, client, ID);
   return item[Item_category];
 }
@@ -965,7 +965,7 @@ stock RemoveSpellIfHas(client, spellid) {
   }
 }
 
-wcCheckStats(client,item[UniqueItem])
+wcCheckStats(client,UniqueItem item)
 {
    new bool:pass=false;
    new classes[10];
@@ -1041,7 +1041,7 @@ stock wcCheckFreeSlot2(client,item2, bool:refresher=false)
   return 0;
 }
 
-public wcCheckFreeSlot3(client,uitem[UniqueItem], &space) //A little smarter again :D
+public wcCheckFreeSlot3(client,UniqueItem uitem, &space) //A little smarter again :D
 {
 
   if(uitem[Item_amount]<=1) {
@@ -1104,7 +1104,7 @@ public GetFilledInventory(client)
 
 PurchaseItemConfirmed(client,item, amount=1)
 {
-  new uitem[UniqueItem];
+  UniqueItem uitem;
   GetItemProperties(uitem, item);
   new slot = GiveItem(client, uitem, amount, "shop");
 
@@ -1144,7 +1144,7 @@ public bool:CheckIfItem(item)
 stock GetItemName(item,String:back[255], unique=0)
 {
   if(unique > 0)  {
-    new uitem[UniqueItem];
+    UniqueItem uitem;
     GetItemProperties(uitem, item, unique);
   }
   else  {
@@ -1505,7 +1505,7 @@ stock wcClassToName(client,id,String:back[],size, transClient=0)
   Format(back,size,"%T",back,transClient);
 }
 
-stock Float:GetDESkillUp(enchanting, item[UniqueItem]) {
+stock Float:GetDESkillUp(enchanting, UniqueItem item) {
   //v1 formula gives 3% for 80 lvl rare at skill 1, which is very wrong... let's construct soething more realistic
   //target: 80 lvl rare - 80% at level 1. -> 0% at iQua condition
   //I think best solution is bind chance to item rating, hence we also include the 'category'
@@ -1526,7 +1526,7 @@ stock Float:GetDESkillUp(enchanting, item[UniqueItem]) {
   return chance;
 }
 
-stock TriggerDisEnch(client, item[UniqueItem], slot)
+stock TriggerDisEnch(client, UniqueItem item, slot)
 {
   new enchanting;
   new playerProfs[2][2];  // first index  - prof index, 2nd index:
@@ -1670,7 +1670,7 @@ stock TriggerDisEnch(client, item[UniqueItem], slot)
           }
           if(id>0)
           {
-            new uitem[UniqueItem];
+            UniqueItem uitem;
             GetItemProperties(uitem, id, 0);
             new islot = GiveItem(client, uitem, give, "disenchant");
             if(islot >= 0)
@@ -1690,7 +1690,7 @@ stock TriggerDisEnch(client, item[UniqueItem], slot)
         //Secondary DE Drops
         if(failGive>0)
         {
-          new uitem[UniqueItem];
+          UniqueItem uitem;
           GetItemProperties(uitem, failId, 0);
           new islot = GiveItem(client, uitem, failGive, "disenchant");
           if(islot >= 0)
@@ -1791,7 +1791,7 @@ stock TriggerDrop(client,victim, bool:self=false, Float:custom_rate=1.0)
           }
           if(id>0)
           {
-            new uitem[UniqueItem];
+            UniqueItem uitem;
             GetItemProperties(uitem, id, 0);
 
             new slot = GiveItem(client, uitem, 1, "drop");
@@ -1941,7 +1941,7 @@ TriggerBossDrop() {
             LogError("[WC] Could not roll for item");
             new String:winnername[50];
             GetClientName(winner,winnername,sizeof(winnername));
-            new uitem[UniqueItem];
+            UniqueItem uitem;
             GetItemProperties(uitem, setitems[itemId], 0);
 
             if(GiveItem(winner, uitem, 1, "boss") < 0)
@@ -1973,7 +1973,7 @@ TriggerBossDrop() {
               new String:winnername[50];
               GetClientName(winner,winnername,sizeof(winnername));
 
-              new uitem[UniqueItem];
+              UniqueItem uitem;
               GetItemProperties(uitem, id, 0);
 
               if(GiveItem(winner, uitem, 1, "boss") < 0)
@@ -1989,7 +1989,7 @@ TriggerBossDrop() {
           } while(KvGotoNextKey(wcbossdrop));
         }
         if(tokenId > 0 && tokenAmount > 0) {
-          new uitem[UniqueItem];
+          UniqueItem uitem;
           GetItemProperties(uitem, tokenId, 0);
           new targets[65];
           new pamount=FindMatchingPlayers("@all",targets);
@@ -2115,7 +2115,7 @@ RemoveItem(client,item,amount)
   return 0;
 }
 
-GetRequiredLevel(item[UniqueItem])
+GetRequiredLevel(UniqueItem item)
 {
    if( (item[Item_defId]>0) || (item[Item_id]>0) )
    {

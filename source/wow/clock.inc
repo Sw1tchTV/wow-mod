@@ -126,7 +126,7 @@ public Action:BotCreateAuction(Handle:timer, any:trash)
           }
           if(id>0)
           {
-            new uitem[UniqueItem];
+            UniqueItem uitem;
             GetItemProperties(uitem, id, 0);
 
             new rarity = uitem[Item_quality];

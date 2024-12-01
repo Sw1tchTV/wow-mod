@@ -14,19 +14,19 @@ enum BuyType  {
 };
 
 //Structure Id,fromId,time,bid,buyout,item[UniqueItem],String:fromname[],amount,bidId, gold, goldBuyout
-enum Auction  {
-  Auc_id,
-  Auc_fromId, //owner
-  Auc_time,
-  Auc_bid,
-  Auc_buyout,
-  Auc_item[UniqueItem],
-  String:Auc_fromName[50],
-  Auc_amount,
-  Auc_bidder,
-  Auc_gold,
-  Auc_goldBuyout
-};
+enum struct Auction  {
+  int Auc_id;
+  int Auc_fromId; //owner
+  int Auc_time;
+  int Auc_bid;
+  int Auc_buyout;
+  UniqueItem Auc_item;
+  char Auc_fromName[50];
+  int Auc_amount;
+  int Auc_bidder;
+  int Auc_gold;
+  int Auc_goldBuyout;
+}
 
 stock setGold(client, amount) {
   clientGold[client] = amount;
@@ -101,12 +101,12 @@ stock AttemptToBuy(BuyType:type, client, id)  {
 
 stock AttemptBid(client, aucId) {
 
-  new object[MLoader];
+  MLoader obj;
   decl String:call[100];
   Format(call,sizeof(call), "CALL bid(%d, %d, %d);", aucId, characterids[client][0], GetMoney(client) );
-  MLoader_Construct(object, client, "buy_bidCallback1", "", call);
-  MLoader_generateProcedureQuery(object);
-  MLoader_execute(object);
+  MLoader_Construct(obj, client, "buy_bidCallback1", "", call);
+  MLoader_generateProcedureQuery(obj);
+  MLoader_execute(obj);
   /*
         new fromId,time,bid,buyout,item[UniqueItem],String:fromname[20],amount,bidId;
         if(GetAuction(Id,fromId,time,bid,buyout,item,fromname,amount,bidId))
@@ -150,49 +150,49 @@ stock AttemptBid(client, aucId) {
         } */
 }
 
-public buy_bidCallback1(object[MLoader])  {
+public buy_bidCallback1(MLoader obj)  {
 
-  if(object[ML_error])  {
-    LogError("Error in bid query: %s", object[ML_errorMsg]);
+  if(obj[ML_error])  {
+    LogError("Error in bid query: %s", obj[ML_errorMsg]);
     return;
   }
-  new status = ReadPackCell(object[ML_returns]);
+  new status = ReadPackCell(obj[ML_returns]);
   if(status==0) {
-    new silver = ReadPackCell(object[ML_returns]);
-    wcSetMoney(object[ML_client], GetMoney(object[ML_client])-silver);
-    WCMessage(object[ML_client], "bid placed", object[ML_client]);
+    new silver = ReadPackCell(obj[ML_returns]);
+    wcSetMoney(obj[ML_client], GetMoney(obj[ML_client])-silver);
+    WCMessage(obj[ML_client], "bid placed", obj[ML_client]);
   }
   else  {
-    WCMessage(object[ML_client], "buying error", object[ML_client]);
+    WCMessage(obj[ML_client], "buying error", obj[ML_client]);
   }
-  updateGold(object[ML_client]);
+  updateGold(obj[ML_client]);
 }
 
 stock AttemptBuyout(client, aucId)  {
-  new object[MLoader];
+  MLoader obj;
   decl String:call[100];
   Format(call,sizeof(call), "CALL buyout(%d, %d, %d);", aucId, characterids[client][0], GetMoney(client) );
-  MLoader_Construct(object, client, "buy_buyoutCallback1", "", call);
-  MLoader_generateProcedureQuery(object);
-  MLoader_execute(object);
+  MLoader_Construct(obj, client, "buy_buyoutCallback1", "", call);
+  MLoader_generateProcedureQuery(obj);
+  MLoader_execute(obj);
 }
 
-public buy_buyoutCallback1(object[MLoader])  {
+public buy_buyoutCallback1(MLoader obj)  {
 
-  if(object[ML_error])  {
-    LogError("Error in buyout query: %s", object[ML_errorMsg]);
+  if(obj[ML_error])  {
+    LogError("Error in buyout query: %s", obj[ML_errorMsg]);
     return;
   }
-  new status = ReadPackCell(object[ML_returns]);
+  new status = ReadPackCell(obj[ML_returns]);
   if(status==0) {
-    new silver = ReadPackCell(object[ML_returns]);
-    wcSetMoney(object[ML_client], GetMoney(object[ML_client])-silver);
-    WCMessage(object[ML_client], "buyout placed", object[ML_client]);
+    new silver = ReadPackCell(obj[ML_returns]);
+    wcSetMoney(obj[ML_client], GetMoney(obj[ML_client])-silver);
+    WCMessage(obj[ML_client], "buyout placed", obj[ML_client]);
   }
   else  {
-    WCMessage(object[ML_client], "buying error", object[ML_client]);
+    WCMessage(obj[ML_client], "buying error", obj[ML_client]);
   }
-  updateGold(object[ML_client]);
+  updateGold(obj[ML_client]);
 }
 
 

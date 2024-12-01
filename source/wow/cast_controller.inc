@@ -8,9 +8,9 @@
 
 #pragma semicolon 1
 
-enum SpellSetting {
-  bool:SS_isEnabled,
-  SS_minRage  //Same for energy
+enum struct SpellSetting {
+  bool SS_isEnabled;
+  int SS_minRage;  //Same for energy
 
 }
 

@@ -19,7 +19,7 @@ new Handle:g_queryArray;
 new g_queryId=0;
 
 Handle:CreateQueryArray()   {
-   decl query[Query];
+   Query query;
    query[Q_Id]=1;
    return CreateArray(sizeof(query));
 }
@@ -35,7 +35,7 @@ bool:DeleteQueryById(id)   {
    return false;
 }
 
-bool:FindQueryById(query[Query], id) {
+bool:FindQueryById(Query query, id) {
    query[Q_Id] = 0;
    for (new i=0; i<GetArraySize(g_queryArray); i++)   {
       if(GetArrayCell(g_queryArray, i, 0) == id)   {
@@ -46,14 +46,14 @@ bool:FindQueryById(query[Query], id) {
    return false;
 }
 
-stock AddQuery(QueryType:type, repeats, String:command[], var=0) {
-   decl query[Query];
+stock AddQuery(QueryType:type, repeats, String:command[], param=0) {
+   Query query;
    strcopy(query[Q_Line], sizeof(query[Q_Line]), command);
    new id = GenerateQueryId();
    query[Q_Id] = id;
    query[Q_Repeats] = repeats;
    query[Q_Type] = type;
-   query[Q_Var] = var;
+   query[Q_Var] = param;
    PushArrayArray(g_queryArray, query[0]);
    return id;
 }
@@ -67,7 +67,7 @@ GenerateQueryId()  {
 
 public TRGetItem(Handle:db, Handle:hndl, String:error[], any:id)
 {
-   decl query[Query];
+   Query query;
    new bool:bQuery=false;
    if(FindQueryById(query, id))
       bQuery=true;
@@ -108,7 +108,7 @@ public TRGetItem(Handle:db, Handle:hndl, String:error[], any:id)
 
 public TRepeating2(Handle:db, Handle:hndl, String:error[], any:id)
 {
-   decl query[Query];
+   Query query;
    new bool:bQuery=false;
    if(FindQueryById(query, id))
       bQuery=true;
@@ -149,7 +149,7 @@ public TRepeating2(Handle:db, Handle:hndl, String:error[], any:id)
 
 public TRepeating3(Handle:db, Handle:hndl, String:error[], any:id)
 {
-   decl query[Query];
+   Query query;
    new bool:bQuery=false;
    if(FindQueryById(query, id))
       bQuery=true;
@@ -193,7 +193,7 @@ public TRepeating3(Handle:db, Handle:hndl, String:error[], any:id)
 
 public TRepeating(Handle:db, Handle:hndl, String:error[], any:id)
 {
-   decl query[Query];
+   Query query;
    new bool:bQuery=false;
    if(FindQueryById(query, id))
       bQuery=true;
@@ -2147,7 +2147,7 @@ public TAuctionClean(Handle:owner, Handle:query, const String:error[], any:data)
       {
         decl String:text[255];
         Format(text,sizeof(text),"%T","bid won",LANG_SERVER,bid);
-        new item2[UniqueItem];
+        UniqueItem item2;
         item2[Item_id]=uniq;
         item2[Item_defId]=item;
         CreateMail(30,0,"Auction House","Bid Won",toId,0,item2,text,amount, 0);
@@ -2165,7 +2165,7 @@ public TAuctionClean(Handle:owner, Handle:query, const String:error[], any:data)
         {
           decl String:text[255];
           Format(text,sizeof(text),"%T","ac item back",LANG_SERVER);
-          new item2[UniqueItem];
+          UniqueItem item2;
           item2[Item_id]=uniq;
           item2[Item_defId]=item;
           CreateMail(30,0,"Auction House","Item is returned",fromId,0,item2,text,amount, 0);
@@ -2511,7 +2511,7 @@ public DeleteAuction(Id)
 
 
 //hSQL is used here only in case of sending to everyone, so it's fine
-public CreateMail(days,fromId,String:fromname[20],String:topic[50],toId,gold,item[UniqueItem],String:text[255],amount, real)
+public CreateMail(days,fromId,String:fromname[20],String:topic[50],toId,gold,UniqueItem item,String:text[255],amount, real)
 {
   if(toId>0)
   {
@@ -2665,7 +2665,7 @@ public GetAuctionCallback(Handle:db,Handle:query,String:error[],any:client)
       new buyout=GetSQLDataInt(query,"buyout");
       new itemid=GetSQLDataInt(query,"item");
       new unique = GetSQLDataInt(query,"unique");
-      new item[UniqueItem];
+      UniqueItem item;
       GetItemProperties(item, itemid, unique);
 
       new amount=GetSQLDataInt(query,"amount");
@@ -2682,7 +2682,7 @@ public GetAuctionCallback(Handle:db,Handle:query,String:error[],any:client)
   WCMessage(client, "aucion not found", client);
 }
 
-public CreateAuction(fromId,String:fromname[20],bid,buyout,item[UniqueItem],amount,bool:gold)
+public CreateAuction(fromId,String:fromname[20],bid,buyout,UniqueItem item,amount,bool:gold)
 {
   if(bid <= 1)
     bid = 5;
@@ -3673,7 +3673,7 @@ stock sqlLog(String:lvl[], String:cl[], String:cMsg[]) {
   SQL_TQuery(T2SQL, Tinserted, format, 3531, DBPrio_Low);
 }
 
-stock sqlLogItem(client, item[UniqueItem], amount, String:source[]) {
+stock sqlLogItem(client, UniqueItem item, amount, String:source[]) {
   decl String:query[500];
   Format(query, sizeof(query), "INSERT INTO wc_logItems (`date`, `level`, `ilevel`, `quality`, `item`, `unique`, `msg`, `amount`, `character`) VALUES (NOW(), '%d', '%d', '%d', '%d', '%d', '%s', '%d', '%d')", item[Item_level], item[Item_ilevel], item[Item_quality], item[Item_defId], item[Item_id], source, amount, characterids[client][0]);
   SQL_TQuery(T2SQL, Tinserted, query, 3532, DBPrio_Low);
@@ -3719,7 +3719,7 @@ _generateSqlItems() {
     if(type == CT_Unknown)
       continue;
 
-    new uitem[UniqueItem];
+    UniqueItem uitem;
     GetItemProperties(uitem, item);
 
     //Statement 2 code TODO

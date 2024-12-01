@@ -7,7 +7,7 @@
 
 
 Handle:CreateItemsArray()   {
-   decl temp[UniqueItem];
+   UniqueItem temp;
    temp[Item_id]=1;
    return CreateArray(sizeof(temp));
 }
@@ -21,22 +21,22 @@ SpecialUsed(client, slot)
   IntToString(item, sitem, 10);
   KvJumpToKey(items, sitem);
   //Get values
-  decl String:function[100];
-  KvGetString(items, "function", function, 100);
+  decl String:func[100];
+  KvGetString(items, "function", func, 100);
   //TODO properly handle arguments
   new arg1 = KvGetNum(items, "arg1");
 
 
 
   //Call function
-  new Function:func = GetFunctionByName(INVALID_HANDLE, function);
+  new Function:func = GetFunctionByName(INVALID_HANDLE, func);
   Call_StartFunction(INVALID_HANDLE, func);
   Call_PushCell(client);
   Call_PushCell(item);
   Call_PushCell(arg1);
   if(Call_Finish() != SP_ERROR_NONE)  {
     decl String:err[100];
-    Format(err,100,"Could not callback the function: %s",function);
+    Format(err,100,"Could not callback the function: %s",func);
     Logger_log(LogType:LT_file, LogLevel:LL_error, "Messages", err);
   }
   else  {
@@ -73,7 +73,7 @@ public ReadTome(client, item, amount) {
 }
 
 stock ReturnItem(client, itemId, String:msg[])  {
-  new uitem[UniqueItem];
+  UniqueItem uitem;
   GetItemProperties(uitem, itemId);
   GiveItem(client, uitem, 1, "refund" );
 
@@ -91,7 +91,7 @@ RandomBoxUsed(client, slot)
     wcSetStaticSlot(client, slot, 0);
     SetInvUnique(client, slot, 0);
     wcSetStaticSlotAmount(client, slot, 0);
-    new uitem[UniqueItem];
+    UniqueItem uitem;
     GetItemProperties(uitem, newItem);
     GiveItem(client, uitem, 1, "box");
     WCMessage(client,"item got",client,uitem[Item_Name]);
@@ -192,7 +192,7 @@ public Action:ItemsUpdater(Handle:timer, any:trash)  {
     g_lastItemUpdate=0;
     return Plugin_Continue;
   }
-  new item[UniqueItem];
+  UniqueItem item;
   GetArrayArray(g_itemsArray, g_lastItemUpdate, item[0]);
   new Float:fTemp = item[Item_LastUsage];
   if( (fTemp+1200.0) < GetEngineTime() )  {
@@ -280,7 +280,7 @@ bool:LoadItemCode(Handle:query, id, bool:noSQL=false)  {
       LogError("[WC] Could not load item data with id = %i", id);
       return false;
     }
-    new item[UniqueItem];
+    UniqueItem item;
     item[Item_id] = GetSQLDataInt(query, "id");
     item[Item_defId] = GetSQLDataInt(query,"defId");
     item[Item_version] = float(GetSQLDataInt(query,"version"))/100.0;
@@ -336,7 +336,7 @@ bool:LoadItemCode(Handle:query, id, bool:noSQL=false)  {
     ReplaceString(item[Item_Descr],70, "/z", "'");
     ReplaceString(item[Item_Descr],70, "//", "/");
 
-    new olditem[UniqueItem];
+    UniqueItem olditem;
     if(GetUniqueItem(olditem,item[Item_id],true)) {
       item[Item_LastUsage]=olditem[Item_LastUsage];
     }
@@ -422,7 +422,7 @@ stock InsertItem(owner=0)  {
   return id;
 }
 
-stock SaveItemCode(item[UniqueItem])  {
+stock SaveItemCode(UniqueItem item)  {
   new String:profbuffer[5000],len;
   new String:buffer[70];
   len=Format(profbuffer,sizeof(profbuffer),"UPDATE wc_Items SET");
@@ -513,7 +513,7 @@ stock bool:IsUniqueInDB(id) {
   return false;
 }
 
-stock bool:GetUniqueItem(item[UniqueItem], id, bool:noload=false)  {
+stock bool:GetUniqueItem(UniqueItem item, id, bool:noload=false)  {
   item[Item_id] = 0;
   for (new i=0; i<GetArraySize(g_itemsArray); i++)   {
     if(GetArrayCell(g_itemsArray, i, 0) == id)   {
@@ -529,7 +529,7 @@ stock bool:GetUniqueItem(item[UniqueItem], id, bool:noload=false)  {
   return false;
 }
 
-stock GetItemProperties(item[UniqueItem], itemId, uniqueId=-1)  {
+stock GetItemProperties(UniqueItem item, itemId, uniqueId=-1)  {
   if(itemId>0)  {
     GetStandardItem(item, itemId);
   }
@@ -542,7 +542,7 @@ stock GetItemProperties(item[UniqueItem], itemId, uniqueId=-1)  {
   item[Item_defId]=itemId;
   item[Item_id]=uniqueId;
   if(uniqueId>0)  {
-    new uniItem[UniqueItem];
+    UniqueItem uniItem;
     if(GetUniqueItem(uniItem, uniqueId))  {
       if(uniItem[Item_id]>0)
         item[Item_id]=uniItem[Item_id];
@@ -670,7 +670,7 @@ stock GetItemProperties(item[UniqueItem], itemId, uniqueId=-1)  {
   }
 }
 
-stock GetStandardItem(item[UniqueItem], id) {
+stock GetStandardItem(UniqueItem item, id) {
   decl String:key[10];
   KvRewind(items);
   IntToString(id,key,sizeof(key));
@@ -765,7 +765,7 @@ stock GetStandardItem(item[UniqueItem], id) {
   KvGetString(items, "message", item[Item_message],50, "");
 }
 
-stock GiveItemUnknownProps(item[UniqueItem])  {
+stock GiveItemUnknownProps(UniqueItem item)  {
 	item[Item_id]=0;
 	item[Item_defId]=0;
 	item[Item_version]=VERSION;
@@ -831,18 +831,18 @@ ConvertBitToClasses(bit, classes[]) {
   return amount;
 }
 
-GetInvItem(item[UniqueItem], client, slot)  {
+GetInvItem(UniqueItem item, client, slot)  {
   new uniqueId = GetInvUnique(client, slot);
   GetItemProperties(item, GetSlotItem(client,slot), uniqueId);
 }
 
-GetCharItem(item[UniqueItem], client, slot) {
+GetCharItem(UniqueItem item, client, slot) {
   GetItemProperties(item, GetCharItemId(client, slot), GetCharUnique(client, slot));
 }
 
 //end of unique items section
 
-stock DebugItem(item[UniqueItem]) {
+stock DebugItem(UniqueItem item) {
   PrintToServer("Debugging item");
   PrintToServer("def id = %i", item[Item_defId]);
   PrintToServer("costs = %i", item[Item_cost]);
@@ -907,7 +907,7 @@ public public_ApplyEnchant(id, Handle:pack) {
 
   if(CheckUnique(id, client)) {
     new uslot = GetUniqueInDB(id);
-    new uitem[UniqueItem];
+    UniqueItem uitem;
     GetArrayArray(g_itemsArray, uslot, uitem[0]);
     uitem[Item_LastUsage] = GetEngineTime();
     uitem[Item_EnchBit] = enchid;
@@ -918,7 +918,7 @@ public public_ApplyEnchant(id, Handle:pack) {
 }
 
 stock ApplyEnchant(client, slot, enchid, bool:insert=true)  {
-  new item[UniqueItem];
+  UniqueItem item;
   GetInvItem(item, client, slot);
   new id = item[Item_id];
   /*PrintToServer("Applying enchant %d to %d slot itemId %d", enchid, slot, id);*/
@@ -943,7 +943,7 @@ stock ApplyEnchant(client, slot, enchid, bool:insert=true)  {
     new uslot = GetUniqueInDB(id);
 
     /*PrintToServer("Saving info to cache. Uslot = %d", uslot);*/
-    new uitem[UniqueItem];
+    UniqueItem uitem;
     GetArrayArray(g_itemsArray, uslot, uitem[0]);
     uitem[Item_LastUsage] = GetEngineTime();
     uitem[Item_EnchBit] = enchid;
@@ -959,7 +959,7 @@ bool:CanDisenchant(cat) {
   return true;
 }
 
-stock GiveItem(client, item[UniqueItem], amount, String:source[]="Unknown", bool:save=false, bool:announce=false )  {
+stock GiveItem(client, UniqueItem item, amount, String:source[]="Unknown", bool:save=false, bool:announce=false )  {
   new space=0;
   new slot=0;
   new old = amount;
@@ -1056,7 +1056,7 @@ public PreloadTodoMenu(Handle:db,Handle:query,String:error[],any:client)
 
 
 stock UseItem(client, islot, bool:nosuicide=false)  {
-  new item[UniqueItem];
+  UniqueItem item;
   GetInvItem(item, client, islot);
   new cat=item[Item_category];
   if(((cat>9) && (cat<24)))
@@ -1149,15 +1149,15 @@ stock GetItemOn(client,slot, nosuicide)
     /*ForcePlayerSuicide(client);*/
     /*WCMessage(client,"can not put items while alive",client);*/
   /*}*/
-  new item[UniqueItem];
+  UniqueItem item;
   GetInvItem(item, client, slot);
   new cat=item[Item_category];
-  new compSum[UniqueItem];
+  UniqueItem compSum;
   if(wcCheckStats(client,item)==1)
   {
     if ((cat==18) || (cat==22))
     {
-      new ritem[UniqueItem];
+      UniqueItem ritem;
       GetCharItem(ritem, client, 22);
       new hand=ritem[Item_2hand];
       if (hand == 1)
@@ -1178,7 +1178,7 @@ stock GetItemOn(client,slot, nosuicide)
         if (hand2==1)
         {
           new freeslot=wcCheckFreeSlot(client);
-          new leftitem[UniqueItem];
+          UniqueItem leftitem;
           GetCharItem(leftitem, client,18);
           wcSetStaticSlot(client,freeslot,leftitem[Item_defId]);
           SetInvUnique(client, freeslot, leftitem[Item_id]);
@@ -1194,7 +1194,7 @@ stock GetItemOn(client,slot, nosuicide)
           }
       }
     }
-    new itemon[UniqueItem];
+    UniqueItem itemon;
     GetCharItem(itemon, client, cat);
     AddItem(itemon, compSum);
     wcSetStaticSlot(client,slot,itemon[Item_defId]);
@@ -1236,7 +1236,7 @@ ignoreItemRecommended(client, id) {
 }
 
 
-stock bool:AddTemporaryItem(client, item[UniqueItem], Float:duration, bool:stacks=false)  {
+stock bool:AddTemporaryItem(client, UniqueItem item, Float:duration, bool:stacks=false)  {
   if(!IsClientInGame(client) || !IsPlayerAlive(client) || (playerloaded[client]!= 1))
     return false;
   if((!stacks) && hasTempItem(client, item))
@@ -1264,7 +1264,7 @@ public Action:RemoveTemporaryItem(Handle:timer, Handle:datapack)
     (playerloaded[client]!=1) || (spawn != g_respawns[client]) )
     return Plugin_Stop;
 
-  new item[UniqueItem];
+  UniqueItem item;
   GetItemProperties(item, itemId);
   removeTempItem(client, item);
   pullTempItem(client, item);
@@ -1278,7 +1278,7 @@ flushTempItems(client)  {
     g_tempItems[client][i]=0;
 }
 
-pushTempItem(client, item[UniqueItem])  {
+pushTempItem(client, UniqueItem item)  {
   for(new i=0;i<30;i++)
     if(g_tempItems[client][i]==0) {
       g_tempItems[client][i] = item[Item_defId];
@@ -1286,7 +1286,7 @@ pushTempItem(client, item[UniqueItem])  {
     }
 }
 
-pullTempItem(client, item[UniqueItem])  {
+pullTempItem(client, UniqueItem item)  {
   for(new i=0;i<30;i++)
     if(g_tempItems[client][i]==item[Item_defId])  {
       g_tempItems[client][i]=0;
@@ -1294,7 +1294,7 @@ pullTempItem(client, item[UniqueItem])  {
     }
 }
 
-bool:hasTempItem(client, item[UniqueItem]) {
+bool:hasTempItem(client, UniqueItem item) {
   for(new i=0;i<30;i++)
     if(g_tempItems[client][i]==item[Item_defId])  {
       return true;
@@ -1307,7 +1307,7 @@ bool:hasTempItem(client, item[UniqueItem]) {
  * also does not support enchants attached to those items
  * @return rating change
  */
-Float:addTempItem(client, item[UniqueItem]) {
+Float:addTempItem(client, UniqueItem item) {
   new Float:rating=0.0;
   new id = client;
   if ((item[Item_id]>0) || (item[Item_defId] > 0))
@@ -1404,7 +1404,7 @@ Float:addTempItem(client, item[UniqueItem]) {
  * @return rating change
  */
 
-Float:removeTempItem(client, item[UniqueItem])  {
+Float:removeTempItem(client, UniqueItem item)  {
   new Float:rating=0.0;
   new id = client;
   if ((item[Item_id]>0) || (item[Item_defId] > 0))
@@ -1498,13 +1498,13 @@ Float:removeTempItem(client, item[UniqueItem])  {
 HasShield(client) {
   if(IsClientInGame(client) && IsFakeClient(client))
     return BotHasShield(client);
-  new uitem[UniqueItem];
+  UniqueItem uitem;
   GetCharItem(uitem, client, 18);
   return uitem[Item_category]==18;
 }
 
 HasDual(client) {
-  new uitem[UniqueItem];
+  UniqueItem uitem;
   GetCharItem(uitem, client, 18);
   return uitem[Item_category]==22;
 }
@@ -1533,7 +1533,7 @@ SetGlyphId(client, slot,id)  {
   g_ffClientGlyphs[client][slot]=id;
 }
 
-bool:GetGlyphFull(client, slot, item[UniqueItem])  {
+bool:GetGlyphFull(client, slot, UniqueItem item)  {
   new id = GetGlyphId(client,slot);
   if(id>0)
     GetItemProperties(item, id);
@@ -1542,7 +1542,7 @@ bool:GetGlyphFull(client, slot, item[UniqueItem])  {
 
 GetGlyphOnStatic(client, glyphSlot, inventorySlot)  {
   new old = GetGlyphId(client, glyphSlot);
-  new item[UniqueItem];
+  UniqueItem item;
   GetInvItem(item, client, inventorySlot);
   SetGlyphId(client, glyphSlot, item[Item_defId]);
   wcSetStaticSlot(client, inventorySlot, 0);
@@ -1609,7 +1609,7 @@ stock bool:GivePlayerRandomItem(client, String:reason[]="drop", announce=-1, for
 }
 
 public bool:TGivePlayerRandomItem(id, Handle:pack) {
-  new uitem[UniqueItem];
+  UniqueItem uitem;
   decl String:reason[50];
   ResetPack(pack);
   ReadPackString(pack, reason, 50);
@@ -1913,7 +1913,7 @@ stock bool:GetRandomName(race, cat, quality, level, String:name[], size, pStat, 
   return true;
 }
 
-stock SetRandomValues(item[UniqueItem]) {
+stock SetRandomValues(UniqueItem item) {
   //Find Slot, Quality, dred ...
   new Float:slots[] = { 0.3, 1.0, 0.65, 0.5, 0.8, 0.9, 0.65, 0.6, 2.0, 0.6, 0.9, 0.5, 1.0, 0.4 };
   new Float:qualities[] = { 1.0, 1.0, 1.2, 1.4, 1.7, 1.25, 1.45 };
@@ -2210,7 +2210,7 @@ stock SetRandomValues(item[UniqueItem]) {
   }
 }
 
-AddItem(adding[UniqueItem],ret[UniqueItem]) {
+AddItem(UniqueItem adding, UniqueItem ret) {
   ret[Item_armor] += adding[Item_armor];
   ret[Item_str] += adding[Item_str];
   ret[Item_agi] += adding[Item_agi];
@@ -2234,7 +2234,7 @@ AddItem(adding[UniqueItem],ret[UniqueItem]) {
   ret[Item_spelldmg] += adding[Item_spelldmg];
 }
 
-ItemCompare(newitem[UniqueItem], olditem[UniqueItem],client)
+ItemCompare(UniqueItem newitem, UniqueItem olditem,client)
 {
 
   decl String:buffer[255];

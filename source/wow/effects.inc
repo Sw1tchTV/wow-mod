@@ -2855,7 +2855,7 @@ stock Effect_m2(effid, client)
     new itemId = KvGetNum(effectsdb,"bonuses", 0);
     new Float:duration = KvGetFloat(effectsdb,"duration", 0.0);
     if(itemId > 0 && duration > 0.0)  {
-      new item[UniqueItem];
+      UniqueItem item;
       GetItemProperties(item, itemId, 0);
       if(item[Item_defId] > 0)  { //Run only if item exists
         AddTemporaryItem(client, item, duration, (stacks>0));
