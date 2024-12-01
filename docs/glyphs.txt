@@ -1,0 +1,46 @@
+Mage:
+Glyph of Ice Barrier: Each hit you take heals you for 3% as long as Ice Barrier is active //Done
+Glyph of Ignite: Ignite now procs from Living Bomb as well //Done
+Glyph of Polymorph: Healing during Polymorph is reduced by 65% //Done
+
+Shaman
+Glyph of Lava Lash: Lava Lash can also cause shocks to proc //Done
+Glyph of Lava Burst: Lava Burst now applies Flame Shock if none are on the target //Done
+Glyph of Healing Tide Totem: Healing Tide Totem also pushes nearby enemies away //Done
+
+Rogue
+Glyph of Shadowgate: Shadowgate's save is now removed upon teleporting to it //Done
+Glyph of Dispatch: Dispatch now refreshes a poison on the target //Done
+Glyph of Slice and Dice: Slice and Dice no longer has an energy cost //Done
+
+Priest
+Glyph of Mental Fortitude: Mental Fortitude also increases your maximum mana by 15% //Done
+Glyph of Light Well: Targets healed by it receive 15% increased movement speed. //Done
+Glyph of Shadowform: Increases Shadowform's strength by 40%, but once entered, cannot be exited. //Done
+
+Death Knight
+Glyph of Blood Parasites: They now always heal you, even when not near the opponent //Done
+Glyph of Obliterate: Now has a higher chance to proc depending on how slowed the target is //Done
+Glyph of Necrotic Strike: Also absorbs healing for 20% of the damage dealt for 6 seconds //Done
+
+Warlock
+Glyph of Cursed Soul: Also deals increased damage depending on how low on health you are //Done
+Glyph of Chaos Wave: Now pulls enemies into you instead of pushing them away //Done
+Glyph of Hellfire: Hellfire deals 3% of your maximum health as well, costing you the same //Done
+
+
+Paladin
+Glyph of Holy Shock: Also heals nearby allies for the same amount //Done
+Glyph of Holy Shield: Blocking deals magical damage back to the target //Done
+Glyph of Conviction: Seal of Command now has a 5 times higher chance to be a critical hit versus targets below 35% health //Done
+
+Warrior
+Glyph of Deafening Thunder: Your Whirlwind gains a silence effect as well //Done
+Glyph of Raging Blow: Raging Blow now consumes one Enrage stack, but deals 30% increased damage //Done
+Glyph of Deep Wounds: Regular attacks have a chance equal to your critical hit chance to cause Deep Wounds //Done
+
+
+
+
+Change Fan of Swords to reduce the oooldown and energy cost instead
+Rework Hypothermia into increasing all frost damage received by the target as well
