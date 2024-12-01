@@ -940,9 +940,9 @@ public InvPrint(client,rarity,category)
     for(new x=1;x<=100;x++)
     {
       GetInvItem(item,client, x);
-      if((item[Item_defId]==0) && (item[Item_id]==0))
+      if((item.Item_defId==0) && (item.Item_id==0))
         continue;
-      rare=item[Item_quality];
+      rare=item.Item_quality;
 
 
       if( rarity >= 0 )
@@ -951,7 +951,7 @@ public InvPrint(client,rarity,category)
           continue;
       }
 
-      cate=item[Item_category];
+      cate=item.Item_category;
       switch (category)
       {
         case -4: //recipe 1/2/3/4/5/9
@@ -992,22 +992,22 @@ public InvPrint(client,rarity,category)
 
         switch(rare)
         {
-          case 0: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) Common, Rating: %.1f",    item[Item_level],item[Item_ilevel], GetItemRating(item));}
-          case 1: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) Uncommon, Rating: %.1f",  item[Item_level],item[Item_ilevel], GetItemRating(item));}
-          case 2: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) Rare, Rating: %.1f",      item[Item_level],item[Item_ilevel], GetItemRating(item));}
-          case 3: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) Epic, Rating: %.1f",      item[Item_level],item[Item_ilevel], GetItemRating(item));}
-          case 4: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) Legendary, Rating: %.1f", item[Item_level],item[Item_ilevel], GetItemRating(item));}
-          case 5: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) PVP-Rare, Rating: %.1f",  item[Item_level],item[Item_ilevel], GetItemRating(item));}
-          case 6: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) PVP-Epic, Rating: %.1f",  item[Item_level],item[Item_ilevel], GetItemRating(item));}
+          case 0: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) Common, Rating: %.1f",    item.Item_level,item.Item_ilevel, GetItemRating(item));}
+          case 1: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) Uncommon, Rating: %.1f",  item.Item_level,item.Item_ilevel, GetItemRating(item));}
+          case 2: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) Rare, Rating: %.1f",      item.Item_level,item.Item_ilevel, GetItemRating(item));}
+          case 3: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) Epic, Rating: %.1f",      item.Item_level,item.Item_ilevel, GetItemRating(item));}
+          case 4: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) Legendary, Rating: %.1f", item.Item_level,item.Item_ilevel, GetItemRating(item));}
+          case 5: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) PVP-Rare, Rating: %.1f",  item.Item_level,item.Item_ilevel, GetItemRating(item));}
+          case 6: {Format(RL, sizeof(RL),"Level: %d (%d iLvl) PVP-Epic, Rating: %.1f",  item.Item_level,item.Item_ilevel, GetItemRating(item));}
           default:{Format(RL, sizeof(RL),"");}
         }
 
         if(amount == -1)
-          Format(line, sizeof(line), "%sSlot: %d, Name: %s (Soulbound)\n%s",line,x,item[Item_Name],RL);
+          Format(line, sizeof(line), "%sSlot: %d, Name: %s (Soulbound)\n%s",line,x,item.Item_Name,RL);
         else if (amount == 0)
-          Format(line, sizeof(line), "%sSlot: %d, Name: %s (Player Bound)\n%s",line,x,item[Item_Name],RL);
+          Format(line, sizeof(line), "%sSlot: %d, Name: %s (Player Bound)\n%s",line,x,item.Item_Name,RL);
         else
-          Format(line, sizeof(line), "%sSlot: %d, Name: %s\n%s",line,x,item[Item_Name],RL);
+          Format(line, sizeof(line), "%sSlot: %d, Name: %s\n%s",line,x,item.Item_Name,RL);
 
         for(new i=1;i<=20;i++)
         {
@@ -1017,8 +1017,8 @@ public InvPrint(client,rarity,category)
             {
               if(cate == 22)
               {
-                if(item[Item_ws] >0)
-                  Format(line, sizeof(line), "%s, Weapon Speed: %.0f\n",line, item[Item_ws]*100.0);
+                if(item.Item_ws >0)
+                  Format(line, sizeof(line), "%s, Weapon Speed: %.0f\n",line, item.Item_ws*100.0);
                 else
                   Format(line, sizeof(line), "%s\n",line);
               }
@@ -1030,31 +1030,31 @@ public InvPrint(client,rarity,category)
             {
               if(cate == 22)
               {
-                if(item[Item_2hand]==1)
+                if(item.Item_2hand==1)
                   Format(line, sizeof(line), "%s2-Handed Weapon\n",line);
                 else
                   Format(line, sizeof(line), "%s1-Handed Weapon\n",line);
               }
             }
-            case  3: {if((item[Item_weapon_ap] + item[Item_damage])  >0) {Format(line, sizeof(line),         "%s%d Damage\n",line, (item[Item_weapon_ap] + item[Item_damage]));}}                             //weapon_ap+damage
-            case  4: {if((item[Item_weapon_sp] + item[Item_spelldmg])>0) {Format(line, sizeof(line),   "%s%d Spell Damage\n",line, (item[Item_weapon_sp] + item[Item_spelldmg]));}}                       //weapon_sp+spelldmg
+            case  3: {if((item.Item_weapon_ap + item.Item_damage)  >0) {Format(line, sizeof(line),         "%s%d Damage\n",line, (item.Item_weapon_ap + item.Item_damage));}}                             //weapon_ap+damage
+            case  4: {if((item.Item_weapon_sp + item.Item_spelldmg)>0) {Format(line, sizeof(line),   "%s%d Spell Damage\n",line, (item.Item_weapon_sp + item.Item_spelldmg));}}                       //weapon_sp+spelldmg
 
-            case  5: {if(item[Item_armor]    >0) {Format(line, sizeof(line),                     "%s%d Armor\n",line,item[Item_armor])       ;}}  //armor
-            case  6: {if(item[Item_haste]    >0) {Format(line, sizeof(line),                     "%s%d Haste\n",line,item[Item_haste])       ;}}  //haste
-            case  7: {if(item[Item_agi]      >0) {Format(line, sizeof(line),                   "%s%d Agility\n",line,item[Item_agi])         ;}}  //agi
-            case  8: {if(item[Item_int]      >0) {Format(line, sizeof(line),                 "%s%d Intellect\n",line,item[Item_int])         ;}}  //int
-            case  9: {if(item[Item_sta]      >0) {Format(line, sizeof(line),                   "%s%d Stamina\n",line,item[Item_sta])         ;}}  //sta
-            case 10: {if(item[Item_str]      >0) {Format(line, sizeof(line),                  "%s%d Strength\n",line,item[Item_str])         ;}}  //str
+            case  5: {if(item.Item_armor    >0) {Format(line, sizeof(line),                     "%s%d Armor\n",line,item.Item_armor)       ;}}  //armor
+            case  6: {if(item.Item_haste    >0) {Format(line, sizeof(line),                     "%s%d Haste\n",line,item.Item_haste)       ;}}  //haste
+            case  7: {if(item.Item_agi      >0) {Format(line, sizeof(line),                   "%s%d Agility\n",line,item.Item_agi)         ;}}  //agi
+            case  8: {if(item.Item_int      >0) {Format(line, sizeof(line),                 "%s%d Intellect\n",line,item.Item_int)         ;}}  //int
+            case  9: {if(item.Item_sta      >0) {Format(line, sizeof(line),                   "%s%d Stamina\n",line,item.Item_sta)         ;}}  //sta
+            case 10: {if(item.Item_str      >0) {Format(line, sizeof(line),                  "%s%d Strength\n",line,item.Item_str)         ;}}  //str
 
-            case 11: {if(item[Item_acc]      >0) {Format(line, sizeof(line),                "%s%.0f Accuracy\n",line,item[Item_acc]*100.0)   ;}}  //accuracy
-            case 12: {if(item[Item_as]       >0) {Format(line, sizeof(line),      "%s%.0f Bonus Attack Speed\n",line,item[Item_as]*100.0)    ;}}  //bonus attack speed
-            case 13: {if(item[Item_cs]       >0) {Format(line, sizeof(line),             "%s%.0f Crit Chance\n",line,item[Item_cs]*100.0)    ;}}  //crit
-            case 14: {if(item[Item_ai]       >0) {Format(line, sizeof(line),              "%s%d Armor Pierce\n",line,item[Item_ai])          ;}}  //armor pierce
-            case 15: {if(item[Item_regen]    >0) {Format(line, sizeof(line),   "%s%d/5 Mana Regen per second\n",line,item[Item_regen])       ;}}  //regen
-            case 16: {if(item[Item_speed]    >0) {Format(line, sizeof(line),          "%s%.0f Movement Speed\n",line,item[Item_speed]*100.0) ;}}  //movement speed
-            case 17: {if(item[Item_res]      >0) {Format(line, sizeof(line),                "%s%d Resistance\n",line,item[Item_res])         ;}}  //res
-            case 18: {if(item[Item_resilence]>0) {Format(line, sizeof(line),                "%s%d Resilience\n",line,item[Item_resilence])   ;}}  //resil
-            case 19: {if(item[Item_parry]    >0) {Format(line, sizeof(line),                   "%s%.0f Parry\n",line,item[Item_parry]*100.0) ;}}  //parry
+            case 11: {if(item.Item_acc      >0) {Format(line, sizeof(line),                "%s%.0f Accuracy\n",line,item.Item_acc*100.0)   ;}}  //accuracy
+            case 12: {if(item.Item_as       >0) {Format(line, sizeof(line),      "%s%.0f Bonus Attack Speed\n",line,item.Item_as*100.0)    ;}}  //bonus attack speed
+            case 13: {if(item.Item_cs       >0) {Format(line, sizeof(line),             "%s%.0f Crit Chance\n",line,item.Item_cs*100.0)    ;}}  //crit
+            case 14: {if(item.Item_ai       >0) {Format(line, sizeof(line),              "%s%d Armor Pierce\n",line,item.Item_ai)          ;}}  //armor pierce
+            case 15: {if(item.Item_regen    >0) {Format(line, sizeof(line),   "%s%d/5 Mana Regen per second\n",line,item.Item_regen)       ;}}  //regen
+            case 16: {if(item.Item_speed    >0) {Format(line, sizeof(line),          "%s%.0f Movement Speed\n",line,item.Item_speed*100.0) ;}}  //movement speed
+            case 17: {if(item.Item_res      >0) {Format(line, sizeof(line),                "%s%d Resistance\n",line,item.Item_res)         ;}}  //res
+            case 18: {if(item.Item_resilence>0) {Format(line, sizeof(line),                "%s%d Resilience\n",line,item.Item_resilence)   ;}}  //resil
+            case 19: {if(item.Item_parry    >0) {Format(line, sizeof(line),                   "%s%.0f Parry\n",line,item.Item_parry*100.0) ;}}  //parry
             case 20: {Format(line, sizeof(line), "%s\n",line);} //add a new line after every equipment
           }
           if (strlen(line)>950)
@@ -1071,11 +1071,11 @@ public InvPrint(client,rarity,category)
       else //non-equipment
       {
         if(amount == -1)
-          Format(line,sizeof(line), "%sSlot: %d, Name: %s (Soulbound)\n",line,x,item[Item_Name]);
+          Format(line,sizeof(line), "%sSlot: %d, Name: %s (Soulbound)\n",line,x,item.Item_Name);
         else if(amount == 0)
-          Format(line,sizeof(line), "%sSlot: %d, Name: %s (Player Bound)\n",line,x,item[Item_Name]);
+          Format(line,sizeof(line), "%sSlot: %d, Name: %s (Player Bound)\n",line,x,item.Item_Name);
         else
-          Format(line,sizeof(line), "%sSlot: %d, Qty: %d, Name: %s\n",line,x,amount, item[Item_Name]);
+          Format(line,sizeof(line), "%sSlot: %d, Qty: %d, Name: %s\n",line,x,amount, item.Item_Name);
       }
     }
     if (strlen(line)>0)

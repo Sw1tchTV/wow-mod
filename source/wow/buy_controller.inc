@@ -152,20 +152,20 @@ stock AttemptBid(client, aucId) {
 
 public buy_bidCallback1(MLoader obj)  {
 
-  if(obj[ML_error])  {
-    LogError("Error in bid query: %s", obj[ML_errorMsg]);
+  if(obj.ML_error)  {
+    LogError("Error in bid query: %s", obj.ML_errorMsg);
     return;
   }
-  new status = ReadPackCell(obj[ML_returns]);
+  new status = ReadPackCell(obj.ML_returns);
   if(status==0) {
-    new silver = ReadPackCell(obj[ML_returns]);
-    wcSetMoney(obj[ML_client], GetMoney(obj[ML_client])-silver);
-    WCMessage(obj[ML_client], "bid placed", obj[ML_client]);
+    new silver = ReadPackCell(obj.ML_returns);
+    wcSetMoney(obj.ML_client, GetMoney(obj.ML_client)-silver);
+    WCMessage(obj.ML_client, "bid placed", obj.ML_client);
   }
   else  {
-    WCMessage(obj[ML_client], "buying error", obj[ML_client]);
+    WCMessage(obj.ML_client, "buying error", obj.ML_client);
   }
-  updateGold(obj[ML_client]);
+  updateGold(obj.ML_client);
 }
 
 stock AttemptBuyout(client, aucId)  {
@@ -180,19 +180,19 @@ stock AttemptBuyout(client, aucId)  {
 public buy_buyoutCallback1(MLoader obj)  {
 
   if(obj[ML_error])  {
-    LogError("Error in buyout query: %s", obj[ML_errorMsg]);
+    LogError("Error in buyout query: %s", obj.ML_errorMsg);
     return;
   }
-  new status = ReadPackCell(obj[ML_returns]);
+  new status = ReadPackCell(obj.ML_returns);
   if(status==0) {
-    new silver = ReadPackCell(obj[ML_returns]);
-    wcSetMoney(obj[ML_client], GetMoney(obj[ML_client])-silver);
-    WCMessage(obj[ML_client], "buyout placed", obj[ML_client]);
+    new silver = ReadPackCell(obj.ML_returns);
+    wcSetMoney(obj.ML_client, GetMoney(obj.ML_client)-silver);
+    WCMessage(obj.ML_client, "buyout placed", obj.ML_client);
   }
   else  {
-    WCMessage(obj[ML_client], "buying error", obj[ML_client]);
+    WCMessage(obj.ML_client, "buying error", obj.ML_client);
   }
-  updateGold(obj[ML_client]);
+  updateGold(obj.ML_client);
 }
 
 

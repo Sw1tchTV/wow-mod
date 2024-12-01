@@ -53,18 +53,18 @@ CreateAbstractArrays()  {
 
 Handle:MLoader_CreateArray()   {
    MLoader ml;
-   ml[ML_Id]=1;
+   ml.ML_Id=1;
    return CreateArray(sizeof(ml));
 }
 
 stock MLoader_free(MLoader ml) {
-  MLoader_DeleteById(ml[ML_Id]);
-  if(ml[ML_returns]!=INVALID_HANDLE)
-    CloseHandle(ml[ML_returns]);
-  if(ml[ML_retClass]!=INVALID_HANDLE)
-    CloseHandle(ml[ML_retClass]);
-  if(ml[ML_sidePack]!=INVALID_HANDLE)
-    CloseHandle(ml[ML_sidePack]);
+  MLoader_DeleteById(ml.ML_Id);
+  if(ml.ML_returns!=INVALID_HANDLE)
+    CloseHandle(ml.ML_returns);
+  if(ml.ML_retClass!=INVALID_HANDLE)
+    CloseHandle(ml.ML_retClass);
+  if(ml.ML_sidePack!=INVALID_HANDLE)
+    CloseHandle(ml.ML_sidePack);
 }
 
 stock MLoader_FindIndex(id) {
@@ -87,7 +87,7 @@ stock bool:MLoader_DeleteById(id)   {
 }
 
 bool:MLoader_FindById(MLoader ml, id) {
-   ml[ML_Id] = 0;
+   ml.ML_Id = 0;
    for (new i=0; i<GetArraySize(g_ML); i++)   {
       if(GetArrayCell(g_ML, i, 0) == id)   {
          GetArrayArray(g_ML, i, ml[0]);
@@ -103,18 +103,18 @@ stock MLoader_Construct(MLoader ml, client, String:callback[], String:callbackEr
     Format(err, 500, "Leaking... Size: %d", GetArraySize(g_ML));
     Logger_log(LogType:LT_file, LogLevel:LL_warning, "MenuLoader", err);
   }
-  ml[ML_client] = client;
-  ml[ML_returns]=INVALID_HANDLE;
-  ml[ML_retClass]=INVALID_HANDLE;
-  ml[ML_sidePack]=INVALID_HANDLE;
-  strcopy(ml[ML_query],300,query);
-  strcopy(ml[ML_callback], 100, callback);
-  strcopy(ml[ML_callbackError], 100, callbackError);
-  ml[ML_error]=false;
-  ml[ML_retry]=true;
-  ml[ML_Id] = MLoader_GenerateId();
+  ml.ML_client = client;
+  ml.ML_returns=INVALID_HANDLE;
+  ml.ML_retClass=INVALID_HANDLE;
+  ml.ML_sidePack=INVALID_HANDLE;
+  strcopy(ml.ML_query,300,query);
+  strcopy(ml.ML_callback, 100, callback);
+  strcopy(ml.ML_callbackError, 100, callbackError);
+  ml.ML_error=false;
+  ml.ML_retry=true;
+  ml.ML_Id = MLoader_GenerateId();
   PushArrayArray(g_ML, ml[0]);
-  return ml[ML_Id];
+  return ml.ML_Id;
 }
 
 MLoader_GenerateId()  {
@@ -127,67 +127,67 @@ MLoader_GenerateId()  {
 MLoader_generateProcedureQuery(MLoader ml) {
 
   //ask for returns
-  ml[ML_returns]=CreateDataPack();
-  ml[ML_retClass]=CreateDataPack();
+  ml.ML_returns=CreateDataPack();
+  ml.ML_retClass=CreateDataPack();
 
   //add returns requests
-  WritePackString(ml[ML_returns],"status");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"status");
+  WritePackCell(ml.ML_retClass,_:T_int);
   
-  WritePackString(ml[ML_returns],"silver");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"silver");
+  WritePackCell(ml.ML_retClass,_:T_int);
 
   
-  new index = MLoader_FindIndex(ml[ML_Id]);
+  new index = MLoader_FindIndex(ml.ML_Id);
   SetArrayArray(g_ML, index, ml[0]);
 }
 
 stock MLoader_generateAuctionQuery(MLoader ml, id) {
   decl String:query[300];
   Format(query,300,"SELECT *, HOUR(TIMEDIFF(time, NOW())) AS timediff FROM wc_Auction WHERE `Id`=%i",id);
-  strcopy(ml[ML_query], 300, query);
+  strcopy(ml.ML_query, 300, query);
   //ask for returns
-  ml[ML_returns]=CreateDataPack();
-  ml[ML_retClass]=CreateDataPack();
+  ml.ML_returns=CreateDataPack();
+  ml.ML_retClass=CreateDataPack();
 
   //add returns requests
-  WritePackString(ml[ML_returns],"Id");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"Id");
+  WritePackCell(ml.ML_retClass,_:T_int);
   
-  WritePackString(ml[ML_returns],"fromId");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"fromId");
+  WritePackCell(ml.ML_retClass,_:T_int);
 
-  WritePackString(ml[ML_returns],"timediff");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"timediff");
+  WritePackCell(ml.ML_retClass,_:T_int);
 
-  WritePackString(ml[ML_returns],"bid");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"bid");
+  WritePackCell(ml.ML_retClass,_:T_int);
 
-  WritePackString(ml[ML_returns],"buyout");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"buyout");
+  WritePackCell(ml.ML_retClass,_:T_int);
 
-  WritePackString(ml[ML_returns],"item");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"item");
+  WritePackCell(ml.ML_retClass,_:T_int);
 
-  WritePackString(ml[ML_returns],"unique");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"unique");
+  WritePackCell(ml.ML_retClass,_:T_int);
   
-  WritePackString(ml[ML_returns],"amount");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"amount");
+  WritePackCell(ml.ML_retClass,_:T_int);
   
-  WritePackString(ml[ML_returns],"bidId");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"bidId");
+  WritePackCell(ml.ML_retClass,_:T_int);
   
-  WritePackString(ml[ML_returns],"gold");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"gold");
+  WritePackCell(ml.ML_retClass,_:T_int);
   
-  WritePackString(ml[ML_returns],"goldBuyout");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"goldBuyout");
+  WritePackCell(ml.ML_retClass,_:T_int);
   
-  WritePackString(ml[ML_returns],"fromname");
-  WritePackCell(ml[ML_retClass],_:T_str);
+  WritePackString(ml.ML_returns,"fromname");
+  WritePackCell(ml.ML_retClass,_:T_str);
   
-  new index = MLoader_FindIndex(ml[ML_Id]);
+  new index = MLoader_FindIndex(ml.ML_Id);
   SetArrayArray(g_ML, index, ml[0]);
 }
 MLoader ml;
@@ -196,7 +196,7 @@ MLoader_execute(ml)  {
     PrintToServer("[DEBUG] executing menu loader class");
     
   }
-  if(ml[ML_Id]<=0)  {
+  if(ml.ML_Id<=0)  {
     Logger_log(LogType:LT_file, LogLevel:LL_error, "MenuLoader", "Tried to execute INVALID MenuLoader class");
   }
   //consider it is valid then

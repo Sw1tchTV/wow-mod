@@ -245,79 +245,79 @@ public Float:wcCalculateStats(client)
 }
 
 AddItemBonuses(id, UniqueItem item, &effect, &Float:rating)  {
-  if ((item[Item_id]>0) || (item[Item_defId] > 0))
+  if ((item.Item_id>0) || (item.Item_defId > 0))
   {
-    if(item[Item_2hand]==1)
+    if(item.Item_2hand==1)
     SetDoubleHand(id, true);
     new Float:dmgMulti=1.0;
-    if((item[Item_damage]>7.0) && (item[Item_spelldmg]>9.0))
+    if((item.Item_damage>7.0) && (item.Item_spelldmg>9.0))
     dmgMulti=0.7143;
     new Float:bufferf;
-    bufferf=float(item[Item_damage]);
+    bufferf=float(item.Item_damage);
     wcClientsBonusStats[id][DAMAGE]+=bufferf;
     rating+= bufferf * dmgMulti * RATING_DAMAGE;
 
-    bufferf=float(item[Item_spelldmg]);
+    bufferf=float(item.Item_spelldmg);
     wcClientsBonusStats[id][SPELLDAMAGE]+=bufferf;
     rating+= bufferf * dmgMulti * RATING_SPELLDMG;
 
-    bufferf=float(item[Item_weapon_ap]);
+    bufferf=float(item.Item_weapon_ap);
     wcClientsBonusStats[id][DAMAGE]+=bufferf;
     rating+= bufferf * dmgMulti * RATING_DAMAGE;
 
-    bufferf=float(item[Item_weapon_sp]);
+    bufferf=float(item.Item_weapon_sp);
     wcClientsBonusStats[id][SPELLDAMAGE]+=bufferf;
     rating+= bufferf * dmgMulti * RATING_SPELLDMG;
 
-    bufferf=item[Item_as];
+    bufferf=item.Item_as;
     wcClientsBonusStats[id][ATTACKSPEED]+=bufferf;
     rating+= bufferf * RATING_AS;
 
-    bufferf=float(item[Item_armor]);
+    bufferf=float(item.Item_armor);
     wcClientsBonusStats[id][ARMOR]+=bufferf;
     rating+= bufferf * RATING_ARMOR;
 
-    bufferf=float(item[Item_str]);
+    bufferf=float(item.Item_str);
     wcClientsStats[id][STR]+=bufferf;
     rating+= bufferf * RATING_STR;
 
-    bufferf=float(item[Item_agi]);
+    bufferf=float(item.Item_agi);
     wcClientsStats[id][AGI]+=bufferf;
     rating+= bufferf * RATING_AGI;
 
-    bufferf=float(item[Item_int]);
+    bufferf=float(item.Item_int);
     wcClientsStats[id][INT]+=bufferf;
     rating+= bufferf * RATING_INT;
 
-    bufferf=float(item[Item_sta]);
+    bufferf=float(item.Item_sta);
     wcClientsStats[id][STA]+=bufferf;
     rating+= bufferf * RATING_STA;
 
-    bufferf=float(item[Item_ai]);
+    bufferf=float(item.Item_ai);
     wcClientsBonusStats[id][ARMORIGNORE]+=bufferf;
     rating+= bufferf * RATING_AI;
 
-    bufferf=float(item[Item_regen]);
+    bufferf=float(item.Item_regen);
     wcClientsBonusStats[id][MPREGEN]+=bufferf;
     rating+= bufferf * RATING_REGEN;
 
-    bufferf=item[Item_speed];
+    bufferf=item.Item_speed;
     wcClientsBonusStats[id][MOVESPEED]+=bufferf;
     rating+= bufferf * RATING_SPEED;
 
-    bufferf=float(item[Item_res]);
+    bufferf=float(item.Item_res);
     wcClientsBonusStats[id][RESISTANCE]+=bufferf;
     rating+= bufferf * RATING_RES;
 
-    bufferf=float(item[Item_resilence]);
+    bufferf=float(item.Item_resilence);
     wcClientsBonusStats[id][RESILIENCE]+=bufferf;  //resilence
     rating+= bufferf * RATING_RESILENCE;
 
-    bufferf=item[Item_acc];
+    bufferf=item.Item_acc;
     wcClientsBonusStats[id][ACC]+=bufferf;  //accuracy
     rating+= bufferf * RATING_ACC;
 
-    bufferf=item[Item_ws];
+    bufferf=item.Item_ws;
     if(bufferf > 0.0) {
       new Float:ws2 = GetWeaponSpeed(id, false);
       if (ws2 > 0.0)
@@ -325,26 +325,26 @@ AddItemBonuses(id, UniqueItem item, &effect, &Float:rating)  {
       SetWeaponSpeed(id, bufferf);
     }
 
-    bufferf=item[Item_cs]; //Critical Strike
+    bufferf=item.Item_cs; //Critical Strike
     wcClientsBonusStats[id][CRITCHANCE]+=bufferf;
     rating+= bufferf * RATING_CS;
 
-    bufferf=float(item[Item_haste]); //Haste
+    bufferf=float(item.Item_haste); //Haste
     wcClientsStats[id][HASTE]+=bufferf;
     rating+= bufferf * RATING_HASTE;
 
-    bufferf=item[Item_parry]; //parry
+    bufferf=item.Item_parry; //parry
     wcClientsStats[id][PARRY]+=bufferf;
     rating+= bufferf * RATING_PARRY;
 
-    bufferf=float(item[Item_effect]);
+    bufferf=float(item.Item_effect);
     if (bufferf != float(0))
     {
       wcClientsStats[id][effect]=bufferf;
       rating+= RATING_EFFECT; //we don't multiply RATING_EFFECT by it's id :D
       effect++;
     }
-    new id2 = item[Item_EnchBit]; //Enchant is separate item, rating will be added recursively.
+    new id2 = item.Item_EnchBit; //Enchant is separate item, rating will be added recursively.
     if(id2>0)  {
       UniqueItem recItem;
       GetItemProperties(recItem, id2);
@@ -355,12 +355,12 @@ AddItemBonuses(id, UniqueItem item, &effect, &Float:rating)  {
 
 Float:GetItemRating(UniqueItem item)  {
   new Float:rating;
-  if ((item[Item_id]>0) || (item[Item_defId] > 0))
+  if ((item.Item_id>0) || (item.Item_defId > 0))
   {
     //If Enchant/Scroll, then show rating of the enchant itself.
-    if(item[Item_category] == 25) {
+    if(item.Item_category == 25) {
       decl String:info[30];
-      IntToString(item[Item_defId], info, sizeof(info));
+      IntToString(item.Item_defId, info, sizeof(info));
       KvRewind(items);
       KvJumpToKey(items,info);
       new createid=KvGetNum(items,"itemid");
@@ -370,74 +370,74 @@ Float:GetItemRating(UniqueItem item)  {
     }
 
     new Float:dmgMulti=1.0;
-    if((item[Item_damage]>7.0) && (item[Item_spelldmg]>9.0))
+    if((item.Item_damage>7.0) && (item.Item_spelldmg>9.0))
     dmgMulti=0.7143;
 
     new Float:bufferf;
-    bufferf=float(item[Item_damage]);
+    bufferf=float(item.Item_damage);
     rating+= bufferf * dmgMulti * RATING_DAMAGE;
 
-    bufferf=float(item[Item_armor]);
+    bufferf=float(item.Item_armor);
     rating+= bufferf * RATING_ARMOR;
 
-    bufferf=float(item[Item_str]);
+    bufferf=float(item.Item_str);
     rating+= bufferf * RATING_STR;
 
-    bufferf=float(item[Item_agi]);
+    bufferf=float(item.Item_agi);
     rating+= bufferf * RATING_AGI;
 
-    bufferf=float(item[Item_int]);
+    bufferf=float(item.Item_int);
     rating+= bufferf * RATING_INT;
 
-    bufferf=float(item[Item_sta]);
+    bufferf=float(item.Item_sta);
     rating+= bufferf * RATING_STA;
 
-    bufferf=float(item[Item_ai]);
+    bufferf=float(item.Item_ai);
     rating+= bufferf * RATING_AI;
 
-    bufferf=float(item[Item_regen]);
+    bufferf=float(item.Item_regen);
     rating+= bufferf * RATING_REGEN;
 
-    bufferf=item[Item_as];
+    bufferf=item.Item_as;
     rating+= bufferf * RATING_AS;
 
-    bufferf=float(item[Item_spelldmg]);
+    bufferf=float(item.Item_spelldmg);
     rating+= bufferf * dmgMulti * RATING_SPELLDMG;
 
-    bufferf=item[Item_speed];
+    bufferf=item.Item_speed;
     rating+= bufferf * RATING_SPEED;
 
-    bufferf=float(item[Item_res]);
+    bufferf=float(item.Item_res);
     rating+= bufferf * RATING_RES;
 
-    bufferf=float(item[Item_resilence]);
+    bufferf=float(item.Item_resilence);
     rating+= bufferf * RATING_RESILENCE;
 
-    bufferf=item[Item_acc];
+    bufferf=item.Item_acc;
     rating+= bufferf * RATING_ACC;
 
-    bufferf=item[Item_cs]; //Critical Strike
+    bufferf=item.Item_cs; //Critical Strike
     rating+= bufferf * RATING_CS;
 
-    bufferf=float(item[Item_haste]); //Haste
+    bufferf=float(item.Item_haste); //Haste
     rating+= bufferf * RATING_HASTE;
 
-    bufferf=item[Item_parry]; //parry
+    bufferf=item.Item_parry; //parry
     rating+= bufferf * RATING_PARRY;
 
-    bufferf=float(item[Item_weapon_ap]); //weapon_ap
+    bufferf=float(item.Item_weapon_ap); //weapon_ap
     rating+= bufferf * RATING_DAMAGE;
 
-    bufferf=float(item[Item_weapon_sp]); //weapon_sp
+    bufferf=float(item.Item_weapon_sp); //weapon_sp
     rating+= bufferf * RATING_SPELLDMG;
 
-    bufferf=float(item[Item_effect]);
+    bufferf=float(item.Item_effect);
     if (bufferf != float(0))
     {
       rating+= RATING_EFFECT; //we don't multiply RATING_EFFECT by it's id :D
     }
 
-    new id2 = item[Item_EnchBit]; //enchant is separate item, rating will be added recursively.
+    new id2 = item.Item_EnchBit; //enchant is separate item, rating will be added recursively.
     if(id2>0)  {
       UniqueItem recItem;
       GetItemProperties(recItem, id2);

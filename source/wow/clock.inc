@@ -129,11 +129,11 @@ public Action:BotCreateAuction(Handle:timer, any:trash)
             UniqueItem uitem;
             GetItemProperties(uitem, id, 0);
 
-            new rarity = uitem[Item_quality];
+            new rarity = uitem.Item_quality;
             if(rarity>=1)
             {
               drop=true;
-              new iCost = uitem[Item_cost];
+              new iCost = uitem.Item_cost;
               new iMin  = RoundToNearest(GetRandomFloat(0.20,1.25)*iCost);
               new iBuy  = RoundToNearest(GetRandomFloat(0.40,1.25)*iCost*rarity);
 
@@ -146,7 +146,7 @@ public Action:BotCreateAuction(Handle:timer, any:trash)
                 CreateAuction(0,"Anonymous",iMin,0,uitem,1,false);
 
               for(new x=1;x<=GetMaxClients();x++)
-                WCMessage(x,"item added auction",x,uitem[Item_Name], iMin);
+                WCMessage(x,"item added auction",x,uitem.Item_Name, iMin);
             }
           }
         }

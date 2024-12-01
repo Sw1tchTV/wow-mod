@@ -6177,32 +6177,32 @@ public ItemPurchase(client,itemid)
    new money=GetMoney(client);
    new bufferi,String:fbuffer[255];
 
-   bufferi=item[Item_cost];
+   bufferi=item.Item_cost;
    Format(fbuffer, sizeof(fbuffer), "%T", "cost", client, bufferi);
-   if(item[Item_gold]<=0)
+   if(item.Item_gold<=0)
     AddMenuItem(menu_itempurchase,key,fbuffer,ITEMDRAW_DISABLED);
    Format (buffer,sizeof(buffer),"%T","current money",client,money);
    AddMenuItem(menu_itempurchase,key,buffer,ITEMDRAW_DISABLED);
    new moneyleft=money-bufferi;
-   new honor = item[Item_honor];
+   new honor = item.Item_honor;
    if(honor>0)  {
       Format(fbuffer, sizeof(fbuffer), "%T", "cost honor", client, honor, GetHonor(client));
       AddMenuItem(menu_itempurchase,key,fbuffer,ITEMDRAW_DISABLED);
    }
-   if(item[Item_justice]>0) {
-     Format(fbuffer, sizeof(fbuffer), "%T", "cost justice", client, item[Item_justice], GetJustice(client));
+   if(item.Item_justice>0) {
+     Format(fbuffer, sizeof(fbuffer), "%T", "cost justice", client, item.Item_justice, GetJustice(client));
      AddMenuItem(menu_itempurchase,key,fbuffer,ITEMDRAW_DISABLED);
    }
-   if(item[Item_valor]>0) {
-     Format(fbuffer, sizeof(fbuffer), "%T", "cost valor", client, item[Item_valor], GetValor(client));
+   if(item.Item_valor>0) {
+     Format(fbuffer, sizeof(fbuffer), "%T", "cost valor", client, item.Item_valor, GetValor(client));
      AddMenuItem(menu_itempurchase,key,fbuffer,ITEMDRAW_DISABLED);
    }
-   new gold = item[Item_gold];
+   new gold = item.Item_gold;
    if(gold>0)  {
       moneyleft=0;
       decl String:sgold[20];
       decl String:sgold2[20];
-      IntToStringfloat(item[Item_gold], sgold, sizeof(sgold));
+      IntToStringfloat(item.Item_gold, sgold, sizeof(sgold));
       IntToStringfloat(GetGold(client), sgold2, sizeof(sgold2));
       Format(fbuffer, sizeof(fbuffer), "%T", "cost gold", client, sgold, sgold2);
       AddMenuItem(menu_itempurchase,key,fbuffer,ITEMDRAW_DISABLED);
@@ -6210,11 +6210,11 @@ public ItemPurchase(client,itemid)
    if ( (moneyleft>=0) || FUN_SERVER )
    {
      Format (buffer,sizeof(buffer),"%T","will be money",client,moneyleft);
-     if(item[Item_gold]<=0)
+     if(item.Item_gold<=0)
      AddMenuItem(menu_itempurchase,key,buffer,ITEMDRAW_DISABLED);
-     /*PrintToServer("J c %d i %d  V c %d i %d",GetJustice(client), item[Item_justice], GetValor(client), item[Item_valor]);*/
-     if(GetJustice(client) >= item[Item_justice]) {
-       if(GetValor(client) >= item[Item_valor]) {
+     /*PrintToServer("J c %d i %d  V c %d i %d",GetJustice(client), item.Item_justice, GetValor(client), item.Item_valor);*/
+     if(GetJustice(client) >= item.Item_justice) {
+       if(GetValor(client) >= item.Item_valor) {
          if( (GetHonor(client)-honor) >= 0)  {
 
            if( GetGold(client)-gold >= 0 ) {
@@ -6223,33 +6223,33 @@ public ItemPurchase(client,itemid)
              {
                if((wcCheckFreeSlot(client)>0))
                {
-                 Format (buffer,sizeof(buffer),"%T","purchase",client,item[Item_Name]);
+                 Format (buffer,sizeof(buffer),"%T","purchase",client,item.Item_Name);
                  AddMenuItem(menu_itempurchase,"purchase",buffer);
-                 if(item[Item_category] == 8) {
+                 if(item.Item_category == 8) {
                    //Reagent, add purchase multiple options
                    new stack = 5;
                    if((GetGold(client) - gold * stack) >= 0 && (money - item[Item_cost] * stack) >= 0 && GetHonor(client) - honor * stack >= 0)  {
-                     Format(buffer,sizeof(buffer), "%T", "purchase stack", client, item[Item_Name], stack);
+                     Format(buffer,sizeof(buffer), "%T", "purchase stack", client, item.Item_Name, stack);
                      AddMenuItem(menu_itempurchase,"purchase 5",buffer);
                    }
                    stack = 10;
-                   if((GetGold(client) - gold * stack) >= 0 && (money - item[Item_cost] * stack) >= 0 && GetHonor(client) - honor * stack >= 0)  {
-                     Format(buffer,sizeof(buffer), "%T", "purchase stack", client, item[Item_Name], stack);
+                   if((GetGold(client) - gold * stack) >= 0 && (money - item.Item_cost * stack) >= 0 && GetHonor(client) - honor * stack >= 0)  {
+                     Format(buffer,sizeof(buffer), "%T", "purchase stack", client, item.Item_Name, stack);
                      AddMenuItem(menu_itempurchase,"purchase 10",buffer);
                    }
                    stack = 20;
-                   if((GetGold(client) - gold * stack) >= 0 && (money - item[Item_cost] * stack) >= 0 && GetHonor(client) - honor * stack >= 0)  {
-                     Format(buffer,sizeof(buffer), "%T", "purchase stack", client, item[Item_Name], stack);
+                   if((GetGold(client) - gold * stack) >= 0 && (money - item.Item_cost * stack) >= 0 && GetHonor(client) - honor * stack >= 0)  {
+                     Format(buffer,sizeof(buffer), "%T", "purchase stack", client, item.Item_Name, stack);
                      AddMenuItem(menu_itempurchase,"purchase 20",buffer);
                    }
                    stack = 50;
-                   if((GetGold(client) - gold * stack) >= 0 && (money - item[Item_cost] * stack) >= 0 && GetHonor(client) - honor * stack >= 0)  {
-                     Format(buffer,sizeof(buffer), "%T", "purchase stack", client, item[Item_Name], stack);
+                   if((GetGold(client) - gold * stack) >= 0 && (money - item.Item_cost * stack) >= 0 && GetHonor(client) - honor * stack >= 0)  {
+                     Format(buffer,sizeof(buffer), "%T", "purchase stack", client, item.Item_Name, stack);
                      AddMenuItem(menu_itempurchase,"purchase 50",buffer);
                    }
                    stack = 100;
-                   if((GetGold(client) - gold * stack) >= 0 && (money - item[Item_cost] * stack) >= 0 && GetHonor(client) - honor * stack >= 0)  {
-                     Format(buffer,sizeof(buffer), "%T", "purchase stack", client, item[Item_Name], stack);
+                   if((GetGold(client) - gold * stack) >= 0 && (money - item.Item_cost * stack) >= 0 && GetHonor(client) - honor * stack >= 0)  {
+                     Format(buffer,sizeof(buffer), "%T", "purchase stack", client, item.Item_Name, stack);
                      AddMenuItem(menu_itempurchase,"purchase 100",buffer);
                    }
 
@@ -6788,12 +6788,12 @@ public EnchantMenu(client, slot)  {
   GetInvItem(item, client, slot);
   KvRewind(items);
   decl String:Sid[20];
-  IntToString(item[Item_defId],Sid,sizeof(Sid));
+  IntToString(item.Item_defId,Sid,sizeof(Sid));
   KvJumpToKey(items,Sid);
 
 
-  if(item[Item_category]!=25) {
-    WCMessage(client,"this item is not enchant",client, item[Item_Name]);
+  if(item.Item_category!=25) {
+    WCMessage(client,"this item is not enchant",client, item.Item_Name);
     InvItemMenu(client, lastMenu2[client]);
     return;
   }
@@ -6802,11 +6802,11 @@ public EnchantMenu(client, slot)  {
   new bool:twohand=(hand==1);
   new createid=KvGetNum(items,"itemid",0);
   if( (cat2<=0) || (createid<=0) )  {
-    WCMessage(client,"this item is not enchant",client, item[Item_Name]);
+    WCMessage(client,"this item is not enchant",client, item.Item_Name);
     InvItemMenu(client, lastMenu2[client]);
     return;
   }
-  WCMessage(client,"choose to enchant",client, item[Item_Name]);
+  WCMessage(client,"choose to enchant",client, item.Item_Name);
 
   new Handle:menu=CreateMenu(EnchantMenuHandler);
   SetMenuExitBackButton(menu,true);
@@ -6820,18 +6820,18 @@ public EnchantMenu(client, slot)  {
   {
     GetInvItem(item, client,x);
     decl String:Sitem[50];
-    if((item[Item_defId]==0) && (item[Item_id]==0))
+    if((item.Item_defId==0) && (item.Item_id==0))
       Format(Sitem,sizeof(Sitem),"%T","empty",client);
     else
-      Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+      Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
     decl String:Scategory[255];
-    TranslateCategory(item[Item_category],Scategory, client);
+    TranslateCategory(item.Item_category,Scategory, client);
     Format(line,sizeof(line),"slot %i: %s (%s)",x,Sitem,Scategory);
-    if(cat2==item[Item_category]) {
+    if(cat2==item.Item_category) {
       if(!twohand)
         AddMenuItem(menu,Sslot,line);
       else  {
-        if(item[Item_2hand]==1) {
+        if(item.Item_2hand==1) {
           AddMenuItem(menu,Sslot,line);
         }
         else
@@ -6858,17 +6858,17 @@ public EnchantMenuHandler(Handle:menu,MenuAction:action,client,slot)
     GetInvItem(item, client, slot);
     KvRewind(items);
     decl String:Sid[20];
-    IntToString(enchant[Item_defId],Sid,sizeof(Sid));
+    IntToString(enchant.Item_defId,Sid,sizeof(Sid));
     KvJumpToKey(items,Sid);
-    if(enchant[Item_category]!=25) {
-      WCMessage(client,"this item is not enchant",client, item[Item_Name]);
+    if(enchant.Item_category!=25) {
+      WCMessage(client,"this item is not enchant",client, item.Item_Name);
       InvItemMenu(client, lastMenu2[client]);
       return;
     }
     new cat2=KvGetNum(items,"category2",0);
     new enchid=KvGetNum(items,"itemid",0);
-    if( (cat2!=item[Item_category]) || (cat2==0) )  {
-      WCMessage(client,"wrong ench category",client, enchant[Item_Name], item[Item_Name]);
+    if( (cat2!=item.Item_category) || (cat2==0) )  {
+      WCMessage(client,"wrong ench category",client, enchant.Item_Name, item.Item_Name);
       InvItemMenu(client, lastMenu2[client]);
       return;
     }

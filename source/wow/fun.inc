@@ -120,10 +120,10 @@ stock HNSWon(who) {
             }
             UniqueItem uitem;
             GetItemProperties(uitem, g_hns_itemId);
-            Format(wins, sizeof(wins), "%s%s x%d", wins, uitem[Item_Name], g_hns_itemAmount);
+            Format(wins, sizeof(wins), "%s%s x%d", wins, uitem.Item_Name, g_hns_itemAmount);
             first = false;
             if(GiveItem(i, uitem, g_hns_itemAmount, "hns") < 0)
-              WCMessage(i,"failed drop",i,uitem[Item_Name]);
+              WCMessage(i,"failed drop",i,uitem.Item_Name);
 
           }
 

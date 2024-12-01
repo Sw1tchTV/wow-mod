@@ -20,7 +20,7 @@ new g_queryId=0;
 
 Handle:CreateQueryArray()   {
    Query query;
-   query[Q_Id]=1;
+   query.Q_Id=1;
    return CreateArray(sizeof(query));
 }
 
@@ -36,7 +36,7 @@ bool:DeleteQueryById(id)   {
 }
 
 bool:FindQueryById(Query query, id) {
-   query[Q_Id] = 0;
+   query.Q_Id = 0;
    for (new i=0; i<GetArraySize(g_queryArray); i++)   {
       if(GetArrayCell(g_queryArray, i, 0) == id)   {
          GetArrayArray(g_queryArray, i, query[0]);
@@ -48,12 +48,12 @@ bool:FindQueryById(Query query, id) {
 
 stock AddQuery(QueryType:type, repeats, String:command[], param=0) {
    Query query;
-   strcopy(query[Q_Line], sizeof(query[Q_Line]), command);
+   strcopy(query.Q_Line, sizeof(query.Q_Line), command);
    new id = GenerateQueryId();
-   query[Q_Id] = id;
-   query[Q_Repeats] = repeats;
-   query[Q_Type] = type;
-   query[Q_Var] = param;
+   query.Q_Id = id;
+   query.Q_Repeats = repeats;
+   query.Q_Type = type;
+   query.Q_Var = param;
    PushArrayArray(g_queryArray, query[0]);
    return id;
 }
@@ -77,13 +77,13 @@ public TRGetItem(Handle:db, Handle:hndl, String:error[], any:id)
       new bool:bError=true;
       if(StrContains(error, "Lost connection", false)>=0)   {
          if(bQuery)   {
-            if( (query[Q_Type] == Repeat) && ((query[Q_Repeats]--) > 0))   {
+            if( (query.Q_Type == Repeat) && ((query.Q_Repeats--) > 0))   {
                bError=false;
                //edit here
-               SQL_TQuery(db, TRGetItem, query[Q_Line], id, DBPrio_High);
+               SQL_TQuery(db, TRGetItem, query.Q_Line, id, DBPrio_High);
             }
             if(bError)  {
-               Format(sError, sizeof(sError), "Query is failed with error %s and q = %s", error, query[Q_Line]);
+               Format(sError, sizeof(sError), "Query is failed with error %s and q = %s", error, query.Q_Line);
             }
          }
       }
@@ -100,7 +100,7 @@ public TRGetItem(Handle:db, Handle:hndl, String:error[], any:id)
    else  {
 
     if(bQuery)  {
-      LoadItemCode(hndl, query[Q_Var]);
+      LoadItemCode(hndl, query.Q_Var);
       DeleteQueryById(id);
     }
    }
@@ -118,12 +118,12 @@ public TRepeating2(Handle:db, Handle:hndl, String:error[], any:id)
       new bool:bError=true;
       if(StrContains(error, "Lost connection", false)>=0)   {
          if(bQuery)   {
-            if( (query[Q_Type] == Repeat) && ((query[Q_Repeats]--) > 0))   {
+            if( (query.Q_Type == Repeat) && ((query.Q_Repeats--) > 0))   {
                bError=false;
-               SQL_TQuery(db, TRepeating2, query[Q_Line], id, DBPrio_High);
+               SQL_TQuery(db, TRepeating2, query.Q_Line, id, DBPrio_High);
             }
             if(bError)  {
-               Format(sError, sizeof(sError), "Query is failed with error %s and q = %s", error, query[Q_Line]);
+               Format(sError, sizeof(sError), "Query is failed with error %s and q = %s", error, query.Q_Line);
             }
          }
       }
@@ -131,7 +131,7 @@ public TRepeating2(Handle:db, Handle:hndl, String:error[], any:id)
          //Function specific code for error
          g_T2Queue--;
          //end
-         Format(sError, sizeof(sError), "%s Q = %s", sError, query[Q_Line]);
+         Format(sError, sizeof(sError), "%s Q = %s", sError, query.Q_Line);
          LogError(sError);
          if(bQuery)
             DeleteQueryById(id);
@@ -159,12 +159,12 @@ public TRepeating3(Handle:db, Handle:hndl, String:error[], any:id)
       new bool:bError=true;
       if(StrContains(error, "Lost connection", false)>=0)   {
          if(bQuery)   {
-            if( (query[Q_Type] == Repeat) && ((query[Q_Repeats]--) > 0))   {
+            if( (query.Q_Type == Repeat) && ((query.Q_Repeats--) > 0))   {
                bError=false;
-               SQL_TQuery(db, TRepeating3, query[Q_Line], id, DBPrio_High);
+               SQL_TQuery(db, TRepeating3, query.Q_Line, id, DBPrio_High);
             }
             if(bError)  {
-               Format(sError, sizeof(sError), "Query is failed with error %s and q = %s", error, query[Q_Line]);
+               Format(sError, sizeof(sError), "Query is failed with error %s and q = %s", error, query.Q_Line);
             }
          }
       }
@@ -203,12 +203,12 @@ public TRepeating(Handle:db, Handle:hndl, String:error[], any:id)
       new bool:bError=true;
       if(StrContains(error, "Lost connection", false)>=0)   {
          if(bQuery)   {
-            if( (query[Q_Type] == Repeat) && ((query[Q_Repeats]--) > 0))   {
+            if( (query.Q_Type == Repeat) && ((query.Q_Repeats--) > 0))   {
                bError=false;
-               SQL_TQuery(db, TRepeating, query[Q_Line], id, DBPrio_High);
+               SQL_TQuery(db, TRepeating, query.Q_Line, id, DBPrio_High);
             }
             if(bError)  {
-               Format(sError, sizeof(sError), "Query is failed with error %s and q = %s", error, query[Q_Line]);
+               Format(sError, sizeof(sError), "Query is failed with error %s and q = %s", error, query.Q_Line);
             }
          }
       }
@@ -2148,14 +2148,14 @@ public TAuctionClean(Handle:owner, Handle:query, const String:error[], any:data)
         decl String:text[255];
         Format(text,sizeof(text),"%T","bid won",LANG_SERVER,bid);
         UniqueItem item2;
-        item2[Item_id]=uniq;
-        item2[Item_defId]=item;
+        item2.Item_id=uniq;
+        item2.Item_defId=item;
         CreateMail(30,0,"Auction House","Bid Won",toId,0,item2,text,amount, 0);
         decl String:sitem[255];
         GetItemName(item,sitem, uniq);
         Format(text,sizeof(text),"%T","your item is sold out",LANG_SERVER,sitem);
-        item2[Item_id]=0;
-        item2[Item_defId]=0;
+        item2.Item_id=0;
+        item2.Item_defId=0;
         if (fromId > 0)
           CreateMail(30,0,"Auction House","Sold-out item",fromId,bid,item2,text,0, gold);
       }
@@ -2166,8 +2166,8 @@ public TAuctionClean(Handle:owner, Handle:query, const String:error[], any:data)
           decl String:text[255];
           Format(text,sizeof(text),"%T","ac item back",LANG_SERVER);
           UniqueItem item2;
-          item2[Item_id]=uniq;
-          item2[Item_defId]=item;
+          item2.Item_id=uniq;
+          item2.Item_defId=item;
           CreateMail(30,0,"Auction House","Item is returned",fromId,0,item2,text,amount, 0);
         }
       }
@@ -2520,8 +2520,8 @@ public CreateMail(days,fromId,String:fromname[20],String:topic[50],toId,gold,Uni
   ReplaceString(topic,sizeof(topic),"'","@`");
   ReplaceString(text,sizeof(text),"'","@`");
   ReplaceString(text,sizeof(text),"\\", "");
-  Format(buffer,sizeof(buffer),"INSERT INTO wc_Mail (mailId, CharacterId, fromId, fromname, topic, gold, item, text, time, amount, `unique`, `real`) VALUES (NULL, '%i', '%i', '%s', '%s', '%i', '%i', '%s', NOW(), '%i', '%i', '%d')",toId,fromId,fromname,topic,gold,item[Item_defId],text,amount, item[Item_id], real);
-  LogMessage("[WC] Created mail: to %i from %i %s topic %s gold %d/100 silver %i item %i uniq %i x%i",toId, fromId, fromname, topic, real, gold, item[Item_defId], item[Item_id], amount);
+  Format(buffer,sizeof(buffer),"INSERT INTO wc_Mail (mailId, CharacterId, fromId, fromname, topic, gold, item, text, time, amount, `unique`, `real`) VALUES (NULL, '%i', '%i', '%s', '%s', '%i', '%i', '%s', NOW(), '%i', '%i', '%d')",toId,fromId,fromname,topic,gold,item.Item_defId,text,amount, item.Item_id, real);
+  LogMessage("[WC] Created mail: to %i from %i %s topic %s gold %d/100 silver %i item %i uniq %i x%i",toId, fromId, fromname, topic, real, gold, item.Item_defId, item.Item_id, amount);
 
   SQL_TQuery(SSQL,Tinserted,buffer,1880);
   }
@@ -2690,9 +2690,9 @@ public CreateAuction(fromId,String:fromname[20],bid,buyout,UniqueItem item,amoun
   ReplaceString(fromname,sizeof(fromname),"'","@`");
 
   if(!gold)
-    Format(buffer,sizeof(buffer),"INSERT INTO wc_Auction (Id, fromId, time, bid, buyout, item, fromname, amount, category, quality, `unique`,`class`) VALUES (NULL, %i, NOW(), %i, %i, %i, '%s', %i, %i, %i, %i, %d)",fromId,bid,buyout,item[Item_defId],fromname,amount,item[Item_category],item[Item_quality], item[Item_id], item[Item_class]);
+    Format(buffer,sizeof(buffer),"INSERT INTO wc_Auction (Id, fromId, time, bid, buyout, item, fromname, amount, category, quality, `unique`,`class`) VALUES (NULL, %i, NOW(), %i, %i, %i, '%s', %i, %i, %i, %i, %d)",fromId,bid,buyout,item.Item_defId,fromname,amount,item.Item_category,item.Item_quality, item.Item_id, item.Item_class);
   else
-    Format(buffer,sizeof(buffer),"INSERT INTO wc_Auction (Id, fromId, time, gold, goldBuyout, item, fromname, amount, category, quality, `unique`,`class`) VALUES (NULL, %i, NOW(), %i, %i, %i, '%s', %i, %i, %i, %i, %d)",fromId,bid,buyout,item[Item_defId],fromname,amount,item[Item_category],item[Item_quality], item[Item_id], item[Item_class]);
+    Format(buffer,sizeof(buffer),"INSERT INTO wc_Auction (Id, fromId, time, gold, goldBuyout, item, fromname, amount, category, quality, `unique`,`class`) VALUES (NULL, %i, NOW(), %i, %i, %i, '%s', %i, %i, %i, %i, %d)",fromId,bid,buyout,item.Item_defId,fromname,amount,item.Item_category,item.Item_quality, item.Item_id, item.Item_class);
 
   SQL_TQuery(SSQL,Tinserted,buffer,2580,DBPrio_Low);
 }
@@ -3675,7 +3675,7 @@ stock sqlLog(String:lvl[], String:cl[], String:cMsg[]) {
 
 stock sqlLogItem(client, UniqueItem item, amount, String:source[]) {
   decl String:query[500];
-  Format(query, sizeof(query), "INSERT INTO wc_logItems (`date`, `level`, `ilevel`, `quality`, `item`, `unique`, `msg`, `amount`, `character`) VALUES (NOW(), '%d', '%d', '%d', '%d', '%d', '%s', '%d', '%d')", item[Item_level], item[Item_ilevel], item[Item_quality], item[Item_defId], item[Item_id], source, amount, characterids[client][0]);
+  Format(query, sizeof(query), "INSERT INTO wc_logItems (`date`, `level`, `ilevel`, `quality`, `item`, `unique`, `msg`, `amount`, `character`) VALUES (NOW(), '%d', '%d', '%d', '%d', '%d', '%s', '%d', '%d')", item.Item_level, item.Item_ilevel, item.Item_quality, item.Item_defId, item.Item_id, source, amount, characterids[client][0]);
   SQL_TQuery(T2SQL, Tinserted, query, 3532, DBPrio_Low);
 }
 
@@ -3736,7 +3736,7 @@ _generateSqlItems() {
     switch(type)  {
       case CT_Wearable: {
         rating = GetItemRating(uitem);
-        iclass = uitem[Item_class];
+        iclass = uitem.Item_class;
         if(iclass==0)
           continue;
       }
@@ -3750,7 +3750,7 @@ _generateSqlItems() {
     SQL_BindParamInt(statement, 0, item);
     SQL_BindParamInt(statement, 1, cat);
     SQL_BindParamString(statement, 2, catname, false);
-    SQL_BindParamInt(statement, 3, uitem[Item_level]);
+    SQL_BindParamInt(statement, 3, uitem.Item_level);
     SQL_BindParamFloat(statement, 4, rating);
     SQL_BindParamString(statement, 5, name, false);
     SQL_BindParamInt(statement, 6, iclass);
