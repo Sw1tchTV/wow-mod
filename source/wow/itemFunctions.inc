@@ -2274,43 +2274,43 @@ ItemCompare(UniqueItem newitem, UniqueItem olditem,client)
   }
   if((newitem[Item_haste]-olditem[Item_haste])!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name haste",client,newitem[Item_haste]-olditem[Item_haste]);
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name haste",client,newitem.Item_haste-olditem.Item_haste);
   }
-  if((newitem[Item_haste]-olditem[Item_parry])!=0)
+  if((newitem.Item_haste-olditem.Item_parry)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name parry",client,newitem[Item_parry]-olditem[Item_parry]);
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name parry",client,newitem.Item_parry-olditem.Item_parry);
   }
-  if((newitem[Item_as]-olditem[Item_as])!=0)
+  if((newitem.Item_as-olditem.Item_as)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %d\%,",buffer,"name as",client,RoundToNearest((newitem[Item_as]-olditem[Item_as])*100.0));
+    Format(buffer,sizeof(buffer),"%s %T %d\%,",buffer,"name as",client,RoundToNearest((newitem.Item_as-olditem.Item_as)*100.0));
   }
-  if((newitem[Item_cs]-olditem[Item_cs])!=0)
+  if((newitem.Item_cs-olditem.Item_cs)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %d\%,",buffer,"name cs",client,RoundToNearest((newitem[Item_cs]-olditem[Item_cs])*100.0));
+    Format(buffer,sizeof(buffer),"%s %T %d\%,",buffer,"name cs",client,RoundToNearest((newitem.Item_cs-olditem.Item_cs)*100.0));
   }
-  if((newitem[Item_speed]-olditem[Item_speed])!=0)
+  if((newitem.Item_speed-olditem.Item_speed)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %d\%,",buffer,"name speed",client,RoundToNearest((newitem[Item_speed]-olditem[Item_speed])*100.0));
+    Format(buffer,sizeof(buffer),"%s %T %d\%,",buffer,"name speed",client,RoundToNearest((newitem.Item_speed-olditem.Item_speed)*100.0));
   }
-  if((newitem[Item_acc]-olditem[Item_acc])!=0)
+  if((newitem.Item_acc-olditem.Item_acc)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %d\%,",buffer,"name acc",client,RoundToNearest((newitem[Item_acc]-olditem[Item_acc])*100.0));
+    Format(buffer,sizeof(buffer),"%s %T %d\%,",buffer,"name acc",client,RoundToNearest((newitem.Item_acc-olditem.Item_acc)*100.0));
   }
-  if((newitem[Item_resilence]-olditem[Item_resilence])!=0)
+  if((newitem.Item_resilence-olditem.Item_resilence)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name resilience",client,newitem[Item_resilence]-olditem[Item_resilence]);
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name resilience",client,newitem.Item_resilence-olditem.Item_resilence);
   }
-  if((newitem[Item_ws]-olditem[Item_ws])!=0)
+  if((newitem.Item_ws-olditem.Item_ws)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %d\%,",buffer,"name ws",client,RoundToNearest((newitem[Item_ws]-olditem[Item_ws])*100.0));
+    Format(buffer,sizeof(buffer),"%s %T %d\%,",buffer,"name ws",client,RoundToNearest((newitem.Item_ws-olditem.Item_ws)*100.0));
   }
-  if(((newitem[Item_damage] + newitem[Item_weapon_ap])-(olditem[Item_damage]+olditem[Item_weapon_ap]))!=0)
+  if(((newitem.Item_damage + newitem.Item_weapon_ap)-(olditem.Item_damage+olditem.Item_weapon_ap))!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name damage",client,((newitem[Item_damage] + newitem[Item_weapon_ap])-(olditem[Item_damage]+olditem[Item_weapon_ap])));
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name damage",client,((newitem.Item_damage + newitem.Item_weapon_ap)-(olditem.Item_damage+olditem.Item_weapon_ap)));
   }
-  if(((newitem[Item_spelldmg] + newitem[Item_weapon_sp])-(olditem[Item_spelldmg]+olditem[Item_weapon_sp]))!=0)
+  if(((newitem.Item_spelldmg + newitem.Item_weapon_sp)-(olditem.Item_spelldmg+olditem.Item_weapon_sp))!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name spelldmg",client,((newitem[Item_spelldmg] + newitem[Item_weapon_sp])-(olditem[Item_spelldmg]+olditem[Item_weapon_sp])));
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name spelldmg",client,((newitem.Item_spelldmg + newitem.Item_weapon_sp)-(olditem.Item_spelldmg+olditem.Item_weapon_sp)));
   }
   buffer[strlen(buffer)-1] = '.';
   PlainMessage(client,buffer);

@@ -2857,7 +2857,7 @@ stock Effect_m2(effid, client)
     if(itemId > 0 && duration > 0.0)  {
       UniqueItem item;
       GetItemProperties(item, itemId, 0);
-      if(item[Item_defId] > 0)  { //Run only if item exists
+      if(item.Item_defId > 0)  { //Run only if item exists
         AddTemporaryItem(client, item, duration, (stacks>0));
       }
     }

@@ -554,7 +554,7 @@ public PutIntoInventory(client,category)
   UniqueItem item;
   GetCharItem(item, client,category);
   new free=wcCheckFreeSlot(client);
-  wcSetStaticSlot(client,free,item[Item_defId]);
+  wcSetStaticSlot(client,free,item.Item_defId);
   wcSetStaticSlotAmount(client,free,-1);
   if(category<30) {
     wcSetCharItem(client,category,0);
@@ -563,7 +563,7 @@ public PutIntoInventory(client,category)
   else  {
     SetGlyphId(client, category-30, 0);
   }
-  SetInvUnique(client, free, item[Item_id]);
+  SetInvUnique(client, free, item.Item_id);
 }
 
 public wcSetStaticSlotAmount(client,slot,amount)
@@ -720,7 +720,7 @@ public GetItemCat(item, unique)
 {
   UniqueItem uitem;
   GetItemProperties(uitem, item, unique);
-  return uitem[Item_category];
+  return uitem.Item_category;
 }
 
 stock GetItemQuality(item)
@@ -747,7 +747,7 @@ public GetItemMaxAmount(item)
 {
   UniqueItem uitem;
   GetItemProperties(uitem, item);
-  return uitem[Item_amount];
+  return uitem.Item_amount;
 }
 
 stock bool:ItemUsable(item)
@@ -775,7 +775,7 @@ public GetSlotCat(client,ID)
 {
   UniqueItem item;
   GetInvItem(item, client, ID);
-  return item[Item_category];
+  return item.Item_category;
 }
 
 public GetSlotItemAmount(client,ID)
@@ -969,7 +969,7 @@ wcCheckStats(client,UniqueItem item)
 {
    new bool:pass=false;
    new classes[10];
-   new amount=ConvertBitToClasses(item[Item_class], classes);
+   new amount=ConvertBitToClasses(item.Item_class, classes);
    new race=GetClass(client);
    for(new x=0;x<amount;x++)
    {
@@ -981,8 +981,8 @@ wcCheckStats(client,UniqueItem item)
    if(pass==false)
     return 2;
    //end of checking for class
-   new lev=item[Item_level];
-   new category=item[Item_category];
+   new lev=item.Item_level;
+   new category=item.Item_category;
    if((category>0) && (category<5))
     lev-=RECIPE_LVL_MINUS;
    if(category==8)
@@ -1044,18 +1044,18 @@ stock wcCheckFreeSlot2(client,item2, bool:refresher=false)
 public wcCheckFreeSlot3(client,UniqueItem uitem, &space) //A little smarter again :D
 {
 
-  if(uitem[Item_amount]<=1) {
+  if(uitem.Item_amount<=1) {
     space=1;
     return wcCheckFreeSlot(client);
   }
   for (new x=1;x<=100;x++)
   {
     new item=GetSlotItem(client,x);
-    if(item==uitem[Item_defId])
+    if(item==uitem.Item_defId)
     {
       new amount=GetSlotItemAmount(client,x);
-      if(amount<uitem[Item_amount]) {
-        space=uitem[Item_amount]-amount;
+      if(amount<uitem.Item_amount) {
+        space=uitem.Item_amount-amount;
         return x;
       }
     }
@@ -1108,25 +1108,25 @@ PurchaseItemConfirmed(client,item, amount=1)
   GetItemProperties(uitem, item);
   new slot = GiveItem(client, uitem, amount, "shop");
 
-  if((!FUN_SERVER) && (uitem[Item_gold]<=0))
-    wcSetMoney(client,(GetMoney(client)-uitem[Item_cost]*amount));
-  if( (uitem[Item_honor]>0) && (!FUN_SERVER))  {
-   SetHonor(client,GetHonor(client)-uitem[Item_honor]*amount);
+  if((!FUN_SERVER) && (uitem.Item_gold<=0))
+    wcSetMoney(client,(GetMoney(client)-uitem.Item_cost*amount));
+  if( (uitem.Item_honor>0) && (!FUN_SERVER))  {
+   SetHonor(client,GetHonor(client)-uitem.Item_honor*amount);
   }
   if( uitem[Item_valor] > 0)  {
-    SpendValor(client,uitem[Item_valor]);
+    SpendValor(client,uitem.Item_valor);
   }
   if( uitem[Item_justice] > 0)  {
-    SpendJustice(client,uitem[Item_justice]);
+    SpendJustice(client,uitem.Item_justice);
   }
 
   decl String:msg[200];
-  Format(msg, sizeof(msg), "Bought item id %d name %s from gold shop", item, uitem[Item_Name]);
-  SpendGold(client, uitem[Item_gold], "shop", msg);
+  Format(msg, sizeof(msg), "Bought item id %d name %s from gold shop", item, uitem.Item_Name);
+  SpendGold(client, uitem.Item_gold, "shop", msg);
   decl String:category[255];
-  IdToCategory(uitem[Item_category],category);
+  IdToCategory(uitem.Item_category,category);
   Format(category,sizeof(category),"%T",category,client);
-  WCMessage(client,"Item bought",client,uitem[Item_Name],category);
+  WCMessage(client,"Item bought",client,uitem.Item_Name,category);
   if(getAutoEquip(client) && slot >= 0)  {
     UseItem(client, slot, true);
 
@@ -1515,12 +1515,12 @@ stock Float:GetDESkillUp(enchanting, UniqueItem item) {
   //normalization = 200
 
   new Float:rating = GetItemRating(item);
-  new Float:chance = rating * Pow(float(item[Item_quality]+1), 1.7) - 1.0 * float(enchanting);
+  new Float:chance = rating * Pow(float(item.Item_quality+1), 1.7) - 1.0 * float(enchanting);
   chance = chance/200.0;
   if(chance< 0.0) chance = 0.0;
   if(chance > 1.0) chance = 1.0;
 
-  if(enchanting > (item[Item_quality] +2) * 75) chance = 0.0;
+  if(enchanting > (item.Item_quality +2) * 75) chance = 0.0;
   if(enchanting >= 400) chance = 0.0;
 
   return chance;
@@ -1554,9 +1554,9 @@ stock TriggerDisEnch(client, UniqueItem item, slot)
 
   RemoveInvItem(client, slot, 4);
 
-  new level=item[Item_level];
+  new level=item.Item_level;
   KvRewind(wcdrop);
-  new iQua = item[Item_quality];
+  new iQua = item.Item_quality;
   if(iQua>4)
   {
     if(iQua==5)
@@ -1678,10 +1678,10 @@ stock TriggerDisEnch(client, UniqueItem item, slot)
               new an = KvGetNum(wcdrop,"announce",0);
               switch(an)
               {
-                case 1: AnnounceDrop(client,uitem[Item_Name], islot);
-                case 2: AnnounceDropAll(client, uitem[Item_Name], uitem[Item_quality]);
+                case 1: AnnounceDrop(client,uitem.Item_Name, islot);
+                case 2: AnnounceDropAll(client, uitem.Item_Name, uitem.Item_quality);
               }
-              WCMessage(client,"item dropped2",client,uitem[Item_Name], give);
+              WCMessage(client,"item dropped2",client,uitem.Item_Name, give);
             }
           }
           else
@@ -1796,17 +1796,17 @@ stock TriggerDrop(client,victim, bool:self=false, Float:custom_rate=1.0)
 
             new slot = GiveItem(client, uitem, 1, "drop");
             if(slot < 0)
-              WCMessage(client,"failed drop",client,uitem[Item_Name]);
+              WCMessage(client,"failed drop",client,uitem.Item_Name);
             else
             {
-              WCMessage(client,"item dropped",client,uitem[Item_Name]);
+              WCMessage(client,"item dropped",client,uitem.Item_Name);
               new an = KvGetNum(wcdrop,"announce",0);
               switch(an)
               {
-                case 1: AnnounceDrop(client,uitem[Item_Name], slot);
+                case 1: AnnounceDrop(client,uitem.Item_Name, slot);
                 case 2:
                 {
-                  AnnounceDropAll(client, uitem[Item_Name], uitem[Item_quality]);
+                  AnnounceDropAll(client, uitem.Item_Name, uitem.Item_quality);
                 }
               }
             }
@@ -1945,13 +1945,13 @@ TriggerBossDrop() {
             GetItemProperties(uitem, setitems[itemId], 0);
 
             if(GiveItem(winner, uitem, 1, "boss") < 0)
-            WCMessage(winner,"failed drop",winner,uitem[Item_Name]);
+            WCMessage(winner,"failed drop",winner,uitem.Item_Name);
             else
             {
-              WCMessage(winner,"item dropped",winner,uitem[Item_Name]);
+              WCMessage(winner,"item dropped",winner,uitem.Item_Name);
               for(new x=1;x<=GetMaxClients();x++)
               if(IsClientInGame(x) && (x!=winner))
-              WCMessage(x,"item dropped back",x,winnername,uitem[Item_Name]);
+              WCMessage(x,"item dropped back",x,winnername,uitem.Item_Name);
             }
           }
 
@@ -1977,13 +1977,13 @@ TriggerBossDrop() {
               GetItemProperties(uitem, id, 0);
 
               if(GiveItem(winner, uitem, 1, "boss") < 0)
-              WCMessage(winner,"failed drop",winner,uitem[Item_Name]);
+              WCMessage(winner,"failed drop",winner,uitem.Item_Name);
               else
               {
-                WCMessage(winner,"item dropped",winner,uitem[Item_Name]);
+                WCMessage(winner,"item dropped",winner,uitem.Item_Name);
                 for(new x=1;x<=GetMaxClients();x++)
                 if(IsClientInGame(x) && (x!=winner))
-                WCMessage(x,"item dropped back",x,winnername,uitem[Item_Name]);
+                WCMessage(x,"item dropped back",x,winnername,uitem.Item_Name);
               }
             }
           } while(KvGotoNextKey(wcbossdrop));
@@ -2117,13 +2117,13 @@ RemoveItem(client,item,amount)
 
 GetRequiredLevel(UniqueItem item)
 {
-   if( (item[Item_defId]>0) || (item[Item_id]>0) )
+   if( (item.Item_defId>0) || (item.Item_id>0) )
    {
-      new cat=item[Item_category];
+      new cat=item.Item_category;
       new delta=0;
       if((cat>0)&&(cat<5))
         delta=RECIPE_LVL_MINUS;
-      return item[Item_level]-delta;
+      return item.Item_level-delta;
    }
    return 0;
 }

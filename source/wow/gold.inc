@@ -612,15 +612,15 @@ public GoldShopPremium(client, PremiumData data)  {
   AddMenuItem(menu,"",buffer, ITEMDRAW_DISABLED);
 
   //Expires (days left)
-  if(data[PD_daysLeft] > 0)  {
-    Format(buffer, sizeof(buffer), "Due: %s (%d days left)", data[PD_sExpires], data[PD_daysLeft]);
+  if(data.PD_daysLeft > 0)  {
+    Format(buffer, sizeof(buffer), "Due: %s (%d days left)", data.PD_sExpires, data.PD_daysLeft);
   }
   else  {
     new String:scost[20];
-    IntToStringfloat(data[PD_costs], scost, 20);
+    IntToStringfloat(data.PD_costs, scost, 20);
     Format(buffer, sizeof(buffer), "%T", "Purchase Premium", client, scost);
   }
-  if(data[PD_daysLeft] < 30)
+  if(data.PD_daysLeft < 30)
     AddMenuItem(menu,"renew",buffer);
   else
     AddMenuItem(menu,"renew",buffer, ITEMDRAW_DISABLED);
@@ -790,12 +790,12 @@ askRenew(client, PremiumData pd) {
     /*buffer="Subscription is Enabled";*/
   /*else*/
     /*buffer="Subscription is Disabled";*/
-  new days = 30 - pd[PD_daysLeft];
+  new days = 30 - pd.PD_daysLeft;
   if(days > 30) days=30;
   Format(buffer, sizeof(buffer), "%T", "will be extended by days", client, days);
   AddMenuItem(menu,"",buffer, ITEMDRAW_DISABLED);
 
-  new costs = RoundToCeil(float(pd[PD_costs]) / 30.0 * days);
+  new costs = RoundToCeil(float(pd.PD_costs) / 30.0 * days);
   IntToStringfloat(costs,sgold,20);
   Format(buffer, sizeof(buffer),"%T", "renew premium final warning", client, sgold);
   AddMenuItem(menu,"",buffer, ITEMDRAW_DISABLED);
@@ -845,23 +845,23 @@ askSubscribe(client, PremiumData pd) {
   Format(buffer, sizeof(buffer), "You have %s Gold", sgold);
   AddMenuItem(menu,"",buffer,ITEMDRAW_DISABLED);
   //Subscribe
-  if(pd[PD_subscribed])
+  if(pd.PD_subscribed)
     buffer="Subscription is Enabled";
   else
     buffer="Subscription is Disabled";
   AddMenuItem(menu,"",buffer, ITEMDRAW_DISABLED);
 
-  if( (pd[PD_daysLeft]>0) || pd[PD_subscribed] ) {
-    Format(buffer, sizeof(buffer), "%d days left until renewal", pd[PD_daysLeft]);
+  if( (pd.PD_daysLeft>0) || pd.PD_subscribed ) {
+    Format(buffer, sizeof(buffer), "%d days left until renewal", pd.PD_daysLeft);
     AddMenuItem(menu,"",buffer, ITEMDRAW_DISABLED);
   }
-  else if(!pd[PD_subscribed]) {
-    IntToStringfloat(pd[PD_costs],sgold,20);
+  else if(!pd.PD_subscribed) {
+    IntToStringfloat(pd.PD_costs,sgold,20);
     Format(buffer, sizeof(buffer),"WARNING!\nEnabling subscription will buy you\nPremium Account for %s gold for a month in the same moment!",sgold);
     AddMenuItem(menu,"",buffer, ITEMDRAW_DISABLED);
   }
 
-  if(pd[PD_subscribed])
+  if(pd.PD_subscribed)
     buffer="Disable it";
   else
     buffer="Enable it";
@@ -925,7 +925,7 @@ stock GoldShopModule(client, PDModule:module) {
   }
   decl String:costs[10];
   decl String:monthly[10];
-  IntToStringfloat( RoundToCeil( float(gPDModules[module]) / 30 * pd[PD_daysLeft]), costs, 10);
+  IntToStringfloat( RoundToCeil( float(gPDModules[module]) / 30 * pd.PD_daysLeft), costs, 10);
   IntToStringfloat(gPDModules[module], monthly, 10);
   Format(buffer, sizeof(buffer), "%T", "pmodule item", client,
     sEnable, sPDModules[module], costs, monthly, descr);
@@ -978,12 +978,12 @@ getPremiumData(client, String:callback[],bool:preload=false)  {
 }
 
 public getPremiumError(MLoader ml) {
-  ResetPack(ml[ML_sidePack]);
-  new client = ReadPackCell(ml[ML_sidePack]);
+  ResetPack(ml.ML_sidePack);
+  new client = ReadPackCell(ml.ML_sidePack);
   new String:callback[100];
-  ReadPackString(ml[ML_sidePack], callback, 100);
+  ReadPackString(ml.ML_sidePack, callback, 100);
   PremiumData pd;
-  pd[PD_costs] = gPDModules[PDM_base];
+  pd.PD_costs = gPDModules[PDM_base];
   updateCachedPD(client, pd);
   //Call function
   new Function:func = GetFunctionByName(INVALID_HANDLE, callback);
@@ -998,19 +998,19 @@ public getPremiumError(MLoader ml) {
 }
 
 public getPremiumData2(MLoader ml) {
-  ResetPack(ml[ML_sidePack]);
-  new client = ReadPackCell(ml[ML_sidePack]);
+  ResetPack(ml.ML_sidePack);
+  new client = ReadPackCell(ml.ML_sidePack);
   new String:callback[100];
-  ReadPackString(ml[ML_sidePack], callback, 100);
+  ReadPackString(ml.ML_sidePack, callback, 100);
 
-  new daysLeft = ReadPackCell(ml[ML_returns]);
+  new daysLeft = ReadPackCell(ml.ML_returns);
 
   new String:due[40];
-  ReadPackString(ml[ML_returns], due, 40);
+  ReadPackString(ml.ML_returns, due, 40);
 
-  new modules = ReadPackCell(ml[ML_returns]);
-  new subscribed = ReadPackCell(ml[ML_returns]);
-  new costs = ReadPackCell(ml[ML_returns]);
+  new modules = ReadPackCell(ml.ML_returns);
+  new subscribed = ReadPackCell(ml.ML_returns);
+  new costs = ReadPackCell(ml.ML_returns);
 
 
   PremiumData pd;
@@ -1022,7 +1022,7 @@ public getPremiumData2(MLoader ml) {
     if(isPDModuleEnabled(pd, i))
       costs += gPDModules[i];
   }
-  pd[PD_costs] = costs;
+  pd.PD_costs = costs;
 
   updateCachedPD(client, pd);
 
@@ -1041,49 +1041,49 @@ public getPremiumData2(MLoader ml) {
 
 PD_Construct(PremiumData pd, modules, String:expires[],
             bool:subscribed, costs, daysLeft) {
-  pd[PD_modules] = modules;
-  strcopy(pd[PD_sExpires],50,expires);
-  pd[PD_subscribed]=subscribed;
-  pd[PD_costs]=costs;
-  pd[PD_daysLeft]=daysLeft;
+  pd.PD_modules = modules;
+  strcopy(pd.PD_sExpires,50,expires);
+  pd.PD_subscribed=subscribed;
+  pd.PD_costs=costs;
+  pd.PD_daysLeft=daysLeft;
 }
 
 //insert into wc_premium values (10, NOW(), 4, 1, 500);
 stock MLoader_generatePremiumQuery(MLoader ml, client, String:callback[]) {
   decl String:query[300];
   Format(query,300,"SELECT DATEDIFF(due, now()) AS `days_left`, wc_premium.* FROM wc_premium WHERE playerId = %d", playerids[client]);
-  strcopy(ml[ML_query], 300, query);
+  strcopy(ml.ML_query, 300, query);
   //ask for returns
-  ml[ML_returns]=CreateDataPack();
-  ml[ML_retClass]=CreateDataPack();
-  ml[ML_sidePack]=CreateDataPack();
-  WritePackCell(ml[ML_sidePack],client);
-  WritePackString(ml[ML_sidePack],callback);
+  ml.ML_returns=CreateDataPack();
+  ml.ML_retClass=CreateDataPack();
+  ml.ML_sidePack=CreateDataPack();
+  WritePackCell(ml.ML_sidePack,client);
+  WritePackString(ml.ML_sidePack,callback);
 
   //add returns requests
-  WritePackString(ml[ML_returns],"days_left");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"days_left");
+  WritePackCell(ml.ML_retClass,_:T_int);
 
-  WritePackString(ml[ML_returns],"due");
-  WritePackCell(ml[ML_retClass],_:T_str);
+  WritePackString(ml.ML_returns,"due");
+  WritePackCell(ml.ML_retClass,_:T_str);
 
-  WritePackString(ml[ML_returns],"modules");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"modules");
+  WritePackCell(ml.ML_retClass,_:T_int);
 
-  WritePackString(ml[ML_returns],"subscribed");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"subscribed");
+  WritePackCell(ml.ML_retClass,_:T_int);
 
-  WritePackString(ml[ML_returns],"costs");
-  WritePackCell(ml[ML_retClass],_:T_int);
+  WritePackString(ml.ML_returns,"costs");
+  WritePackCell(ml.ML_retClass,_:T_int);
 
-  new index = MLoader_FindIndex(ml[ML_Id]);
+  new index = MLoader_FindIndex(ml.ML_Id);
   SetArrayArray(g_ML, index, ml[0]);
 }
 
 bool:isPDModuleEnabled(PremiumData pd, any:module) {
   if(module == PDM_base)
     return true;
-  return ( (pd[PD_modules] & (1<<module))==(1<<module));
+  return ( (pd.PD_modules & (1<<module))==(1<<module));
 }
 
 bool:renewSubscribe(client, PremiumData pd) {
@@ -1094,9 +1094,9 @@ bool:renewSubscribe(client, PremiumData pd) {
 
 
 
-  new days = pd[PD_daysLeft];
+  new days = pd.PD_daysLeft;
   if(days < 0) days = 0;
-  new costs = pd[PD_costs];
+  new costs = pd.PD_costs;
   costs = RoundToCeil( float(costs) / 30.0 * (30 - days));
 
   if(GetGold(client) < costs) {
@@ -1109,8 +1109,8 @@ bool:renewSubscribe(client, PremiumData pd) {
 
   }
 
-  pd[PD_subscribed] = true;
-  pd[PD_daysLeft] = 30;
+  pd.PD_subscribed = true;
+  pd.PD_daysLeft = 30;
   SpendGold(client, costs, "premium", "Purchased Premium");
   savePD(client, pd);
 
@@ -1158,34 +1158,34 @@ bool:triggerSubscribe(client, PremiumData pd) {
     return false;
   }
 
-  new bool:isEnabled = pd[PD_subscribed];
+  new bool:isEnabled = pd.PD_subscribed;
   if(isEnabled) {
-    pd[PD_subscribed] = false;
+    pd.PD_subscribed = false;
     WCMessage(client, "disabled subscription", client);
     savePD(client, pd);
   }
   else  {
-    if(pd[PD_daysLeft]>0) {
+    if(pd.PD_daysLeft>0) {
       //is free
-      pd[PD_subscribed]=true;
+      pd.PD_subscribed=true;
       WCMessage(client, "enabled subscription", client);
       savePD(client, pd);
     }
     else  {
-      if(pd[PD_costs]<=gPDModules[PDM_base])  {
+      if(pd.PD_costs<=gPDModules[PDM_base])  {
         WCMessage(client,"failed no modules selected", client);
         return false;
       }
-      if(GetGold(client) < pd[PD_costs]) {
+      if(GetGold(client) < pd.PD_costs) {
         decl String:needed[10],String:has[10];
         IntToStringfloat(GetGold(client), has, 10);
-        IntToStringfloat(pd[PD_costs], needed, 10);
+        IntToStringfloat(pd.PD_costs, needed, 10);
 
         WCMessage(client, "no gold", client, has, needed);
         return false; //no resource
       }
       WCMessage(client, "enabled subscription", client);
-      pd[PD_subscribed]=true;
+      pd.PD_subscribed=true;
       savePD(client, pd);
       enablePD(client, pd);
     }
@@ -1201,15 +1201,15 @@ enablePD(client, PremiumData pd)  {
     LogError("Tried to enable PD of unloaded player");
     return;
   }
-  SpendGold(client, pd[PD_costs], "premium", "Activated subscription");
-  pd[PD_daysLeft]=30;
+  SpendGold(client, pd.PD_costs, "premium", "Activated subscription");
+  pd.PD_daysLeft=30;
 
   new costs = 0;
   for (new any:i = 0; i < iPDModules; i++) {
     if(isPDModuleEnabled(pd, i))
       costs += gPDModules[i];
   }
-  pd[PD_costs] = costs;
+  pd.PD_costs = costs;
   decl String:format[300];
   Format(format, 300, "UPDATE wc_premium SET `due` = DATE_ADD(NOW(), INTERVAL 30 DAY) WHERE `playerId` = %d", playerids[client]);
   SQL_TQuery(TMSQL,TRepeating,format,AddQuery(Repeat, 3, format, 0 ));
@@ -1221,12 +1221,12 @@ enablePD(client, PremiumData pd)  {
 bool:triggerPDModule(client, PremiumData pd, any:module) {
   new bool:isEnabled = isPDModuleEnabled(pd, module);
   if(isEnabled) {
-    pd[PD_modules] = pd[PD_modules] & ~(1 << module);
+    pd.PD_modules = pd.PD_modules & ~(1 << module);
     WCMessage(client, "disabled pd module", client, sPDModules[module]);
   }
   else  {
     new costs = gPDModules[module];
-    costs = RoundToCeil(float(costs) / 30 * pd[PD_daysLeft]);
+    costs = RoundToCeil(float(costs) / 30 * pd.PD_daysLeft);
 
     if(GetGold(client) < costs) {
       decl String:needed[10],String:has[10];
@@ -1242,7 +1242,7 @@ bool:triggerPDModule(client, PremiumData pd, any:module) {
 
 
     WCMessage(client, "enabled pd module", client, sPDModules[module]);
-    pd[PD_modules] = pd[PD_modules] | 1 << module;
+    pd.PD_modules = pd.PD_modules | 1 << module;
   }
 
   savePD(client, pd);
@@ -1260,10 +1260,10 @@ savePD(client, PremiumData pd) {
     if(isPDModuleEnabled(pd, i))
       costs += gPDModules[i];
   }
-  pd[PD_costs] = costs;
+  pd.PD_costs = costs;
   decl String:format[300];
   Format(format, 300, "INSERT INTO wc_premium (`playerId`,`due`,`modules`,`subscribed`,`costs`) VALUES (%d, NOW(), %d, %d, %d) ON DUPLICATE KEY UPDATE `modules` = '%d', `subscribed` = '%d', `costs` = '%d'", playerids[client],
-      pd[PD_modules], pd[PD_subscribed], costs, pd[PD_modules], pd[PD_subscribed], costs);
+      pd.PD_modules, pd.PD_subscribed, costs, pd.PD_modules, pd.PD_subscribed, costs);
   SQL_TQuery(TMSQL,TRepeating,format,AddQuery(Repeat, 3, format, 0 ));
 
   updateCachedPD(client, pd);
@@ -1275,7 +1275,7 @@ public loadPD(client, PremiumData pd) {
 }
 
 new bool:g_ff_hasCachedPD[65];
-new g_ff_cachedPD[65][PremiumData];
+PremiumData g_ff_cachedPD[65];
 
 resetCachedPD(client) {
   g_ff_hasCachedPD[client]=false;
@@ -1284,9 +1284,9 @@ resetCachedPD(client) {
 
 updateCachedPD(client, PremiumData pd) {
   g_ff_hasCachedPD[client]=true;
-  g_ff_cachedPD[client][PD_modules] = pd[PD_modules];
-  g_ff_cachedPD[client][PD_sExpires] = pd[PD_sExpires];
-  g_ff_cachedPD[client][PD_subscribed] = pd[PD_subscribed];
+  g_ff_cachedPD[client].PD_modules = pd.PD_modules;
+  g_ff_cachedPD[client].PD_sExpires = pd.PD_sExpires;
+  g_ff_cachedPD[client].PD_subscribed = pd.PD_subscribed;
 
   new costs = 0;
   for (new any:i = 0; i < iPDModules; i++) {
@@ -1294,18 +1294,18 @@ updateCachedPD(client, PremiumData pd) {
       costs += gPDModules[i];
   }
 
-  g_ff_cachedPD[client][PD_costs] = costs;
-  g_ff_cachedPD[client][PD_daysLeft] = pd[PD_daysLeft];
+  g_ff_cachedPD[client].PD_costs = costs;
+  g_ff_cachedPD[client].PD_daysLeft = pd.PD_daysLeft;
 }
 
 bool:getCachedPD(client, PremiumData pd) {
   if(!g_ff_hasCachedPD[client])
     return false;
-  pd[PD_modules] = g_ff_cachedPD[client][PD_modules];
-  pd[PD_sExpires] = g_ff_cachedPD[client][PD_sExpires];
-  pd[PD_subscribed] = g_ff_cachedPD[client][PD_subscribed];
-  pd[PD_costs] = g_ff_cachedPD[client][PD_costs];
-  pd[PD_daysLeft] = g_ff_cachedPD[client][PD_daysLeft];
+  pd[PD_modules] = g_ff_cachedPD[client].PD_modules;
+  pd[PD_sExpires] = g_ff_cachedPD[client].PD_sExpires;
+  pd[PD_subscribed] = g_ff_cachedPD[client].PD_subscribed;
+  pd[PD_costs] = g_ff_cachedPD[client].PD_costs;
+  pd[PD_daysLeft] = g_ff_cachedPD[client].PD_daysLeft;
   return true;
 }
 
@@ -1317,7 +1317,7 @@ bool:isClientPDModule(client, PDModule:module=PDM_base)  {
   if(!getCachedPD(client, pd)) {
     getOutdatedPD(client, pd);
   }
-  if(pd[PD_daysLeft] <= 0) {
+  if(pd.PD_daysLeft <= 0) {
     return false;
   }
   if(module)  { module=PDM_base; } //prevent warnings
@@ -1390,10 +1390,10 @@ getOutdatedPD(client, PremiumData pd)  {
   Format(key, 20, "%d", uniqueId);
   if(!KvJumpToKey(outdatedPD, key, false))
     return;
-  pd[PD_daysLeft] = KvGetNum(outdatedPD, "days_left");
-  pd[PD_modules] = KvGetNum(outdatedPD, "modules");
-  pd[PD_subscribed] = bool:KvGetNum(outdatedPD, "subscribed");
-  pd[PD_costs] = KvGetNum(outdatedPD, "costs");
+  pd.PD_daysLeft = KvGetNum(outdatedPD, "days_left");
+  pd.PD_modules = KvGetNum(outdatedPD, "modules");
+  pd.PD_subscribed = bool:KvGetNum(outdatedPD, "subscribed");
+  pd.PD_costs = KvGetNum(outdatedPD, "costs");
 }
 
 debugOutdatedPDs(client)  {

@@ -828,10 +828,10 @@ stock _displayTodoMenu(client, Handle:query)
           if(GetItemRating(uitemOld) >= GetSQLDataFloat(query, "rating") ) //we have better
             continue;
 
-          if(uitemOld[Item_level] >= GetSQLDataInt(query, "level") || uitemOld[Item_ilevel] >= GetSQLDataInt(query, "ilevel")) //we own higher level
+          if(uitemOld.Item_level >= GetSQLDataInt(query, "level") || uitemOld[Item_ilevel] >= GetSQLDataInt(query, "ilevel")) //we own higher level
             continue;
 
-          if(uitemOld[Item_category] != cat)  //apparantly it's weapon slot and we don't suggest shield to if he has weapon and other way round
+          if(uitemOld.Item_category != cat)  //apparantly it's weapon slot and we don't suggest shield to if he has weapon and other way round
             continue;
 
           //Now check if it's 2h, we won't suggest shields
@@ -842,7 +842,7 @@ stock _displayTodoMenu(client, Handle:query)
             {
               UniqueItem mainhand;
               GetItemProperties(mainhand, mainhandId);
-              if(mainhand[Item_2hand])
+              if(mainhand.Item_2hand)
                 continue;
             }
           }
@@ -854,7 +854,7 @@ stock _displayTodoMenu(client, Handle:query)
         UniqueItem uitem;
         new icreate = getItemCreates(itemid);
         GetItemProperties(uitem, icreate);
-        new bitflags = uitem[Item_class];
+        new bitflags = uitem.Item_class;
         new suits=false;
         if( bitflags & (1 << 0) == (1 << 0) )
           suits=true;

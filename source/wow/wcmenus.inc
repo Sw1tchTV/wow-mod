@@ -623,128 +623,128 @@ public OtherPlayerMenu(client,id)
    decl String:Scategory[255],String:Sitem[255];
    UniqueItem item;
    GetCharItem(item, id, 22);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Right Hand: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"222",line); // 1
 
    GetCharItem(item, id, 18);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Left Hand: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"218",line); // 2
 
    GetCharItem(item, id, 14);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Helmet: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"214",line); // 3
 
    GetCharItem(item, id, 16);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Neck: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"216",line); // 4
 
    GetCharItem(item, id, 19);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Shoulders: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"219",line); // 5
 
    GetCharItem(item, id, 10);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Back: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"210",line); // 6
 
    GetCharItem(item, id, 11);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Chest: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"211",line); // 7
 
    GetCharItem(item, id, 23);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Wrist: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"223",line); // 8
 
    GetCharItem(item, id, 13);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Hands: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"213",line); // 9
 
    GetCharItem(item, id, 21);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Waist: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"221",line); // 21
 
    GetCharItem(item, id, 15);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Legs: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"215",line); // 11
 
    GetCharItem(item, id, 12);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Boots: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"212",line); // 12
 
    GetCharItem(item, id, 17);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Ring: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"217",line); // 13
 
    GetCharItem(item, id, 20);
-   IdToCategory(item[Item_category],Scategory);
-   if((item[Item_defId]==0) && (item[Item_id]==0))
+   IdToCategory(item.Item_category,Scategory);
+   if((item.Item_defId==0) && (item.Item_id==0))
     Format(Sitem,sizeof(Sitem),"%T","empty",client);
    else
-    Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
+    Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
    Format(line,sizeof(line),"Trinket: %s (%s)",Sitem,Scategory);
    AddMenuItem(menu_op,"220",line); // 14
    if(allowed)
@@ -755,11 +755,11 @@ public OtherPlayerMenu(client,id)
     {
       GetInvItem(item, id,x);
       IntToString(x,buffer,sizeof(buffer));
-      if((item[Item_defId]==0) && (item[Item_id]==0))
+      if((item.Item_defId==0) && (item.Item_id==0))
         Format(Sitem,sizeof(Sitem),"%T","empty",client);
       else
-        Format(Sitem,sizeof(Sitem),"%s",item[Item_Name]);
-      TranslateCategory(item[Item_category],Scategory, client);
+        Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
+      TranslateCategory(item.Item_category,Scategory, client);
       Format(line,sizeof(line),"slot %i: %s (%s)",x,Sitem,Scategory);
       AddMenuItem(menu_op,buffer,line);
     }
@@ -4886,7 +4886,7 @@ public CharacterMenu(client)
 
   GetCharItem(item, id, 17);
   IdToCategory(item.Item_category,Scategory);
-  if((item[Item_defId]==0) && (item[Item_id]==0))
+  if((item.Item_defId==0) && (item.Item_id==0))
   Format(Sitem,sizeof(Sitem),"%T","empty",client);
   else
   Format(Sitem,sizeof(Sitem),"%s",item.Item_Name);
@@ -5922,10 +5922,10 @@ public ItemInfMenu(client,UniqueItem item,bool:back)
       }
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   bufferi=item[Item_level];
+   bufferi=item.Item_level;
    Format(fbuffer, sizeof(fbuffer), "%T", "level", client, bufferi);
    AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
-   bufferi=item[Item_ilevel];
+   bufferi=item.Item_ilevel;
    if(bufferi > 0)  {
      Format(fbuffer, sizeof(fbuffer), "%T", "ilevel", client, bufferi);
      AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
@@ -5959,7 +5959,7 @@ public ItemInfMenu(client,UniqueItem item,bool:back)
 
    if(category>9)
    {
-   bufferi=item[Item_2hand];
+   bufferi=item.Item_2hand;
    if (bufferi==1)
    {
       Format(fbuffer, sizeof(fbuffer), "%T", "2hand", client);
