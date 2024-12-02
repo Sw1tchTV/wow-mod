@@ -106,7 +106,7 @@ BotCalculateStats(client) {
 new Float:g_ff_bot_think[65];
 new g_ff_bot_i=1;
 BotTimer() {
-  if(g_ff_bot_i > GetMaxClients())
+  if(g_ff_bot_i > MaxClients)
     g_ff_bot_i = 1;
   new bot = g_ff_bot_i;
   if(g_ff_bot_think[bot] + 0.5 < GetEngineTime()) {
@@ -428,9 +428,9 @@ stock BotThinkDK(client) {
   TryCast(client, 9); //Raise Ally
 
 }
-new Float:g_fSerpentKickCD[65] = 0.0;
-new Float:g_fRenewingMistCD[65] = 0.0;
-new Float:g_fCocoonCD[65] = 0.0;
+    float g_fSerpentKickCD[65];
+    float g_fRenewingMistCD[65];
+    float g_fCocoonCD[65];
 new g_iStanceStaved[65];
 stock BotThinkMonk(client) {
   if(g_iStanceStaved[client]==0 && IsFakeClient(client))

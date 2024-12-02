@@ -24,7 +24,7 @@ public Float:getTempPlayerRating(client, teamWon)	{
 
 
 public scrambleTeams()	{
-  new max = GetMaxClients();
+  new max = MaxClients;
   new healers[max];
   new tanks[max];
   new dps[max];

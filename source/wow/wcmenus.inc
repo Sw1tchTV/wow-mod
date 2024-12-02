@@ -448,7 +448,7 @@ public wcOtherPlayers(client)
    Format(line,sizeof(line),"%T","wc other players",client);
    SetMenuTitle(menu_op,line);
    decl String:buffer[5];
-   new maxplayers=GetMaxClients();
+   new maxplayers=MaxClients;
    for (new i=1;i<=maxplayers;i++)
    {
       if(IsClientInGame(i))
@@ -4581,7 +4581,7 @@ public wcLoadDelCharacter(client,idc)
 
 public LoadDelMenuHandle(Handle:menu_loaddel,MenuAction:action,client,slot)
 {
-  if((client>0) && (client <= GetMaxClients()))
+  if((client>0) && (client <= MaxClients))
   {
   new String:buffer[255];
   GetMenuItem(menu_loaddel,0,buffer,sizeof(buffer));

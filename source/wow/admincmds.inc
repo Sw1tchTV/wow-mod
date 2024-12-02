@@ -101,7 +101,7 @@ public RegAdminCommands()
 
 }
 public Action:ChangelogCommand(client,argc)  {
-  if(client<1 || client > GetMaxClients())  {
+  if(client<1 || client > MaxClients)  {
     ReplyToCommand(client, "Command can be used only in-game");
     return Plugin_Handled;
   }
@@ -109,7 +109,7 @@ public Action:ChangelogCommand(client,argc)  {
   decl String:name[30];
   GetClientName(client, name, 30);
 
-  for(new x=1;x<=GetMaxClients();x++)
+  for(new x=1;x<=MaxClients;x++)
     if(IsClientConnected(x))
       if(IsClientInGame(x))
         WCMessage(x,"used changelog cmd",x, name);
@@ -184,7 +184,7 @@ public Action:AdminCmd_DAim(client, argc) {
    ClientTracer=client;
    TR_TraceRayFilter(loc, view, MASK_SHOT, RayType_Infinite,AimTargetFilter2);
    new target=TR_GetEntityIndex(INVALID_HANDLE);
-   if((target>0)&&(target<=GetMaxClients()))
+   if((target>0)&&(target<=MaxClients))
       if(IsClientConnected(target))
          if(IsClientInGame(target)) {
             ReplyToCommand(client, "Direct target, no wall");
@@ -192,7 +192,7 @@ public Action:AdminCmd_DAim(client, argc) {
    new Float:angelrec[2],Closest;
    angelrec[0]=181.0;
    angelrec[1]=181.0;
-   for(new x=1;x<=GetMaxClients();x++)
+   for(new x=1;x<=MaxClients;x++)
    if(IsClientConnected(x)) if(IsClientInGame(x)) if(x!=client)
    {
 
@@ -223,7 +223,7 @@ public Action:AdminCmd_DAim(client, argc) {
       TR_GetEndPosition(endvec, hTrace);
       BeamEffect("@all",loc,endvec,g_ef_glow01,5,2.0,3.0,9.0,{200, 200, 200, 255 },0.0,5);
       CloseHandle(hTrace);
-      if((target2>0)&&(target2<=GetMaxClients()))
+      if((target2>0)&&(target2<=MaxClients))
       if(IsClientConnected(target2))
          if(IsClientInGame(target2))
             {
@@ -380,7 +380,7 @@ public Action:ThreatCommand(client,argc)  {
 
 public Action:DebugMeCmd(client,argc)  {
    decl String:temp[100];
-   if(client>0 && client <= GetMaxClients())  {
+   if(client>0 && client <= MaxClients)  {
     Format(temp,sizeof(temp),"%T","wc debug me txt", client);
     ReplyToCommand(client, temp);
     DebugMenu(client);
@@ -816,7 +816,7 @@ public Action:FOVTEST(client,argc)
 
 public Action:ManualInvPrint(client,argc)
 {
-  if((client>0) && client <=GetMaxClients())
+  if((client>0) && client <=MaxClients)
   {
     if(argc<2)
     {
@@ -929,7 +929,7 @@ public Action:ManualInvPrint(client,argc)
  */
 public InvPrint(client,rarity,category)
 {
-  if((client>0) && client <=GetMaxClients())
+  if((client>0) && client <=MaxClients)
   {
     decl String:line[1020],String:RL[80];
     Format(line, sizeof(line),"");
@@ -1093,7 +1093,7 @@ public InvPrint(client,rarity,category)
 }
 
 public Action:CmdDrop(client, argc)   {
-  if( (client>0) && (client <= GetMaxClients()) ) {
+  if( (client>0) && (client <= MaxClients) ) {
   for(new s=0;s<48;s++)
   {
     new ent=0;
@@ -1168,7 +1168,7 @@ public Action:Roll(client, argc)  {
        new rolled = GetRandomInt(1,100);
 
        WCMessage(client, "rolled number you", client, rolled);
-       for (new i=1; i<=GetMaxClients(); i++)
+       for (new i=1; i<=MaxClients; i++)
          WCMessage(i, "rolled number", i, name, rolled);
    }
    else
@@ -1505,7 +1505,7 @@ StartReboot(bool:reload=false)
 {
   G_RebootQueue=0;
   G_RebootTotal=0;
-  for(new x=1;x<=GetMaxClients();x++)
+  for(new x=1;x<=MaxClients;x++)
   {
     if(IsClientConnected(x))  if(playerloaded[x]==1)
     {
@@ -1525,7 +1525,7 @@ public Action:ReloadServer(Handle:timer, any:trash)
   if(G_RebootTotal>0)
   {
     new progress=RoundToNearest(float(G_RebootTotal-G_RebootQueue)/float(G_RebootTotal)*100.0);
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
       if(IsClientConnected(x))
         if(IsClientInGame(x))
           WCMessage(x,"reload progress",x,progress);
@@ -1544,7 +1544,7 @@ public Action:RebootServer(Handle:timer, any:trash)
   if(G_RebootTotal>0)
   {
     new progress=RoundToNearest(float(G_RebootTotal-G_RebootQueue)/float(G_RebootTotal)*100.0);
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
       if(IsClientConnected(x))
         if(IsClientInGame(x))
           WCMessage(x,"reboot progress",x,progress);
@@ -1835,7 +1835,7 @@ public Action:AngleTest(client,argc)
   decl Float:UserA[3],Float:OtherA[3],String:name[50];
   GetClientEyeAngles(client, UserA);
   WCMessage(client,"testmessageF",client,"[AngleTest] User",UserA[1]);
-  for(new other=1;other<=GetMaxClients();other++)
+  for(new other=1;other<=MaxClients;other++)
   {
     if(IsPlayerAlive(other) && client != other)
     {
@@ -2216,7 +2216,7 @@ public Action:HNSModCmd(client, argc)
   if(mode != 1 && mode != 2)  {
     TriggerPlugins(true);
     SetHNS(false);
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
       if(IsClientInGame(x))
         WCMessage(x,"Announce HNS0",x);
     return Plugin_Handled;
@@ -2225,12 +2225,12 @@ public Action:HNSModCmd(client, argc)
   TriggerPlugins(false);
   SetHNS(true);
   if(mode == 1) {
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
       if(IsClientInGame(x))
         WCMessage(x,"Announce HNS",x);
   }
   if(mode == 2) {
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
       if(IsClientInGame(x))
         WCMessage(x,"Announce HNS1",x);
   }

@@ -21,22 +21,22 @@ SpecialUsed(client, slot)
   IntToString(item, sitem, 10);
   KvJumpToKey(items, sitem);
   //Get values
-  decl String:func[100];
-  KvGetString(items, "function", func, 100);
+  char func_name[100];
+  KvGetString(items, "function", func_name, 100);
   //TODO properly handle arguments
   new arg1 = KvGetNum(items, "arg1");
 
 
 
   //Call function
-  new Function:func = GetFunctionByName(INVALID_HANDLE, func);
+  new Function:func = GetFunctionByName(INVALID_HANDLE, func_name);
   Call_StartFunction(INVALID_HANDLE, func);
   Call_PushCell(client);
   Call_PushCell(item);
   Call_PushCell(arg1);
   if(Call_Finish() != SP_ERROR_NONE)  {
     decl String:err[100];
-    Format(err,100,"Could not callback the function: %s",func);
+    Format(err,100,"Could not callback the function: %s",func_name);
     Logger_log(LogType:LT_file, LogLevel:LL_error, "Messages", err);
   }
   else  {
@@ -57,7 +57,7 @@ public AddExpansion(client, itemId, any:expansion) {
     decl String:name[50];
     GetClientName(client, name, 50);
 
-    for(new i=1; i <= GetMaxClients(); i++)
+    for(new i=1; i <= MaxClients; i++)
       if(IsClientInGame(i))
         WCMessage(i, "player learned expansion", i, name, g_sExpansions.expansion);
   }

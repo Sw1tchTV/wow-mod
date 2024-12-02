@@ -63,7 +63,7 @@ public Action:SaveWorld(Handle:timer, any:trash)
 {
   if(G_RebootTotal==0)
   {
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
       if(IsClientConnected(x))
         if(IsClientInGame(x)) if(playerloaded[x]==1)
         {
@@ -210,7 +210,7 @@ getServerId() {
 
 public IsCharacterOnline(charId)
 {
-  for (new x=1;x<=GetMaxClients();x++)
+  for (new x=1;x<=MaxClients;x++)
   {
     if (characterids[x][0]==charId)
     {
@@ -223,7 +223,7 @@ public IsCharacterOnline(charId)
 
 public IsPlayerOnline(charId)
 {
-  for (new x=1;x<=GetMaxClients();x++)
+  for (new x=1;x<=MaxClients;x++)
   {
     if (playerids[x]==charId)
     {
@@ -382,7 +382,7 @@ public wcGiveXp(client,amount,bool:display)
       {
         decl String:name[64];
         GetClientName(client,name,64);
-        new maxplayers=GetMaxClients();
+        new maxplayers=MaxClients;
         for(new x=1;x<=maxplayers;x++)
           if(IsClientInGame(x))
             WCMessage(x,"Announce levelup",x,name,newlevel);
@@ -1306,7 +1306,7 @@ public wcSetSta(client,amount)
 public FindMatchingHealer(team,clients[],ignore)
 {
    new count=0;
-   new maxplayers=GetMaxClients();
+   new maxplayers=MaxClients;
    for(new x=1;x<=maxplayers;x++)
    {
       if(IsClientInGame(x))   if(IsPlayerAlive(x))   if(  /*  IsHealer(x)  && */  (GetClientTeam(x)==team) && (x != ignore))
@@ -1328,7 +1328,7 @@ stock bool:IsHealer(client)  {
 public FindMatchingPlayers(const String:matchstr[],clients[])
 {
   new count=0;
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   if(StrEqual(matchstr,"@all",false))
   {
     for(new x=1;x<=maxplayers;x++)
@@ -1411,7 +1411,7 @@ public FindMatchingPlayers(const String:matchstr[],clients[])
 public FindMatchingAlive(const String:matchstr[],clients[])
 {
   new count=0;
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   if(StrEqual(matchstr,"@all",false))
   {
     for(new x=1;x<=maxplayers;x++)
@@ -1483,7 +1483,7 @@ public FindMatchingAlive(const String:matchstr[],clients[])
 public CountHumans()
 {
   new total=0;
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   for(new x=1;x<=maxplayers;x++)
   {
     if(IsClientInGame(x))
@@ -1825,7 +1825,7 @@ TriggerBossDrop() {
   //HNS Integration
   if(IsHNS()) {
     new bool:hns_won=true;
-    for(new i=1; i<=GetMaxClients(); i++) {
+    for(new i=1; i<=MaxClients; i++) {
       if(IsClientConnected(i) && IsClientInGame(i) && GetBoss(i) > 0 && !IsKilled(i)) {
         hns_won=false;
       }
@@ -1853,7 +1853,7 @@ TriggerBossDrop() {
   }
 
 
-  if(IsBoss() ) for(new i=1;i<=GetMaxClients();i++)  {
+  if(IsBoss() ) for(new i=1;i<=MaxClients;i++)  {
     if(IsClientConnected(i))   if(IsClientInGame(i))   if(playerloaded[i]>=1)
     if(IsKilled(i))  {
       new boss=GetBoss(i);
@@ -1949,7 +1949,7 @@ TriggerBossDrop() {
             else
             {
               WCMessage(winner,"item dropped",winner,uitem.Item_Name);
-              for(new x=1;x<=GetMaxClients();x++)
+              for(new x=1;x<=MaxClients;x++)
               if(IsClientInGame(x) && (x!=winner))
               WCMessage(x,"item dropped back",x,winnername,uitem.Item_Name);
             }
@@ -1981,7 +1981,7 @@ TriggerBossDrop() {
               else
               {
                 WCMessage(winner,"item dropped",winner,uitem.Item_Name);
-                for(new x=1;x<=GetMaxClients();x++)
+                for(new x=1;x<=MaxClients;x++)
                 if(IsClientInGame(x) && (x!=winner))
                 WCMessage(x,"item dropped back",x,winnername,uitem.Item_Name);
               }

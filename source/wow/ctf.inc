@@ -93,7 +93,7 @@ public Action:CTFPick(Handle:timer, Handle:datapack)
     WritePackCell (dp,target);
     CreateTimer(0.1, CTFCarry, dp, TIMER_REPEAT);
     g_iCarry[target]=1;
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
     {
       if(IsClientInGame(x))
       {
@@ -280,7 +280,7 @@ stock CTFDrop(client,Float:location[3])
   decl String:name[255];
   GetClientName(client,name,sizeof(name));
   new team=GetClientTeam(client);
-  for(new x=1;x<=GetMaxClients();x++)
+  for(new x=1;x<=MaxClients;x++)
     {
     if(IsClientInGame(x))
     {
@@ -325,7 +325,7 @@ public Action:CTFDropTick(Handle:timer, Handle:datapack)
       new Handle:dp=CreateDataPack();
       WritePackCell (dp,target);
       CreateTimer(0.1, CTFCarry, dp, TIMER_REPEAT);
-      for(new x=1;x<=GetMaxClients();x++)
+      for(new x=1;x<=MaxClients;x++)
         if(IsClientInGame(x))
         {
           if(targetteam==2)
@@ -346,7 +346,7 @@ stock CTFReturn(team,client)
 {
   decl String:name[255];
   GetClientName(client,name,sizeof(name));
-  for(new x=1;x<=GetMaxClients();x++)
+  for(new x=1;x<=MaxClients;x++)
     if(IsClientInGame(x))
     {
       if(team==2)
@@ -435,7 +435,7 @@ stock StartCTFEvent() //Runs required commands, e.g roundtime, deathmatch, teamb
   new Handle:round=FindConVar("mp_roundtime");
   g_RoundTime=GetConVarFloat(round);
   SetConVarFloat(round, 6.0);
-  //for(new x=1;x<=GetMaxClients();x++)
+  //for(new x=1;x<=MaxClients;x++)
     //if(IsClientInGame(x))
       //WCMessage(x,"CTF Start",x);
   CloseHandle(round);
@@ -444,7 +444,7 @@ stock EndCTFEvent() //Ends required commands, e.g roundtime, deathmatch, teambal
 {
   new Handle:round=FindConVar("mp_roundtime");
   SetConVarFloat(round, g_RoundTime);
-  //for(new x=1;x<=GetMaxClients();x++)
+  //for(new x=1;x<=MaxClients;x++)
     //if(IsClientInGame(x))
       //WCMessage(x,"CTF Over",x);
   CloseHandle(round);
@@ -454,7 +454,7 @@ stock GiveScore(team)
   if(team==2)
   {
     g_iScore[0]+=1;
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
       if(IsClientInGame(x) && GetClientTeam(x)==2)
       {
         if(g_iScore[0]==g_iScore[1])
@@ -466,7 +466,7 @@ stock GiveScore(team)
       }
     if(g_iScore[0]>=3)
     {
-      for(new x=1;x<=GetMaxClients();x++)
+      for(new x=1;x<=MaxClients;x++)
         if(IsClientInGame(x))
           WCMessage(x,"Horde Victory",x,g_iScore[0],g_iScore[1]);
        //Add round ending etc. here
@@ -476,7 +476,7 @@ stock GiveScore(team)
   if(team==3)
   {
     g_iScore[1]+=1;
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
       if(IsClientInGame(x) && GetClientTeam(x)==3)
       {
         if(g_iScore[0]==g_iScore[1])
@@ -488,7 +488,7 @@ stock GiveScore(team)
       }
     if(g_iScore[0]>=3)
     {
-      for(new x=1;x<=GetMaxClients();x++)
+      for(new x=1;x<=MaxClients;x++)
         if(IsClientInGame(x))
           WCMessage(x,"Alliance Victory",x,g_iScore[1],g_iScore[0]);
       //Add round ending etc. here
@@ -500,18 +500,18 @@ stock GiveScore(team)
   if(g_iVictories>=5)
   {
     if(g_iScore[0]>g_iScore[1])
-      for(new x=1;x<=GetMaxClients();x++)
+      for(new x=1;x<=MaxClients;x++)
         if(IsClientInGame(x))
           WCMessage(x,"Horde End Victory",x,g_iScore[0],g_iScore[1]);
     if(g_iScore[1]>=g_iScore[0])
-      for(new x=1;x<=GetMaxClients();x++)
+      for(new x=1;x<=MaxClients;x++)
         if(IsClientInGame(x))
           WCMessage(x,"Alliance End Victory",x,g_iScore[1],g_iScore[0]);
   }
 }
 stock GiveReward() //Gives a reward based on your efforts throughout the match and how many points your team had
 {
-  for(new x=1;x<=GetMaxClients();x++)
+  for(new x=1;x<=MaxClients;x++)
   {
     if(IsClientInGame(x))
     {

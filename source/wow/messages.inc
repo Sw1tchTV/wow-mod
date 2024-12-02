@@ -83,7 +83,7 @@ AnnounceDropAll(client, String:iname[], rarity)  {
   decl String:name[30];
   GetClientName(client, name, 30);
   decl String:msg[200];
-  for(new i=1; i <= GetMaxClients(); i++)
+  for(new i=1; i <= MaxClients; i++)
   {
     if(!IsClientInGame(i))
       continue;
@@ -108,7 +108,7 @@ AnnounceDropAll(client, String:iname[])  {
   decl String:name[30];
   GetClientName(client, name, 30);
   decl String:msg[200];
-  for(new i=1; i <= GetMaxClients(); i++)
+  for(new i=1; i <= MaxClients; i++)
     if(IsClientInGame(i)) {
       Format(msg, sizeof(msg), "%T", "panel global an drop item", i, name, iname);
       panelMessage(i, "Epicz!!", msg);
@@ -239,7 +239,7 @@ public Action:UpdateNews(Handle:timer, any:nothing)
   decl String:text[300];
   decl String:title[30];
   decl String:line[50];
-  for(new i=1 ; i<=GetMaxClients(); i++)  {
+  for(new i=1 ; i<=MaxClients; i++)  {
     if (IsClientInGame(i))  {
       Format(title, sizeof(title), "%T", "Wc Tips", i);
       Format(line, sizeof(line), "Wc Tips Msg %s", Srand);
@@ -273,7 +273,7 @@ public Action:ManaTimer(Handle:timer, any:temp)
   {
     total=GetBosses(bosses);
   }
-  for(new x=1;x<=GetMaxClients();x++)
+  for(new x=1;x<=MaxClients;x++)
   {
     if(IsClientConnected(x)) if(IsClientInGame(x))
     {

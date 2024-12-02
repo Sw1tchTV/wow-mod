@@ -2353,7 +2353,7 @@ public CommCheck(Handle:db,Handle:query,String:error[],any:mailId)
 
 public Action:MailTimer(Handle:timer, any:client)
 {
-  if(G_MailTimer>GetMaxClients())
+  if(G_MailTimer>MaxClients)
     G_MailTimer=1;
   if(G_MailTimer==0)
     G_MailTimer=1;

@@ -295,7 +295,7 @@ enum Profession {
   Prof_InscrBonus2
 };
 
-float UserTemps[65][Temp];
+ float UserTemps[65] = Temp[];
 
 new String:g_sEventMessage[255]="";
 
@@ -634,13 +634,13 @@ public Action:CheckBlock(Handle:timer, any:nothing)   {
    }
    if(g_T2Queue<=2) {
       UnblockServer();
-      for(new i=1;i<=GetMaxClients();i++)
+      for(new i=1;i<=MaxClients;i++)
          if(IsClientInGame(i))
             WCMessage(i,"wc db loaded",i);
       return Plugin_Stop;
    }
    new perc=100-RoundToNearest(float(g_T2Queue)/float(g_T2QueueTotal)*70.0);
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i))
          WCMessage(i,"wc db loading",i,perc);
    return Plugin_Continue;
@@ -651,7 +651,7 @@ UnblockServer()   {
    if(tb!=INVALID_HANDLE)
       SetConVarBool(tb, true);
    CloseHandle(tb);
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i))
          EmitSoundToClient(i, "quake/play.wav");
    g_ServerPause=false;

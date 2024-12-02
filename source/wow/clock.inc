@@ -145,7 +145,7 @@ public Action:BotCreateAuction(Handle:timer, any:trash)
               else //no buyout, it could be a good one
                 CreateAuction(0,"Anonymous",iMin,0,uitem,1,false);
 
-              for(new x=1;x<=GetMaxClients();x++)
+              for(new x=1;x<=MaxClients;x++)
                 WCMessage(x,"item added auction",x,uitem.Item_Name, iMin);
             }
           }
@@ -159,7 +159,7 @@ public Action:BotCreateAuction(Handle:timer, any:trash)
 public Action:goldCycle(Handle:timer, any:trash)
 {
   //Get list of players
-  new players[GetMaxClients()];
+  new players[MaxClients];
   new amount = getActivePlayers(players);
   if(amount >= 1) { //TODO replace with 4
     new client = players[GetRandomInt(0,amount-1)];

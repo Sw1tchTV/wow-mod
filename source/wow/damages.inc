@@ -458,7 +458,7 @@ stock wcFatalDamageGO(attacker, victim, String:weapon[], damage=500, bool:headsh
 
 public FindEntScore()
 {
-    new maxplayers = GetMaxClients();
+    new maxplayers = MaxClients;
     new maxents = GetMaxEntities();
 
     decl String:classname[64];

@@ -168,7 +168,7 @@ public GetOwnedPet(client) {
   return g_ff_ownsPet[client];
 }
 public Action:RunesTimer(Handle:timer, any:trash) {
-  for(new client=1;client<=GetMaxClients(); client++)  {
+  for(new client=1;client<=MaxClients; client++)  {
     if(!IsClientInGame(client))
       continue;
     if(GetClass(client)!=8) {
@@ -1691,7 +1691,7 @@ stock wcRunTalent_8_AntiMagicZone(client)
 
   //Setting up effect
   new team=GetClientTeam(client);
-  new effid=CreateEffectData(client,team,aoe,RoundToNearest(location[0]),RoundToNearest(location[1]),RoundToNearest(location[2]),0,0,g_RoundCount);
+  new effid=CreateEffectData(client,team,aoe,RoundToNearest(location[0]),RoundToNearest(location[1]),RoundToNearest(location[2]),0,0,g_RoundCount,0);
   new Float:loc[3];
   GetClientAbsOrigin(client,loc);
   loc[2]+=25.0;

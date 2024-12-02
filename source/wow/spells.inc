@@ -245,7 +245,7 @@ public wcShowHM()
 
 public Action:VisualTimer(Handle:timer, any:temp)
 {
-  for(new x=1;x<=GetMaxClients();x++)
+  for(new x=1;x<=MaxClients;x++)
   if(IsClientConnected(x)) if(IsClientInGame(x)) if(IsPlayerAlive(x))  {
     SyncClientHpBar(x);
     /*VisualHP(x);*/
@@ -1695,7 +1695,7 @@ public Action:FrostNovaVisualEffect(Handle:timer, any:dp)
 {
   ResetPack(dp);
   new caster = ReadPackCell(dp);
-  if(caster <= 0 || caster > GetMaxClients()) {
+  if(caster <= 0 || caster > MaxClients) {
     LogError("[wc] Error: FrostNovaVisualEffect called with caster = %d", caster);
     return Plugin_Stop;
   }
@@ -3219,7 +3219,7 @@ ChooseTarget(client, first, second, spellid, race, String:title[])  {
   SetMenuExitBackButton(menu,true);
   SetMenuTitle(menu,title);
   decl String:buffer[5];
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   for (new i=1;i<=maxplayers;i++)
   {
     if(IsClientInGame(i))
@@ -5050,7 +5050,7 @@ CheckMaxStealth(client, bool:knife=false)
   new team=GetClientTeam(client);
   new team2;
 
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   new Float:loc2[3];
   new Float:distance=255.0;
   new Float:distance2;

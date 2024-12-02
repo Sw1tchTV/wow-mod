@@ -76,7 +76,7 @@ stock HNSWon(who) {
       players = "Nobody";
     case 2: players = "Everyone";
     case 1: {
-      for(new i=1; i<=GetMaxClients(); i++) {
+      for(new i=1; i<=MaxClients; i++) {
         if(IsClientConnected(i) && IsClientInGame(i) && GetClientTeam(i) == 3 && playerloaded[i] == 1 && IsPlayerAlive(i)) {
           decl String:name[10];
           GetClientName(i, name, sizeof(name));
@@ -85,7 +85,7 @@ stock HNSWon(who) {
       }
     }
   }
-  for(new i=1; i<=GetMaxClients(); i++) {
+  for(new i=1; i<=MaxClients; i++) {
     if(IsClientConnected(i) && IsClientInGame(i)) {
       if (StrEqual(players, "Nobody"))
         Format(players,sizeof(players),"%T","Nobody",i);
@@ -290,7 +290,7 @@ public Action:RunQuiz(client, args)
    SetMenuExitBackButton(g_hQuizMenu, false);
    SetMenuExitButton(g_hQuizMenu, false);
 	
-   for (new i=1;i<=GetMaxClients();i++) {
+   for (new i=1;i<=MaxClients;i++) {
 	 if(IsClientConnected(i))
 	     DisplayMenu(g_hQuizMenu, i, sec);
 	}
@@ -305,7 +305,7 @@ public Action:EndQuiz(Handle:timer, any:trash)
    UniqueItem uitem;
    if(g_quizItemId>0)
     GetItemProperties(uitem, g_quizItemId);
-   for(new i=1;i<=GetMaxClients();i++) {
+   for(new i=1;i<=MaxClients;i++) {
       if(IsClientConnected(i))   if(IsClientInGame(i)) {
          decl String:uAnswer[500],String:rAnswer[500];
          if (g_iQuizCAnswer[i] >= 0) {
@@ -346,7 +346,7 @@ public Action:EndQuiz(Handle:timer, any:trash)
          }
       }
    }
-   for(new i=1;i<=GetMaxClients();i++) {
+   for(new i=1;i<=MaxClients;i++) {
       if(IsClientConnected(i)) if(IsClientInGame(i))
          WCMessage(i,"Q total won",i,totalC,total);
    }
@@ -383,7 +383,7 @@ IsQuizInProgress() {
 
 GetBosses(indexes[]) {
    new total=0;
-   for(new x=1;x<=GetMaxClients();x++)
+   for(new x=1;x<=MaxClients;x++)
       if(IsClientConnected(x) && IsClientInGame(x))
       {
          if(GetBoss(x)>0)
@@ -451,7 +451,7 @@ ThreatTop(clients[],size)  {
       found=false;
       new max=-1;
       new maxC=0;
-      for(new i=1;i<=GetMaxClients();i++)
+      for(new i=1;i<=MaxClients;i++)
          if(IsClientInGame(i) && IsPlayerAlive(i) && (playerloaded[i]==1) && (GetBoss(i)==0)) {
             new bool:already=false;
             for(new y=0;y<amount;y++)
@@ -531,7 +531,7 @@ public ThreatPanelHandler(Handle:menu, MenuAction:action, client, slot)
 
 SendThreatPanel(duration) {
    new Handle:panel = BuildThreatTable();
-   for(new i=1;i<=GetMaxClients();i++)  {
+   for(new i=1;i<=MaxClients;i++)  {
       if(IsClientInGame(i) && (playerloaded[i]==1))   {
          if(IsThreatEnabled(i))  {
             CancelClientMenu(i);
@@ -557,7 +557,7 @@ new g_iThreatOngoing = -1;
 BossDamage()   {
   new online = PlayersOnline();
   new boss;
-  for(new i=1;i<=GetMaxClients();i++)  {
+  for(new i=1;i<=MaxClients;i++)  {
     if(IsClientInGame(i) && IsPlayerAlive(i) && (playerloaded[i]==1))
     if((boss = GetBoss(i)) > 0)  {
       KvRewind(wcbossdrop);
@@ -606,7 +606,7 @@ CheckEnrageChange(client, bool:stage)  {
 AnnounceEnrage(client)  {
   decl String:name[40];
   GetClientName(client, name, 40);
-  for(new i=1;i<=GetMaxClients(); i++)  {
+  for(new i=1;i<=MaxClients; i++)  {
     if(IsClientInGame(i))
       WCMessage(i, "announce enrage", i, name);
   }
@@ -659,7 +659,7 @@ BossShoot(boss, target, dmg)  {
 
 stock PlayersOnline()   {
    new amount=0;
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i))
          amount++;
    return amount;
@@ -703,7 +703,7 @@ EventMessage(const String:msg[])  {
   }
   else  {
     EventMessageClean();
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
       if(IsClientInGame(x))
         /*PlainMessage(x, "@lightgreenEvent @defaultis Over");*/
         WCMessage(x, "event is over", x);
@@ -715,7 +715,7 @@ EventMessageClean()  {
 }
 
 TellEvent() {
-   for(new x=1;x<=GetMaxClients();x++) {
+   for(new x=1;x<=MaxClients;x++) {
     if(IsClientInGame(x))
       PlainMessage(x, g_sEventMessage);
    }

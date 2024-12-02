@@ -11,7 +11,7 @@ public TeamWinXP(team)
   if ((team==2) || (team==3))
   {
     new players = PlayersInTeams(true);
-    new maxplayers=GetMaxClients();
+    new maxplayers=MaxClients;
     for(new x=1;x<=maxplayers;x++)
       if(IsClientInGame(x))
         if(GetClientTeam(x)==team)  {
@@ -26,7 +26,7 @@ public TeamWinXP(team)
 
 public LowLevelRound()
 {
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   for(new x=1;x<=maxplayers;x++)
     if(IsClientInGame(x))
     {
@@ -43,7 +43,7 @@ public LowLevelRound()
 
 public Action:HealingDoneXP(Handle:timer)
 {
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   for (new x=1;x<=maxplayers;x++)
     if(IsClientInGame(x) && (wcHealingDone[x]>0))
     {
@@ -63,7 +63,7 @@ public Action:HealingDoneXP(Handle:timer)
 
 public Action:RoundStats(Handle:timer)
 {
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   new dmg,hp,taken;
   for (new x=1;x<=maxplayers;x++)   {
    if(IsClientInGame(x) && (GetBoss(x)==0))   {
@@ -128,7 +128,7 @@ public Action:RoundStats(Handle:timer)
 
 public Action:DamageDoneXP(Handle:timer)
 {
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   for (new x=1;x<=maxplayers;x++) {
     if(IsClientInGame(x) && (wcDamageDone[x]>0))
     {
@@ -348,7 +348,7 @@ public Float:TeamRatio(team)
 {
   new ttotal;
   new cttotal;
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   for(new x=1;x<=maxplayers;x++)
   {
     if(IsClientInGame(x))
@@ -367,7 +367,7 @@ public Float:TeamRatio(team)
 
 stock PlayersInTeams(bool:ignoreBots=false)  {
   new total;
-  for(new x=1;x<=GetMaxClients();x++)
+  for(new x=1;x<=MaxClients;x++)
   {
     if(IsClientInGame(x))
     {
@@ -384,7 +384,7 @@ stock PlayersInTeams(bool:ignoreBots=false)  {
 
 stock getActivePlayers(players[])  {
   new total;
-  for(new x=1;x<=GetMaxClients();x++)
+  for(new x=1;x<=MaxClients;x++)
   {
     if(IsClientInGame(x))
     {

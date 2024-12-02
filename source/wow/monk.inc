@@ -458,7 +458,7 @@ public wcRunSpell_9_4_WindwalkerFistsofFury(spellid,race,client)
   GetClientAbsOrigin(client,location);
   EmitAmbientSound("wc/spells/fistsoffury.wav",location);
   new team=GetClientTeam(client);
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   new Float:loc2[3];
   new String:stargets[255];
   decl String:name2[255];
@@ -545,7 +545,7 @@ public wcRunSpell_9_4_MistweaverRevival(spellid,race,client)
   new Float:location[3];
   GetClientAbsOrigin(client,location);
   new team=GetClientTeam(client);
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   new String:stargets[255];
   new Float:loc2[3];
   new count=0;
@@ -668,7 +668,7 @@ public Action:FistsOfFuryRepeat(Handle:timer, any:effid)
   new Float:location[3];
   GetClientAbsOrigin(client,location);
   new team=GetClientTeam(client);
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   new Float:loc2[3];
   new String:stargets[255];
   decl String:name2[255];
@@ -1159,7 +1159,7 @@ wcRunTalent_9_Firebreath(client) //Breath of Fire
     GetClientAbsOrigin(client,location);
     new team=GetClientTeam(client);
     new team2;
-    new maxplayers=GetMaxClients();
+    new maxplayers=MaxClients;
     new Float:loc2[3];
     new Float:distance2;
     new String:stargets[255];
@@ -1502,7 +1502,9 @@ stock MonkUpliftEffect(Float: loc[3])  {
   loc1[2]=loc[2];
   loc1[2] += 25;
   for(new i=1;i<=15;i++)  {
-    VS_BeamRingPoint({loc[0], loc[1], loc[2] + i * 5}, 75.0 - i * 5.0, 1.0, g_ef_hydragutbeam, g_ef_hydragutbeam, 0, 1, 0.5,3.0, 0.0, {25, 75, 100, 255}, 255, 0, 0.0);
+	float loc_2_offset=loc[2] + i * 5;
+	float start_radius_offset=75.0 - i * 5.0;
+    VS_BeamRingPoint({loc[0], loc[1], loc_2_offset}, start_radius_offset, 1.0, g_ef_hydragutbeam, g_ef_hydragutbeam, 0, 1, 0.5,3.0, 0.0, {25, 75, 100, 255}, 255, 0, 0.0);
   }
 }
 
@@ -1587,7 +1589,7 @@ public resetSpar(client)
 {
   if (!g_bSpar[client])
     return;
-  for(new i=1;i<=GetMaxClients();i++)
+  for(new i=1;i<=MaxClients;i++)
     g_iSpar[client][i]=0.0;
   g_bSpar[client]=false;
 }
@@ -1595,7 +1597,7 @@ public decaySpar(client)
 {
   if(!g_bSpar[client])
     return;
-  for(new i=1;i<=GetMaxClients();i++)
+  for(new i=1;i<=MaxClients;i++)
   {
     g_iSpar[client][i] -= (0.001 + g_iSpar[client][i]) * 0.85;
     if(g_iSpar[client][i] < 0.0)
@@ -3342,7 +3344,7 @@ public Action:BurstTouchHook(entity, other){
       if(!IsEntityCollidable(other, false, false, true)){
         return Plugin_Continue;
       }
-      if (other <= GetMaxClients() && other >= 1)  {
+      if (other <= MaxClients && other >= 1)  {
         return Plugin_Continue;
       }
     }
@@ -3579,48 +3581,48 @@ GuardEffect(target) {
   }
   return 0;
 }
-stock RevivalEffect(target) {
-   new sprite = CreateEntityByName("env_smokestack");
-   if (IsValidEntity(sprite)) {
+//stock RevivalEffect(target) {
+   //new sprite = CreateEntityByName("env_smokestack");
+   //if (IsValidEntity(sprite)) {
       //Give client a target name
-      decl String:sTemp[30];
-      Format(sTemp,sizeof(sTemp),"player_%i",target);
-      DispatchKeyValue(target, "targetname", sTemp);
+      //decl String:sTemp[30];
+      //Format(sTemp,sizeof(sTemp),"player_%i",target);
+      //DispatchKeyValue(target, "targetname", sTemp);
 
 
-      DispatchKeyValue(sprite, "basespread", "50");
-      DispatchKeyValue(sprite, "spreadspeed", "5");
-      DispatchKeyValue(sprite, "speed", "50");
-      DispatchKeyValue(sprite, "startsize", "30");
-      DispatchKeyValue(sprite, "endsize", "31");
-      DispatchKeyValue(sprite, "rate", "200");
-      DispatchKeyValue(sprite, "jetlength", "20");
-      DispatchKeyValue(sprite, "twist", "30");
-
-      DispatchKeyValue(sprite, "angles", "0 0 180");
-      DispatchKeyValue(sprite, "rendercolor", "20 255 20");
-      DispatchKeyValue(sprite, "renderamt", "10");
-
-      DispatchKeyValue(sprite, "SmokeMaterial", "particle/fire.vmt");
-
-      DispatchKeyValue(sprite, "parentname", sTemp);
-
-      new Float:Client_Origin[3];
-      GetClientAbsOrigin(target,Client_Origin);
-      GetClientEyePosition(client, location);
-      Client_Origin[2]+=40;
-      DispatchKeyValueVector(sprite, "origin", Client_Origin);
-
-
-      DispatchSpawn(sprite);
-      SetVariantString(sTemp);
-      AcceptEntityInput(sprite, "SetParent", target, target, 0);
-      AcceptEntityInput(sprite, "TurnOn");
-      return sprite;
-	}
-   return 0;
-}
-
+   //   DispatchKeyValue(sprite, "basespread", "50");
+ //      DispatchKeyValue(sprite, "spreadspeed", "5");
+ //      DispatchKeyValue(sprite, "speed", "50");
+ //      DispatchKeyValue(sprite, "startsize", "30");
+ //      DispatchKeyValue(sprite, "endsize", "31");
+ //      DispatchKeyValue(sprite, "rate", "200");
+ //      DispatchKeyValue(sprite, "jetlength", "20");
+ //      DispatchKeyValue(sprite, "twist", "30");
+ //
+ //      DispatchKeyValue(sprite, "angles", "0 0 180");
+ //      DispatchKeyValue(sprite, "rendercolor", "20 255 20");
+ //      DispatchKeyValue(sprite, "renderamt", "10");
+ //
+ //      DispatchKeyValue(sprite, "SmokeMaterial", "particle/fire.vmt");
+ //
+ //      DispatchKeyValue(sprite, "parentname", sTemp);
+ //
+ //      new Float:Client_Origin[3];
+ //      GetClientAbsOrigin(target,Client_Origin);
+ //      GetClientEyePosition(client, location);
+ //      Client_Origin[2]+=40;
+ //      DispatchKeyValueVector(sprite, "origin", Client_Origin);
+ //
+ //
+ //      DispatchSpawn(sprite);
+ //      SetVariantString(sTemp);
+ //      AcceptEntityInput(sprite, "SetParent", target, target, 0);
+ //      AcceptEntityInput(sprite, "TurnOn");
+ //      return sprite;
+ //	}
+ //   return 0;
+ //}
+ 
 
 public wcRunTalent_9_Keg(client)
 {

@@ -145,7 +145,7 @@ public RoundStartEvent(Handle:event,const String:name[],bool:dontBroadcast)
     CTFStart(startloc,startloc2);
     PrintToChatAll("Got isctf");
   }
-  for(new client=1; client<=GetMaxClients(); client++) {
+  for(new client=1; client<=MaxClients; client++) {
     if(IsClientInGame(client))  {
       new team = GetClientTeam(client);
       if(team == 2 || team == 3)
@@ -165,20 +165,20 @@ public RoundStartEvent(Handle:event,const String:name[],bool:dontBroadcast)
 		/*DispatchKeyValue(g_iEnvBlood, "spawnflags", "13");*/
 		/*DispatchKeyValue(g_iEnvBlood, "amount", "1000");*/
 	/*}*/
-  for(new x=1;x<=GetMaxClients();x++)  {
+  for(new x=1;x<=MaxClients;x++)  {
     setOneRound(x,0);
     ClearTotems(x);
   }
   if(!StrEqual(g_sEventMessage, "", false))
     TellEvent();
   if(FUN_SERVER)  {
-   for(new x=1;x<=GetMaxClients();x++) {
+   for(new x=1;x<=MaxClients;x++) {
     if(IsClientInGame(x))
       PlainMessage(x, FUN_MESSAGE);
    }
   }
   if(((g_RoundCount % 5) == 0) && (g_newVersion))
-   for(new x=1;x<=GetMaxClients();x++) {
+   for(new x=1;x<=MaxClients;x++) {
     if(IsClientInGame(x))
       WCMessage(x,"Announce server new ver",x);
   }
@@ -189,7 +189,7 @@ CalculateAverageLevel()
 {
   new avg = 0;
   new apl = 0;
-  for(new x=1;x<=GetMaxClients();x++)
+  for(new x=1;x<=MaxClients;x++)
   {
     if(IsClientInGame(x))
     {
@@ -272,7 +272,7 @@ public RoundEndEvent(Handle:event,const String:name[],bool:dontBroadcast)
   if(IsBoss() || IsHNS())
   {
     TriggerBossDrop();
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
     {
       if(IsClientInGame(x))  {
         if((GetClientTeam(x)==3) && (GetBoss(x)>0))
@@ -312,7 +312,7 @@ RegMove()   {
 
 new Float:playerPoints[65][3];
 public Action:CheckMove(Handle:timer, any:trash)   {
-   for(new i=1;i<=GetMaxClients();i++)  {
+   for(new i=1;i<=MaxClients;i++)  {
       if(IsClientInGame(i) && IsPlayerAlive(i)) {
          decl Float:origin[3];
          GetClientAbsOrigin(i,origin);

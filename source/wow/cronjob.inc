@@ -135,7 +135,7 @@ public TCronNext(Handle:owner, Handle:query, const String:error[], any:data)
       if(servId != COMM_ID)
         Format(postfix, 35, "(On Another server: ID %d )", servId);
       
-      for(new i=1; i<= GetMaxClients(); i++)  {
+      for(new i=1; i<= MaxClients; i++)  {
         if(IsClientInGame(i))  {
           if(data==0)
             Format(type, 22, "%T", "Planned", i);

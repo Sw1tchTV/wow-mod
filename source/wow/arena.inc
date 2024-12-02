@@ -48,7 +48,7 @@ ArenaConfirmTeams(client)  {
    g_ArenaLocked=true;
    ChangeTimeLimit(false);
    CreateTimer(15.5,ArenaConfirmTimer,0);
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i))   {
          DisplayMenu(g_ArenaConfirmMenu,i,15);
          WCMessage(i,"arena confirm started",i);
@@ -59,7 +59,7 @@ public Action:ArenaConfirmTimer(Handle:timer, any:trash) {
    if(!CheckConfirms()) {
       g_ArenaLocked=false;
       ChangeTimeLimit(true);
-      for(new i=1;i<=GetMaxClients();i++)
+      for(new i=1;i<=MaxClients;i++)
          if(IsClientInGame(i))
             WCMessage(i,"arena confirm failed",i);
    }
@@ -67,13 +67,13 @@ public Action:ArenaConfirmTimer(Handle:timer, any:trash) {
       if(!CheckTeamsFull())   {
          g_ArenaLocked=false;
          ChangeTimeLimit(true);
-         for(new i=1;i<=GetMaxClients();i++)
+         for(new i=1;i<=MaxClients;i++)
             if(IsClientInGame(i))
                WCMessage(i,"arena confirm failed",i);
 
       }
       else  {
-         for(new i=1;i<=GetMaxClients();i++)
+         for(new i=1;i<=MaxClients;i++)
             if(IsClientInGame(i))
                WCMessage(i,"arena confirm done",i);
          g_ArenaLocked=true;
@@ -167,7 +167,7 @@ public ArenaConfirmHandle(Handle:menu,MenuAction:action,client,slot) {
          name="Disconnected Player";
       new team;
       if(FindArenaMember(client,team)>=0)
-         for(new i=1;i<=GetMaxClients();i++)
+         for(new i=1;i<=MaxClients;i++)
             if(IsClientInGame(i))
                WCMessage(i,"arena confirm declined",i,name);
    }
@@ -195,7 +195,7 @@ RandomizeTeams()  {
       return;
    new players[65];
    new y=0;
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i) && (playerloaded[i]==1))
          players[y++]=i;
    decl bool:swapped;
@@ -321,7 +321,7 @@ AnnounceLeader()  {
       else
          GetClientName(g_ArenaLeader,name,sizeof(name));
       }
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i))
          WCMessage(i,"new arena leader",i,name);
 }
@@ -361,7 +361,7 @@ public BreakArena(team)  {
    if(!g_ArenaLocked)
       return;
    g_ArenaLocked=false;
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i))
          WCMessage(i,"arena broke",i);
    FinishArena(team);
@@ -377,17 +377,17 @@ FinishArena(team)  {
    Format(sTeam,sizeof(sTeam),"Unknown");
    if(team==2) {
       Format(sTeam,sizeof(sTeam),"Horde");
-      for(new i=1;i<=GetMaxClients();i++)
+      for(new i=1;i<=MaxClients;i++)
          if(IsClientInGame(i))
             EmitSoundToClient(i, "wc/arena/HordeWin.wav");
    }
    if(team==3) {
       Format(sTeam,sizeof(sTeam),"Alliance");
-      for(new i=1;i<=GetMaxClients();i++)
+      for(new i=1;i<=MaxClients;i++)
          if(IsClientInGame(i))
             EmitSoundToClient(i, "wc/arena/AliianceWin.wav");
    }
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i))
          WCMessage(i,"arena team won",i,sTeam,g_ArenaPoints[team-2]);
    for(new i=0;i<2;i++)
@@ -412,12 +412,12 @@ stock GiveArenaPoints(client,points, bool:cast=false)   {
       decl String:name[30];
       GetClientName(client,name,sizeof(name));
       if(points < 0) {
-         for(new i=1;i<=GetMaxClients();i++)
+         for(new i=1;i<=MaxClients;i++)
             if(IsClientInGame(i))
                WCMessage(i,"arena lost points", i, -points, name);
       }
       else  {
-         for(new i=1;i<=GetMaxClients();i++)
+         for(new i=1;i<=MaxClients;i++)
             if(IsClientInGame(i))
                WCMessage(i,"arena gained points", i, points, name);
       }
@@ -435,7 +435,7 @@ StopArena() {
 }
 
 public CancelArena() {
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i))
          WCMessage(i,"arena cancelled",i);
    StopArena();
@@ -444,7 +444,7 @@ public CancelArena() {
 CheckForLeader()  { //recoded to compare ratings instead of level
    new Float:maxLevel = GetPlayerRating(g_ArenaLeader);
    new bool:changed=false;
-   for(new i=1;i<=GetMaxClients();i++) {
+   for(new i=1;i<=MaxClients;i++) {
       if((IsClientInGame(i)) && (playerloaded[i]==1) )   {
          new Float:level=GetPlayerRating(i);
          if(GetAdminFlag(GetUserAdmin(i), Admin_Custom6))
@@ -464,7 +464,7 @@ FindNewLeader(client)   {
    g_ArenaLeader=0;
    new Float:maxLevel = -1.0;
    new bool:changed=false;
-   for(new i=1;i<=GetMaxClients();i++) {
+   for(new i=1;i<=MaxClients;i++) {
       if((IsClientInGame(i)) && (playerloaded[i]==1) && (i!=client) )   {
          new Float:level=GetPlayerRating(i);
          if(GetAdminFlag(GetUserAdmin(i), Admin_Custom6))
@@ -803,7 +803,7 @@ public ArenaManageTeamSlot(client,team,slot)  {
    decl String:buffer[255];
    Format(buffer,sizeof(buffer),"%i %i 0",team,slot);
    AddMenuItem(menu_arena,buffer,line);
-   for(new i=1;i<=GetMaxClients();i++)   {
+   for(new i=1;i<=MaxClients;i++)   {
       if(IsClientInGame(i))
          if(IsClientAuthorized(i))
          {
@@ -872,7 +872,7 @@ public ArenaManageTeamSlotHandle(Handle:menu,MenuAction:action,client,slot)
 }
 
 StartCounting()   {
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i))
          EmitSoundToClient(i, "wc/arena/countdown.wav");
    CreateTimer(20.0, CountingEnd, 0);
@@ -882,7 +882,7 @@ public Action:CountingEnd(Handle:timer, any:trash) {
    if(!CheckTeamsFull())   {
       CancelArena();
    }
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i))
          EmitSoundToClient(i, "quake/play.wav");
    StartArena();
@@ -896,7 +896,7 @@ StartArena()   {
    g_ArenaTeamsWon[0]=0;
    g_ArenaTeamsWon[1]=0;
    CreateTimer(4.0, RestartRound, 0);
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i))
          WCMessage(i,"arena is started",i);
 }
@@ -926,21 +926,21 @@ ArenaRoundEnd(team)  {
    }
    if (g_ArenaRound>0)  if((team>=2) && (team<4))
       g_ArenaTeamsWon[team-2]++;
-   for(new i=1;i<=GetMaxClients();i++)
+   for(new i=1;i<=MaxClients;i++)
       if(IsClientInGame(i) && (!StrEqual(faction, "Unknown")))   {
          WCMessage(i,"arena round end",i,g_ArenaRound, faction);
          WCMessage(i,"arena scores",i, g_ArenaTeamsWon[0],g_ArenaTeamsWon[1]);
       }
    if(pass) {
       if(g_ArenaRound==0)
-         for(new i=1;i<=GetMaxClients();i++)
+         for(new i=1;i<=MaxClients;i++)
             if(IsClientInGame(i))
                WCMessage(i,"arena round finish 0",i);
       g_ArenaRound++;
    }
    else
       if(g_ArenaRound==0)
-         for(new i=1;i<=GetMaxClients();i++)
+         for(new i=1;i<=MaxClients;i++)
             if(IsClientInGame(i))
                WCMessage(i,"arena round still 0",i);
    for(new i=0;i<2;i++) {

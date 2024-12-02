@@ -3627,7 +3627,7 @@ stock GetNearestPlayers(team, Float:location[3],Float:distance, clients[], max)
   new amount=0;
 
   //Get array of possible clients
-  for(new i=1;i<=GetMaxClients();i++)  {
+  for(new i=1;i<=MaxClients;i++)  {
     if(IsClientInGame(i))
       if(IsPlayerAlive(i) && (GetClientTeam(i)==team))  {
         new Float:loc2[3];
@@ -7588,7 +7588,7 @@ stock GetPlayerChain(client, team, Float:loc[3], Float:distance, length, people[
       case 3: est=   0.0;
     }
     WCMessage(client,"testmessage",client,"length",i);
-    for(new j=1;j<=GetMaxClients();j++)
+    for(new j=1;j<=MaxClients;j++)
     {
       skip=false;
       if (IsClientInGame(j))

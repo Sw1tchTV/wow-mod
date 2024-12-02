@@ -256,7 +256,7 @@ public Action:SayCommand(index,argc)
       PrepareCP(index, "gold");
       decl String:name[30];
       GetClientName(index, name, sizeof(name));
-      for(new x=1;x<=GetMaxClients();x++)
+      for(new x=1;x<=MaxClients;x++)
       if(IsClientConnected(x))
       if(IsClientInGame(x))
       WCMessage(x,"used X chat cmd donate",x, name, command);
@@ -885,7 +885,7 @@ public Action:BombDefuseEvent(Handle:event,const String:name[],bool:dontBroadcas
 public Action:HostageRescueEvent(Handle:event,const String:name[],bool:dontBroadcast)
 {
   new client=GetClientOfUserId(GetEventInt(event,"userid"));
-  if(client<1 || client > GetMaxClients())
+  if(client<1 || client > MaxClients)
   return Plugin_Continue;
   new level=GetLevel(client);
   new xp=RoundToNearest(10+level*EXP_HOSTAGE_RESCUED*GLOBAL_XP*GetTempVar(client, Temp.Temp_XPRate));
@@ -1158,7 +1158,7 @@ dealExtraHit(attacker, victim, damage, String:weaponname[], String:source[])
 public Action:PlayerReloadEvent(Handle:event,const String:name[],bool:dontBroadcast)
 {
   new userid=GetClientOfUserId(GetEventInt(event,"userid"));
-  if((userid>0) && (userid<=GetMaxClients()))
+  if((userid>0) && (userid<=MaxClients))
   {
     ClientClip[userid][2]=0;
   }
@@ -1179,7 +1179,7 @@ public OnGameFrame()
   BotTimer();
   if(IsBoss())
   {
-    for(new i=1;i<=GetMaxClients();i++)
+    for(new i=1;i<=MaxClients;i++)
     {
       if(IsClientInGame(i))
       if(IsPlayerAlive(i) && (!IsFakeClient(i)))
@@ -1192,7 +1192,7 @@ public OnGameFrame()
   }
   else
   {
-    for(new i=1;i<=GetMaxClients();i++)
+    for(new i=1;i<=MaxClients;i++)
     {
       if(IsClientInGame(i))
       if(IsPlayerAlive(i) && (!IsFakeClient(i)))
@@ -1300,8 +1300,8 @@ public Action:TraceAttack(client, &attacker, &inflictor, &Float:damage, &damaget
   }
   if(wcKillHandled)
   return Plugin_Continue;
-  //if((attacker>0) && (attacker<=GetMaxClients()+1))
-  if((attacker>0) && (attacker<=GetMaxClients()))
+  //if((attacker>0) && (attacker<=MaxClients+1))
+  if((attacker>0) && (attacker<=MaxClients))
   {
     if(UnableToAttack[attacker] || IsPolymorphed(attacker))
     {
@@ -1474,14 +1474,14 @@ public HeroicModChanged(Handle:g_BossMod2, const String:oldValue[], const String
   new newv=StringToInt(newValue);
   if(!IsHeroic() && (newv==1))
   {
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
     if(IsClientInGame(x))
     WCMessage(x,"Announce Heroic",x);
     SetHeroic(true);
   }
   if((newv==0) && IsHeroic())
   {
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
     if(IsClientInGame(x))
     WCMessage(x,"Announce Heroic0",x);
     SetHeroic(false);
@@ -1492,14 +1492,14 @@ public TreasureHuntChanged(Handle:g_BossMod2, const String:oldValue[], const Str
   new oldv=StringToInt(oldValue),newv=StringToInt(newValue);
   if((oldv==0) && (newv==1))
   {
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
     if(IsClientInGame(x))
     WCMessage(x,"Announce Treasure Hunt",x);
     SetTreasureHunt(true);
   }
   if((newv==0) && (oldv==1))
   {
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
     if(IsClientInGame(x))
     WCMessage(x,"Announce Treasure Hunt0",x);
     SetTreasureHunt(false);
@@ -1510,14 +1510,14 @@ public CtfChanged(Handle:g_BossMod2, const String:oldValue[], const String:newVa
   new oldv=StringToInt(oldValue),newv=StringToInt(newValue);
   if((oldv==0) && (newv==1))
   {
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
     if(IsClientInGame(x))
     WCMessage(x,"Announce Ctf",x);
     SetCtf(true);
   }
   if((newv==0) && (oldv==1))
   {
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
     if(IsClientInGame(x))
     WCMessage(x,"Announce Ctf0",x);
     SetCtf(false);
@@ -1535,7 +1535,7 @@ public BossModChanged(Handle:g_BossMod2, const String:oldValue[], const String:n
     g_RoundTime=GetConVarFloat(round);
     SetConVarFloat(round, 9.0);
     CloseHandle(round);
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
     if(IsClientInGame(x))
     WCMessage(x,"Announce Boss",x);
     SetBossGlobal(true);
@@ -1545,7 +1545,7 @@ public BossModChanged(Handle:g_BossMod2, const String:oldValue[], const String:n
     new Handle:round=FindConVar("mp_roundtime");
     SetConVarFloat(round, g_RoundTime);
     new totalxp;
-    for(new x=1;x<=GetMaxClients();x++)
+    for(new x=1;x<=MaxClients;x++)
     if(IsClientInGame(x))
     {
       WCMessage(x,"Announce Boss0",x);
@@ -1563,7 +1563,7 @@ public BossModChanged(Handle:g_BossMod2, const String:oldValue[], const String:n
     if(totalxp>0)
     {
       CreateTimer(60.0,GiveXpTimer,totalxp);
-      for(new x=1;x<=GetMaxClients();x++)
+      for(new x=1;x<=MaxClients;x++)
       if(IsClientInGame(x))
       WCMessage(x,"60 sec for xp",x,totalxp);
     }
@@ -1594,7 +1594,7 @@ public Action:TransmitHpBarHook(entity, client) {
   if(IsClientInGame(client))  {
     //Seach if entity is a hp bar
     new bool:found=false;
-    for(new i=1; i<=GetMaxClients();i++)  {
+    for(new i=1; i<=MaxClients;i++)  {
       if(entity == g_eHp[i])  {
         found=true;
         /*PrintToServer("found entity %d owner %d", entity, i);*/
@@ -1656,7 +1656,7 @@ public Action:SetTransmitHook(entity, client) {
 
 stock bool:IsClientConnectedIngameAlive(client) {
   if(client < 1)  return false;
-  if(client > GetMaxClients())  return false;
+  if(client > MaxClients)  return false;
   if(!IsClientInGame(client)) return false;
   if(!IsPlayerAlive(client))  return false;
   return true;

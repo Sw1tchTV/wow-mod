@@ -1323,7 +1323,7 @@ bool:CheckPlayerBox(Float:bottom[3],Float:start[3],client)  {
 
 
 stock bool:PushPlayerTowardsPlayer(client, player, Float:power, Float:zModifier=0.0) {
-  if(client <= 0 || client > GetMaxClients() || (!IsPlayerAlive(client)) )
+  if(client <= 0 || client > MaxClients || (!IsPlayerAlive(client)) )
   return false;
   new Float:clientLoc[3],Float:targetLoc[3];
   GetClientAbsOrigin(player,targetLoc);
@@ -1337,7 +1337,7 @@ stock bool:PushPlayerTowardsPlayer(client, player, Float:power, Float:zModifier=
 }
 
 stock bool:PushPlayerAwayPlayer(client, player, Float:power, Float:zModifier=0.0) {
-  if(client <= 0 || client > GetMaxClients() || (!IsPlayerAlive(client)) )
+  if(client <= 0 || client > MaxClients || (!IsPlayerAlive(client)) )
   return false;
   new Float:clientLoc[3],Float:targetLoc[3];
   GetClientAbsOrigin(player,targetLoc);
@@ -2309,7 +2309,7 @@ public Float:GetDistanceBetween(const Float:startvec[3],const Float:endvec[3])
 stock GetNearClients(const String:matchstr[],Float:location[3],clients[],Float:distance, bool:ignoreWall=true )
 {
   new count=0;
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   new Float:loc2[3];
   if(StrEqual(matchstr,"@all",false))
   {
@@ -2417,7 +2417,7 @@ GetNearestClient(const String:matchstr[],Float:location[3],Float:distance, self=
 {
   new target=0;
   new Float:closest=distance;
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   new Float:loc2[3];
   if(StrEqual(matchstr,"@all",false))
   {
@@ -2528,7 +2528,7 @@ public GetNearestDead(const String:matchstr[],Float:location[3],Float:distance)
 {
   new target=0;
   new Float:closest=distance;
-  new maxplayers=GetMaxClients();
+  new maxplayers=MaxClients;
   new Float:loc2[3];
   if(StrEqual(matchstr,"@all",false))
   {
@@ -2770,7 +2770,7 @@ stock GetAimTarget(client,Float:value, bool:smartHeal=false, bool:ignoreHP=false
   new targetPriority=0;
   if(smartHeal)
   target=0;
-  if((target>0)&&(target<=GetMaxClients()))
+  if((target>0)&&(target<=MaxClients))
   if(IsClientConnected(target))
   if(IsClientInGame(target) && IsPlayerAlive(target) && (! (IsMageInvis(target) || IsInvisible(target))))
   if(!HasStealth(target) || GetStealth(target) > 50 || smartHeal)
@@ -2778,7 +2778,7 @@ stock GetAimTarget(client,Float:value, bool:smartHeal=false, bool:ignoreHP=false
   new Float:angelrec[2],Closest;
   angelrec[0]=181.0;
   angelrec[1]=181.0;
-  for(new x=1;x<=GetMaxClients();x++)
+  for(new x=1;x<=MaxClients;x++)
   if(IsClientConnected(x) && IsClientInGame(x) && IsPlayerAlive(x)) if(x!=client)
   {
     //check for same teams for smartheal only
@@ -2856,13 +2856,13 @@ public bool:AimTargetFilter(entity,mask)
 }
 
 public bool:WallTargetFilter(entity,mask) {
-  return !(entity>0 && entity <= GetMaxClients());
+  return !(entity>0 && entity <= MaxClients);
 }
 
 
 public bool:NoPlayerFilter(entity,mask)
 {
-  return !(entity <= GetMaxClients() && entity > 0);
+  return !(entity <= MaxClients && entity > 0);
 }
 
 public bool:AimTargetFilter2(entity,mask)

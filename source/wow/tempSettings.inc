@@ -22,7 +22,7 @@ ResetNewbie(client) {
 public Action:NewbieTimer(Handle:timer, any:id)
 {
   new pass=0;
-  for(new i=1; i<=GetMaxClients(); i++)
+  for(new i=1; i<=MaxClients; i++)
     if(playerids[i]==id)
       pass=i;
   if(pass<=0)
@@ -39,7 +39,7 @@ new Slide:g_ff_prerunSlide[65];
 public Action:SlideTimer(Handle:timer, any:id)
 {
   new pass=0;
-  for(new i=1; i<=GetMaxClients(); i++)
+  for(new i=1; i<=MaxClients; i++)
     if(playerids[i]==id)
       pass=i;
   if(pass<=0)
