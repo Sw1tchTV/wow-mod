@@ -103,12 +103,12 @@ GetItemsFromItem(item, Setitems[], size) {
   new setsAmount = GetSets(item,sets, sizeof(sets));
   new itemsAmount=0;
   while ( (setsAmount >= 1) && (itemsAmount < size) ) {
-    new curSet = sets.setsAmount;
+    new curSet = sets[setsAmount];
     setsAmount--;
     new curItems[200];
     new curItemsAmount = GetItemsOfSet (curSet, curItems, sizeof(curItems));
     for (new x=curItemsAmount;x>0;x--) {
-      Setitems.itemsAmount = curItems [x];
+      Setitems[itemsAmount] = curItems [x];
       itemsAmount++;
       if (itemsAmount >= size) break;
     }
@@ -133,11 +133,11 @@ GetSets(itemId, sets[], size) {
     while((StringID>=0) && (amount-1 < size))
     {
         amount++;
-        new StringID2=BreakString(Ssets.StringID, Stemp, sizeof(Stemp));
+        new StringID2=BreakString(Ssets[StringID], Stemp, sizeof(Stemp));
         StringID+=StringID2;
         if(StringID2==-1)
           StringID=-1;
-        sets.amount=StringToInt(Stemp);
+        sets[amount]=StringToInt(Stemp);
     }
   }
   return amount;
@@ -150,22 +150,22 @@ GetItemsOfSet(set, setitems[], size) {
   KvGetString(wcsets,Stemp,Sset,sizeof(Sset),"0");
   new StringID=BreakString(Sset, Stemp, sizeof(Stemp));
   new Iamount = 1;
-  setitems.Iamount=StringToInt(Stemp);
+  setitems[Iamount]=StringToInt(Stemp);
   while((StringID>=0) && ((Iamount - 1) < size))
   {
     Iamount++;
-    new StringID2=BreakString(Sset.StringID, Stemp, sizeof(Stemp));
+    new StringID2=BreakString(Sset[StringID], Stemp, sizeof(Stemp));
     StringID+=StringID2;
     if(StringID2==-1)
       StringID=-1;
-    setitems.Iamount=StringToInt(Stemp);
+    setitems[Iamount]=StringToInt(Stemp);
   }
   return Iamount;
 }
 
 BasicRoll (setitems[], size) {
   new rolled=GetRandomInt(0,size-1);
-  return setitems.rolled;
+  return setitems[rolled];
 }
 
 stock GetItemMessage(itemId,String:message[],size) {
@@ -192,7 +192,7 @@ public Action:ItemsUpdater(Handle:timer, any:trash)  {
     g_lastItemUpdate=0;
     return Plugin_Continue;
   }
-  UniqueItem item;
+  new item[UniqueItem];
   GetArrayArray(g_itemsArray, g_lastItemUpdate, item[0]);
   new Float:fTemp = item.Item_LastUsage;
   if( (fTemp+1200.0) < GetEngineTime() )  {
@@ -214,16 +214,16 @@ ReloadUniqueItem(itemId)  {
 }
 
 stock GetCharUnique(client, slot) {
-  return wcUsers2.client.slot;
+  return wcUsers2[client][slot];
 }
 
 stock SetCharUnique(client, slot, value)  {
   CheckUnique(value, client);
-  wcUsers2.client.slot=value;
+  wcUsers2[client][slot]=value;
 }
 
 stock GetInvUnique(client, slot)  {
-  return wcUsers2.client.slot+50;
+  return wcUsers2[client][slot]+50;
 }
 
 stock SetInvUnique(client, slot, value) {
@@ -232,7 +232,7 @@ stock SetInvUnique(client, slot, value) {
     value=0;
   }
   CheckUnique(value, client);
-  wcUsers2.client.slot+50=value;
+  wcUsers2[client][slot]+50=value;
 }
 
 LoadUniqueItem(id)  {

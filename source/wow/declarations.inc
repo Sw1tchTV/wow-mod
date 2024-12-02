@@ -247,75 +247,75 @@ new g_ef_train;
 //pain suppression
 new g_ef_rollermine;
 
-enum struct UniqueItem
+enum UniqueItem
 {
-  int Item_id;
+  Item_id,
 
-  int Item_defId;
-  float Item_version;
-  int Item_class;
-  int Item_level;  //Required level to equip
-  int Item_ilevel; //True item level
-  int Item_cost;
-  int Item_honor;
-  int Item_quality;
-  int Item_category;
-  int Item_2hand;
+  Item_defId,
+  Item_version,
+  Item_class,
+  Item_level,  //Required level to equip
+  Item_ilevel, //True item level
+  Item_cost,
+  Item_honor,
+  Item_quality,
+  Item_category,
+  Item_2hand,
 
-  int Item_reqstr;
-  int Item_reqagi;
-  int Item_reqsta;
-  int Item_reqint;
+  Item_reqstr,
+  Item_reqagi,
+  Item_reqsta,
+  Item_reqint,
 
-  int Item_str;
-  int Item_agi;
-  int Item_sta;
-  int Item_int;
-  int Item_res;
-  int Item_regen;
-  int Item_ai;
-  int Item_haste;
+  Item_str,
+  Item_agi,
+  Item_sta,
+  Item_int,
+  Item_res,
+  Item_regen,
+  Item_ai,
+  Item_haste,
 
-  int Item_gold;
-  int Item_forGold;
-  int Item_noTrade;
+  Item_gold,
+  Item_forGold,
+  Item_noTrade,
 
-  float Item_as;
-  float Item_cs;
-  float Item_speed;
-  float Item_acc;
-  float Item_parry;
+  Item_as,
+  Item_cs,
+  Item_speed,
+  Item_acc,
+  Item_parry,
 
-  int Item_resilence;
-  int Item_armor;      //Non weapon
-  int Item_armor_type; //1 Cloth; 2 Leather; 3 Plate; 0 None
+  Item_resilence,
+  Item_armor,      //Non weapon
+  Item_armor_type, //1 Cloth, 2 Leather, 3 Plate, 0 None
 
   //Weapon settings
-  int Item_weapon_ap; //Weapon attack power
-  int Item_weapon_sp; //Weapon spell power
-  float Item_ws;  //Weapon speed
-  int Item_damage;    //Bonus attack power
-  int Item_spelldmg;  //Bonus spell power
-  int Item_effect;    //On-hit effect
+  Item_weapon_ap, //Weapon attack power
+  Item_weapon_sp, //Weapon spell power
+  Item_ws,  //Weapon speed
+  Item_damage,    //Bonus attack power
+  Item_spelldmg,  //Bonus spell power
+  Item_effect,    //On-hit effect
 
-  char Item_Name[50];
-  char Item_Descr[70];
+  Item_Name,
+  Item_Descr,
 
   //Unique specific
-  int Item_owner;
-  int Item_EnchBit;
+  Item_owner,
+  Item_EnchBit,
 
   //Server specific
-  float Item_LastUpdate;
-  float Item_LastUsage;
+  Item_LastUpdate,
+  Item_LastUsage,
 
   //Only for standard
-  char Item_message[50];
-  int Item_use;
-  int Item_amount;
-  int Item_justice;
-  int Item_valor;
-}
+  Item_message,
+  Item_use,
+  Item_amount,
+  Item_justice,
+  Item_valor
+};
 
 //DK effect models
 new AMSSprite;
