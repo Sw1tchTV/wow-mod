@@ -324,7 +324,6 @@ new g_gHealth[65]; //Game Health tracker
 
 //Arena variables
 new bool:bArenaActive=false;
-new arenaTeams[65]=0;
 new arenaTeams[65];
 new g_ArenaLeader;
 
