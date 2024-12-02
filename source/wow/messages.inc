@@ -485,7 +485,7 @@ public Action:ManaTimer(Handle:timer, any:temp)
 }
 
 new String:aMsg[5][400],String:vMsg[5][400];
-new bool:affMsg[5]=false;
+new bool:affMsg[5];
 new bool:aMsgEx[5],bool:vMsgEx[5];
 new aMsgClient[5],vMsgClient[5];
 new EMsgId=0;

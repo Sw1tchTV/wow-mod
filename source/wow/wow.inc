@@ -325,6 +325,7 @@ new g_gHealth[65]; //Game Health tracker
 //Arena variables
 new bool:bArenaActive=false;
 new arenaTeams[65]=0;
+new arenaTeams[65];
 new g_ArenaLeader;
 
 new g_RoundCount=-2;
@@ -430,7 +431,7 @@ new wcClientAbsorb[65],wcManaShield[65];
 // seal store
 
 //Magic damage bullets
-new bool:bMagicDamage[65]=false;
+new bool:bMagicDamage[65];
 
 // Stores location of client's corpse
 new Float:vClientCorpse[65][3];
@@ -439,9 +440,9 @@ new Float:vClientCorpse[65][3];
 new bool:bCombustion[65];
 
 // Parry
-new Float:g_fParryReduce[65]=0.0;
+new Float:g_fParryReduce[65];
 new Float:g_iSpar[65][65];
-new bool:g_bSpar[65]=false;
+new bool:g_bSpar[65];
 
 new g_iDispatch[65];
 new g_iNecrotic[65];

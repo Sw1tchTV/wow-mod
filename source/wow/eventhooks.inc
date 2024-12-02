@@ -339,7 +339,7 @@ PlayerMoved(client)  {
 
 public GetFrags(client)
 {
-    new g_i_frags = FindDataMapOffs(client, "m_iFrags");
+    new g_i_frags = FindDataMapInfo(client, "m_iFrags");
     if (g_i_frags != -1)
     {
         return GetEntData(client, g_i_frags);
@@ -350,7 +350,7 @@ public GetFrags(client)
 
 public SetFrags(client, frags)
 {
-    new g_i_frags = FindDataMapOffs(client, "m_iFrags");
+    new g_i_frags = FindDataMapInfo(client, "m_iFrags");
     if (g_i_frags != -1)
     {
         SetEntData(client, g_i_frags, frags);

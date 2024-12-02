@@ -237,7 +237,7 @@ public IsPlayerOnline(charId)
 public UniqueID2(client)
 {
   new String:output[32];
-  new bool:exists=GetClientAuthString(client,output,32);
+  new bool:exists=GetClientAuthId(client,output,32);
   if(exists)
   {
     if(StrEqual(output,"BOT",true))
@@ -276,7 +276,7 @@ public UniqueID(client)
 {
   new ret=0;
   new String:output[32];
-  new bool:exists=GetClientAuthString(client,output,32);
+  new bool:exists=GetClientAuthId(client,output,32);
   if(exists)   if(!StrEqual("STEAM_ID_LAN",output))
   {
     if(IsFakeClient(client) || StrEqual(output,"BOT",true))

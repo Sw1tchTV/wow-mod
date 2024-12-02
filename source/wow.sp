@@ -32,7 +32,7 @@ new offsSpeed;
 #define MAX_TREASURE_SPAWNS      256
 #define MAX_TREASURE               5  //max # of active treasure chests
 new String:g_TreasureSpawnName[32];
-new bool:g_occupiedTreasureSpawns[MAX_TREASURE_SPAWNS]=false;
+new bool:g_occupiedTreasureSpawns[MAX_TREASURE_SPAWNS];
 new bool:g_AreWeSpawningTreasure = false;
 new g_TreasureMenuOccupiedByClient=0;
 new Handle:hTreasureSpawnMenu=INVALID_HANDLE;
@@ -116,7 +116,7 @@ public OnPluginStart()
   PrintToServer("Initializing MySQL database");
   InitMySQL(); // Initializes the SQL database
   PrintToServer("Initializing online clients");
-  for (new x=1;x<=GetMaxClients();x++)
+  for (new x=1;x<=MaxClients;x++)
   {
     if (IsClientInGame(x))
       Initialize(x);
@@ -127,11 +127,11 @@ public OnPluginStart()
   PrintToServer("Some more offsets and commands…");
   // increase speed
   offsSpeed=FindSendPropInfo("CBasePlayer","m_flLaggedMovementValue");
-  g_iOffs_ActiveWeapon = FindSendPropOffs("CBasePlayer","m_hActiveWeapon");
+  g_iOffs_ActiveWeapon = FindSendPropInfo("CBasePlayer","m_hActiveWeapon");
   g_vOffs_Punch = FindSendPropInfo("CCSPlayer",
                         "m_vecPunchAngle");
   //FindSendPropOffs("CCSPlayer","m_vecPunchAngle");
-  g_iOffs_NextPrimaryAttack = FindSendPropOffs("CBaseCombatWeapon","m_flNextPrimaryAttack");
+  g_iOffs_NextPrimaryAttack = FindSendPropInfo("CBaseCombatWeapon","m_flNextPrimaryAttack");
   // end of increase speed
   convar_friendlyfire=FindConVar("mp_friendlyfire");
   //boss setting
@@ -300,7 +300,7 @@ public OnClientDisconnect(index)
 public OnPluginEnd()
 {
   if(G_RebootTotal==0)
-  for (new x=1;x<=GetMaxClients();x++)
+  for (new x=1;x<=MaxClients;x++)
   {
     if (IsClientInGame(x))
     {

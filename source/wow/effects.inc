@@ -2078,7 +2078,7 @@ public Action:RemoveSparksEffect(Handle:timer, Handle:datapack)
   wcClientSparks[client]=false;
   return Plugin_Stop;
 }
-new g_iShieldStackOld[65]=-1;
+new g_iShieldStackOld[65]={-1, ... };
 public Effect5(client,&damage,attacker)
 {
   if(0>g_iShieldStackOld[client])
