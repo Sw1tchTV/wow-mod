@@ -1495,19 +1495,6 @@ stock MonkRenewingMistEffect(Float: loc[3])  {
   VS_BeamRingPoint(loc1, 25.0, 75.0, g_ef_hydraspinalcord, g_ef_hydraspinalcord, 0, 1, 0.5, 7.0, 0.0, {25, 75, 100, 200}, 25, 0, 0.0);
 }
 
-stock MonkUpliftEffect(Float: loc[3])  {
-  new Float:loc1[3];
-  loc1[0]=loc[0];
-  loc1[1]=loc[1];
-  loc1[2]=loc[2];
-  loc1[2] += 25;
-  for(new i=1;i<=15;i++)  {
-	float loc_2_offset=loc[2] + i * 5;
-	float start_radius_offset=75.0 - i * 5.0;
-    VS_BeamRingPoint({loc[0], loc[1], loc_2_offset}, start_radius_offset, 1.0, g_ef_hydragutbeam, g_ef_hydragutbeam, 0, 1, 0.5,3.0, 0.0, {25, 75, 100, 255}, 255, 0, 0.0);
-  }
-}
-
 stock MonkDampenHarmEffect(Float: loc[3])  {
   new Float:loc1[3];
   loc1[0]=loc[0];

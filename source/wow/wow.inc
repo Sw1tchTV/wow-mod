@@ -273,10 +273,10 @@ enum Chat {
   Chat_Spawn
 };
 
-enum Temp {
-  Temp_None,
-  Temp_DropRate,
-  Temp_XPRate
+enum struct Temp {
+  float Temp_None;
+  float Temp_DropRate;
+  float Temp_XPRate;
 }
 
 enum Profession {
@@ -295,7 +295,7 @@ enum Profession {
   Prof_InscrBonus2
 };
 
-float UserTemps[65][Temp];
+Temp UserTemps[65];
 
 new String:g_sEventMessage[255]="";
 

@@ -90,7 +90,7 @@ bool:MLoader_FindById(MLoader ml, id) {
    ml.ML_Id = 0;
    for (new i=0; i<GetArraySize(g_ML); i++)   {
       if(GetArrayCell(g_ML, i, 0) == id)   {
-         GetArrayArray(g_ML, i, ml[0]);
+         GetArrayArray(g_ML, i, ml);
          return true;
       }
    }
@@ -113,7 +113,7 @@ stock MLoader_Construct(MLoader ml, client, String:callback[], String:callbackEr
   ml.ML_error=false;
   ml.ML_retry=true;
   ml.ML_Id = MLoader_GenerateId();
-  PushArrayArray(g_ML, ml[0]);
+  PushArrayArray(g_ML, ml);
   return ml.ML_Id;
 }
 
@@ -139,7 +139,7 @@ MLoader_generateProcedureQuery(MLoader ml) {
 
   
   new index = MLoader_FindIndex(ml.ML_Id);
-  SetArrayArray(g_ML, index, ml[0]);
+  SetArrayArray(g_ML, index, ml);
 }
 
 stock MLoader_generateAuctionQuery(MLoader ml, id) {
@@ -188,10 +188,10 @@ stock MLoader_generateAuctionQuery(MLoader ml, id) {
   WritePackCell(ml.ML_retClass,_:T_str);
   
   new index = MLoader_FindIndex(ml.ML_Id);
-  SetArrayArray(g_ML, index, ml[0]);
+  SetArrayArray(g_ML, index, ml);
 }
-MLoader ml;
-MLoader_execute(ml)  {
+
+MLoader_execute(MLoader ml)  {
   if(DEBUG) {
     PrintToServer("[DEBUG] executing menu loader class");
     
@@ -239,7 +239,7 @@ public MLoader_executorCallback(Handle:db,Handle:query,String:error[],any:ml_id)
     //Start callback
     new Function:func = GetFunctionByName(INVALID_HANDLE, ml.ML_callbackError);
     Call_StartFunction(INVALID_HANDLE, func);
-    Call_PushArray(ml[0], sizeof(ml));
+    Call_PushArray(ml, sizeof(ml));
     if(Call_Finish() != SP_ERROR_NONE)  {
       decl String:err[500];
       Format(err,500,"Could not callback the function: %s",ml.ML_callbackError);
@@ -294,7 +294,7 @@ public MLoader_executorCallback(Handle:db,Handle:query,String:error[],any:ml_id)
   //Start callback
   new Function:func = GetFunctionByName(INVALID_HANDLE, ml.ML_callback);
   Call_StartFunction(INVALID_HANDLE, func);
-  Call_PushArray(ml[0], sizeof(ml));
+  Call_PushArray(ml, sizeof(ml));
   if(Call_Finish() != SP_ERROR_NONE)  {
     decl String:err[500];
     Format(err,500,"Could not callback the function: %s",ml.ML_callback);

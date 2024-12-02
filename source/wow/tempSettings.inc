@@ -155,10 +155,10 @@ bool:TriggerNewbie2(client)  {
 new Handle:g_tempXp, Handle:g_tempDrop, Handle:g_tempMsg;
 public HookTempVars() {
   g_tempXp = CreateConVar("wc_temp_xp", "1.0", "XP Modifier",FCVAR_NOTIFY,true,0.0,true,10.0);
-  SetTempVar(0, Temp:Temp_XPRate, 1.0);
+  SetTempVar("xp_rate", 1.0);
   HookConVarChange(g_tempXp, TempVarChanged);
   g_tempDrop = CreateConVar("wc_temp_drop", "1.0", "Drop Modifier",FCVAR_NOTIFY,true,0.0,true,10.0);
-  SetTempVar(0, Temp:Temp_DropRate, 1.0);
+  SetTempVar("drop_rate", 1.0);
   HookConVarChange(g_tempDrop, TempVarChanged);
 
   g_tempMsg = CreateConVar("wc_event_message", "", "Event Message, if any");
@@ -177,29 +177,23 @@ public TempVarChanged(Handle:param, const String:oldValue[], const String:newVal
   new Float:newv=StringToFloat(newValue);
   decl String:name[100];
   GetConVarName(param, name, sizeof(name));
-  new Temp:temp = GetConvar(name);
-  SetTempVar(0, temp, newv);
+  if (StrEqual(name, "wc_temp_xp"))
+		UserTemps[0].Temp_XPRate = newv;
+	else if (StrEqual(name, "wc_temp_drop"))
+		UserTemps[0].Temp_DropRate = newv;
 }
 
-SetTempVar(client, Temp:param, Float:value) {
-  UserTemps[client][param]=value;
+SetTempVar(char param[20], Float:value) {
+	if (StrEqual(param, "xp_rate"))
+		UserTemps[0].Temp_XPRate = value;
+	else if (StrEqual(param, "drop_rate"))
+		UserTemps[0].Temp_DropRate = value;
 }
 
-Float:GetTempVar(client, Temp:param)  {
-  new Float:value = UserTemps[client][param];
-  if(value>0.0)
-    if(value<1.0)
-      return value;
-    else if(value > UserTemps[0][param])
-      return value;
-  return UserTemps[0][param];
-}
-
-Temp:GetConvar(String:name[])  {
-  if(StrEqual(name, "wc_temp_xp", false))
-    return Temp:Temp_XPRate;
-  if(StrEqual(name, "wc_temp_drop", false))
-    return Temp:Temp_DropRate;
-  return Temp:Temp_None;
+Float:GetTempVar(client, char param[20])  {
+  if (StrEqual(param, "xp_rate"))
+		return UserTemps[client].Temp_XPRate;
+	else if (StrEqual(param, "drop_rate"))
+		return UserTemps[client].Temp_DropRate;
 }
 

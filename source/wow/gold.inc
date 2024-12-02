@@ -989,7 +989,7 @@ public getPremiumError(MLoader ml) {
   new Function:func = GetFunctionByName(INVALID_HANDLE, callback);
   Call_StartFunction(INVALID_HANDLE, func);
   Call_PushCell(client);
-  Call_PushArray(pd[0], sizeof(pd));
+  Call_PushArray(pd, sizeof(pd));
   if(Call_Finish() != SP_ERROR_NONE)  {
     decl String:err[100];
     Format(err,100,"Could not callback the function: %s",callback);
@@ -1030,7 +1030,7 @@ public getPremiumData2(MLoader ml) {
   new Function:func = GetFunctionByName(INVALID_HANDLE, callback);
   Call_StartFunction(INVALID_HANDLE, func);
   Call_PushCell(client);
-  Call_PushArray(pd[0], sizeof(pd));
+  Call_PushArray(pd, sizeof(pd));
   if(Call_Finish() != SP_ERROR_NONE)  {
     decl String:err[100];
     Format(err,100,"Could not callback the function: %s",callback);
@@ -1077,7 +1077,7 @@ stock MLoader_generatePremiumQuery(MLoader ml, client, String:callback[]) {
   WritePackCell(ml.ML_retClass,_:T_int);
 
   new index = MLoader_FindIndex(ml.ML_Id);
-  SetArrayArray(g_ML, index, ml[0]);
+  SetArrayArray(g_ML, index, ml);
 }
 
 bool:isPDModuleEnabled(PremiumData pd, any:module) {

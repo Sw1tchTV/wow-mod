@@ -494,8 +494,8 @@ stock StartEMsg(String:amsg[], String:vmsg[], attacker, victim) {
    EMsgId++;
    if(EMsgId>=5)
       EMsgId=0;
-   aMsgEx=true;
-   vMsgEx=true;
+   aMsgEx[0]=true;
+   vMsgEx[0]=true;
    aMsgClient[EMsgId]=attacker;
    vMsgClient[EMsgId]=victim;
    Format(aMsg[EMsgId], 400, "%s", amsg);

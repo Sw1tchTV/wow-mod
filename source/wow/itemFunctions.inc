@@ -59,7 +59,7 @@ public AddExpansion(client, itemId, any:expansion) {
 
     for(new i=1; i <= MaxClients; i++)
       if(IsClientInGame(i))
-        WCMessage(i, "player learned expansion", i, name, g_sExpansions.expansion);
+        WCMessage(i, "player learned expansion", i, name, g_sExpansions[expansion]);
   }
 }
 
@@ -103,12 +103,12 @@ GetItemsFromItem(item, Setitems[], size) {
   new setsAmount = GetSets(item,sets, sizeof(sets));
   new itemsAmount=0;
   while ( (setsAmount >= 1) && (itemsAmount < size) ) {
-    new curSet = sets.setsAmount;
+    new curSet = sets[setsAmount];
     setsAmount--;
     new curItems[200];
     new curItemsAmount = GetItemsOfSet (curSet, curItems, sizeof(curItems));
     for (new x=curItemsAmount;x>0;x--) {
-      Setitems.itemsAmount = curItems [x];
+      Setitems[itemsAmount] = curItems [x];
       itemsAmount++;
       if (itemsAmount >= size) break;
     }
@@ -133,11 +133,11 @@ GetSets(itemId, sets[], size) {
     while((StringID>=0) && (amount-1 < size))
     {
         amount++;
-        new StringID2=BreakString(Ssets.StringID, Stemp, sizeof(Stemp));
+        new StringID2=BreakString(Ssets[StringID], Stemp, sizeof(Stemp));
         StringID+=StringID2;
         if(StringID2==-1)
           StringID=-1;
-        sets.amount=StringToInt(Stemp);
+        sets[amount]=StringToInt(Stemp);
     }
   }
   return amount;
@@ -150,22 +150,22 @@ GetItemsOfSet(set, setitems[], size) {
   KvGetString(wcsets,Stemp,Sset,sizeof(Sset),"0");
   new StringID=BreakString(Sset, Stemp, sizeof(Stemp));
   new Iamount = 1;
-  setitems.Iamount=StringToInt(Stemp);
+  setitems[Iamount]=StringToInt(Stemp);
   while((StringID>=0) && ((Iamount - 1) < size))
   {
     Iamount++;
-    new StringID2=BreakString(Sset.StringID, Stemp, sizeof(Stemp));
+    new StringID2=BreakString(Sset[StringID], Stemp, sizeof(Stemp));
     StringID+=StringID2;
     if(StringID2==-1)
       StringID=-1;
-    setitems.Iamount=StringToInt(Stemp);
+    setitems[Iamount]=StringToInt(Stemp);
   }
   return Iamount;
 }
 
 BasicRoll (setitems[], size) {
   new rolled=GetRandomInt(0,size-1);
-  return setitems.rolled;
+  return setitems[rolled];
 }
 
 stock GetItemMessage(itemId,String:message[],size) {
@@ -193,7 +193,7 @@ public Action:ItemsUpdater(Handle:timer, any:trash)  {
     return Plugin_Continue;
   }
   UniqueItem item;
-  GetArrayArray(g_itemsArray, g_lastItemUpdate, item[0]);
+  GetArrayArray(g_itemsArray, g_lastItemUpdate, item);
   new Float:fTemp = item.Item_LastUsage;
   if( (fTemp+1200.0) < GetEngineTime() )  {
     RemoveFromArray(g_itemsArray, g_lastItemUpdate);
@@ -214,16 +214,16 @@ ReloadUniqueItem(itemId)  {
 }
 
 stock GetCharUnique(client, slot) {
-  return wcUsers2.client.slot;
+  return wcUsers2[client][slot];
 }
 
 stock SetCharUnique(client, slot, value)  {
   CheckUnique(value, client);
-  wcUsers2.client.slot=value;
+  wcUsers2[client][slot]=value;
 }
 
 stock GetInvUnique(client, slot)  {
-  return wcUsers2.client.slot+50;
+  return wcUsers2[client][slot+50];
 }
 
 stock SetInvUnique(client, slot, value) {
@@ -232,7 +232,7 @@ stock SetInvUnique(client, slot, value) {
     value=0;
   }
   CheckUnique(value, client);
-  wcUsers2.client.slot+50=value;
+  wcUsers2[client][slot+50]=value;
 }
 
 LoadUniqueItem(id)  {
@@ -346,10 +346,10 @@ bool:LoadItemCode(Handle:query, id, bool:noSQL=false)  {
 
     new index = GetUniqueInDB(item.Item_id);
     if(index>=0)  {
-      SetArrayArray(g_itemsArray, index, item[0]);
+      SetArrayArray(g_itemsArray, index, item);
     }
     else
-      PushArrayArray(g_itemsArray, item[0]);
+      PushArrayArray(g_itemsArray, item);
     return true;
   }
   return false;
@@ -360,7 +360,7 @@ stock TInsertItem(Handle:datapack, owner=0) {
   if(owner<=0)
     Format(buffer,sizeof(buffer),"INSERT INTO wc_Items (id) VALUES (NULL);");
   else
-    Format(buffer,sizeof(buffer),"INSERT INTO wc_Items (id, owner) VALUES (NULL, '%i');", characterids.owner[0]);
+    Format(buffer,sizeof(buffer),"INSERT INTO wc_Items (id, owner) VALUES (NULL, '%i');", characterids[owner][0]);
 
   SQL_TQuery(TSQL, TInsertedItem, buffer, datapack);
 }
@@ -517,9 +517,9 @@ stock bool:GetUniqueItem(UniqueItem item, id, bool:noload=false)  {
   item.Item_id = 0;
   for (new i=0; i<GetArraySize(g_itemsArray); i++)   {
     if(GetArrayCell(g_itemsArray, i, 0) == id)   {
-      GetArrayArray(g_itemsArray, i, item[0]);
+      GetArrayArray(g_itemsArray, i, item);
       item.Item_LastUsage = GetEngineTime();
-      SetArrayArray(g_itemsArray, i, item[0]); //optimize later
+      SetArrayArray(g_itemsArray, i, item); //optimize later
       return true;
     }
   }
@@ -639,13 +639,13 @@ stock GetItemProperties(UniqueItem item, itemId, uniqueId=-1)  {
     new classes[10];
     new amount=ConvertBitToClasses(item.Item_class, classes);
     for(new i=0;i<amount;i++)  {
-      if(classes.i==1) {
+      if(classes[i]==1) {
         item.Item_str += item.Item_int;
         item.Item_int=0;
         item.Item_str += item.Item_regen * 2;
         item.Item_regen = 0;
       }
-      if(classes.i==2) {
+      if(classes[i]==2) {
         item.Item_agi += item.Item_int;
         item.Item_int=0;
         item.Item_agi += item.Item_regen * 2;
@@ -906,10 +906,10 @@ public public_ApplyEnchant(id, Handle:pack) {
   if(CheckUnique(id, client)) {
     new uslot = GetUniqueInDB(id);
     UniqueItem uitem;
-    GetArrayArray(g_itemsArray, uslot, uitem[0]);
+    GetArrayArray(g_itemsArray, uslot, uitem);
     uitem.Item_LastUsage = GetEngineTime();
     uitem.Item_EnchBit = enchid;
-    SetArrayArray(g_itemsArray, uslot, uitem[0]); //optimize later
+    SetArrayArray(g_itemsArray, uslot, uitem); //optimize later
   }
 
 
@@ -942,10 +942,10 @@ stock ApplyEnchant(client, slot, enchid, bool:insert=true)  {
 
     /*PrintToServer("Saving info to cache. Uslot = %d", uslot);*/
     UniqueItem uitem;
-    GetArrayArray(g_itemsArray, uslot, uitem[0]);
+    GetArrayArray(g_itemsArray, uslot, uitem);
     uitem.Item_LastUsage = GetEngineTime();
     uitem.Item_EnchBit = enchid;
-    SetArrayArray(g_itemsArray, uslot, uitem[0]); //optimize later
+    SetArrayArray(g_itemsArray, uslot, uitem); //optimize later
   }
 }
 
@@ -1242,7 +1242,7 @@ stock bool:AddTemporaryItem(client, UniqueItem item, Float:duration, bool:stacks
   new Handle:datapack=CreateDataPack();
   WritePackCell(datapack,client);
   WritePackCell(datapack,item.Item_defId);
-  WritePackCell(datapack,g_respawns.client);
+  WritePackCell(datapack,g_respawns[client]);
   CreateTimer(duration,RemoveTemporaryItem,datapack,TIMER_HNDL_CLOSE);
 
   addTempItem(client, item);
@@ -1511,24 +1511,24 @@ HasDual(client) {
 new g_ffClientGlyphs[65][MAX_GLYPHS];
 new g_ff_ClientGlyphSlotsAvail[65];
 ClearGlyphs(client) {
-  g_ff_ClientGlyphSlotsAvail.client=2;
+  g_ff_ClientGlyphSlotsAvail[client]=2;
   for (new i=0;i<MAX_GLYPHS;i++)
-    g_ffClientGlyphs.client.i=0;
+    g_ffClientGlyphs[client][i]=0;
 }
 
 GetGlyphSlots(client) {
-  return g_ff_ClientGlyphSlotsAvail.client;
+  return g_ff_ClientGlyphSlotsAvail[client];
 }
 SetGlyphSlots(client,amount) {
-  g_ff_ClientGlyphSlotsAvail.client=amount;
+  g_ff_ClientGlyphSlotsAvail[client]=amount;
 }
 
 GetGlyphId(client, slot)  {
-  return g_ffClientGlyphs.client.slot;
+  return g_ffClientGlyphs[client][slot];
 }
 
 SetGlyphId(client, slot,id)  {
-  g_ffClientGlyphs.client.slot=id;
+  g_ffClientGlyphs[client][slot]=id;
 }
 
 bool:GetGlyphFull(client, slot, UniqueItem item)  {
@@ -1587,7 +1587,7 @@ stock bool:CanWearOffhand(race) {
 
 stock bool:GivePlayerRandomItem(client, String:reason[]="drop", announce=-1, forceRarity=-1)  {
   //Prerequirements check
-  if(!IsClientInGame(client) || (playerloaded.client != 1))  {
+  if(!IsClientInGame(client) || (playerloaded[client] != 1))  {
     return false;
   }
   if(wcCheckFreeSlot(client) <= 0) {
@@ -1689,7 +1689,7 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
   uitem.Item_category = cat;
   uitem.Item_class = 1 << race;
 
-  uitem.Item_owner = characterids.client[0];
+  uitem.Item_owner = characterids[client][0];
 
   //2handed?
   if(cat == 22) {
@@ -1740,10 +1740,10 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
 
   new index = GetUniqueInDB(uitem.Item_id);
   if(index>=0)  {
-    SetArrayArray(g_itemsArray, index, uitem[0]);
+    SetArrayArray(g_itemsArray, index, uitem);
   }
   else  {
-    PushArrayArray(g_itemsArray, uitem[0]);
+    PushArrayArray(g_itemsArray, uitem);
   }
 
 
@@ -1917,8 +1917,8 @@ stock SetRandomValues(UniqueItem item) {
   new Float:qualities[] = { 1.0, 1.0, 1.2, 1.4, 1.7, 1.25, 1.45 };
   new Float:dreds[] = { 0.16, 0.28, 0.48 };
   new Float:slot, Float:quality;
-  slot = slots.item.Item_category-10;
-  quality = qualities.item.Item_quality;
+  slot = slots[item.Item_category-10];
+  quality = qualities[item.Item_quality];
   new Float:level = float(item.Item_ilevel);
   new armorType=0;
 

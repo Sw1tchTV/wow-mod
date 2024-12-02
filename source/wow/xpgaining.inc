@@ -15,7 +15,7 @@ public TeamWinXP(team)
     for(new x=1;x<=maxplayers;x++)
       if(IsClientInGame(x))
         if(GetClientTeam(x)==team)  {
-          wcGiveXp(x,(RoundToNearest(TeamRatio(team)*float((2+GetLevel(x)))*EXP_TEAMWIN*GLOBAL_XP*GetTempVar(x, Temp:Temp_XPRate))),true);
+          wcGiveXp(x,(RoundToNearest(TeamRatio(team)*float((2+GetLevel(x)))*EXP_TEAMWIN*GLOBAL_XP*UserTemps[x].Temp_XPRate)),true);
           if(players >= TEAMWIN_PLAYERS)  {
             WCMessage(x, "triggered teamdrop", x, TEAMWIN_DROPRATE);
             TriggerDrop(x,x,true,TEAMWIN_DROPRATE);
@@ -34,7 +34,7 @@ public LowLevelRound()
       if((team==2) || (team==3))
         if (GetLevel(x)<=52)
         {
-          new give=RoundToNearest((10.0+float(GetLevel(x))*2.5)*GLOBAL_XP*GetTempVar(x, Temp:Temp_XPRate));
+          new give=RoundToNearest((10.0+float(GetLevel(x))*2.5)*GLOBAL_XP*UserTemps[x].Temp_XPRate);
           wcGiveXp(x,give,false);
           WCMessage(x,"LowLevelRound",x,give);
         }
@@ -47,7 +47,7 @@ public Action:HealingDoneXP(Handle:timer)
   for (new x=1;x<=maxplayers;x++)
     if(IsClientInGame(x) && (wcHealingDone[x]>0))
     {
-      new give=RoundToNearest(float(wcHealingDone[x])*EXP_HEALING*GLOBAL_XP*GetTempVar(x, Temp:Temp_XPRate));
+      new give=RoundToNearest(float(wcHealingDone[x])*EXP_HEALING*GLOBAL_XP*UserTemps[x].Temp_XPRate);
       wcGiveXp(x,give,false);
       WCMessage(x,"XpForHealing",x,give,wcHealingDone[x]);
       wcTotalHealing[x]+=wcHealingDone[x];
@@ -132,7 +132,7 @@ public Action:DamageDoneXP(Handle:timer)
   for (new x=1;x<=maxplayers;x++) {
     if(IsClientInGame(x) && (wcDamageDone[x]>0))
     {
-      new give=RoundToNearest(float(wcDamageDone[x])*EXP_DAMAGE*GLOBAL_XP*GetTempVar(x, Temp:Temp_XPRate));
+      new give=RoundToNearest(float(wcDamageDone[x])*EXP_DAMAGE*GLOBAL_XP*GetTempVar(x, "xp_rate"));
       wcGiveXp(x,give,false);
       WCMessage(x,"XpForDamage",x,give,wcDamageDone[x]);
     }
@@ -326,7 +326,7 @@ LowLevelInfo(victim, attacker)  {
 
 public GetTargetXPWorth(client,attacker,bool:head)
 {
-   new worth=RoundToCeil((200+Pow(float(GetLevel(client))*1.0,1.45))*EXP_KILL*(1.0+EXP_SPREE*float(g_Deaths[attacker]))*GetRandomFloat(0.85,1.2)*GLOBAL_XP*GetTempVar(attacker, Temp:Temp_XPRate));
+   new worth=RoundToCeil((200+Pow(float(GetLevel(client))*1.0,1.45))*EXP_KILL*(1.0+EXP_SPREE*float(g_Deaths[attacker]))*GetRandomFloat(0.85,1.2)*GLOBAL_XP*GetTempVar(attacker, "xp_rate"));
    if(IsFakeClient(client)) {
       if( SERVER_LEVEL_POLICY == 1) worth = RoundToNearest(BOT_HIGH_RATE*worth);
       else  worth = RoundToNearest(BOT_NORMAL_RATE*worth);

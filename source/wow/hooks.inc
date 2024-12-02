@@ -861,7 +861,7 @@ public Action:BombPlantedEvent(Handle:event,const String:name[],bool:dontBroadca
 {
   new client=GetClientOfUserId(GetEventInt(event,"userid"));
   new level=GetLevel(client);
-  new xp=RoundToNearest(20+level*EXP_BOMB_PLANTED*GLOBAL_XP*GetTempVar(client, Temp:Temp_XPRate));
+  new xp=RoundToNearest(20+level*EXP_BOMB_PLANTED*GLOBAL_XP*GetTempVar(client, "xp_rate"));
   wcGiveXp(client,xp,true);
   return Plugin_Continue;
 }
@@ -877,7 +877,7 @@ public Action:BombDefuseEvent(Handle:event,const String:name[],bool:dontBroadcas
 {
   new client=GetClientOfUserId(GetEventInt(event,"userid"));
   new level=GetLevel(client);
-  new xp=RoundToNearest(25+level*EXP_BOMB_DEFUSE*GLOBAL_XP*GetTempVar(client, Temp:Temp_XPRate));
+  new xp=RoundToNearest(25+level*EXP_BOMB_DEFUSE*GLOBAL_XP*GetTempVar(client, "xp_rate"));
   wcGiveXp(client,xp,true);
   return Plugin_Continue;
 }
@@ -888,7 +888,7 @@ public Action:HostageRescueEvent(Handle:event,const String:name[],bool:dontBroad
   if(client<1 || client > MaxClients)
   return Plugin_Continue;
   new level=GetLevel(client);
-  new xp=RoundToNearest(10+level*EXP_HOSTAGE_RESCUED*GLOBAL_XP*GetTempVar(client, Temp:Temp_XPRate));
+  new xp=RoundToNearest(10+level*EXP_HOSTAGE_RESCUED*GLOBAL_XP*GetTempVar(client, "xp_rate"));
   wcGiveXp(client,xp,true);
   return Plugin_Continue;
 }

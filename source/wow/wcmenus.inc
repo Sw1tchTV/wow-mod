@@ -1696,7 +1696,7 @@ ProfessionMenu(client,which, iMin=0, iMax=9999)
       strcopy(hRecipe.Recipe_name, 50, item.Item_Name);
       strcopy(hRecipe.Recipe_info, 20, info);
       if( (hRecipe.Recipe_skill >= iMin) && (hRecipe.Recipe_skill <= iMax))  {
-        PushArrayArray(array, hRecipe[0]);
+        PushArrayArray(array, hRecipe);
         total++;
       }
     }
@@ -1707,7 +1707,7 @@ ProfessionMenu(client,which, iMin=0, iMax=9999)
    SortADTArrayCustom(array, SortFunction);
 
    for(new i=0; i < GetArraySize(array); i++) {
-      GetArrayArray(array, i, hRecipe[0]);
+      GetArrayArray(array, i, hRecipe);
       AddMenuItem(menu_prof,hRecipe.Recipe_info,hRecipe.Recipe_name);
    }
 

@@ -39,7 +39,7 @@ bool:FindQueryById(Query query, id) {
    query.Q_Id = 0;
    for (new i=0; i<GetArraySize(g_queryArray); i++)   {
       if(GetArrayCell(g_queryArray, i, 0) == id)   {
-         GetArrayArray(g_queryArray, i, query[0]);
+         GetArrayArray(g_queryArray, i, query);
          return true;
       }
    }
@@ -54,7 +54,7 @@ stock AddQuery(QueryType:type, repeats, String:command[], param=0) {
    query.Q_Repeats = repeats;
    query.Q_Type = type;
    query.Q_Var = param;
-   PushArrayArray(g_queryArray, query[0]);
+   PushArrayArray(g_queryArray, query);
    return id;
 }
 
