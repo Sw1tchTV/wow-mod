@@ -1301,11 +1301,11 @@ updateCachedPD(client, PremiumData pd) {
 bool:getCachedPD(client, PremiumData pd) {
   if(!g_ff_hasCachedPD[client])
     return false;
-  pd[PD_modules] = g_ff_cachedPD[client].PD_modules;
-  pd[PD_sExpires] = g_ff_cachedPD[client].PD_sExpires;
-  pd[PD_subscribed] = g_ff_cachedPD[client].PD_subscribed;
-  pd[PD_costs] = g_ff_cachedPD[client].PD_costs;
-  pd[PD_daysLeft] = g_ff_cachedPD[client].PD_daysLeft;
+  pd.PD_modules = g_ff_cachedPD[client].PD_modules;
+  pd.PD_sExpires = g_ff_cachedPD[client].PD_sExpires;
+  pd.PD_subscribed = g_ff_cachedPD[client].PD_subscribed;
+  pd.PD_costs = g_ff_cachedPD[client].PD_costs;
+  pd.PD_daysLeft = g_ff_cachedPD[client].PD_daysLeft;
   return true;
 }
 

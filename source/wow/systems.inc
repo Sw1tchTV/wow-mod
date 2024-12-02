@@ -1060,7 +1060,7 @@ public wcCheckFreeSlot3(client,UniqueItem uitem, &space) //A little smarter agai
       }
     }
   }
-  space=uitem[Item_amount];
+  space=uitem.Item_amount;
   return wcCheckFreeSlot(client);
 }
 
@@ -1113,10 +1113,10 @@ PurchaseItemConfirmed(client,item, amount=1)
   if( (uitem.Item_honor>0) && (!FUN_SERVER))  {
    SetHonor(client,GetHonor(client)-uitem.Item_honor*amount);
   }
-  if( uitem[Item_valor] > 0)  {
+  if( uitem.Item_valor > 0)  {
     SpendValor(client,uitem.Item_valor);
   }
-  if( uitem[Item_justice] > 0)  {
+  if( uitem.Item_justice > 0)  {
     SpendJustice(client,uitem.Item_justice);
   }
 
@@ -1698,10 +1698,10 @@ stock TriggerDisEnch(client, UniqueItem item, slot)
             new an = KvGetNum(wcdrop,"announce",0);
             switch(an)
             {
-              case 1: AnnounceDrop(client,uitem[Item_Name], islot);
-              case 2: AnnounceDropAll(client, uitem[Item_Name], uitem[Item_quality]);
+              case 1: AnnounceDrop(client,uitem.Item_Name, islot);
+              case 2: AnnounceDropAll(client, uitem.Item_Name, uitem.Item_quality);
             }
-            WCMessage(client,"item dropped2",client,uitem[Item_Name], failGive);
+            WCMessage(client,"item dropped2",client,uitem.Item_Name, failGive);
           }
           else
           {
@@ -1761,7 +1761,7 @@ stock TriggerDrop(client,victim, bool:self=false, Float:custom_rate=1.0)
             case 2: chance *= BOT_NORMAL_RATE;
           }
         }
-        chance *= custom_rate*GLOBAL_DROP*GetTempVar(client, Temp_DropRate)*(PlayerHasBonusFast(client, Profession:Prof_ExtraDrop)?1.1:1.0);
+        chance *= custom_rate*GLOBAL_DROP*GetTempVar(client, Temp.Temp_DropRate)*(PlayerHasBonusFast(client, Profession:Prof_ExtraDrop)?1.1:1.0);
         if(isClientPDModule(client, PDModule:PDM_drop))
           chance *= 1.25;
         if(!self)

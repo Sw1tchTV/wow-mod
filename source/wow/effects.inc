@@ -3229,7 +3229,7 @@ public Effect40(userid,attacker)
   }
 }
 
-stock sendshakemsg(client, all:shakeflag, Float:amplitude, Float:frequency, Float:duration){
+stock sendshakemsg(client, shakeflag, Float:amplitude, Float:frequency, Float:duration){
 
 	new Handle:shakemsg;
 	

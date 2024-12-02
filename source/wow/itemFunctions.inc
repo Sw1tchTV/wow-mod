@@ -8,7 +8,7 @@
 
 Handle:CreateItemsArray()   {
    UniqueItem temp;
-   temp[Item_id]=1;
+   temp.Item_id=1;
    return CreateArray(sizeof(temp));
 }
 
@@ -59,7 +59,7 @@ public AddExpansion(client, itemId, any:expansion) {
 
     for(new i=1; i <= GetMaxClients(); i++)
       if(IsClientInGame(i))
-        WCMessage(i, "player learned expansion", i, name, g_sExpansions[expansion]);
+        WCMessage(i, "player learned expansion", i, name, g_sExpansions.expansion);
   }
 }
 
@@ -94,7 +94,7 @@ RandomBoxUsed(client, slot)
     UniqueItem uitem;
     GetItemProperties(uitem, newItem);
     GiveItem(client, uitem, 1, "box");
-    WCMessage(client,"item got",client,uitem[Item_Name]);
+    WCMessage(client,"item got",client,uitem.Item_Name);
   }
 }
 
@@ -103,12 +103,12 @@ GetItemsFromItem(item, Setitems[], size) {
   new setsAmount = GetSets(item,sets, sizeof(sets));
   new itemsAmount=0;
   while ( (setsAmount >= 1) && (itemsAmount < size) ) {
-    new curSet = sets[setsAmount];
+    new curSet = sets.setsAmount;
     setsAmount--;
     new curItems[200];
     new curItemsAmount = GetItemsOfSet (curSet, curItems, sizeof(curItems));
     for (new x=curItemsAmount;x>0;x--) {
-      Setitems[itemsAmount] = curItems [x];
+      Setitems.itemsAmount = curItems [x];
       itemsAmount++;
       if (itemsAmount >= size) break;
     }
@@ -133,11 +133,11 @@ GetSets(itemId, sets[], size) {
     while((StringID>=0) && (amount-1 < size))
     {
         amount++;
-        new StringID2=BreakString(Ssets[StringID], Stemp, sizeof(Stemp));
+        new StringID2=BreakString(Ssets.StringID, Stemp, sizeof(Stemp));
         StringID+=StringID2;
         if(StringID2==-1)
           StringID=-1;
-        sets[amount]=StringToInt(Stemp);
+        sets.amount=StringToInt(Stemp);
     }
   }
   return amount;
@@ -150,22 +150,22 @@ GetItemsOfSet(set, setitems[], size) {
   KvGetString(wcsets,Stemp,Sset,sizeof(Sset),"0");
   new StringID=BreakString(Sset, Stemp, sizeof(Stemp));
   new Iamount = 1;
-  setitems[Iamount]=StringToInt(Stemp);
+  setitems.Iamount=StringToInt(Stemp);
   while((StringID>=0) && ((Iamount - 1) < size))
   {
     Iamount++;
-    new StringID2=BreakString(Sset[StringID], Stemp, sizeof(Stemp));
+    new StringID2=BreakString(Sset.StringID, Stemp, sizeof(Stemp));
     StringID+=StringID2;
     if(StringID2==-1)
       StringID=-1;
-    setitems[Iamount]=StringToInt(Stemp);
+    setitems.Iamount=StringToInt(Stemp);
   }
   return Iamount;
 }
 
 BasicRoll (setitems[], size) {
   new rolled=GetRandomInt(0,size-1);
-  return setitems[rolled];
+  return setitems.rolled;
 }
 
 stock GetItemMessage(itemId,String:message[],size) {
@@ -194,15 +194,15 @@ public Action:ItemsUpdater(Handle:timer, any:trash)  {
   }
   UniqueItem item;
   GetArrayArray(g_itemsArray, g_lastItemUpdate, item[0]);
-  new Float:fTemp = item[Item_LastUsage];
+  new Float:fTemp = item.Item_LastUsage;
   if( (fTemp+1200.0) < GetEngineTime() )  {
     RemoveFromArray(g_itemsArray, g_lastItemUpdate);
     return Plugin_Continue;
   }
-  fTemp = item[Item_LastUpdate];
+  fTemp = item.Item_LastUpdate;
   if( (fTemp + 300.0) < GetEngineTime() ) {
-    item[Item_LastUpdate] = GetEngineTime();
-    ReloadUniqueItem(item[Item_id]);
+    item.Item_LastUpdate = GetEngineTime();
+    ReloadUniqueItem(item.Item_id);
   }
 
   g_lastItemUpdate++;
@@ -214,16 +214,16 @@ ReloadUniqueItem(itemId)  {
 }
 
 stock GetCharUnique(client, slot) {
-  return wcUsers2[client][slot];
+  return wcUsers2.client.slot;
 }
 
 stock SetCharUnique(client, slot, value)  {
   CheckUnique(value, client);
-  wcUsers2[client][slot]=value;
+  wcUsers2.client.slot=value;
 }
 
 stock GetInvUnique(client, slot)  {
-  return wcUsers2[client][slot+50];
+  return wcUsers2.client.slot+50;
 }
 
 stock SetInvUnique(client, slot, value) {
@@ -232,7 +232,7 @@ stock SetInvUnique(client, slot, value) {
     value=0;
   }
   CheckUnique(value, client);
-  wcUsers2[client][slot+50]=value;
+  wcUsers2.client.slot+50=value;
 }
 
 LoadUniqueItem(id)  {
@@ -281,70 +281,70 @@ bool:LoadItemCode(Handle:query, id, bool:noSQL=false)  {
       return false;
     }
     UniqueItem item;
-    item[Item_id] = GetSQLDataInt(query, "id");
-    item[Item_defId] = GetSQLDataInt(query,"defId");
-    item[Item_version] = float(GetSQLDataInt(query,"version"))/100.0;
+    item.Item_id = GetSQLDataInt(query, "id");
+    item.Item_defId = GetSQLDataInt(query,"defId");
+    item.Item_version = float(GetSQLDataInt(query,"version"))/100.0;
 
-    item[Item_class] = GetSQLDataInt(query,"class");
-    item[Item_level] = GetSQLDataInt(query,"level");
-    item[Item_ilevel] = GetSQLDataInt(query,"ilevel");
-    item[Item_cost] = GetSQLDataInt(query,"cost");
-    item[Item_honor] = GetSQLDataInt(query,"honor");
-    item[Item_quality] = GetSQLDataInt(query,"quality");
-    item[Item_category] = GetSQLDataInt(query,"category");
-    item[Item_2hand] = GetSQLDataInt(query,"2hand");
+    item.Item_class = GetSQLDataInt(query,"class");
+    item.Item_level = GetSQLDataInt(query,"level");
+    item.Item_ilevel = GetSQLDataInt(query,"ilevel");
+    item.Item_cost = GetSQLDataInt(query,"cost");
+    item.Item_honor = GetSQLDataInt(query,"honor");
+    item.Item_quality = GetSQLDataInt(query,"quality");
+    item.Item_category = GetSQLDataInt(query,"category");
+    item.Item_2hand = GetSQLDataInt(query,"2hand");
 
-    item[Item_reqstr] = GetSQLDataInt(query,"reqstr");
-    item[Item_reqagi] = GetSQLDataInt(query,"reqagi");
-    item[Item_reqsta] = GetSQLDataInt(query,"reqsta");
-    item[Item_reqint] = GetSQLDataInt(query,"reqint");
+    item.Item_reqstr = GetSQLDataInt(query,"reqstr");
+    item.Item_reqagi = GetSQLDataInt(query,"reqagi");
+    item.Item_reqsta = GetSQLDataInt(query,"reqsta");
+    item.Item_reqint = GetSQLDataInt(query,"reqint");
 
-    item[Item_str] = GetSQLDataInt(query,"str");
-    item[Item_agi] = GetSQLDataInt(query,"agi");
-    item[Item_sta] = GetSQLDataInt(query,"sta");
-    item[Item_int] = GetSQLDataInt(query,"inte");
-    item[Item_res] = GetSQLDataInt(query,"res");
-    item[Item_regen] = GetSQLDataInt(query,"regen");
-    item[Item_ai] = GetSQLDataInt(query,"ai");
-    item[Item_haste] = GetSQLDataInt(query,"haste");
+    item.Item_str = GetSQLDataInt(query,"str");
+    item.Item_agi = GetSQLDataInt(query,"agi");
+    item.Item_sta = GetSQLDataInt(query,"sta");
+    item.Item_int = GetSQLDataInt(query,"inte");
+    item.Item_res = GetSQLDataInt(query,"res");
+    item.Item_regen = GetSQLDataInt(query,"regen");
+    item.Item_ai = GetSQLDataInt(query,"ai");
+    item.Item_haste = GetSQLDataInt(query,"haste");
 
-    item[Item_as] = float(GetSQLDataInt(query,"as")) / 100.0;
-    item[Item_cs] = float(GetSQLDataInt(query,"cs")) / 100.0;
-    item[Item_speed] = float(GetSQLDataInt(query,"speed")) / 100.0;
-    item[Item_acc] = float(GetSQLDataInt(query,"acc")) / 100.0;
-    item[Item_parry] = float(GetSQLDataInt(query,"parry")) / 100.0;
+    item.Item_as = float(GetSQLDataInt(query,"as")) / 100.0;
+    item.Item_cs = float(GetSQLDataInt(query,"cs")) / 100.0;
+    item.Item_speed = float(GetSQLDataInt(query,"speed")) / 100.0;
+    item.Item_acc = float(GetSQLDataInt(query,"acc")) / 100.0;
+    item.Item_parry = float(GetSQLDataInt(query,"parry")) / 100.0;
 
-    item[Item_resilence] = GetSQLDataInt(query,"resilence");
-    item[Item_armor] = GetSQLDataInt(query,"armor");
-    item[Item_armor_type] = GetSQLDataInt(query,"armor_type"); // 1 Cloth, 2 Leather, 3 Plate, 4 None
+    item.Item_resilence = GetSQLDataInt(query,"resilence");
+    item.Item_armor = GetSQLDataInt(query,"armor");
+    item.Item_armor_type = GetSQLDataInt(query,"armor_type"); // 1 Cloth, 2 Leather, 3 Plate, 4 None
 
-    item[Item_ws] = float(GetSQLDataInt(query,"ws")) / 100.0;
-    item[Item_weapon_ap] = GetSQLDataInt(query,"weapon_ap");
-    item[Item_weapon_sp] = GetSQLDataInt(query,"weapon_sp");
-    item[Item_damage] = GetSQLDataInt(query,"damage");
-    item[Item_spelldmg] = GetSQLDataInt(query,"spelldmg");
-    item[Item_effect] = GetSQLDataInt(query,"effect");
+    item.Item_ws = float(GetSQLDataInt(query,"ws")) / 100.0;
+    item.Item_weapon_ap = GetSQLDataInt(query,"weapon_ap");
+    item.Item_weapon_sp = GetSQLDataInt(query,"weapon_sp");
+    item.Item_damage = GetSQLDataInt(query,"damage");
+    item.Item_spelldmg = GetSQLDataInt(query,"spelldmg");
+    item.Item_effect = GetSQLDataInt(query,"effect");
 
-    item[Item_owner] = GetSQLDataInt(query,"owner");
-    item[Item_EnchBit] = GetSQLDataInt(query,"enchbit");
+    item.Item_owner = GetSQLDataInt(query,"owner");
+    item.Item_EnchBit = GetSQLDataInt(query,"enchbit");
 
-    GetSQLDataStr(query, "name", item[Item_Name], 50);
-    ReplaceString(item[Item_Name],50, "/z", "'");
-    ReplaceString(item[Item_Name],50, "//", "/");
+    GetSQLDataStr(query, "name", item.Item_Name, 50);
+    ReplaceString(item.Item_Name,50, "/z", "'");
+    ReplaceString(item.Item_Name,50, "//", "/");
 
-    GetSQLDataStr(query, "descr", item[Item_Descr], 70);
-    ReplaceString(item[Item_Descr],70, "/z", "'");
-    ReplaceString(item[Item_Descr],70, "//", "/");
+    GetSQLDataStr(query, "descr", item.Item_Descr, 70);
+    ReplaceString(item.Item_Descr,70, "/z", "'");
+    ReplaceString(item.Item_Descr,70, "//", "/");
 
     UniqueItem olditem;
-    if(GetUniqueItem(olditem,item[Item_id],true)) {
-      item[Item_LastUsage]=olditem[Item_LastUsage];
+    if(GetUniqueItem(olditem,item.Item_id,true)) {
+      item.Item_LastUsage=olditem.Item_LastUsage;
     }
     else
-      item[Item_LastUsage]=GetEngineTime();
-    item[Item_LastUpdate]=GetEngineTime();
+      item.Item_LastUsage=GetEngineTime();
+    item.Item_LastUpdate=GetEngineTime();
 
-    new index = GetUniqueInDB(item[Item_id]);
+    new index = GetUniqueInDB(item.Item_id);
     if(index>=0)  {
       SetArrayArray(g_itemsArray, index, item[0]);
     }
@@ -360,7 +360,7 @@ stock TInsertItem(Handle:datapack, owner=0) {
   if(owner<=0)
     Format(buffer,sizeof(buffer),"INSERT INTO wc_Items (id) VALUES (NULL);");
   else
-    Format(buffer,sizeof(buffer),"INSERT INTO wc_Items (id, owner) VALUES (NULL, '%i');", characterids[owner][0]);
+    Format(buffer,sizeof(buffer),"INSERT INTO wc_Items (id, owner) VALUES (NULL, '%i');", characterids.owner[0]);
 
   SQL_TQuery(TSQL, TInsertedItem, buffer, datapack);
 }
@@ -427,63 +427,63 @@ stock SaveItemCode(UniqueItem item)  {
   new String:buffer[70];
   len=Format(profbuffer,sizeof(profbuffer),"UPDATE wc_Items SET");
 
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len," `defId` = '%i'", item[Item_defId]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `version` = '%i'", RoundToNearest(item[Item_version]*100.0));
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `class` = '%i'", item[Item_class]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `cost` = '%i'", item[Item_cost]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `level` = '%i'", item[Item_level]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `ilevel` = '%i'", item[Item_ilevel]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `honor` = '%i'", item[Item_honor]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `quality` = '%i'", item[Item_quality]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `category` = '%i'", item[Item_category]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `2hand` = '%i'", item[Item_2hand]);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len," `defId` = '%i'", item.Item_defId);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `version` = '%i'", RoundToNearest(item.Item_version*100.0));
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `class` = '%i'", item.Item_class);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `cost` = '%i'", item.Item_cost);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `level` = '%i'", item.Item_level);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `ilevel` = '%i'", item.Item_ilevel);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `honor` = '%i'", item.Item_honor);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `quality` = '%i'", item.Item_quality);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `category` = '%i'", item.Item_category);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `2hand` = '%i'", item.Item_2hand);
 
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `reqstr` = '%i'", item[Item_reqstr]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `reqagi` = '%i'", item[Item_reqagi]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `reqsta` = '%i'", item[Item_reqsta]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `reqint` = '%i'", item[Item_reqint]);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `reqstr` = '%i'", item.Item_reqstr);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `reqagi` = '%i'", item.Item_reqagi);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `reqsta` = '%i'", item.Item_reqsta);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `reqint` = '%i'", item.Item_reqint);
 
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `str` = '%i'", item[Item_str]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `agi` = '%i'", item[Item_agi]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `sta` = '%i'", item[Item_sta]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `inte` = '%i'", item[Item_int]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `res` = '%i'", item[Item_res]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `regen` = '%i'", item[Item_regen]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `ai` = '%i'", item[Item_ai]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `haste` = '%i'", item[Item_haste]);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `str` = '%i'", item.Item_str);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `agi` = '%i'", item.Item_agi);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `sta` = '%i'", item.Item_sta);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `inte` = '%i'", item.Item_int);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `res` = '%i'", item.Item_res);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `regen` = '%i'", item.Item_regen);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `ai` = '%i'", item.Item_ai);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `haste` = '%i'", item.Item_haste);
 
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `as` = '%i'", RoundToNearest(item[Item_as]*100.0));
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `cs` = '%i'", RoundToNearest(item[Item_cs]*100.0));
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `speed` = '%i'", RoundToNearest(item[Item_speed]*100.0));
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `acc` = '%i'", RoundToNearest(item[Item_acc]*100.0));
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `parry` = '%i'", RoundToNearest(item[Item_parry]*100.0));
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `as` = '%i'", RoundToNearest(item.Item_as*100.0));
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `cs` = '%i'", RoundToNearest(item.Item_cs*100.0));
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `speed` = '%i'", RoundToNearest(item.Item_speed*100.0));
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `acc` = '%i'", RoundToNearest(item.Item_acc*100.0));
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `parry` = '%i'", RoundToNearest(item.Item_parry*100.0));
 
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `resilence` = '%i'", item[Item_resilence]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `armor` = '%i'", item[Item_armor]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `armor_type` = '%i'", item[Item_armor_type]); //1 Cloth, 2 Leather, 3 Plate, 4 None
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `resilence` = '%i'", item.Item_resilence);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `armor` = '%i'", item.Item_armor);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `armor_type` = '%i'", item.Item_armor_type); //1 Cloth, 2 Leather, 3 Plate, 4 None
 
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `ws` = '%i'", RoundToNearest(item[Item_ws]*100.0));
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `weapon_ap` = '%i'", item[Item_weapon_ap]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `weapon_sp` = '%i'", item[Item_weapon_sp]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `damage` = '%i'", item[Item_damage]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `spelldmg` = '%i'", item[Item_spelldmg]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `effect` = '%i'", item[Item_effect]);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `ws` = '%i'", RoundToNearest(item.Item_ws*100.0));
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `weapon_ap` = '%i'", item.Item_weapon_ap);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `weapon_sp` = '%i'", item.Item_weapon_sp);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `damage` = '%i'", item.Item_damage);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `spelldmg` = '%i'", item.Item_spelldmg);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `effect` = '%i'", item.Item_effect);
 
-  Format(buffer,sizeof(buffer),"%s",item[Item_Name]);
+  Format(buffer,sizeof(buffer),"%s",item.Item_Name);
   ReplaceString(buffer,sizeof(buffer), "/", "//");
   ReplaceString(buffer,sizeof(buffer), "'", "/z");
   len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `name` = '%s'", buffer);
 
-  Format(buffer,sizeof(buffer),"%s",item[Item_Descr]);
+  Format(buffer,sizeof(buffer),"%s",item.Item_Descr);
   ReplaceString(buffer,sizeof(buffer), "/", "//");
   ReplaceString(buffer,sizeof(buffer), "'", "/z");
   len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `descr` = '%s'", buffer);
 
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `owner` = '%i'", item[Item_owner]);
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `enchbit` = '%i'", item[Item_EnchBit]);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `owner` = '%i'", item.Item_owner);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `enchbit` = '%i'", item.Item_EnchBit);
 
 
-  len+=Format(profbuffer[len],sizeof(profbuffer)-len," WHERE id = %i",item[Item_id]);
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len," WHERE id = %i",item.Item_id);
   SQL_TQuery(SSQL,TRepeating,profbuffer,AddQuery(Repeat, 3, profbuffer, 0 ),DBPrio_Normal);
 }
 
@@ -514,11 +514,11 @@ stock bool:IsUniqueInDB(id) {
 }
 
 stock bool:GetUniqueItem(UniqueItem item, id, bool:noload=false)  {
-  item[Item_id] = 0;
+  item.Item_id = 0;
   for (new i=0; i<GetArraySize(g_itemsArray); i++)   {
     if(GetArrayCell(g_itemsArray, i, 0) == id)   {
       GetArrayArray(g_itemsArray, i, item[0]);
-      item[Item_LastUsage] = GetEngineTime();
+      item.Item_LastUsage = GetEngineTime();
       SetArrayArray(g_itemsArray, i, item[0]); //optimize later
       return true;
     }
@@ -536,137 +536,135 @@ stock GetItemProperties(UniqueItem item, itemId, uniqueId=-1)  {
   else  {
     GiveItemUnknownProps(item);
   }
-  item[Item_LastUsage] = GetEngineTime();
-  item[Item_owner] = 0;
-  item[Item_EnchBit] = 0;
-  item[Item_defId]=itemId;
-  item[Item_id]=uniqueId;
+  item.Item_LastUsage = GetEngineTime();
+  item.Item_owner = 0;
+  item.Item_EnchBit = 0;
+  item.Item_defId=itemId;
+  item.Item_id=uniqueId;
   if(uniqueId>0)  {
     UniqueItem uniItem;
     if(GetUniqueItem(uniItem, uniqueId))  {
-      if(uniItem[Item_id]>0)
-        item[Item_id]=uniItem[Item_id];
-      if(uniItem[Item_defId]>0)
-        item[Item_defId]=uniItem[Item_defId];
-      if(uniItem[Item_version]>0.0)
-        item[Item_version]=uniItem[Item_version];
-      if(uniItem[Item_class]>=0)
-        item[Item_class]=uniItem[Item_class];
-      if(uniItem[Item_level]>=0)
-        item[Item_level]=uniItem[Item_level];
-      if(uniItem[Item_ilevel]>=0)
-        item[Item_ilevel]=uniItem[Item_ilevel];
-      if(uniItem[Item_cost]>=0)
-        item[Item_cost]=uniItem[Item_cost];
-      if(uniItem[Item_honor]>=0)
-        item[Item_honor]=uniItem[Item_honor];
-      if(uniItem[Item_quality]>=0)
-        item[Item_quality]=uniItem[Item_quality];
-      if(uniItem[Item_2hand]>=0)
-        item[Item_2hand]=uniItem[Item_2hand];
-      if(uniItem[Item_category]>=0)
-        item[Item_category]=uniItem[Item_category];
+      if(uniItem.Item_id>0)
+        item.Item_id=uniItem.Item_id;
+      if(uniItem.Item_defId>0)
+        item.Item_defId=uniItem.Item_defId;
+      if(uniItem.Item_version>0.0)
+        item.Item_version=uniItem.Item_version;
+      if(uniItem.Item_class>=0)
+        item.Item_class=uniItem.Item_class;
+      if(uniItem.Item_level>=0)
+        item.Item_level=uniItem.Item_level;
+      if(uniItem.Item_ilevel>=0)
+        item.Item_ilevel=uniItem.Item_ilevel;
+      if(uniItem.Item_cost>=0)
+        item.Item_cost=uniItem.Item_cost;
+      if(uniItem.Item_honor>=0)
+        item.Item_honor=uniItem.Item_honor;
+      if(uniItem.Item_quality>=0)
+        item.Item_quality=uniItem.Item_quality;
+      if(uniItem.Item_2hand>=0)
+        item.Item_2hand=uniItem.Item_2hand;
+      if(uniItem.Item_category>=0)
+        item.Item_category=uniItem.Item_category;
 
-      if(uniItem[Item_reqstr]>=0)
-        item[Item_reqstr]=uniItem[Item_reqstr];
-      if(uniItem[Item_reqagi]>=0)
-        item[Item_reqagi]=uniItem[Item_reqagi];
-      if(uniItem[Item_reqsta]>=0)
-        item[Item_reqsta]=uniItem[Item_reqsta];
-      if(uniItem[Item_reqint]>=0)
-        item[Item_reqint]=uniItem[Item_reqint];
+      if(uniItem.Item_reqstr>=0)
+        item.Item_reqstr=uniItem.Item_reqstr;
+      if(uniItem.Item_reqagi>=0)
+        item.Item_reqagi=uniItem.Item_reqagi;
+      if(uniItem.Item_reqsta>=0)
+        item.Item_reqsta=uniItem.Item_reqsta;
+      if(uniItem.Item_reqint>=0)
+        item.Item_reqint=uniItem.Item_reqint;
 
-      if(uniItem[Item_str]>-100)
-        item[Item_str]=uniItem[Item_str];
-      if(uniItem[Item_agi]>-100)
-        item[Item_agi]=uniItem[Item_agi];
-      if(uniItem[Item_sta]>-100)
-        item[Item_sta]=uniItem[Item_sta];
-      if(uniItem[Item_int]>-100)
-        item[Item_int]=uniItem[Item_int];
-      if(uniItem[Item_res]>-100)
-        item[Item_res]=uniItem[Item_res];
-      if(uniItem[Item_regen]>-100)
-        item[Item_regen]=uniItem[Item_regen];
-      if(uniItem[Item_ai]>-100)
-        item[Item_ai]=uniItem[Item_ai];
-      if(uniItem[Item_weapon_ap]>-1)
-        item[Item_weapon_ap]=uniItem[Item_weapon_ap];
-      if(uniItem[Item_weapon_sp]>-1)
-        item[Item_weapon_sp]=uniItem[Item_weapon_sp];
+      if(uniItem.Item_str>-100)
+        item.Item_str=uniItem.Item_str;
+      if(uniItem.Item_agi>-100)
+        item.Item_agi=uniItem.Item_agi;
+      if(uniItem.Item_sta>-100)
+        item.Item_sta=uniItem.Item_sta;
+      if(uniItem.Item_int>-100)
+        item.Item_int=uniItem.Item_int;
+      if(uniItem.Item_res>-100)
+        item.Item_res=uniItem.Item_res;
+      if(uniItem.Item_regen>-100)
+        item.Item_regen=uniItem.Item_regen;
+      if(uniItem.Item_ai>-100)
+        item.Item_ai=uniItem.Item_ai;
+      if(uniItem.Item_weapon_ap>-1)
+        item.Item_weapon_ap=uniItem.Item_weapon_ap;
+      if(uniItem.Item_weapon_sp>-1)
+        item.Item_weapon_sp=uniItem.Item_weapon_sp;
 
-      if(uniItem[Item_as]>-1.0)
-        item[Item_as]=uniItem[Item_as];
-      if(uniItem[Item_cs]>-1.0)
-        item[Item_cs]=uniItem[Item_cs];
-      if(uniItem[Item_speed]>-1.0)
-        item[Item_speed]=uniItem[Item_speed];
-      if(uniItem[Item_acc]>-1.0)
-        item[Item_acc]=uniItem[Item_acc];
+      if(uniItem.Item_as>-1.0)
+        item.Item_as=uniItem.Item_as;
+      if(uniItem.Item_cs>-1.0)
+        item.Item_cs=uniItem.Item_cs;
+      if(uniItem.Item_speed>-1.0)
+        item.Item_speed=uniItem.Item_speed;
+      if(uniItem.Item_acc>-1.0)
+        item.Item_acc=uniItem.Item_acc;
 
-      if(uniItem[Item_resilence]>-100)
-        item[Item_resilence]=uniItem[Item_resilence];
-      if(uniItem[Item_armor]>=0)
-        item[Item_armor]=uniItem[Item_armor];
-      if(uniItem[Item_armor_type]>=0)
-        item[Item_armor_type]=uniItem[Item_armor_type];
+      if(uniItem.Item_resilence>-100)
+        item.Item_resilence=uniItem.Item_resilence;
+      if(uniItem.Item_armor>=0)
+        item.Item_armor=uniItem.Item_armor;
+      if(uniItem.Item_armor_type>=0)
+        item.Item_armor_type=uniItem.Item_armor_type;
+      if(uniItem.Item_ws>-1.0)
+        item.Item_ws=uniItem.Item_ws;
+      if(uniItem.Item_damage>=0)
+        item.Item_damage=uniItem.Item_damage;
+      if(uniItem.Item_spelldmg>=0)
+        item.Item_spelldmg=uniItem.Item_spelldmg;
+      if(uniItem.Item_effect>=0)
+        item.Item_effect=uniItem.Item_effect;
 
+      if(!StrEqual(uniItem.Item_Name,""))
+        strcopy(item.Item_Name,50,uniItem.Item_Name);
+      if(!StrEqual(uniItem.Item_Descr,""))
+        strcopy(item.Item_Descr,70,uniItem.Item_Descr);
+      //StrEqual(uniItem.Item_message,"")?:strcopy(item.Item_message,50,uniItem.Item_message);
 
-      if(uniItem[Item_ws]>-1.0)
-        item[Item_ws]=uniItem[Item_ws];
-      if(uniItem[Item_damage]>=0)
-        item[Item_damage]=uniItem[Item_damage];
-      if(uniItem[Item_spelldmg]>=0)
-        item[Item_spelldmg]=uniItem[Item_spelldmg];
-      if(uniItem[Item_effect]>=0)
-        item[Item_effect]=uniItem[Item_effect];
-
-      if(!StrEqual(uniItem[Item_Name],""))
-        strcopy(item[Item_Name],50,uniItem[Item_Name]);
-      if(!StrEqual(uniItem[Item_Descr],""))
-        strcopy(item[Item_Descr],70,uniItem[Item_Descr]);
-      //StrEqual(uniItem[Item_message],"")?:strcopy(item[Item_message],50,uniItem[Item_message]);
-
-      if(uniItem[Item_owner]>=0)
-        item[Item_owner]=uniItem[Item_owner];
-      if(uniItem[Item_EnchBit]>=0)
-        item[Item_EnchBit]=uniItem[Item_EnchBit];	
+      if(uniItem.Item_owner>=0)
+        item.Item_owner=uniItem.Item_owner;
+      if(uniItem.Item_EnchBit>=0)
+        item.Item_EnchBit=uniItem.Item_EnchBit;	
     }
   }
-  if( (item[Item_version]<1.20) && (item[Item_category]==22))  {
-      item[Item_damage]=RoundToNearest( float(item[Item_damage])*0.5);
-      item[Item_spelldmg]=RoundToNearest( float(item[Item_spelldmg])*0.75);
+  if( (item.Item_version<1.20) && (item.Item_category==22))  {
+      item.Item_damage=RoundToNearest( float(item.Item_damage)*0.5);
+      item.Item_spelldmg=RoundToNearest( float(item.Item_spelldmg)*0.75);
   }
-  if( (item[Item_version]<2.0) )  {
+  if( (item.Item_version<2.0) )  {
     new classes[10];
-    new amount=ConvertBitToClasses(item[Item_class], classes);
+    new amount=ConvertBitToClasses(item.Item_class, classes);
     for(new i=0;i<amount;i++)  {
-      if(classes[i]==1) {
-        item[Item_str] += item[Item_int];
-        item[Item_int]=0;
-        item[Item_str] += item[Item_regen] * 2;
-        item[Item_regen] = 0;
+      if(classes.i==1) {
+        item.Item_str += item.Item_int;
+        item.Item_int=0;
+        item.Item_str += item.Item_regen * 2;
+        item.Item_regen = 0;
       }
-      if(classes[i]==2) {
-        item[Item_agi] += item[Item_int];
-        item[Item_int]=0;
-        item[Item_agi] += item[Item_regen] * 2;
-        item[Item_regen] = 0;
+      if(classes.i==2) {
+        item.Item_agi += item.Item_int;
+        item.Item_int=0;
+        item.Item_agi += item.Item_regen * 2;
+        item.Item_regen = 0;
       }
     }
   }
-  if( item[Item_version]<2.5 )  {
-    item[Item_ai] *= 2;
+  if( item.Item_version<2.5 )  {
+    item.Item_ai *= 2;
   }
-  if(item[Item_version] < 2.0 && item[Item_amount] > 5)  {
-    item[Item_amount] *= 5;
+  if(item.Item_version < 2.0 && item.Item_amount > 5)  {
+    item.Item_amount *= 5;
   }
-  if(item[Item_level] <= 80 && item[Item_quality] >= 3 && item[Item_version] < 2.40) {
-    item[Item_armor] = RoundToNearest(float(item[Item_armor]) * 0.8);
+  if(item.Item_level <= 80 && item.Item_quality >= 3 && item.Item_version < 2.40) {
+    item.Item_armor = RoundToNearest(float(item.Item_armor) * 0.8);
 
   }
-  if(item[Item_version] < 4.0 && item[Item_armor] > 0)  {
-    item[Item_armor] = RoundToNearest(float(item[Item_armor]) * 0.65);
+  if(item.Item_version < 4.0 && item.Item_armor > 0)  {
+    item.Item_armor = RoundToNearest(float(item.Item_armor) * 0.65);
   }
 }
 
@@ -677,10 +675,10 @@ stock GetStandardItem(UniqueItem item, id) {
   if(!KvJumpToKey(items,key))  {
     GiveItemUnknownProps(item);
     LogError("Couldn't find props for default item = %i", id);
-    item[Item_defId] = id;
+    item.Item_defId = id;
     return;
   }
-  item[Item_version] = KvGetFloat(items, "version", 0.96);
+  item.Item_version = KvGetFloat(items, "version", 0.96);
 
   //Finding classes
   new classes[12];
@@ -704,121 +702,121 @@ stock GetStandardItem(UniqueItem item, id) {
     bitclass = bitclass | 1<<classes[i];
   }
 
-  item[Item_class] = bitclass;
+  item.Item_class = bitclass;
 
-  item[Item_level] = KvGetNum(items, "level", 0);
-  if (item[Item_version] <= 0.96)
-    item[Item_level]*=4;
-  item[Item_ilevel]= KvGetNum(items, "ilevel", 0);
-  item[Item_cost] = KvGetNum(items, "cost", 0);
-  item[Item_gold] = KvGetNum(items, "gold", 0);
-  item[Item_honor] = KvGetNum(items, "honor", 0);
-  item[Item_quality] = KvGetNum(items, "noshop", 0);
-  item[Item_category] = KvGetNum(items, "category", 0);
-  item[Item_2hand] = KvGetNum(items, "2hand", 0);
-  item[Item_use] = KvGetNum(items, "use", 0);
-  item[Item_amount] = KvGetNum(items, "amount", 1);
+  item.Item_level = KvGetNum(items, "level", 0);
+  if (item.Item_version <= 0.96)
+    item.Item_level*=4;
+  item.Item_ilevel= KvGetNum(items, "ilevel", 0);
+  item.Item_cost = KvGetNum(items, "cost", 0);
+  item.Item_gold = KvGetNum(items, "gold", 0);
+  item.Item_honor = KvGetNum(items, "honor", 0);
+  item.Item_quality = KvGetNum(items, "noshop", 0);
+  item.Item_category = KvGetNum(items, "category", 0);
+  item.Item_2hand = KvGetNum(items, "2hand", 0);
+  item.Item_use = KvGetNum(items, "use", 0);
+  item.Item_amount = KvGetNum(items, "amount", 1);
 
-  item[Item_reqstr] = KvGetNum(items, "reqstr", 0);
-  item[Item_reqagi] = KvGetNum(items, "reqagi", 0);
-  item[Item_reqsta] = KvGetNum(items, "reqsta", 0);
-  item[Item_reqint] = KvGetNum(items, "reqint", 0);
+  item.Item_reqstr = KvGetNum(items, "reqstr", 0);
+  item.Item_reqagi = KvGetNum(items, "reqagi", 0);
+  item.Item_reqsta = KvGetNum(items, "reqsta", 0);
+  item.Item_reqint = KvGetNum(items, "reqint", 0);
 
-  item[Item_str] = KvGetNum(items, "str", 0);
-  item[Item_agi] = KvGetNum(items, "agi", 0);
-  item[Item_sta] = KvGetNum(items, "sta", 0);
-  item[Item_int] = KvGetNum(items, "int", 0);
-  item[Item_res] = KvGetNum(items, "res", 0);
-  item[Item_regen] = KvGetNum(items, "regen", 0);
-  item[Item_ai] = KvGetNum(items, "ai", 0);
-  item[Item_haste] = KvGetNum(items, "haste", 0);
-  item[Item_parry] = KvGetFloat(items, "parry", 0.0);
+  item.Item_str = KvGetNum(items, "str", 0);
+  item.Item_agi = KvGetNum(items, "agi", 0);
+  item.Item_sta = KvGetNum(items, "sta", 0);
+  item.Item_int = KvGetNum(items, "int", 0);
+  item.Item_res = KvGetNum(items, "res", 0);
+  item.Item_regen = KvGetNum(items, "regen", 0);
+  item.Item_ai = KvGetNum(items, "ai", 0);
+  item.Item_haste = KvGetNum(items, "haste", 0);
+  item.Item_parry = KvGetFloat(items, "parry", 0.0);
 
-  item[Item_as] = KvGetFloat(items, "as", 0.0);
-  item[Item_cs] = KvGetFloat(items, "cs", 0.0);
-  item[Item_speed] = KvGetFloat(items, "speed", 0.0);
-  item[Item_acc] = KvGetFloat(items, "acc", 0.0);
+  item.Item_as = KvGetFloat(items, "as", 0.0);
+  item.Item_cs = KvGetFloat(items, "cs", 0.0);
+  item.Item_speed = KvGetFloat(items, "speed", 0.0);
+  item.Item_acc = KvGetFloat(items, "acc", 0.0);
 
-  item[Item_resilence] = KvGetNum(items, "resilence", 0);
-  item[Item_armor] = KvGetNum(items, "armor", 0);
-  item[Item_armor_type] = KvGetNum(items, "armor_type", 0); // 1 Cloth, 2 Leather, 3 Plate, 4 None.
+  item.Item_resilence = KvGetNum(items, "resilence", 0);
+  item.Item_armor = KvGetNum(items, "armor", 0);
+  item.Item_armor_type = KvGetNum(items, "armor_type", 0); // 1 Cloth, 2 Leather, 3 Plate, 4 None.
 
   //Weapon settings
-  item[Item_ws]        = KvGetFloat(items, "ws", 0.0);
-  item[Item_weapon_ap] = KvGetNum(items, "weapon_ap", 0);
-  item[Item_weapon_sp] = KvGetNum(items, "weapon_sp", 0);
-  item[Item_damage]    = KvGetNum(items, "damage", 0);
-  item[Item_spelldmg]  = KvGetNum(items, "spelldmg", 0);
-  item[Item_effect]    = KvGetNum(items, "effect", 0);
+  item.Item_ws        = KvGetFloat(items, "ws", 0.0);
+  item.Item_weapon_ap = KvGetNum(items, "weapon_ap", 0);
+  item.Item_weapon_sp = KvGetNum(items, "weapon_sp", 0);
+  item.Item_damage    = KvGetNum(items, "damage", 0);
+  item.Item_spelldmg  = KvGetNum(items, "spelldmg", 0);
+  item.Item_effect    = KvGetNum(items, "effect", 0);
 
-  item[Item_forGold] = KvGetNum(items, "forgold", 0); //if 1, then no need to pay silver/honor
+  item.Item_forGold = KvGetNum(items, "forgold", 0); //if 1, then no need to pay silver/honor
 
-  item[Item_noTrade] = KvGetNum(items, "notrade", 0); //If item can be traded via mail/auction. being set to 1 means no but still can mail to other owned characters
+  item.Item_noTrade = KvGetNum(items, "notrade", 0); //If item can be traded via mail/auction. being set to 1 means no but still can mail to other owned characters
 
   if(KvGetNum(items,"token", 0) == 13583)
-    item[Item_valor] = KvGetNum(items, "token_amount", 0);
+    item.Item_valor = KvGetNum(items, "token_amount", 0);
   if(KvGetNum(items,"token", 0 ) == 13584)
-    item[Item_justice] = KvGetNum(items, "token_amount", 0);
+    item.Item_justice = KvGetNum(items, "token_amount", 0);
 
-  KvGetString(items, "descr", item[Item_Descr],70, "");
-  KvGetString(items, "name", item[Item_Name],50, "Unknown");
-  KvGetString(items, "message", item[Item_message],50, "");
+  KvGetString(items, "descr", item.Item_Descr,70, "");
+  KvGetString(items, "name", item.Item_Name,50, "Unknown");
+  KvGetString(items, "message", item.Item_message,50, "");
 }
 
 stock GiveItemUnknownProps(UniqueItem item)  {
-	item[Item_id]=0;
-	item[Item_defId]=0;
-	item[Item_version]=VERSION;
-	item[Item_class]=0;
-	item[Item_level]=0;
-	item[Item_ilevel]=0;
-	item[Item_cost]=0;
-	item[Item_honor]=0;
-	item[Item_quality]=0;
-	item[Item_category]=0;
-	item[Item_2hand]=0;
-	item[Item_use]=0;
-        item[Item_justice]=0;
-        item[Item_valor]=0;
+	item.Item_id=0;
+	item.Item_defId=0;
+	item.Item_version=VERSION;
+	item.Item_class=0;
+	item.Item_level=0;
+	item.Item_ilevel=0;
+	item.Item_cost=0;
+	item.Item_honor=0;
+	item.Item_quality=0;
+	item.Item_category=0;
+	item.Item_2hand=0;
+	item.Item_use=0;
+        item.Item_justice=0;
+        item.Item_valor=0;
 	
-	item[Item_reqstr]=0;
-	item[Item_reqagi]=0;
-	item[Item_reqsta]=0;
-	item[Item_reqint]=0;
+	item.Item_reqstr=0;
+	item.Item_reqagi=0;
+	item.Item_reqsta=0;
+	item.Item_reqint=0;
 	
-	item[Item_str]=0;
-	item[Item_agi]=0;
-	item[Item_sta]=0;
-	item[Item_int]=0;
-	item[Item_res]=0;
-	item[Item_regen]=0;
-	item[Item_ai]=0;
-	item[Item_haste]=0;
-	item[Item_parry]=0.0;
+	item.Item_str=0;
+	item.Item_agi=0;
+	item.Item_sta=0;
+	item.Item_int=0;
+	item.Item_res=0;
+	item.Item_regen=0;
+	item.Item_ai=0;
+	item.Item_haste=0;
+	item.Item_parry=0.0;
 	
-	item[Item_as]=0.0;
-	item[Item_cs]=0.0;
-	item[Item_speed]=0.0;
-	item[Item_acc]=0.0;
+	item.Item_as=0.0;
+	item.Item_cs=0.0;
+	item.Item_speed=0.0;
+	item.Item_acc=0.0;
 
-	item[Item_resilence]=0;
-	item[Item_armor]=0;
-	item[Item_armor_type]=0; //1 Cloth, 2 Leather, 3 Plate, 4 None.
+	item.Item_resilence=0;
+	item.Item_armor=0;
+	item.Item_armor_type=0; //1 Cloth, 2 Leather, 3 Plate, 4 None.
 
-	item[Item_ws]=0.0;
-	item[Item_weapon_ap]=0;
-	item[Item_weapon_sp]=0;
-	item[Item_damage]=0;
-	item[Item_spelldmg]=0;
-	item[Item_effect]=0;
+	item.Item_ws=0.0;
+	item.Item_weapon_ap=0;
+	item.Item_weapon_sp=0;
+	item.Item_damage=0;
+	item.Item_spelldmg=0;
+	item.Item_effect=0;
 
-	Format(item[Item_Name], 50, "Unknown");
-	Format(item[Item_Descr], 70, "");
-	Format(item[Item_message], 50, "");
+	Format(item.Item_Name, 50, "Unknown");
+	Format(item.Item_Descr, 70, "");
+	Format(item.Item_message, 50, "");
 	
-	item[Item_use]=0;
-	item[Item_amount]=1;
-        item[Item_noTrade]=0;
+	item.Item_use=0;
+	item.Item_amount=1;
+        item.Item_noTrade=0;
 }
 
 ConvertBitToClasses(bit, classes[]) {
@@ -844,9 +842,9 @@ GetCharItem(UniqueItem item, client, slot) {
 
 stock DebugItem(UniqueItem item) {
   PrintToServer("Debugging item");
-  PrintToServer("def id = %i", item[Item_defId]);
-  PrintToServer("costs = %i", item[Item_cost]);
-  PrintToServer("honor = %i", item[Item_honor]);
+  PrintToServer("def id = %i", item.Item_defId);
+  PrintToServer("costs = %i", item.Item_cost);
+  PrintToServer("honor = %i", item.Item_honor);
 
   PrintToServer("End Debugging item");
 }
@@ -909,8 +907,8 @@ public public_ApplyEnchant(id, Handle:pack) {
     new uslot = GetUniqueInDB(id);
     UniqueItem uitem;
     GetArrayArray(g_itemsArray, uslot, uitem[0]);
-    uitem[Item_LastUsage] = GetEngineTime();
-    uitem[Item_EnchBit] = enchid;
+    uitem.Item_LastUsage = GetEngineTime();
+    uitem.Item_EnchBit = enchid;
     SetArrayArray(g_itemsArray, uslot, uitem[0]); //optimize later
   }
 
@@ -920,7 +918,7 @@ public public_ApplyEnchant(id, Handle:pack) {
 stock ApplyEnchant(client, slot, enchid, bool:insert=true)  {
   UniqueItem item;
   GetInvItem(item, client, slot);
-  new id = item[Item_id];
+  new id = item.Item_id;
   /*PrintToServer("Applying enchant %d to %d slot itemId %d", enchid, slot, id);*/
   if(id>0)  {
     SetInvUnique(client, slot, id);
@@ -945,8 +943,8 @@ stock ApplyEnchant(client, slot, enchid, bool:insert=true)  {
     /*PrintToServer("Saving info to cache. Uslot = %d", uslot);*/
     UniqueItem uitem;
     GetArrayArray(g_itemsArray, uslot, uitem[0]);
-    uitem[Item_LastUsage] = GetEngineTime();
-    uitem[Item_EnchBit] = enchid;
+    uitem.Item_LastUsage = GetEngineTime();
+    uitem.Item_EnchBit = enchid;
     SetArrayArray(g_itemsArray, uslot, uitem[0]); //optimize later
   }
 }
@@ -969,16 +967,16 @@ stock GiveItem(client, UniqueItem item, amount, String:source[]="Unknown", bool:
       new give = GetMinInt(space, amount);
       amount-=give;
       if(give == 0) amount--; //If there is no slots for items then person is unlucky and he start loosing amount... - anti loop
-      wcSetStaticSlot(client,slot,item[Item_defId]);
-      SetInvUnique(client, slot, item[Item_id]);
+      wcSetStaticSlot(client,slot,item.Item_defId);
+      SetInvUnique(client, slot, item.Item_id);
       wcSetStaticSlotAmount(client,slot,GetSlotItemAmount(client,slot)+give);
-      if(announce)  AnnounceDrop(client, item[Item_Name], slot);
+      if(announce)  AnnounceDrop(client, item.Item_Name, slot);
       if(save)  {
         SQL_UpdateSlot(client, slot);
       }
     }
     else  {
-      WCMessage(client, "failed drop", client, item[Item_Name]);
+      WCMessage(client, "failed drop", client, item.Item_Name);
       return -1;
     }
   }
@@ -1058,7 +1056,7 @@ public PreloadTodoMenu(Handle:db,Handle:query,String:error[],any:client)
 stock UseItem(client, islot, bool:nosuicide=false)  {
   UniqueItem item;
   GetInvItem(item, client, islot);
-  new cat=item[Item_category];
+  new cat=item.Item_category;
   if(((cat>9) && (cat<24)))
   {
     new x=GetFilledInventory(client);
@@ -1075,7 +1073,7 @@ stock UseItem(client, islot, bool:nosuicide=false)  {
     GetGlyphOn(client, islot);
   }
   else if(cat==24) {
-    WCMessage(client,item[Item_message],client);
+    WCMessage(client,item.Item_message,client);
     RandomBoxUsed(client,islot);
     if(!nosuicide)
       InventoryMenu(client);
@@ -1108,11 +1106,11 @@ stock UseItem(client, islot, bool:nosuicide=false)  {
       {
         WCMessage(client,"too low lvl rec",client,GetRequiredLevel(item));
       }
-      else if(skill<GetRequiredSkill(item[Item_defId]))
+      else if(skill<GetRequiredSkill(item.Item_defId))
       {
         WCMessage(client,"too low skill",client);
       }
-      else if(FindProfessionR(client,profid,item[Item_defId]))
+      else if(FindProfessionR(client,profid,item.Item_defId))
       {
         WCMessage(client,"you already know",client);
       }
@@ -1130,8 +1128,8 @@ stock UseItem(client, islot, bool:nosuicide=false)  {
           LogError("could not find profession free slot");
         else
         {
-          SetClientProfessionSlot(client,profid,freeprof,item[Item_defId]);
-          WCMessage(client,"learned book",client,item[Item_Name]);
+          SetClientProfessionSlot(client,profid,freeprof,item.Item_defId);
+          WCMessage(client,"learned book",client,item.Item_Name);
         }
       }
     }
@@ -1151,7 +1149,7 @@ stock GetItemOn(client,slot, nosuicide)
   /*}*/
   UniqueItem item;
   GetInvItem(item, client, slot);
-  new cat=item[Item_category];
+  new cat=item.Item_category;
   UniqueItem compSum;
   if(wcCheckStats(client,item)==1)
   {
@@ -1159,13 +1157,13 @@ stock GetItemOn(client,slot, nosuicide)
     {
       UniqueItem ritem;
       GetCharItem(ritem, client, 22);
-      new hand=ritem[Item_2hand];
+      new hand=ritem.Item_2hand;
       if (hand == 1)
       {
         new freeslot=wcCheckFreeSlot(client);
-        wcSetStaticSlot(client,freeslot,ritem[Item_defId]);
+        wcSetStaticSlot(client,freeslot,ritem.Item_defId);
         wcSetStaticSlotAmount(client,freeslot,-1);
-        SetInvUnique(client, freeslot, ritem[Item_id]);
+        SetInvUnique(client, freeslot, ritem.Item_id);
         wcSetCharItem(client,22,0);
         SetCharUnique(client, 22, 0);
         AddItem(ritem, compSum);
@@ -1174,14 +1172,14 @@ stock GetItemOn(client,slot, nosuicide)
       //  categoryname="leftweapons";
       if (cat==22)
       {
-        new hand2=item[Item_2hand];
+        new hand2=item.Item_2hand;
         if (hand2==1)
         {
           new freeslot=wcCheckFreeSlot(client);
           UniqueItem leftitem;
           GetCharItem(leftitem, client,18);
-          wcSetStaticSlot(client,freeslot,leftitem[Item_defId]);
-          SetInvUnique(client, freeslot, leftitem[Item_id]);
+          wcSetStaticSlot(client,freeslot,leftitem.Item_defId);
+          SetInvUnique(client, freeslot, leftitem.Item_id);
           wcSetStaticSlotAmount(client,freeslot,-1);
           wcSetCharItem(client,18,0);
           SetCharUnique(client, 18, 0);
@@ -1197,12 +1195,12 @@ stock GetItemOn(client,slot, nosuicide)
     UniqueItem itemon;
     GetCharItem(itemon, client, cat);
     AddItem(itemon, compSum);
-    wcSetStaticSlot(client,slot,itemon[Item_defId]);
-    SetInvUnique(client, slot, itemon[Item_id]);
+    wcSetStaticSlot(client,slot,itemon.Item_defId);
+    SetInvUnique(client, slot, itemon.Item_id);
     wcSetStaticSlotAmount(client,slot,-1);
-    wcSetCharItem(client, cat, item[Item_defId]);
+    wcSetCharItem(client, cat, item.Item_defId);
 
-    SetCharUnique(client, cat, item[Item_id]);
+    SetCharUnique(client, cat, item.Item_id);
     ItemCompare(item, compSum, client);
   }
   else
@@ -1243,8 +1241,8 @@ stock bool:AddTemporaryItem(client, UniqueItem item, Float:duration, bool:stacks
     return false;
   new Handle:datapack=CreateDataPack();
   WritePackCell(datapack,client);
-  WritePackCell(datapack,item[Item_defId]);
-  WritePackCell(datapack,g_respawns[client]);
+  WritePackCell(datapack,item.Item_defId);
+  WritePackCell(datapack,g_respawns.client);
   CreateTimer(duration,RemoveTemporaryItem,datapack,TIMER_HNDL_CLOSE);
 
   addTempItem(client, item);
@@ -1281,14 +1279,14 @@ flushTempItems(client)  {
 pushTempItem(client, UniqueItem item)  {
   for(new i=0;i<30;i++)
     if(g_tempItems[client][i]==0) {
-      g_tempItems[client][i] = item[Item_defId];
+      g_tempItems[client][i] = item.Item_defId;
       return;
     }
 }
 
 pullTempItem(client, UniqueItem item)  {
   for(new i=0;i<30;i++)
-    if(g_tempItems[client][i]==item[Item_defId])  {
+    if(g_tempItems[client][i]==item.Item_defId)  {
       g_tempItems[client][i]=0;
       return;
     }
@@ -1296,7 +1294,7 @@ pullTempItem(client, UniqueItem item)  {
 
 bool:hasTempItem(client, UniqueItem item) {
   for(new i=0;i<30;i++)
-    if(g_tempItems[client][i]==item[Item_defId])  {
+    if(g_tempItems[client][i]==item.Item_defId)  {
       return true;
     }
   return false;
@@ -1310,85 +1308,85 @@ bool:hasTempItem(client, UniqueItem item) {
 Float:addTempItem(client, UniqueItem item) {
   new Float:rating=0.0;
   new id = client;
-  if ((item[Item_id]>0) || (item[Item_defId] > 0))
+  if ((item.Item_id>0) || (item.Item_defId > 0))
   {
     new Float:dmgMulti=1.0;
     /*if(((item[Item_weapon_ap]+item[Item_damage])>7.0) && ((item[Item_weapon_sp]+item[Item_spelldmg])>9.0))*/
       /*dmgMulti=0.7143;*/
     new Float:bufferf;
-    bufferf=float(item[Item_damage]);
+    bufferf=float(item.Item_damage);
     wcClientsBonusStats[id][DAMAGE]+=bufferf;
     rating+= bufferf * dmgMulti * RATING_DAMAGE;
 
-    bufferf=float(item[Item_weapon_ap]);
+    bufferf=float(item.Item_weapon_ap);
     wcClientsBonusStats[id][DAMAGE]+=bufferf;
     rating+= bufferf * dmgMulti * RATING_DAMAGE;
 
-    bufferf=float(item[Item_weapon_sp]);
+    bufferf=float(item.Item_weapon_sp);
     wcClientsBonusStats[id][SPELLDAMAGE]+=bufferf;
     rating+= bufferf * dmgMulti * RATING_SPELLDMG;
 
-    bufferf=float(item[Item_armor]);
+    bufferf=float(item.Item_armor);
     wcClientsBonusStats[id][ARMOR]+=bufferf;
     rating+= bufferf * RATING_ARMOR;
 
-    bufferf=float(item[Item_str]);
+    bufferf=float(item.Item_str);
     wcClientsStats[id][STR]+=bufferf;
     rating+= bufferf * RATING_STR;
 
-    bufferf=float(item[Item_agi]);
+    bufferf=float(item.Item_agi);
     wcClientsStats[id][AGI]+=bufferf;
     rating+= bufferf * RATING_AGI;
 
-    bufferf=float(item[Item_int]);
+    bufferf=float(item.Item_int);
     wcClientsStats[id][INT]+=bufferf;
     rating+= bufferf * RATING_INT;
 
-    bufferf=float(item[Item_sta]);
+    bufferf=float(item.Item_sta);
     wcClientsStats[id][STA]+=bufferf;
     rating+= bufferf * RATING_STA;
 
-    bufferf=float(item[Item_ai]);
+    bufferf=float(item.Item_ai);
     wcClientsBonusStats[id][ARMORIGNORE]+=bufferf;
     rating+= bufferf * RATING_AI;
 
-    bufferf=float(item[Item_regen]);
+    bufferf=float(item.Item_regen);
     wcClientsBonusStats[id][MPREGEN]+=bufferf;
     rating+= bufferf * RATING_REGEN;
 
-    bufferf=item[Item_as];
+    bufferf=item.Item_as;
     wcClientsBonusStats[id][ATTACKSPEED]+=bufferf;
     rating+= bufferf * RATING_AS;
 
-    bufferf=float(item[Item_spelldmg]);
+    bufferf=float(item.Item_spelldmg);
     wcClientsBonusStats[id][SPELLDAMAGE]+=bufferf;
     rating+= bufferf * dmgMulti * RATING_SPELLDMG;
 
-    bufferf=item[Item_speed];
+    bufferf=item.Item_speed;
     wcClientsBonusStats[id][MOVESPEED]+=bufferf;
     rating+= bufferf * RATING_SPEED;
 
-    bufferf=float(item[Item_res]);
+    bufferf=float(item.Item_res);
     wcClientsBonusStats[id][RESISTANCE]+=bufferf;
     rating+= bufferf * RATING_RES;
 
-    bufferf=float(item[Item_resilence]);
+    bufferf=float(item.Item_resilence);
     wcClientsBonusStats[id][RESILIENCE]+=bufferf;  //resilence
     rating+= bufferf * RATING_RESILENCE;
 
-    bufferf=item[Item_acc];
+    bufferf=item.Item_acc;
     wcClientsBonusStats[id][ACC]+=bufferf;  //accuracy
     rating+= bufferf * RATING_ACC;
 
-    bufferf=item[Item_cs]; //Critical Strike
+    bufferf=item.Item_cs; //Critical Strike
     wcClientsBonusStats[id][CRITCHANCE]+=bufferf;
     rating+= bufferf * RATING_CS;
 
-    bufferf=float(item[Item_haste]); //Haste
+    bufferf=float(item.Item_haste); //Haste
     wcClientsBonusStats[id][HASTE]+=bufferf;
     rating+= bufferf * RATING_HASTE;
 
-    bufferf=item[Item_parry];
+    bufferf=item.Item_parry;
     wcClientsBonusStats[id][PARRY]+=bufferf;
     rating+= bufferf * RATING_PARRY;
 
@@ -1407,85 +1405,85 @@ Float:addTempItem(client, UniqueItem item) {
 Float:removeTempItem(client, UniqueItem item)  {
   new Float:rating=0.0;
   new id = client;
-  if ((item[Item_id]>0) || (item[Item_defId] > 0))
+  if ((item.Item_id>0) || (item.Item_defId > 0))
   {
     new Float:dmgMulti=1.0;
-    /*if(((item[Item_weapon_ap]+item[Item_damage])>7.0) && ((item[Item_weapon_sp]+item[Item_spelldmg])>9.0))*/
+    /*if(((item.Item_weapon_ap+item.Item_damage)>7.0) && ((item.Item_weapon_sp+item.Item_spelldmg)>9.0))*/
       /*dmgMulti=0.7143;*/
     new Float:bufferf;
-    bufferf=float(item[Item_damage]);
+    bufferf=float(item.Item_damage);
     wcClientsBonusStats[id][DAMAGE]-=bufferf;
     rating-= bufferf * dmgMulti * RATING_DAMAGE;
 
-    bufferf=float(item[Item_weapon_ap]);
+    bufferf=float(item.Item_weapon_ap);
     wcClientsBonusStats[id][DAMAGE]-=bufferf;
     rating-= bufferf * dmgMulti * RATING_DAMAGE;
 
-    bufferf=float(item[Item_weapon_sp]);
+    bufferf=float(item.Item_weapon_sp);
     wcClientsBonusStats[id][SPELLDAMAGE]-=bufferf;
     rating-= bufferf * dmgMulti * RATING_SPELLDMG;
 
-    bufferf=float(item[Item_armor]);
+    bufferf=float(item.Item_armor);
     wcClientsBonusStats[id][ARMOR]-=bufferf;
     rating-= bufferf * RATING_ARMOR;
 
-    bufferf=float(item[Item_str]);
+    bufferf=float(item.Item_str);
     wcClientsStats[id][STR]-=bufferf;
     rating-= bufferf * RATING_STR;
 
-    bufferf=float(item[Item_agi]);
+    bufferf=float(item.Item_agi);
     wcClientsStats[id][AGI]-=bufferf;
     rating-= bufferf * RATING_AGI;
 
-    bufferf=float(item[Item_int]);
+    bufferf=float(item.Item_int);
     wcClientsStats[id][INT]-=bufferf;
     rating-= bufferf * RATING_INT;
 
-    bufferf=float(item[Item_sta]);
+    bufferf=float(item.Item_sta);
     wcClientsStats[id][STA]-=bufferf;
     rating-= bufferf * RATING_STA;
 
-    bufferf=float(item[Item_ai]);
+    bufferf=float(item.Item_ai);
     wcClientsBonusStats[id][ARMORIGNORE]-=bufferf;
     rating-= bufferf * RATING_AI;
 
-    bufferf=float(item[Item_regen]);
+    bufferf=float(item.Item_regen);
     wcClientsBonusStats[id][MPREGEN]-=bufferf;
     rating-= bufferf * RATING_REGEN;
 
-    bufferf=item[Item_as];
+    bufferf=item.Item_as;
     wcClientsBonusStats[id][ATTACKSPEED]-=bufferf;
     rating-= bufferf * RATING_AS;
 
-    bufferf=float(item[Item_spelldmg]);
+    bufferf=float(item.Item_spelldmg);
     wcClientsBonusStats[id][SPELLDAMAGE]-=bufferf;
     rating-= bufferf * dmgMulti * RATING_SPELLDMG;
 
-    bufferf=item[Item_speed];
+    bufferf=item.Item_speed;
     wcClientsBonusStats[id][MOVESPEED]-=bufferf;
     rating-= bufferf * RATING_SPEED;
 
-    bufferf=float(item[Item_res]);
+    bufferf=float(item.Item_res);
     wcClientsBonusStats[id][RESISTANCE]-=bufferf;
     rating-= bufferf * RATING_RES;
 
-    bufferf=float(item[Item_resilence]);
+    bufferf=float(item.Item_resilence);
     wcClientsBonusStats[id][RESILIENCE]-=bufferf;
     rating-= bufferf * RATING_RESILENCE;
 
-    bufferf=item[Item_acc];
+    bufferf=item.Item_acc;
     wcClientsBonusStats[id][ACC]-=bufferf;
     rating-= bufferf * RATING_ACC;
 
-    bufferf=item[Item_cs];
-    wcClientsBonusStats[id][CRITCHANCE]-=bufferf;
+    bufferf=item.Item_acc;
+    wcClientsBonusStats[id][ACC]-=bufferf;
     rating-= bufferf * RATING_CS;
 
-    bufferf=float(item[Item_haste]);
+    bufferf=float(item.Item_haste);
     wcClientsBonusStats[id][HASTE]-=bufferf;
     rating-= bufferf * RATING_HASTE;
 
-    bufferf=item[Item_parry];
+    bufferf=item.Item_parry;
     wcClientsBonusStats[id][PARRY]-=bufferf;
     rating-= bufferf * RATING_PARRY;
 
@@ -1500,37 +1498,37 @@ HasShield(client) {
     return BotHasShield(client);
   UniqueItem uitem;
   GetCharItem(uitem, client, 18);
-  return uitem[Item_category]==18;
+  return uitem.Item_category==18;
 }
 
 HasDual(client) {
   UniqueItem uitem;
   GetCharItem(uitem, client, 18);
-  return uitem[Item_category]==22;
+  return uitem.Item_category==22;
 }
 
 
 new g_ffClientGlyphs[65][MAX_GLYPHS];
 new g_ff_ClientGlyphSlotsAvail[65];
 ClearGlyphs(client) {
-  g_ff_ClientGlyphSlotsAvail[client]=2;
+  g_ff_ClientGlyphSlotsAvail.client=2;
   for (new i=0;i<MAX_GLYPHS;i++)
-    g_ffClientGlyphs[client][i]=0;
+    g_ffClientGlyphs.client.i=0;
 }
 
 GetGlyphSlots(client) {
-  return g_ff_ClientGlyphSlotsAvail[client];
+  return g_ff_ClientGlyphSlotsAvail.client;
 }
 SetGlyphSlots(client,amount) {
-  g_ff_ClientGlyphSlotsAvail[client]=amount;
+  g_ff_ClientGlyphSlotsAvail.client=amount;
 }
 
 GetGlyphId(client, slot)  {
-  return g_ffClientGlyphs[client][slot];
+  return g_ffClientGlyphs.client.slot;
 }
 
 SetGlyphId(client, slot,id)  {
-  g_ffClientGlyphs[client][slot]=id;
+  g_ffClientGlyphs.client.slot=id;
 }
 
 bool:GetGlyphFull(client, slot, UniqueItem item)  {
@@ -1544,7 +1542,7 @@ GetGlyphOnStatic(client, glyphSlot, inventorySlot)  {
   new old = GetGlyphId(client, glyphSlot);
   UniqueItem item;
   GetInvItem(item, client, inventorySlot);
-  SetGlyphId(client, glyphSlot, item[Item_defId]);
+  SetGlyphId(client, glyphSlot, item.Item_defId);
   wcSetStaticSlot(client, inventorySlot, 0);
   wcSetStaticSlotAmount(client, inventorySlot, 0);
   if(old > 0) {
@@ -1589,7 +1587,7 @@ stock bool:CanWearOffhand(race) {
 
 stock bool:GivePlayerRandomItem(client, String:reason[]="drop", announce=-1, forceRarity=-1)  {
   //Prerequirements check
-  if(!IsClientInGame(client) || (playerloaded[client] != 1))  {
+  if(!IsClientInGame(client) || (playerloaded.client != 1))  {
     return false;
   }
   if(wcCheckFreeSlot(client) <= 0) {
@@ -1633,8 +1631,8 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
     return false;
   }
   GiveItemUnknownProps(uitem);
-  uitem[Item_id] = id;
-  uitem[Item_defId] = 1;  //Barebone ID
+  uitem.Item_id = id;
+  uitem.Item_defId = 1;  //Barebone ID
 
   //Give item properties
 
@@ -1685,13 +1683,13 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
   }
 
   //Save some settings into item
-  uitem[Item_level] = level;
-  uitem[Item_ilevel] = ilevel;
-  uitem[Item_quality] = quality;
-  uitem[Item_category] = cat;
-  uitem[Item_class] = 1 << race;
+  uitem.Item_level = level;
+  uitem.Item_ilevel = ilevel;
+  uitem.Item_quality = quality;
+  uitem.Item_category = cat;
+  uitem.Item_class = 1 << race;
 
-  uitem[Item_owner] = characterids[client][0];
+  uitem.Item_owner = characterids.client[0];
 
   //2handed?
   if(cat == 22) {
@@ -1700,10 +1698,10 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
       // 2hand is later set to 0 for Rogues and speed increased to match dagger speeds
       // so 2hand = dagger if rogue
       case 1,2,8,9: { //Rogues will have 1h set in next section, this' to control naming.
-        if(GetRandomInt(0,2) == 0)  uitem[Item_2hand] = 1;
+        if(GetRandomInt(0,2) == 0)  uitem.Item_2hand = 1;
       }
       case 3,4,5,7:
-        if(GetRandomInt(0,1)) uitem[Item_2hand] = 1;
+        if(GetRandomInt(0,1)) uitem.Item_2hand = 1;
     }
   }
 
@@ -1711,10 +1709,10 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
   SetRandomValues(uitem);
 
   //Random Name
-  new a=uitem[Item_agi];//1
-  new b=uitem[Item_int];//2
-  new c=uitem[Item_sta];//3
-  new d=uitem[Item_str];//4
+  new a=uitem.Item_agi;//1
+  new b=uitem.Item_int;//2
+  new c=uitem.Item_sta;//3
+  new d=uitem.Item_str;//4
   new max = d;
   new pStat=4;
   if(a > max) {
@@ -1732,15 +1730,15 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
 
   /*new pStat = (a>b)?((a>c)?((a>d)?1:4):((c>d)?3:4)):((b>c)?((b>d)?2:4):((c>d)?3:4));//gah this' ugly*/  //Tristen, you are a troll!
 
-  GetRandomName(race, cat, quality, level, uitem[Item_Name], 50, pStat, uitem[Item_2hand]);
+  GetRandomName(race, cat, quality, level, uitem.Item_Name, 50, pStat, uitem.Item_2hand);
 
   //Save item
   SaveItemCode(uitem);
 
-  uitem[Item_LastUpdate]=GetEngineTime();
-  uitem[Item_LastUsage]=GetEngineTime();
+  uitem.Item_LastUpdate=GetEngineTime();
+  uitem.Item_LastUsage=GetEngineTime();
 
-  new index = GetUniqueInDB(uitem[Item_id]);
+  new index = GetUniqueInDB(uitem.Item_id);
   if(index>=0)  {
     SetArrayArray(g_itemsArray, index, uitem[0]);
   }
@@ -1751,21 +1749,21 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
 
   //Give item to player
   new iSlot = GiveItem(client, uitem, 1, reason);
-  WCMessage(client,"item dropped",client,uitem[Item_Name]);
+  WCMessage(client,"item dropped",client,uitem.Item_Name);
   if (announce < 0) //-1=decide here, 0=default, 1=self, 2=all
   {
-    if (uitem[Item_quality] >= 4) //legendary, any level.
+    if (uitem.Item_quality >= 4) //legendary, any level.
       announce = 2;
-    else if (uitem[Item_level] >= 82 && uitem[Item_quality] >= 3) //epic, level 82+
+    else if (uitem.Item_level >= 82 && uitem.Item_quality >= 3) //epic, level 82+
       announce = 2;
     else
       announce = 1;
   }
   switch(announce)
   {
-    case 1:  AnnounceDrop(client,uitem[Item_Name],iSlot);
-    case 2:  AnnounceDropAll(client, uitem[Item_Name], uitem[Item_quality]);
-    default: AnnounceDrop(client,uitem[Item_Name],iSlot);
+    case 1:  AnnounceDrop(client,uitem.Item_Name,iSlot);
+    case 2:  AnnounceDropAll(client, uitem.Item_Name, uitem.Item_quality);
+    default: AnnounceDrop(client,uitem.Item_Name,iSlot);
   }
 
   return true;
@@ -1919,9 +1917,9 @@ stock SetRandomValues(UniqueItem item) {
   new Float:qualities[] = { 1.0, 1.0, 1.2, 1.4, 1.7, 1.25, 1.45 };
   new Float:dreds[] = { 0.16, 0.28, 0.48 };
   new Float:slot, Float:quality;
-  slot = slots[item[Item_category]-10];
-  quality = qualities[item[Item_quality]];
-  new Float:level = float(item[Item_ilevel]);
+  slot = slots.item.Item_category-10;
+  quality = qualities.item.Item_quality;
+  new Float:level = float(item.Item_ilevel);
   new armorType=0;
 
 
@@ -1932,23 +1930,23 @@ stock SetRandomValues(UniqueItem item) {
   new Float:armor = 0.0;
 
   new classes[10];
-  ConvertBitToClasses(item[Item_class], classes);
+  ConvertBitToClasses(item.Item_class, classes);
   new race = classes[0];
   new Float:pointMulti=1.0;
 
-  if(item[Item_category] == 22) {
+  if(item.Item_category == 22) {
     //Give random Weapon Speed
     new Float:ws = GetRandomFloat(0.95, 1.14);
-    if(item[Item_2hand] == 1)
+    if(item.Item_2hand == 1)
     {
       ws = GetRandomFloat(0.8, 1.0);
     }
-    if(race == 2 && item[Item_2hand] == 1)
+    if(race == 2 && item.Item_2hand == 1)
     {
       ws = GetRandomFloat(1.20, 1.35);
-      item[Item_2hand] = 0; //Removed 2handedness after naming has determined it was a dagger.
+      item.Item_2hand = 0; //Removed 2handedness after naming has determined it was a dagger.
     }
-    item[Item_ws] = ws;
+    item.Item_ws = ws;
   }
 
   switch(race)  {
@@ -2019,44 +2017,44 @@ stock SetRandomValues(UniqueItem item) {
       armorType = 2;
     }
   }
-  item[Item_armor_type] = armorType;
+  item.Item_armor_type = armorType;
 
   //Valuate item
-  new Float:points = float(item[Item_ilevel]) * 0.272277 * slot * (item[Item_category] == 22?0.7:1.0) * quality * pointMulti;
+  new Float:points = float(item.Item_ilevel) * 0.272277 * slot * (item.Item_category == 22?0.7:1.0) * quality * pointMulti;
 
   dmg = 0.26 * level * slot * quality * 0.5;
   sp = level * slot * 0.275 * 0.75 * Pow(quality, 0.5);
   armor = (level * 6.25 + 20.0) * dred * slot / ((1.0 - dred) * 7.65) * quality;
 
-  if(item[Item_category] != 22) {
+  if(item.Item_category != 22) {
     dmg = 0.0;
     sp = 0.0;
   }
-  if(item[Item_category] == 16 || item[Item_category] == 17 || item[Item_category] == 20 || item[Item_category] == 22)  {
+  if(item.Item_category == 16 || item.Item_category == 17 || item.Item_category == 20 || item.Item_category == 22)  {
     armor = 0.0;
   }
   //Offhand support
-  if(item[Item_category] == 18 && CanWearOffhand(race)) {
+  if(item.Item_category == 18 && CanWearOffhand(race)) {
     armor = 0.0;
   }
 
-  if(item[Item_2hand])  {
+  if(item.Item_2hand)  {
     dmg *= 2.0;
     sp *= 2.0;
     points *= 2.0;
   }
 
   //Support for caster 1h + offhand
-  if(!item[Item_2hand] && CanWearOffhand(race)) {
+  if(!item.Item_2hand && CanWearOffhand(race)) {
     sp *= 1.9;
   }
 
-  item[Item_weapon_ap] = RoundToCeil(dmg);
-  item[Item_weapon_sp] = RoundToCeil(sp);
-  item[Item_armor] = RoundToCeil(armor);
+  item.Item_weapon_ap = RoundToCeil(dmg);
+  item.Item_weapon_sp = RoundToCeil(sp);
+  item.Item_armor = RoundToCeil(armor);
 
 
-  item[Item_cost] = RoundToCeil( Pow(1.3, level / 4.0) * 31.0 * Pow(quality, 2.0) / 10.1  * slot * 1.8 * (item[Item_2hand] == 1?2.0:1.0) );
+  item.Item_cost = RoundToCeil( Pow(1.3, level / 4.0) * 31.0 * Pow(quality, 2.0) / 10.1  * slot * 1.8 * (item.Item_2hand == 1?2.0:1.0) );
 
   //Stat - secondary stats balance
   new Float:division = GetRandomFloat(0.0,1.0);
@@ -2099,10 +2097,10 @@ stock SetRandomValues(UniqueItem item) {
     inte = RoundToNearest(qInt * oldPoints);
   }
 
-  item[Item_str] = str;
-  item[Item_agi] = agi;
-  item[Item_sta] = sta;
-  item[Item_int] = inte;
+  item.Item_str = str;
+  item.Item_agi = agi;
+  item.Item_sta = sta;
+  item.Item_int = inte;
 
   while(secPoints > 0.0)  {
     //AS, resis, MS, haste CS
@@ -2121,7 +2119,7 @@ stock SetRandomValues(UniqueItem item) {
         {
           if(race != 1 && race != 2 && race != 8 && race != 9)
           {
-            item[Item_spelldmg] += 1;
+            item.Item_spelldmg += 1;
             secPoints -= 3.5;
           }
         }
@@ -2129,7 +2127,7 @@ stock SetRandomValues(UniqueItem item) {
         {
           if(race != 3 && race != 5 && race != 7 && race != 9)
           {
-            item[Item_damage] += 1;
+            item.Item_damage += 1;
             secPoints -= 3.5;
           }
         }
@@ -2137,7 +2135,7 @@ stock SetRandomValues(UniqueItem item) {
         {
           if(race != 1 && race != 2 && race != 8 && race != 9)
           {
-            item[Item_regen] += 1;
+            item.Item_regen += 1;
             secPoints -= 2.0;
           }
         }
@@ -2145,29 +2143,29 @@ stock SetRandomValues(UniqueItem item) {
         {
           if(race != 3 && race != 4 && race != 5 && race != 7)
           {
-            item[Item_ai] += 1;
+            item.Item_ai += 1;
             secPoints -= 0.5;
           }
         }
         case 4:
         {
-          item[Item_res] += 1;
+          item.Item_res += 1;
           secPoints -= 1;
         }
         case 5:
         {
-          item[Item_haste] += 1;
+          item.Item_haste += 1;
           secPoints -= 1;
         }
         case 6:
         {
-          if (item[Item_category] == 13 || //Gloves
-              item[Item_category] == 17 || //Ring
-              item[Item_category] == 20 || //Trinket
-              item[Item_category] == 22 || //Weapon
-              item[Item_category] == 23 )  //Wrist
+          if (item.Item_category == 13 || //Gloves
+              item.Item_category == 17 || //Ring
+              item.Item_category == 20 || //Trinket
+              item.Item_category == 22 || //Weapon
+              item.Item_category == 23 )  //Wrist
           {
-            item[Item_parry] += 0.01;
+            item.Item_parry += 0.01;
             secPoints -= 3;
           }
         }
@@ -2183,25 +2181,25 @@ stock SetRandomValues(UniqueItem item) {
         {
           if(race != 9 && race != 8)
           {
-          item[Item_as] += 0.01;
+          item.Item_as += 0.01;
           secPoints -= 0.01 * 0.25 * 15.0 * (9.0 + level);
           }
         }
         case 1:
         {
-          item[Item_speed] += 0.01;
+          item.Item_speed += 0.01;
           secPoints -= 0.01 * 0.25 * 32.0 * (10.0 + level);
         }
         case 2:
         {
-          item[Item_cs] += 0.01;
+          item.Item_cs += 0.01;
           secPoints -= 0.01 * 0.25 * 29.0 * (25.0 + level);
         }
         case 3:
         {
           if(race != 3 && race != 5 && race != 7 && race != 9)
           {
-            item[Item_acc] += 0.01;
+            item.Item_acc += 0.01;
             secPoints -= 0.01 * 0.25 * 9.5 * (10.0 + level);
           }
         }
@@ -2211,27 +2209,27 @@ stock SetRandomValues(UniqueItem item) {
 }
 
 AddItem(UniqueItem adding, UniqueItem ret) {
-  ret[Item_armor] += adding[Item_armor];
-  ret[Item_str] += adding[Item_str];
-  ret[Item_agi] += adding[Item_agi];
-  ret[Item_sta] += adding[Item_sta];
-  ret[Item_int] += adding[Item_int];
-  ret[Item_res] += adding[Item_res];
-  ret[Item_regen] += adding[Item_regen];
-  ret[Item_ai] += adding[Item_ai];
-  ret[Item_haste] += adding[Item_haste];
-  ret[Item_parry] += adding[Item_parry];
-  ret[Item_as] += adding[Item_as];
-  ret[Item_cs] += adding[Item_cs];
-  ret[Item_speed] += adding[Item_speed];
-  ret[Item_acc] += adding[Item_acc];
-  ret[Item_resilence] += adding[Item_resilence];
-  if(adding[Item_ws] > 0.0)
-    ret[Item_ws] = adding[Item_ws];
-  ret[Item_damage] += adding[Item_damage];
-  ret[Item_weapon_ap] += adding[Item_weapon_ap];
-  ret[Item_weapon_sp] += adding[Item_weapon_sp];
-  ret[Item_spelldmg] += adding[Item_spelldmg];
+  ret.Item_armor += adding.Item_armor;
+  ret.Item_str += adding.Item_str;
+  ret.Item_agi += adding.Item_agi;
+  ret.Item_sta += adding.Item_sta;
+  ret.Item_int += adding.Item_int;
+  ret.Item_res += adding.Item_res;
+  ret.Item_regen += adding.Item_regen;
+  ret.Item_ai += adding.Item_ai;
+  ret.Item_haste += adding.Item_haste;
+  ret.Item_parry += adding.Item_parry;
+  ret.Item_as += adding.Item_as;
+  ret.Item_cs += adding.Item_cs;
+  ret.Item_speed += adding.Item_speed;
+  ret.Item_acc += adding.Item_acc;
+  ret.Item_resilence += adding.Item_resilence;
+  if(adding.Item_ws > 0.0)
+    ret.Item_ws = adding.Item_ws;
+  ret.Item_damage += adding.Item_damage;
+  ret.Item_weapon_ap += adding.Item_weapon_ap;
+  ret.Item_weapon_sp += adding.Item_weapon_sp;
+  ret.Item_spelldmg += adding.Item_spelldmg;
 }
 
 ItemCompare(UniqueItem newitem, UniqueItem olditem,client)
@@ -2240,39 +2238,39 @@ ItemCompare(UniqueItem newitem, UniqueItem olditem,client)
   decl String:buffer[255];
   Format(buffer,sizeof(buffer),"%T","item compare", client);
 
-  if((newitem[Item_armor]-olditem[Item_armor])!=0)
+  if((newitem.Item_armor-olditem.Item_armor)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name armor",client,newitem[Item_armor]-olditem[Item_armor]);
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name armor",client,newitem.Item_armor-olditem.Item_armor);
   }
-  if((newitem[Item_str]-olditem[Item_str])!=0)
+  if((newitem.Item_str-olditem.Item_str)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name str",client,newitem[Item_str]-olditem[Item_str]);
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name str",client,newitem.Item_str-olditem.Item_str);
   }
-  if((newitem[Item_agi]-olditem[Item_agi])!=0)
+  if((newitem.Item_agi-olditem.Item_agi)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name agi",client,newitem[Item_agi]-olditem[Item_agi]);
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name agi",client,newitem.Item_agi-olditem.Item_agi);
   }
-  if((newitem[Item_sta]-olditem[Item_sta])!=0)
+  if((newitem.Item_sta-olditem.Item_sta)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name sta",client,newitem[Item_sta]-olditem[Item_sta]);
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name sta",client,newitem.Item_sta-olditem.Item_sta);
   }
-  if((newitem[Item_int]-olditem[Item_int])!=0)
+  if((newitem.Item_int-olditem.Item_int)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name int",client,newitem[Item_int]-olditem[Item_int]);
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name int",client,newitem.Item_int-olditem.Item_int);
   }
-  if((newitem[Item_res]-olditem[Item_res])!=0)
+  if((newitem.Item_res-olditem.Item_res)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name res",client,newitem[Item_res]-olditem[Item_res]);
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name res",client,newitem.Item_res-olditem.Item_res);
   }
-  if((newitem[Item_regen]-olditem[Item_regen])!=0)
+  if((newitem.Item_regen-olditem.Item_regen)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name regen",client,newitem[Item_regen]-olditem[Item_regen]);
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name regen",client,newitem.Item_regen-olditem.Item_regen);
   }
-  if((newitem[Item_ai]-olditem[Item_ai])!=0)
+  if((newitem.Item_ai-olditem.Item_ai)!=0)
   {
-    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name ai",client,newitem[Item_ai]-olditem[Item_ai]);
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name ai",client,newitem.Item_ai-olditem.Item_ai);
   }
-  if((newitem[Item_haste]-olditem[Item_haste])!=0)
+  if((newitem.Item_haste-olditem.Item_haste)!=0)
   {
     Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name haste",client,newitem.Item_haste-olditem.Item_haste);
   }

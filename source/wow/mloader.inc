@@ -201,7 +201,7 @@ MLoader_execute(ml)  {
   }
   //consider it is valid then
   tmsql++;
-  SQL_TQuery(TMSQL, MLoader_executorCallback, ml[ML_query], ml[ML_Id]);
+  SQL_TQuery(TMSQL, MLoader_executorCallback, ml.ML_query, ml.ML_Id);
 }
 
 public MLoader_executorCallback(Handle:db,Handle:query,String:error[],any:ml_id)

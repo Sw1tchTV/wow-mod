@@ -179,7 +179,7 @@ stock AttemptBuyout(client, aucId)  {
 
 public buy_buyoutCallback1(MLoader obj)  {
 
-  if(obj[ML_error])  {
+  if(obj.ML_error)  {
     LogError("Error in buyout query: %s", obj.ML_errorMsg);
     return;
   }

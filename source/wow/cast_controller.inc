@@ -21,7 +21,7 @@ new g_ff_talentSettings[65][MAX_TALENTS+30][SpellSetting];
 
 clearSpellSettings(client)  {
   for(new i=0;i<25;i++) {
-    g_ff_spellSettings[client][i][SS_isEnabled]=true;
+    g_ff_spellSettings[client][i].SS_isEnabled=true;
     g_ff_spellSettings[client][i][SS_minRage]=0;
   }
   for(new i=0;i<MAX_TALENTS+30;i++) {
@@ -450,7 +450,7 @@ stock ChangeSpellSetting(client, spellId, bool:isEnabled, rage=-1)   {
 
 stock bool:triggerControlledSpell(client, spellId, bool:msg=true) {
   new bool:now = false;
-  if(spellId >= 0 ) now = g_ff_spellSettings[client][spellId][SS_isEnabled];
+  if(spellId >= 0 ) now = g_ff_spellSettings[client][spellId].SS_isEnabled;
   else
     now = g_ff_talentSettings[client][spellId*-1][SS_isEnabled];
   if(now) {

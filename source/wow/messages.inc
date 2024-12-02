@@ -828,7 +828,7 @@ stock _displayTodoMenu(client, Handle:query)
           if(GetItemRating(uitemOld) >= GetSQLDataFloat(query, "rating") ) //we have better
             continue;
 
-          if(uitemOld.Item_level >= GetSQLDataInt(query, "level") || uitemOld[Item_ilevel] >= GetSQLDataInt(query, "ilevel")) //we own higher level
+          if(uitemOld.Item_level >= GetSQLDataInt(query, "level") || uitemOld.Item_ilevel >= GetSQLDataInt(query, "ilevel")) //we own higher level
             continue;
 
           if(uitemOld.Item_category != cat)  //apparantly it's weapon slot and we don't suggest shield to if he has weapon and other way round
