@@ -295,7 +295,7 @@ enum Profession {
   Prof_InscrBonus2
 };
 
-new Float:UserTemps[65][Temp];
+float UserTemps[65][Temp];
 
 new String:g_sEventMessage[255]="";
 

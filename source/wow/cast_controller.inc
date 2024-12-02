@@ -15,18 +15,18 @@ enum struct SpellSetting {
 }
 
 
-new g_ff_spellSettings[65][25][SpellSetting];
-new g_ff_talentSettings[65][MAX_TALENTS+30][SpellSetting];
+ SpellSetting g_ff_spellSettings[65][25];
+ SpellSetting g_ff_talentSettings[65][MAX_TALENTS+30];
 
 
 clearSpellSettings(client)  {
   for(new i=0;i<25;i++) {
     g_ff_spellSettings[client][i].SS_isEnabled=true;
-    g_ff_spellSettings[client][i][SS_minRage]=0;
+    g_ff_spellSettings[client][i].SS_minRage=0;
   }
   for(new i=0;i<MAX_TALENTS+30;i++) {
-    g_ff_talentSettings[client][i][SS_isEnabled]=true;
-    g_ff_talentSettings[client][i][SS_minRage]=0;
+    g_ff_talentSettings[client][i].SS_isEnabled=true;
+    g_ff_talentSettings[client][i].SS_minRage=0;
   }
 }
 
@@ -42,12 +42,12 @@ stock loadSpellSettings(client, Handle:results) {
 
     if(spellId < 0) {
       spellId*=-1;
-      g_ff_talentSettings[client][spellId][SS_isEnabled]=isEnabled;
-      g_ff_talentSettings[client][spellId][SS_minRage]=minRage;
+      g_ff_talentSettings[client][spellId].SS_isEnabled=isEnabled;
+      g_ff_talentSettings[client][spellId].SS_minRage=minRage;
     }
     else  {
-      g_ff_spellSettings[client][spellId][SS_isEnabled]=isEnabled;
-      g_ff_spellSettings[client][spellId][SS_minRage]=minRage;
+      g_ff_spellSettings[client][spellId].SS_isEnabled=isEnabled;
+      g_ff_spellSettings[client][spellId].SS_minRage=minRage;
     }
   }
 }
@@ -63,29 +63,29 @@ stock saveSpellSettings(client, Handle:thread)  {
   new bool:has=false;
   for(new i=0; i<25; i++) {
     new bool:pass=false;
-    if(!g_ff_spellSettings[client][i][SS_isEnabled])
+    if(!g_ff_spellSettings[client][i].SS_isEnabled)
       pass=true;
-    if(g_ff_spellSettings[client][i][SS_minRage]>0)
+    if(g_ff_spellSettings[client][i].SS_minRage>0)
       pass=true;
     if(!pass)
       continue;
     if(has)
       point+=Format(buffer[point], sizeof(buffer)-point, ", ");
     has=true;
-    point+=Format(buffer[point], sizeof(buffer)-point, "(%d, %d, %d, %d)", characterids[client][0], i, g_ff_spellSettings[client][i][SS_isEnabled], g_ff_spellSettings[client][i][SS_minRage]);
+    point+=Format(buffer[point], sizeof(buffer)-point, "(%d, %d, %d, %d)", characterids[client][0], i, g_ff_spellSettings[client][i].SS_isEnabled, g_ff_spellSettings[client][i].SS_minRage);
   }
   for(new i=0; i<MAX_TALENTS+30; i++) {
     new bool:pass=false;
-    if(!g_ff_talentSettings[client][i][SS_isEnabled])
+    if(!g_ff_talentSettings[client][i].SS_isEnabled)
       pass=true;
-    if(g_ff_talentSettings[client][i][SS_minRage]>0)
+    if(g_ff_talentSettings[client][i].SS_minRage>0)
       pass=true;
     if(!pass)
       continue;
     if(has)
       point+=Format(buffer[point], sizeof(buffer)-point, ", ");
     has=true;
-    point+=Format(buffer[point], sizeof(buffer)-point, "(%d, %d, %d, %d)", characterids[client][0], i*-1, g_ff_talentSettings[client][i][SS_isEnabled], g_ff_talentSettings[client][i][SS_minRage]);
+    point+=Format(buffer[point], sizeof(buffer)-point, "(%d, %d, %d, %d)", characterids[client][0], i*-1, g_ff_talentSettings[client][i].SS_isEnabled, g_ff_talentSettings[client][i].SS_minRage);
   }
 
   if(!has)
@@ -104,10 +104,10 @@ bool:castIsRecommended(client, spellid) {
   if(spellid < 0) {
     spellid *= -1; //normalize
     //We already know it is controlled, so we just check settings
-    if(!g_ff_talentSettings[client][spellid][SS_isEnabled])
+    if(!g_ff_talentSettings[client][spellid].SS_isEnabled)
       return false;
     new rage = GetMana(client);
-    if(rage < g_ff_talentSettings[client][spellid][SS_minRage])
+    if(rage < g_ff_talentSettings[client][spellid].SS_minRage)
       return false;
     return true;
   }
@@ -117,10 +117,10 @@ bool:castIsRecommended(client, spellid) {
   if(wcGetSpellInfoInt(GetClass(client), spellid, "controlled")<=0)
     return true;
 
-  if(!g_ff_spellSettings[client][spellid][SS_isEnabled])
+  if(!g_ff_spellSettings[client][spellid].SS_isEnabled)
     return false;
   new rage = GetMana(client);
-  if(rage < g_ff_spellSettings[client][spellid][SS_minRage])
+  if(rage < g_ff_spellSettings[client][spellid].SS_minRage)
     return false;
   return true;
 }
@@ -245,8 +245,8 @@ displayCastSettingsMenu(client) {
       wcGetSpellInfo(GetClass(client),spellid,"name",line, client);
 
       new costs = GetSpellCost(client, spellid);
-      new minRage = g_ff_spellSettings[client][spellid][SS_minRage];
-      new bool:enabled = g_ff_spellSettings[client][spellid][SS_isEnabled];
+      new minRage = g_ff_spellSettings[client][spellid].SS_minRage;
+      new bool:enabled = g_ff_spellSettings[client][spellid].SS_isEnabled;
       decl String:sEnabled[20];
       if(enabled)
         sEnabled="Enabled";
@@ -269,8 +269,8 @@ displayCastSettingsMenu(client) {
       if(StringToInt(tmp) >= 1) {
         new spellid = i;
         new costs = GetTalentCost(client, tree, tier, talent);
-        new minRage = g_ff_talentSettings[client][spellid][SS_minRage];
-        new bool:enabled = g_ff_talentSettings[client][spellid][SS_isEnabled];
+        new minRage = g_ff_talentSettings[client][spellid].SS_minRage;
+        new bool:enabled = g_ff_talentSettings[client][spellid].SS_isEnabled;
         decl String:sEnabled[20];
         if(enabled)
           sEnabled="Enabled";
@@ -434,15 +434,15 @@ public ChooseSpellSettingHandler(Handle:menu,
 
 stock ChangeSpellSetting(client, spellId, bool:isEnabled, rage=-1)   {
   if(spellId>0) {
-    g_ff_spellSettings[client][spellId][SS_isEnabled]=isEnabled;
+    g_ff_spellSettings[client][spellId].SS_isEnabled=isEnabled;
     if(rage>=0)
-      g_ff_spellSettings[client][spellId][SS_minRage]=rage;
+      g_ff_spellSettings[client][spellId].SS_minRage=rage;
   }
   else  {
     spellId *= -1;
-    g_ff_talentSettings[client][spellId][SS_isEnabled]=isEnabled;
+    g_ff_talentSettings[client][spellId].SS_isEnabled=isEnabled;
     if(rage>=0)
-      g_ff_talentSettings[client][spellId][SS_minRage]=rage;
+      g_ff_talentSettings[client][spellId].SS_minRage=rage;
   }
 
 
@@ -452,7 +452,7 @@ stock bool:triggerControlledSpell(client, spellId, bool:msg=true) {
   new bool:now = false;
   if(spellId >= 0 ) now = g_ff_spellSettings[client][spellId].SS_isEnabled;
   else
-    now = g_ff_talentSettings[client][spellId*-1][SS_isEnabled];
+    now = g_ff_talentSettings[client][spellId*-1].SS_isEnabled;
   if(now) {
     ChangeSpellSetting(client, spellId, false);
     if(msg) {

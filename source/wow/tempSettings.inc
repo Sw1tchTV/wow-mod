@@ -155,10 +155,10 @@ bool:TriggerNewbie2(client)  {
 new Handle:g_tempXp, Handle:g_tempDrop, Handle:g_tempMsg;
 public HookTempVars() {
   g_tempXp = CreateConVar("wc_temp_xp", "1.0", "XP Modifier",FCVAR_NOTIFY,true,0.0,true,10.0);
-  SetTempVar(0, Temp_XPRate, 1.0);
+  SetTempVar(0, Temp.Temp_XPRate, 1.0);
   HookConVarChange(g_tempXp, TempVarChanged);
   g_tempDrop = CreateConVar("wc_temp_drop", "1.0", "Drop Modifier",FCVAR_NOTIFY,true,0.0,true,10.0);
-  SetTempVar(0, Temp_DropRate, 1.0);
+  SetTempVar(0, Temp.Temp_DropRate, 1.0);
   HookConVarChange(g_tempDrop, TempVarChanged);
 
   g_tempMsg = CreateConVar("wc_event_message", "", "Event Message, if any");
@@ -197,9 +197,9 @@ Float:GetTempVar(client, Temp:param)  {
 
 Temp:GetConvar(String:name[])  {
   if(StrEqual(name, "wc_temp_xp", false))
-    return Temp_XPRate;
+    return Temp.Temp_XPRate;
   if(StrEqual(name, "wc_temp_drop", false))
-    return Temp_DropRate;
-  return Temp_None;
+    return Temp.Temp_DropRate;
+  return Temp.Temp_None;
 }
 
