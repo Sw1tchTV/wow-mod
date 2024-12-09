@@ -180,7 +180,7 @@ public TempVarChanged(Handle:param, const String:oldValue[], const String:newVal
   if (StrEqual(name, "wc_temp_xp"))
     SetTempVar("xp_rate", newv);
 	else if (StrEqual(name, "wc_temp_drop"))
-		UserTemps[0].Temp_DropRate = newv;
+		SetTempVar("drop_rate", newv);
 }
 
 SetTempVar(char param[20], Float:value) {
@@ -190,7 +190,9 @@ SetTempVar(char param[20], Float:value) {
     }
   }
 	else if (StrEqual(param, "drop_rate"))
-		UserTemps[0].Temp_DropRate = value;
+		for(int i = 0; i <= 64; i++) {
+		  UserTemps[i].Temp_DropRate = value;
+    }
 }
 
 Float:GetTempVar(client, char param[20])  {
