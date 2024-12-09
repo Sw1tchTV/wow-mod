@@ -252,6 +252,7 @@ PrecacheCSS()	{
   PrecacheModel("models/cf_models_src/treasurechest03.mdl");
   PrecacheModel("models/cf_models_src/treasurechest04.mdl");
   PrecacheModel("models/cf_models_src/treasurechest05.mdl");
+  PrecacheModel("models/lduke/chicken/chicken3.mdl");
 
 
   //ctf
