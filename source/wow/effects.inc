@@ -247,6 +247,12 @@ PrecacheCSS()	{
   g_ef_greenglow1 = PrecacheModel("materials/sprites/greenglow1.vmt");
   //g_ef_firecloud2 = PrecacheModel("materials/effects/fire_cloud2.vmt");
   PrecacheModel("effects/bluespark.vmt");
+  PrecacheModel("models/cf_models_src/treasurechest01.mdl");
+  PrecacheModel("models/cf_models_src/treasurechest02.mdl");
+  PrecacheModel("models/cf_models_src/treasurechest03.mdl");
+  PrecacheModel("models/cf_models_src/treasurechest04.mdl");
+  PrecacheModel("models/cf_models_src/treasurechest05.mdl");
+
 
   //ctf
   g_ctf_horde    = PrecacheModel("models/cf_models_src/ctf_80rd3.mdl");
