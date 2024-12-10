@@ -2534,19 +2534,19 @@
   }
   "Rockbiter Weapon info"
   {
-    "en"     "Your weapon hits deal 50%% magical damage and 50%% physical.   \nToggleable, costs 3 mana per hit."
+    "en"     "Your weapon hits deal 50%% magical damage and 50%% physical.   \nToggleable."
   }
   "rockbiter cast"
   {
-    "en"     "You cast @greenRockbiter Weapon@default. Your weapon shots will cost you @lightgreen3 @defaultmana but do @lightgreen50%% @defaultmagic damage"
+    "en"     "You cast @greenRockbiter Weapon@default. Your weapon shots will deal @lightgreen50%% @defaultmagic damage"
   }
   "rockbiter cast improved"
   {
-    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will cost you @lightgreen3 @defaultmana but do @lightgreen62.5%% @defaultmagic damage"
+    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will deal @lightgreen62.5%% @defaultmagic damage"
   }
   "rockbiter cast improved2"
   {
-    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will cost you @lightgreen3 @defaultmana but do @lightgreen75%% @defaultmagic damage"
+    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will deal @lightgreen75%% @defaultmagic damage"
   }
   "rockbiter off"
   {

@@ -1964,7 +1964,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
         damagemulti *= 1.1;
       if(g_iCarry[attacker]>0)
         damagemulti*CTF_NERF;
-      if(!bMagicDamage[attacker] || GetMana(attacker) < 3)
+      if(!bMagicDamage[attacker])
       {
         new armormodifier = 0;
         if(GetClass(attacker)==1 && CheckRequirements(attacker,1,2,1,4))
@@ -1976,7 +1976,6 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
       }
       else //Rockbiter "magical" damage
       {
-        wcSetMana(attacker, GetMana(attacker) - 3);
         new Float:penetration = 0.0; //Used to be 14.0, before that 11.0
         new armor=GetArmor(victim)-GetIgnoreArmor(attacker);
         new Float:improck=wcRunTalent_6_ImpRock(attacker);
