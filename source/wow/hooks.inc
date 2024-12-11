@@ -1003,7 +1003,7 @@ public Action:PlayerDeathEvent(Handle:event,const String:name[],bool:dontBroadca
   {
     if(GetClass(targets[x])==7)
     {
-      if(GetLevel(targets[x])>=24)
+      if(GetLevel(targets[x])>=55)
       {
         if(wcGetTalentLevel(targets[x],2,1,2)>0)
         {
