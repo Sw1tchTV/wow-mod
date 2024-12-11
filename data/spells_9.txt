@@ -14,7 +14,7 @@
     "name"  "Tiger Palm"
     "event" "player_attacker" //"player_attacker": You must check & set cooldown manually inside skill
     "chance"  "15"
-    "level" "24"
+    "level" "25"
     "mana" "20"
     "base" "5"
     "multi" "1.00"
@@ -43,7 +43,7 @@
     "name_ru"   "TODO"
     "event" "player_cast"
     "active"  "1"
-    "level" "30"
+    "level" "20"
     "cooldowntype"  "4"
     //Revival from here till
     "cooldown"  "15.0"
@@ -67,7 +67,7 @@
     "name_ru"   "TODO"
     "event" "player_cast"
     "active"  "1"
-    "level" "36"
+    "level" "10"
     "cost" "35"
     "cooldown"  "10.0"
     "cooldowntype"  "5"
@@ -83,7 +83,7 @@
     "name_ru"   "TODO"
     "event" "player_cast"
     "active"  "1"
-    "level" "76"
+    "level" "15"
     "cost" "50"
     "cooldown"  "25.0"
     "cooldowntype"  "6"
@@ -101,7 +101,7 @@
     "name"      "Enhanced Parry"
     "name_ru"   "TODO"
     "event"     "player_spawn"
-    "level"     "44"
+    "level"     "30"
     "chance"    "0.10"
     "reduce"    "0.10"
     "range"     "750"  //information only, amount will be hard-coded
@@ -116,7 +116,7 @@
   {
     "name"      "Legacy of the White Tiger"
     "name_ru"   "TODO"
-    "level"     "85"
+    "level"     "65"
     "crit"      "0.030"
   }
   "10"
@@ -124,7 +124,7 @@
     "name"      "Chi Burst"
     "event"     "player_cast"
     "active"    "1"
-    "level"     "60"
+    "level"     "40"
     "cooldown"  "1.5" //Low cooldown due to costing chi
     "cooldowntype"  "8"
     "mana"      "0"
@@ -137,21 +137,21 @@
   "12"
   {
     "name"      "Stance of the Ox" //Here simply to explain what each stance does
-    "level"     "30"
+    "level"     "20"
   }
   "13"
   {
     "name"      "Stance of the Tiger" //Here simply to explain what each stance does
-    "level"     "30"
+    "level"     "20"
   }
   "14"
   {
     "name"      "Stance of the Serpent" //Here simply to explain what each stance does
-    "level"     "30"
+    "level"     "20"
   }
   "15"
   {
     "name"      "Sparring" //Here simply to explain what Sparring does
-    "level"     "52"
+    "level"     "55"
   }
 }

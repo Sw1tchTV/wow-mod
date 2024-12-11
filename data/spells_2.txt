@@ -6,7 +6,7 @@
     "name_ru"   "TODO"
     "event" "player_cast"
     "active"  "1"
-    "level" "18"
+    "level" "10"
     "cost" "100"
     "duration"  "2.0"
     "cooldowntype"  "2"
@@ -35,7 +35,7 @@
     "name_ru"   "TODO"
     "event" "player_cast"
     "active"  "1"
-    "level" "48"
+    "level" "1"
     "cost" "425"
     "duration"  "6.0"
     "cooldowntype"  "3"
@@ -68,7 +68,7 @@
     "name"  "Expose Armor"
     "name_ru"   "TODO"
     "event" "player_spawn"
-    "level" "26"
+    "level" "30"
     "cost" "170"
     "chance"  "100" // max 100%
     "multi" "0.3" // total AI * multi
@@ -79,7 +79,7 @@
     "name_ru"   "TODO"
     "event" "player_cast"
     "active"  "1"
-    "level" "37"
+    "level" "20"
     "cost" "290"
     "duration"  "2.5"
     "cooldowntype"  "4"
@@ -92,7 +92,7 @@
     "name"  "Cheat Death"
     "name_ru"   "TODO"
     "event" "player_spellvictim"
-    "level" "54"
+    "level" "65"
     "cost" "1000"
     "chance"  "40" // max 100%
   }
@@ -101,7 +101,7 @@
     "name"  "Cloak of Shadow"
     "name_ru"   "TODO"
     "event" "player_spawn"
-    "level" "60"
+    "level" "40"
     "cost" "3000"
     "chance"  "100" // max 100%
     "multi" "0.3" // total RES * multi
@@ -112,7 +112,7 @@
     "name_ru"   "TODO"
     "event" "player_cast"
     "active" "1"
-    "level" "72"
+    "level" "35"
     "cost" "10000"
     "multi" "0.2" // total RES * multi
     "cooldowntype"  "5"
@@ -127,7 +127,7 @@
     "name_ru"   "TODO"
     "event" "player_spawn"
     "active" "0"
-    "level" "1"
+    "level" "25"
     "cost" "400"
   }
   "12"
@@ -139,7 +139,7 @@
     "cooldowntype"  "12"
     "cooldown"      "25.0"
     "mana"          "40"
-    "level"         "66"
+    "level"         "60"
     "duration"      "2.0"
     "noboss"        "1"
     "ticks"  "10"
@@ -152,7 +152,7 @@
     "name_ru"   "TODO"
     "event" "player_cast"
     "active"  "1"
-    "level" "80"
+    "level" "50"
     "cooldowntype"  "13"
     "cooldown"  "2.5"
     "basedmg" "16"
