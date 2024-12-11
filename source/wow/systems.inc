@@ -2246,27 +2246,29 @@ stock bool:IsDmEnabled()  {
 
 stock bool:getsTalentPoint(level)  {
   switch(level) {
-    case 85:  return true; //21
-    case 84:  return true; //20
-    case 83:  return true; //19
-    case 82:  return true; //18
-    case 81:  return true; //17
-    case 80:  return true; //16
-    case 78:  return true; //15
-    case 76:  return true; //14
-    case 74:  return true; //13
-    case 72:  return true; //12
-    case 70:  return true; //11
-    case 67:  return true; //10
-    case 64:  return true; // 9
-    case 61:  return true; // 8
-    case 58:  return true; // 7
-    case 54:  return true; // 6
-    case 50:  return true; // 5
-    case 46:  return true; // 4
-    case 41:  return true; // 3
-    case 36:  return true; // 2
-    case 30:  return true; // 1
+    case 85:  return true; //23
+    case 84:  return true; //22
+    case 83:  return true; //21
+    case 82:  return true; //20
+    case 81:  return true; //19
+    case 80:  return true; //18
+	case 78:  return true; //17
+	case 75:  return true; //16
+    case 72:  return true; //15
+    case 69:  return true; //14
+    case 66:  return true; //13
+    case 63:  return true; //12
+    case 60:  return true; //11
+    case 56:  return true; //10
+    case 52:  return true; // 9
+    case 48:  return true; // 8
+    case 44:  return true; // 7
+    case 40:  return true; // 6
+    case 36:  return true; // 5
+    case 32:  return true; // 4
+    case 28:  return true; // 3
+    case 24:  return true; // 2
+    case 20:  return true; // 1
 
   }
 
