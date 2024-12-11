@@ -475,6 +475,8 @@ public Action:ManaTimer(Handle:timer, any:temp)
       wcGetCooldownString(x, cds);
       if(strlen(cds)>1)
         Format(buffer, sizeof(buffer),"%s%s", buffer, cds);
+      if(GetClass(x)==0)
+        Format(buffer,sizeof(buffer),"%T","pick class hint", x);
       if(IsPlayerAlive(x) || wcDamageDone[x] > 0 || wcDamageTaken[x] > 0 || wcHealingDone[x] > 0)
         HudHintStatic(x,buffer);
     }
