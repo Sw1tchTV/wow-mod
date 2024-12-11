@@ -6889,21 +6889,21 @@
             }
             "1"
             {
-              "multi"  "0.0330000"
+              "multi"  "0.660000"
               "name"  "Fel Armor"
               "max"  "3"
               "saveid"  "0"
             }
             "2"
             {
-              "multi"  "0.0660000"
+              "multi"  "1.320000"
               "name"  "Fel Armor"
               "max"  "3"
               "saveid"  "0"
             }
             "3"
             {
-              "multi"  "1.0000"
+              "multi"  "2.0000"
               "name"  "Fel Armor"
               "max"  "3"
               "saveid"  "0"
