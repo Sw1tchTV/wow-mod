@@ -846,6 +846,7 @@ public ClassChooseHandle(Handle:menu_classchoose,MenuAction:action,client,slot)
     decl String:race[128];
     wcClassToName(client,slot+1,race,sizeof(race));
     WCMessage(client,"your class",client,race);
+    resetAutoCasts(client);
   }
   if(action==MenuAction_Cancel)
     if(slot==MenuCancel_ExitBack)
