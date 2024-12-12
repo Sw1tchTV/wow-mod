@@ -1807,7 +1807,7 @@ public wcRunSpell(spellid,race,&tmp1,&tmp2,&tmp3,&any:tmp4,&tmp5,&tmp6,&tmp7,&tm
           case 11:
             wcRunSpell_6_11(spellid, race, tmp1); //Healing Rain
           case 12:
-            wcRunSpell_6_12(tmp1); //Agile Defence
+            wcRunSpell_6_12(spellid, race, tmp1); //Ancestors' Protection
         }
       }
       case 7: //Warlock

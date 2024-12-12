@@ -990,34 +990,22 @@ public Action:RemoveArmorTimer(Handle:timer, Handle:pack) {
 
 public wcRunSpell_6_7(spellid,race,client)
 {
-
   if(IsBoss())
   {
     WCMessage(client, "boss spell blocked", client);
     return;
   }
 
-  if(!bMagicDamage[client])
+  if(CheckRequirements(client,6,2,2,4))
   {
-    new manareq = GetSpellCost(client, spellid);
-    wcSetMana(client,GetMana(client)-manareq);
-    //new Float:pen = float(GetBonusAgi(client)+GetAgi(client)) / 14.0;
-    if(CheckRequirements(client,6,2,2,4))
-    {
-      if(wcGetTalentLevel(client,2,2,4)==1)
-        WCMessage(client,"rockbiter cast improved",client);
-      else
-        WCMessage(client,"rockbiter cast improved2",client);
-    }
-    else
-      WCMessage(client,"rockbiter cast",client);
-    
-    bMagicDamage[client]=true;
+	if(wcGetTalentLevel(client,2,2,4)==1)
+		WCMessage(client,"rockbiter cast improved",client);
+	else
+		WCMessage(client,"rockbiter cast improved2",client);
   }
-  else  {
-    WCMessage(client, "rockbiter off", client);
-    bMagicDamage[client] = false;
-  }
+  else
+    WCMessage(client,"rockbiter cast",client);
+  bMagicDamage[client]=true;
 }
 
 public wcRunSpell_6_8(spellid,race,client)
@@ -2586,7 +2574,7 @@ wcRunSpell_2_8(spellid,race,victim,&totaldmg)
   }
 }
 
-wcRunSpell_2_9(spellid,race,client)
+wcRunSpell_2_9(spellid,race,client) //Cloak of Shadows
 {
   new random=GetRandomInt(1,100);
   decl String:line[255];
@@ -6944,12 +6932,15 @@ GetVanishBreakDmg(client)
   return g_iVanishBreakDmg[client];
 }
 
-wcRunSpell_6_12(client)
+wcRunSpell_6_12(spellid,race,client) //Ancestors' Protection
 {
-  new bonus = GetAgi(client)+GetBonusAgi(client);
+  decl String:line[255];
+  wcGetSpellInfo(race,spellid,"multi",line);
+  new Float:multi=StringToFloat(line);
+  new bonus = RoundToNearest(GetArmor(client)*multi);
   SetBonusArmor(client, float(GetBonusArmor(client)+bonus));
   wcRecalculateStats(client);
-  WCMessage(client,"agile defence effect",client,bonus,GetArmor(client));
+  WCMessage(client,"ancestors protection effect",client,bonus,GetArmor(client));
 }
 
 stock SoulHarvestEffect(client)

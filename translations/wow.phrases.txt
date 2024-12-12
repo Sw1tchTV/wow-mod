@@ -2330,7 +2330,7 @@
   }
   "Windfury info"
   {
-    "en"     "<Passive> Your physical attacks have a 20%% chance to deal 20%% additional damage"
+    "en"     "<Passive> Your physical attacks have a 20%% chance to deal 25%% additional damage"
   }
   "fear caster"
   {
@@ -2538,19 +2538,19 @@
   }
   "Rockbiter Weapon info"
   {
-    "en"     "Your weapon hits deal 50%% magical damage and 50%% physical.   \nToggleable."
+    "en"     "Your weapon hits deal 50%% magical damage and 50%% physical."
   }
   "rockbiter cast"
   {
-    "en"     "You cast @greenRockbiter Weapon@default. Your weapon shots will deal @lightgreen50%% @defaultmagic damage"
+    "en"     "You cast @greenRockbiter Weapon@default. Your weapon shots will deal @lightgreen50 percent @defaultmagic damage"
   }
   "rockbiter cast improved"
   {
-    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will deal @lightgreen62.5%% @defaultmagic damage"
+    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will deal @lightgreen62.5 percent @defaultmagic damage"
   }
   "rockbiter cast improved2"
   {
-    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will deal @lightgreen75%% @defaultmagic damage"
+    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will deal @lightgreen75 percent @defaultmagic damage"
   }
   "rockbiter off"
   {
@@ -5084,18 +5084,18 @@
   {
     "en"    "Restores health of all friends nearby. \nAmount depends on your spell damage. \nRadius is 850 points."
   }
-  "agile defence effect"
+  "ancestors protection effect"
   {
     "#format" "{1:i},{2:i}"
-    "en"    "Agile Defence increases your armor by @lightgreen{1} @defaultto a total of @lightgreen{2}"
+    "en"    "Your @greenAncestors' Protection @defaultincreases your armor by @lightgreen{1} @defaultto a total of @lightgreen{2}"
   }
-  "Agile Defence name"
+  "Ancestors Protection name"
   {
-    "en"  "Agile Defence"
+    "en"  "Ancestors' Protection"
   }
-  "Agile Defence info"
+  "Ancestors Protection info"
   {
-    "en"  "Increases your Armor by 1 per point of Agility you have"
+    "en"  "Increases your armor by 40%"
   }
   "curse"
   {
@@ -9403,7 +9403,7 @@
   "agile armor effect"
   {
     "#format" "{1:i},{2:i}"
-    "en"    "Agile Defence increases your armor by @lightgreen{1} @defaultto a total of @lightgreen{2}"
+    "en"    "Your @greenLeather Specialization @defaultincreases your armor by @lightgreen{1} @defaultto a total of @lightgreen{2}"
   }
   "Agile Armor name"
   {
