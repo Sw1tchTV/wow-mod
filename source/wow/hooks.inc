@@ -992,72 +992,47 @@ public Action:PlayerDeathEvent(Handle:event,const String:name[],bool:dontBroadca
       addKill(attacker);
     }
   }
-  decl String:line[255];
   new targets[MAXPLAYERS];
   new amount;
   new Float:location[3];
   GetClientAbsOrigin(userid,location);
   new Float:distance=750.0;
+  bool attackerInRange=false;
   amount=GetNearClients("@all",location,targets,distance);
   for (new x=0;x<=(amount-1);x++)
   {
+    if (targets[x]==attacker)
+      attackerInRange=true;
     if(GetClass(targets[x])==7)
     {
       if(GetLevel(targets[x])>=24)
       {
-        if(wcGetTalentLevel(targets[x],2,1,2)>0)
+        new team=GetClientTeam(userid);
+        new teamx=GetClientTeam(targets[x]);
+        if(team!=teamx && teamx >= 2)
         {
-          wcGetTalentInfo(7,2,1,2,targets[x],"chance",line);
-          new chance = StringToInt(line);
-          new rand = GetRandomInt(1,100);
-          if(chance >= rand)
-          {
-            decl String:harvestname[255];
-            GetClientName(userid,harvestname,sizeof(harvestname));
-            SetHarvest(targets[x], GetHarvest(targets[x])+1);
-            WCMessage(targets[x],"soul harvest gain",targets[x],harvestname,GetHarvest(targets[x]));
-          }
-          else
-          {
-            new team=GetClientTeam(userid);
-            new teamx=GetClientTeam(targets[x]);
-            if(team==2 && teamx == 3)
-            {
-              decl String:harvestname[255];
-              GetClientName(userid,harvestname,sizeof(harvestname));
-              SetHarvest(targets[x], GetHarvest(targets[x])+1);
-              WCMessage(targets[x],"soul harvest gain",targets[x],harvestname,GetHarvest(targets[x]));
-            }
-            if(team==3 && teamx == 2)
-            {
-              decl String:harvestname[255];
-              GetClientName(userid,harvestname,sizeof(harvestname));
-              SetHarvest(targets[x], GetHarvest(targets[x])+1);
-              WCMessage(targets[x],"soul harvest gain",targets[x],harvestname,GetHarvest(targets[x]));
-            }
-          }
-        }
-        else
-        {
-          new team=GetClientTeam(userid);
-          new teamx=GetClientTeam(targets[x]);
-          if(team==2 && teamx == 3)
-          {
-            decl String:harvestname[255];
-            GetClientName(userid,harvestname,sizeof(harvestname));
-            SetHarvest(targets[x], GetHarvest(targets[x])+1);
-            WCMessage(targets[x],"soul harvest gain",targets[x],harvestname,GetHarvest(targets[x]));
-          }
-          if(team==3 && teamx == 2)
-          {
-            decl String:harvestname[255];
-            GetClientName(userid,harvestname,sizeof(harvestname));
-            SetHarvest(targets[x], GetHarvest(targets[x])+1);
-            WCMessage(targets[x],"soul harvest gain",targets[x],harvestname,GetHarvest(targets[x]));
-          }
+          decl String:harvestname[255];
+          GetClientName(userid,harvestname,sizeof(harvestname));
+          SetHarvest(targets[x], GetHarvest(targets[x])+1);
+          WCMessage(targets[x],"soul harvest gain",targets[x],harvestname,GetHarvest(targets[x]));
         }
       }
     }
+  }
+  if(!attackerInRange && GetClass(attacker)==7)
+  {
+    if(GetLevel(attacker)>=24)
+      {
+        new team=GetClientTeam(userid);
+        new teamx=GetClientTeam(attacker);
+        if(team!=teamx && teamx >= 2)
+        {
+          decl String:harvestname[255];
+          GetClientName(userid,harvestname,sizeof(harvestname));
+          SetHarvest(attacker, GetHarvest(attacker)+1);
+          WCMessage(attacker,"soul harvest gain from kill",attacker,harvestname,GetHarvest(attacker));
+        }
+      }
   }
   SetHarvest(userid, 0);
   return Plugin_Continue;
