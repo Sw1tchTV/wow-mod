@@ -10509,6 +10509,6 @@
   "Elemental Guidance cast"
   {
     "#format" "{1:i}"
-    "en"		"@greenElemental Guidance @defaultincreases your @greenintellect @defaultby @lightgreen{1:1}@perc"
+    "en"		"@greenElemental Guidance @defaultincreases your @greenintellect @defaultby @lightgreen{1:1}@default."
   }
 }
