@@ -2136,10 +2136,6 @@
   {
 	"ru"  "Вы применили @lightgreenОружие Камнедробителя@default."
   }
-  "rockbiter off"
-  {
-    "ru"  "Вы отключили применение навыка @lightgreenОружие Камнедробителя@default."
-  }
   "healing wave caster"
   {
 	"ru"  "Вы применили @lightgreenВолну Исцеления @defaultк игроку @green{1}@default, восстановив @green{2} @defaultздоровья и добавив @green{3} @defaultброни на 30 секунд."
@@ -4373,13 +4369,9 @@
     "ru"        "Призывает Инфернала из Круговерти Пустоты.\nТребует 1 душу члена команды!"
   }
 
-  "counter strike"
+  "Ghost Wolf"
   {
       "ru"    "Ответный Удар."
-  }
-  "lava surge"
-  {
-      "ru"    "Волна Лавы."
   }
   "cursed soul cast"
   {
@@ -5586,7 +5578,7 @@
 {
   "ru"   "Мастерство оружия"
 }
-"Feral Form name"
+"Strength of the Earth name"
 {
   "ru"   "Призрачная форма"
 }
@@ -5610,7 +5602,7 @@
 {
   "ru"   "Ярость шамана"
 }
-"Counter Strike name"
+"Ghost Wolf name"
 {
   "ru"   "Ответный удар"
 }
@@ -5618,7 +5610,7 @@
 {
   "ru"   "Удар бури"
 }
-"Lava Surge name"
+"Lava Lash name"
 {
   "ru"   "Выброс лавы"
 }
@@ -6783,7 +6775,7 @@
 {
   "ru"   "Повышает ДПС на 2/5 + 5/10%% ДПС"
 }
-"Feral Form info"
+"Strength of the Earth info"
 {
   "ru"   "Увеличивает скорось передвижения на 3/6/10%%"
 }
@@ -6807,7 +6799,7 @@
 {
   "ru"   "На 5 секунд понижает получаемый урон на 20%%, ваши атаки имеют 25%% шанс восстановить 10%% маны"
 }
-"Counter Strike info"
+"Ghost Wolf info"
 {
   "ru"   "Когда враг находится рядом с вами и атакует вас, вы имеете 3/5/7%% шанс парировать его атаку и нансти ответный удар"
 }
@@ -6815,7 +6807,7 @@
 {
   "ru"   "Ваши критические атаки понижают сопротивление противника на 1/2 в течении 10 секунд, может складываться"
 }
-"Lava Surge info"
+"Lava Lash info"
 {
   "ru"   "Ваши атаки имеют 15%% шанс нанести дополнительный физический урон в зависимости от вашей ловкости"
 }
@@ -7929,10 +7921,6 @@
   {
     "ru"      "@green@att@default взорвался рядом с вами и нанес @lightgreen@dmg@default урона."
   }
-  "feral glyph"
-  {
-    "ru"      "Ваш @greenСимвол Дикой Формы@default повысил вашу скорость передвижения на @lightgreen{1} @defaultна @lightgreen{2} @defaultсек."
-  }
   "pwshaste glyph"
   {
     "ru"      "Ваше @greenСлово Силы: Щит@default Увеличивает вашу скорость на @lightgreen25@default на @lightgreen 8@default сек."
@@ -8729,15 +8717,15 @@
   {
     "ru"    "Ваш Адский Огонь устанавливает вокруг инфернала и исцеляет его.\nАура исцеляет и наносит урон на 40|80%% от нанесенного урона"
   }
-    "agile defence effect"
+    "ancestors protection effect"
   {
     "ru"    "Гибкая броня повысила вашу броню на @lightgreen{1} @default до @lightgreen{2}"
   }
-    "Agile Defence name"
+    "Ancestors Protection name"
   {
     "ru"  "Гибкая броня"
   }
-  "Agile Defence info"
+  "Ancestors Protection info"
   {
     "ru"  "Повышает вашу броню на 1 за каждую единицу ловкости"
   }

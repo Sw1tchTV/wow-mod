@@ -15,12 +15,10 @@
     "name"  "Windfury"
     "name_ru"   "TODO"
     "event" "player_attacker"
-    "chance"  "20"
+    "chance"  "25"
     "level" "1"
     "cost" "50"
-    "mana"  "0"
-    "manainc" "0.0"
-    "multi" "1.20"
+    "multi" "1.25"
   }
   "3"
   {
@@ -32,8 +30,8 @@
     "chance"  "11"
     "level" "24"
     "cost" "75"
-    "mana"  "13"
-    "manainc" "0.25"
+    "mana"  "9"
+    "manainc" "0.18"
     "multi" "0.18"
     "base" "5"
     "tickdelay" "2.0"
@@ -52,8 +50,8 @@
     "chance"  "11"
     "level" "38"
     "cost" "120"
-    "mana"  "11"
-    "manainc" "0.22"
+    "mana"  "10"
+    "manainc" "0.20"
     "multi" "0.16"
     "base" "2"
     "slowmulti"   "0.90"
@@ -98,12 +96,10 @@
   {
     "name"  "Rockbiter Weapon"
     "name_ru"   "TODO"
-    "event" "player_cast"
-    "active"    "1"
+    "event" "player_spawn"
+    "active"    "0"
     "level" "54"
     "cost" "1000"
-    "mana"   "10"
-    "manainc"   "0.0"
   }
   "8"
   {
@@ -174,13 +170,14 @@
     "base"  "15"
     "distance"  "850"
   }
-//  "12"              //increases armor by 1 per agi
-//  {
-//    "name"    "Agile Defence"
-//    "name_ru" "TODO"
-//    "event"   "player_spawn"
-//    "level"   "12"
-//  }
+  "12"
+  {
+    "name"    "Ancestors Protection"
+    "name_ru" "TODO"
+    "event"   "player_spawn"
+    "level"   "45"
+    "multi"   "0.4"
+  }
   "13"
   {
     "name"    "Dual Wielding Shaman"

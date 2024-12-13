@@ -666,16 +666,6 @@ public Action:TalentCmd(client,args)
       case 6:
     switch(talent)                                                              //Shaman
     {
-      case 1:
-      {
-        /*if(CheckRequirements(client,6, 1, 3, 1))*/
-          /*wcRunTalent_6_1(client); //Elemental Fury*/
-      }
-      case 2:
-      {
-        if(CheckRequirements(client,6, 2, 3, 1))
-          wcRunTalent_6_3(client); //Shamanistic Rage
-      }
       case 3:
       {
         if(CheckRequirements(client,6, 3, 3, 1))

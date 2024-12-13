@@ -461,11 +461,25 @@ public wcRecalculateStats(client) { //Stats
   if(GetStance(client)==3) //Unholy DK
   wcClientsStats[id][ATTACKSPEED]+=0.1;
 
-  if((CheckRequirements(client,2,2,2,4)) && (GetMonkStance(client)!=3))
+  new Float:multi = 1.0;
+  if(CheckRequirements(client,2,2,2,4) || CheckRequirements(client,6,2,2,4))
   {
     decl String:line[255];
-    wcGetTalentInfo(2,2,2,4,client,"increase",line);
-    new Float:multi =1.0 + StringToFloat(line);
+    new class=GetClass(client);
+    switch(class)
+    {
+      case 2:
+      {
+        wcGetTalentInfo(2,2,2,4,client,"increase",line);
+        multi+=StringToFloat(line);
+      }
+      case 6:
+      {
+        wcGetTalentInfo(6,2,2,4,client,"increase",line);
+        multi+=StringToFloat(line);
+      }
+    }
+
     wcClientsStats[id][DAMAGE]=(float(GetStr(client)+GetBonusStr(client))*0.29714+wcClientsBonusStats[id][DAMAGE])+(float(GetAgi(client)+GetBonusAgi(client))*(0.08335*multi));
   }
   else if(GetMonkStance(client)!=3)
@@ -655,8 +669,6 @@ public SetBonusSta(client,amount)
 public GetMaxHealth(client)
 {
   new Float:hp = wcClientsStats[GetPlayerID(client)][MAXHP];
-  if(wow_hasPremiumModule(client, PDModule:PDM_hp))
-  hp*=1.05;
   return RoundToNearest(hp);
 }
 
@@ -673,8 +685,6 @@ public SetBonusMaxHealth(client,amount)
 public GetDamage(client)
 {
   new dmg = RoundToNearest(wcClientsStats[GetPlayerID(client)][DAMAGE]);
-  /*if(wow_hasPremiumModule(client, PDModule:PDM_dps))*/
-  /*dmg = RoundToNearest(wcClientsStats[GetPlayerID(client)][DAMAGE]*1.1);*/
   return dmg;
 }
 
@@ -696,8 +706,6 @@ public SetDamage(client,Float:amount)
 public GetSpellDmg(client,Float:multiplier)
 {
   new Float:dmg = (wcClientsStats[GetPlayerID(client)][SPELLDAMAGE])*multiplier;
-  /*if(wow_hasPremiumModule(client, PDModule:PDM_dps))*/
-  /*dmg *= 1.1;*/
   return RoundToNearest(dmg);
 }
 
@@ -1489,15 +1497,6 @@ public wcShootEffect(effectid,&tmp1,&tmp2,&tmp3,bool:crit,tmp5,tmp6,tmp7,tmp8,tm
   case 36:
     if(tmp9==2)
     Effect36(tmp1,tmp3); //Inspiration
-  case 37:
-    if(tmp9==2)
-    Effect37(tmp1, tmp3); //Shamanistic Rage, Victim
-  case 38:
-    if(tmp9==1)
-    Effect38(tmp2, tmp3); //Shamanistic Rage, Attacker
-    /*case 39:
-    if(tmp9==2)
-    Effect39(tmp2, tmp3);*/
   case 40:
     if(tmp9==1)
     Effect40(tmp1, tmp2);
@@ -1510,9 +1509,6 @@ public wcShootEffect(effectid,&tmp1,&tmp2,&tmp3,bool:crit,tmp5,tmp6,tmp7,tmp8,tm
   case 43:
     if(tmp9==2)
     Effect43(tmp2,tmp3);
-  //case 44:
-    //if(tmp9==2)
-    //Effect44(tmp2,tmp3);
   case 45:
     if(tmp9==2)
     Effect45(tmp2,tmp3);
@@ -1807,7 +1803,7 @@ public wcRunSpell(spellid,race,&tmp1,&tmp2,&tmp3,&any:tmp4,&tmp5,&tmp6,&tmp7,&tm
           case 11:
             wcRunSpell_6_11(spellid, race, tmp1); //Healing Rain
           case 12:
-            wcRunSpell_6_12(tmp1); //Agile Defence
+            wcRunSpell_6_12(spellid, race, tmp1); //Ancestors' Protection
         }
       }
       case 7: //Warlock
@@ -1891,8 +1887,6 @@ public wcRunSpell(spellid,race,&tmp1,&tmp2,&tmp3,&any:tmp4,&tmp5,&tmp6,&tmp7,&tm
             wcRunSpell_9_6(spellid,race,tmp1); //Path of Blossoms
           case 7:
             wcRunSpell_9_7(spellid,race,tmp1); //Enhanced Parry
-          //case 8: //Moved to spawn event
-            //wcRunSpell_9_9(tmp1); //Legacy of the White Tiger
           case 10:
             wcRunSpell_9_10(spellid,race,tmp1); //Chi Burst
         }
@@ -2632,11 +2626,6 @@ SetClientSpeed(client, Float:newspeed, bool:ignore=false,bool:fear=false)
   if(FreedomClient[client] && (!ignore))
   if(slower)
   return 0;
-  if(HasGlyph(client, GLYPH_SHAMAN_RAGE) && HasShamanisticRage(client))
-  {
-    if(slower)
-    return 0;
-  }
   if((!ignore) && (slower) )
   {
     if(FindEffect(client, 22))
