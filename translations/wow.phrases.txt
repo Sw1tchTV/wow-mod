@@ -9462,7 +9462,7 @@
   }
   "Soul Harvest info"
   {
-    "en" "Heals you and your pet for 20%% of your Max Health, must be used\n    outside of combat,  "
+    "en" "Harvest souls automatically as enemies die. Use to consume souls, turning them into health for you and your pet.\n+20%% max health healed per soul consumed.\nMust be used outside of combat."
   }
   "Improved Metamorphosis"
   {
@@ -9493,7 +9493,12 @@
   "soul harvest gain"
   {
     "#format" "{1:s},{2:i}"
-    "en" " @green{1}@default has died near you, granting you an additional @lightgreenSoul Harvest@default, to a total of @lightgreen{2} Harvested Souls."
+    "en" " You harvested the soul @green{1}@default who has died near you, giving you a total of @lightgreen{2} harvested souls."
+  }
+  "soul harvest gain from kill"
+  {
+    "#format" "{1:s},{2:i}"
+    "en" "You harvested the soul of @green{1}@default, giving you a total of @lightgreen{2} harvested souls."
   }
   "soul harvest lost"
   {
