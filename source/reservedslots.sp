@@ -131,7 +131,7 @@ public OnClientPostAdminCheck(client)
 		
 		if (type == 0)
 		{
-			if (clients <= limit || IsFakeClient(client) || flags & ADMFLAG_ROOT || flags & ADMFLAG_RESERVATION || wow_hasPremiumModule(client, PDModule:PDM_reserved))
+			if (clients <= limit || IsFakeClient(client) || flags & ADMFLAG_ROOT || flags & ADMFLAG_RESERVATION)
 			{
 				if (GetConVarBool(sm_hide_slots))
 				{

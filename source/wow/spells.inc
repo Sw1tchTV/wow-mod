@@ -33,6 +33,8 @@ new g_iHarvest[65];
 new g_iEcho[65];
 new g_iPolycaster[65];
 new Float:g_fGreaterHeal[65];
+new g_Stormstrike[65];
+new g_UnrulyWinds[65];
 
 stock bool:addToSpellbar(client, id)  {
   for(new i=0; i<7; i++)  {
@@ -532,7 +534,7 @@ public wcRunSpell_6_1(spellid,race,victim,attacker,&totaldmg) //Shaman Shield Bl
   return totaldmg;
 }
 
-public wcRunSpell_6_2(spellid,race,victim,attacker,&dmg)
+public wcRunSpell_6_2(spellid,race,victim,attacker,&dmg) //Windfury
 {
   if(IsPlayerAlive(victim))
   {
@@ -540,19 +542,17 @@ public wcRunSpell_6_2(spellid,race,victim,attacker,&dmg)
     wcGetSpellInfo(race,spellid,"chance",line);
     new chance = StringToInt(line);
     if(chance>=GetRandomInt(1,100))
-
     {
-      new manareq = GetSpellCost(attacker, spellid);
-      new newmana=GetMana(attacker)-manareq;
-      if(newmana<0)
+      if(CheckRequirements(attacker,6,2,3,1)) //Stormstrike
       {
-        return false;
+        wcGetTalentInfo(6,2,3,1,attacker,"stacksperwf",line);
+        new stacks = StringToInt(line);
+        wcGetTalentInfo(6,2,3,1,attacker,"maxstacks",line);
+        if(StringToInt(line)>g_Stormstrike[attacker])
+          g_Stormstrike[attacker]+=stacks;
       }
-      wcSetMana(attacker,newmana);
-      wcGetTalentInfo(6,2,1,2,attacker,"increment",line);
-      new Float:talentbonus=StringToFloat(line);
       wcGetSpellInfo(race,spellid,"multi",line);
-      new Float:multi=StringToFloat(line)+talentbonus;
+      new Float:multi=StringToFloat(line);
       dmg=RoundToNearest(float(dmg)*multi);
       decl Float:location[3];
       GetClientAbsOrigin(victim,location);
@@ -574,6 +574,12 @@ public wcRunSpell_6_2(spellid,race,victim,attacker,&dmg)
         location[2]+=20;
         width+=20.0;
         BeamRingEffect("@all",location,20.0,80.0,g_ef_ocean,0,10,2.6,width,color,0.0,10);
+      }
+      if(CheckRequirements(attacker,6,2,3,3)) //Unruly Winds
+      {
+        wcGetTalentInfo(6,2,3,3,attacker,"windfurychance",line);
+        if(StringToInt(line)>=GetRandomInt(1,100))
+          wcRunSpell_6_2(spellid,race,victim,attacker,dmg);
       }
       return true;
     }
@@ -609,30 +615,13 @@ public wcRunSpell_6_3(spellid,race,victim,attacker) //Flame Shock
         WritePackCell(datapack,g_RoundCount);
         CreateTimer(duration,EndThunder,datapack,TIMER_HNDL_CLOSE);
       }
-
-      wcGetTalentInfo(6,2,3,2,attacker,"chance",line);
-      new echochance = StringToInt(line);
-      new echorandom =GetRandomInt(1,100);
       wcGetSpellInfo(race,spellid,"cooldowntype",line);
       new cdtype=StringToInt(line);
       wcGetSpellInfo(race,spellid,"cooldown",line);
       new Float:cd=StringToFloat(line);
-      if(echochance>=echorandom)
-      {
-        g_iEcho[attacker]=0;
-        WCMessage(attacker,"Echo of the Elements activate",attacker);
-      }
-      else
-        SetCdSpell(attacker,cdtype,cd, spellid);
-      if(echochance>=echorandom)
-        wcRunSpell_6_3(spellid,race,victim,attacker);
+      SetCdSpell(attacker,cdtype,cd, spellid);
 
       new manareq = GetSpellCost(attacker, spellid);
-      if(g_iEcho[attacker]>0)
-      {
-        manareq=0;
-        g_iEcho[attacker]=0;
-      }
       new newmana=GetMana(attacker)-manareq;
       if(newmana<0)
       {
@@ -721,29 +710,13 @@ public wcRunSpell_6_4(spellid,race,victim,attacker) //Frost Shock
         WritePackCell(datapack,g_RoundCount);
         CreateTimer(duration,EndThunder,datapack,TIMER_HNDL_CLOSE);
       }
-      wcGetTalentInfo(6,2,3,2,attacker,"chance",line);
-      new echochance = StringToInt(line);
-      new echorandom =GetRandomInt(1,100);
       wcGetSpellInfo(race,spellid,"cooldowntype",line);
       new cdtype=StringToInt(line);
       wcGetSpellInfo(race,spellid,"cooldown",line);
       new Float:cd=StringToFloat(line);
-      if(echochance>=echorandom)
-        {
-          WCMessage(attacker,"Echo of the Elements activate",attacker);
-          g_iEcho[attacker]=1;
-        }
-      else
-        SetCdSpell(attacker,cdtype,cd, spellid);
-      if(echochance>=echorandom)
-        wcRunSpell_6_4(spellid,race,victim,attacker);
+      SetCdSpell(attacker,cdtype,cd, spellid);
       new manareq = GetSpellCost(attacker, spellid);
       new newmana=GetMana(attacker)-manareq;
-      if(g_iEcho[attacker]>0)
-      {
-        manareq=0;
-        g_iEcho[attacker]=0;
-      }
       if(newmana<0)
       {
         return false;
@@ -824,29 +797,12 @@ public wcRunSpell_6_5(spellid,race,victim,attacker) //Earth Shock
         CreateTimer(duration,EndThunder,datapack,TIMER_HNDL_CLOSE);
       }
 
-      wcGetTalentInfo(6,2,3,2,attacker,"chance",line);
-      new echochance = StringToInt(line);
-      new echorandom =GetRandomInt(1,100);
       wcGetSpellInfo(race,spellid,"cooldowntype",line);
       new cdtype=StringToInt(line);
       wcGetSpellInfo(race,spellid,"cooldown",line);
       new Float:cd=StringToFloat(line);
-      if(echochance>=echorandom)
-        {
-          WCMessage(attacker,"Echo of the Elements activate",attacker);
-          g_iEcho[attacker]=1;
-        }
-      else
-        SetCdSpell(attacker,cdtype,cd, spellid);
-      if(echochance>=echorandom)
-        wcRunSpell_6_5(spellid,race,victim,attacker);
-
+      SetCdSpell(attacker,cdtype,cd, spellid);
       new manareq = GetSpellCost(attacker, spellid);
-      if(g_iEcho[attacker]>0)
-      {
-        manareq=0;
-        g_iEcho[attacker]=0;
-      }
       new newmana=GetMana(attacker)-manareq;
       if(newmana<0)
       {
@@ -921,16 +877,7 @@ public wcRunSpell_6_6(spellid,race,client) //Healing Wave
     g_iEcho[client]=0;
   }
   wcSetMana(client,GetMana(client)-manareq);
-  wcGetTalentInfo(6,2,3,2,client,"chance",line);
-  new echochance = StringToInt(line);
-  new echorandom =GetRandomInt(1,100);
-  if(echochance>=echorandom) {
-    g_iEcho[client]=1;
-    wcRunSpell_6_6(spellid,race,client);
-    WCMessage(client,"Echo of the Elements activate",client);
-    }
-  else
-    SetCdSpell(client,cdtype,cd, spellid);
+  SetCdSpell(client,cdtype,cd, spellid);
 
   new Float:location[3],Float:locationatt[3];
   GetClientAbsOrigin(target,location);
@@ -996,7 +943,7 @@ public wcRunSpell_6_7(spellid,race,client)
     return;
   }
 
-  if(CheckRequirements(client,6,2,2,4))
+  if(CheckRequirements(client,6,2,1,3))
   {
 	if(wcGetTalentLevel(client,2,2,4)==1)
 		WCMessage(client,"rockbiter cast improved",client);
@@ -4630,10 +4577,10 @@ public wcRunSpell_4_9(spellid,race,client)
 stock bool:CastKings(client, Float:multi, bool:cast=false, bool:custom=false)  {
   if((!custom) && KingsClient[client])
   return false;
-  SetBonusInt(client,GetBonusInt(client)+RoundToNearest(float(GetBonusInt(client)+GetInt(client))*multi));
-  SetBonusSta(client,GetBonusSta(client)+RoundToNearest(float(GetBonusSta(client)+GetSta(client))*multi));
-  SetBonusStr(client,GetBonusStr(client)+RoundToNearest(float(GetBonusStr(client)+GetStr(client))*multi));
-  SetBonusAgi(client,GetBonusAgi(client)+RoundToNearest(float(GetBonusAgi(client)+GetAgi(client))*multi));
+  SetBonusInt(client,GetBonusInt(client)+RoundToNearest(float(GetInt(client))*multi));
+  SetBonusSta(client,GetBonusSta(client)+RoundToNearest(float(GetSta(client))*multi));
+  SetBonusStr(client,GetBonusStr(client)+RoundToNearest(float(GetStr(client))*multi));
+  SetBonusAgi(client,GetBonusAgi(client)+RoundToNearest(float(GetAgi(client))*multi));
   wcRecalculateStats(client);
   RestoreHealthP(client,multi);
   RestoreManaP(client,multi);
@@ -5228,7 +5175,7 @@ wcRunSpell_6_9(spellid,race,client) {
 
   dmg += GetSpellDmg(client, multi);
 
-  decl Float:location[3];
+  new Float:location[3];
   GetClientAbsOrigin(client,location);
 
   WCMessage(client,"totem nova cast",client,ticks*0.5);
@@ -5241,9 +5188,9 @@ wcRunSpell_6_9(spellid,race,client) {
   {
     new iTotem = -1;
     if(GetClientTeam(client)==2)
-    iTotem = SpawnTotem(location, true, hp);
+    iTotem = SpawnTotem(location, true, hp, 1, client);
     else
-    iTotem = SpawnTotem(location, false, hp);
+    iTotem = SpawnTotem(location, false, hp, 1, client);
     if((effectsdata[effid][4]=iTotem) > 0) {
       if(TotemToPlayer(client,effectsdata[effid][4]))
       CreateTimer(delay, EffectNovaTotemAction0, effid);
@@ -6316,12 +6263,14 @@ public wcRunSpell_1_15(spellid,race,client)
   new cdtype=StringToInt(line);
   wcGetSpellInfo(race,spellid,"cooldown",line);
   new Float:cd=StringToFloat(line);
-  new manareq = 15;
+  wcGetSpellInfo(race,spellid,"rage",line);
+  new manareq=StringToInt(line);
   if(HasGlyph(client, GLYPH_WARRIOR_LEAP))
     manareq = 0;
   if(GetMana(client)>=manareq)
   {
-    wcSetMana(client,GetMana(client)-manareq);
+    if(manareq>0)
+      wcSetMana(client,GetMana(client)-manareq);
     SetCdSpell(client, cdtype, cd, spellid);
 
     new Float:power = wcGetSpellInfoFloat(race, spellid, "power");
@@ -6572,9 +6521,9 @@ wcRunSpell_6_10(spellid,race,client) {
   {
     new iTotem = -1;
     if(GetClientTeam(client)==2)
-    iTotem = SpawnTotem(location, true, hp, 2); //Totem type 2 (greeny)
+    iTotem = SpawnTotem(location, true, hp, 2, client); //Totem type 2 (greeny)
     else
-    iTotem = SpawnTotem(location, false, hp, 2);
+    iTotem = SpawnTotem(location, false, hp, 2, client);
     if((effectsdata[effid][4]=iTotem) > 0) {
       if(TotemToPlayer(client,effectsdata[effid][4]))
       CreateTimer(delay, EffectEarthbindTotemAction0, effid);
@@ -6606,13 +6555,6 @@ wcRunSpell_6_11(spellid,race,client,bool:echo=false) //Healing Rain
     wcSetMana(client,GetMana(client)-manareq);
     SetCdSpell(client, cdtype, cd, spellid);
 
-  }
-  wcGetTalentInfo(6,2,3,2,client,"chance",line);
-  new echochance = StringToInt(line);
-  if(echochance>=GetRandomInt(1,100))
-  {
-    wcRunSpell_6_11(spellid,race,client,true);
-    WCMessage(client,"Echo of the Elements activate",client);
   }
   new Float:location[3];
   GetClientAbsOrigin(client,location);

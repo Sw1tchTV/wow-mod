@@ -2431,7 +2431,7 @@ bool:FindEffect(client, id)  {
    return false;
 }
 
-stock SpawnTotem(Float:location[3], bool:horde, hp, type=1) {
+stock SpawnTotem(Float:location[3], bool:horde, hp, type=1, client=0) {
   new ent = CreateEntityByName( "prop_physics_override" );
   if( !IsValidEntity( ent ) )
   {
@@ -2472,6 +2472,9 @@ stock SpawnTotem(Float:location[3], bool:horde, hp, type=1) {
 
   TeleportEntity( ent, location, NULL_VECTOR, NULL_VECTOR );
   //SetEntPropFloat( ent, Prop_Data, "m_flNextThink", GetGameTime() + 0.1 );
+  
+  if(CheckRequirements(client,6,2,1,4) && g_SOTEActive[client]==0)
+    wcRunTalent_6_StrengthOfTheEarth(client, ent);
 
   return ent;
 }
@@ -3148,40 +3151,6 @@ public Effect36(client, &damage) //Inspiration
   return true;
 }
 
-public Effect37(client, &damage)                                                //Shamanistic Rage, victim
-{
-  decl String:line[255];
-  wcGetTalentInfo(6,2,3,1,client,"increment",line);
-  new Float:reduction=StringToFloat(line);
-  damage = RoundToNearest(float(damage) * (1-reduction));
-  return true;
-}
-
-public Effect38(client, &damage)                                                //Shamanistic Rage, attacker
-{
-  decl String:line[255];
-  wcGetTalentInfo(6,2,3,1,client,"chance",line);
-  new chance = StringToInt(line);
-  new random = GetRandomInt(1,100);
-  if (chance >= random && SpendShamanisticProc(client))
-  {
-    wcGetTalentInfo(6,2,3,1,client,"multi",line);
-    new Float:mana=StringToFloat(line);
-    wcSetMana(client,RoundToFloor(GetMana(client)+GetMaxMana(client)*mana));
-    if(GetMana(client)>GetMaxMana(client))
-      wcSetMana(client,GetMaxMana(client));
-  }
-}
-
-/*public Effect39(attacker, &damage) //Improved Metamorphis
-{
-  decl String:line[255];
-  wcGetTalentInfo(7,2,2,3,attacker,"multi",line);
-  new Float:multi=StringToFloat(line);
-  damage = RoundToNearest(float(damage) * (1.0+multi));
-  AddEMsgAff("imp meta", true);
-  return true;
-}*/
 public Action:EndChaosBolt(Handle:timer, Handle:datapack)
 {
   ResetPack(datapack);

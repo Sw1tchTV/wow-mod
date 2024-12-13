@@ -35,6 +35,7 @@ new g_iPlagued[65];
 new g_iZoned[65];
 new g_iBastion[65];
 
+
 new g_ff_activeSpec[65]; //should be 0 or 1
 setActiveSpec(client, value)  {
   g_ff_activeSpec[client]=value;
@@ -830,7 +831,7 @@ wcRunOnDeathTalents(victim,attacker)
   }
 }
 
-public wcRunPassiveTalents(client)
+public wcRunPassiveTalents(client) //Passive talents, spawn talents
 {
   if(IsZombie(client))
     return;
@@ -945,22 +946,16 @@ public wcRunPassiveTalents(client)
     }
     case 6:
     {
-      if(CheckRequirements(client,6,2,1,1))
+      if(CheckRequirements(client,6,2,2,3))
         wcRunTalent_6_7(client); //Thundering Strikes
-      if(CheckRequirements(client,6,2,1,3))
-        wcRunTalent_6_8(client); //Weapon Mastery
       if(CheckRequirements(client,6,3,1,2))
         wcRunTalent_6_11(client); //Restorative Casting
       if(CheckRequirements(client,6,3,1,3))
         wcRunTalent_6_12(client); //Natures Protection
-      //if(CheckRequirements(client,6,2,2,3))
-        //wcRunTalent_6_2(client); //Dual Wielding
-      if(CheckRequirements(client,6,1,2,1))
-        wcRunTalent_6_NaturesPower(client);
-      if(CheckRequirements(client,6,2,1,4))
-        wcRunTalent_6_FeralForm(client);
       if(CheckRequirements(client,6,2,4,2))
-        wcRunTalent_6_AncestorsProtection(client); //Natures Protection
+        wcRunTalent_6_NaturesPower(client);
+      if(CheckRequirements(client,6,1,2,1))
+        wcRunTalent_6_ElementalGuidance(client);
     }
     case 7:
     {
@@ -1038,7 +1033,7 @@ public wcRunCritBonusChanceTalents(attacker,victim,&Float:critbonus, String:spel
   return true;
 }
 
-public wcGetTalentCritDamageBonus(attacker,String:spellname[],&Float:critbonusdamage,bool:spell)
+public wcGetTalentCritDamageBonus(attacker,String:spellname[],&Float:critbonusdamage,bool:spell,bool:physicalspell)
 {
   if(IsZombie(attacker))  return false;
   new class=GetClass(attacker);
@@ -1047,25 +1042,33 @@ public wcGetTalentCritDamageBonus(attacker,String:spellname[],&Float:critbonusda
   {
     case 1:
     {
-      if(CheckRequirements(attacker,1,3,2,1) && !spell)
-        wcRunTalent_1_13(attacker,critbonusdamage);
+      if(CheckRequirements(attacker,1,3,2,1) && !spell) //Impale
+        wcGetTalentInfo(1,3,2,1,attacker,"multi",line);
+        critbonusdamage+=StringToFloat(line);
     }
     case 2:
     {
-      if(CheckRequirements(attacker,2,3,2,4))
-        wcRunTalent_2_11(attacker,critbonusdamage);
+      if(CheckRequirements(attacker,2,3,2,4)) //Lethality
+        wcGetTalentInfo(2,3,2,4,attacker,"multi",line);
+        critbonusdamage+=StringToFloat(line);
     }
     case 3:
     {
-      if (1 == wcGetSpellIDFromName(class,spellname))
+      if (1 == wcGetSpellIDFromName(class,spellname) && !physicalspell)
       {
         wcGetTalentInfo(3,1,1,3,attacker,"multi",line);
         critbonusdamage+=StringToFloat(line);
       }
     }
+    case 6:
+    {
+      if(CheckRequirements(attacker,6,2,2,3) && !spell && !physicalspell) //Thundering Strikes
+          wcGetTalentInfo(6,2,2,3,attacker,"critdamage",line);
+          critbonusdamage+=StringToFloat(line);
+    }
     case 7:
     {
-      if(spell)
+      if(spell && !physicalspell)
       {
         if(CheckRequirements(attacker,7,3,2,2))
         {
@@ -1130,7 +1133,7 @@ public wcRunTalentSpellCrit(attacker,victim,String:spellname[],&damage,&Float:da
   }
 }
 
-public wcRunTalentPhysicalCrit(attacker,victim,&Float:damagemulti, &damage)
+public wcRunTalentWeaponCrit(attacker,victim,&Float:damagemulti, &damage) //This procs off gun/knife attacks.
 {
   new class=GetClass(attacker);
   if(!IsZombie(attacker))  switch(class)
@@ -1146,8 +1149,6 @@ public wcRunTalentPhysicalCrit(attacker,victim,&Float:damagemulti, &damage)
     {
       if(CheckRequirements(attacker,6,2,2,1))
         wcRunTalent_6_9(attacker);
-      if(CheckRequirements(attacker,6,2,3,3))
-        wcRunTalent_6_StormStrike(attacker,victim);
     }
     case 9:
     {
@@ -1166,7 +1167,7 @@ public wcRunTalentPhysicalCrit(attacker,victim,&Float:damagemulti, &damage)
   }
 }
 
-public wcRunTalentHit(attacker,victim,String:source[],bool:spell,&damage,prio,olddmg, bool:crit, bool:pass) //onhit
+public wcRunTalentHit(attacker,victim,String:source[],bool:spell,&damage,prio,olddmg, bool:crit, bool:pass) //onhit, on-hit, on hit
 {
   new aclass = GetClass(attacker);
   new vclass = GetClass(victim);
@@ -1206,10 +1207,6 @@ public wcRunTalentHit(attacker,victim,String:source[],bool:spell,&damage,prio,ol
         wcRunTalent_2_4(attacker);
       if(CheckRequirements(attacker,2,1,2,3) && prio ==2 && !spell)
         wcRunTalent_2_7(attacker,damage);
-      //if(CheckRequirements(attacker,2,2,2,2) && prio ==1 && !spell)
-        //wcRunTalent_2_8(attacker,victim,olddmg,source);
-      /*if(CheckRequirements(attacker,2,2,3,2) && prio ==1 && !spell)
-        wcRunTalent_2_BladeTwisting(attacker,victim);*/
       if(CheckRequirements(attacker,2,2,3,3) && prio ==1 && !spell)
         wcRunTalent_2_CombatReadiness(attacker);
       if(CheckRequirements(attacker,2,2,4,1) && prio == 1 && !spell)
@@ -1252,12 +1249,18 @@ public wcRunTalentHit(attacker,victim,String:source[],bool:spell,&damage,prio,ol
     }
     case 6:
     {
-      if(CheckRequirements(attacker,6,2,2,2) && prio ==1 && !spell)
+      if(CheckRequirements(attacker,6,2,1,2) && prio ==1 && !spell)
         wcRunTalent_6_10(attacker);
+      if(CheckRequirements(attacker,6,2,2,2) && prio ==1 && !spell && (g_FeralLunge[attacker]>0 || g_FeralLungeReady[attacker]==1))
+        wcRunTalent_6_FeralLunge(attacker,victim,damage);
+      if(CheckRequirements(attacker,6,2,3,1) && prio ==1 && !spell && g_Stormstrike[attacker]>0)
+        wcRunTalent_6_Stormstrike(attacker,victim,damage);
+      if(CheckRequirements(attacker,6,2,3,2) && prio ==1 && !spell)
+        wcRunTalent_6_ShamanisticRage(attacker);
       if(CheckRequirements(attacker,6,1,4,2) && prio ==1 && !spell)
         wcRunTalent_6_AirShock(attacker,victim);
       if(CheckRequirements(attacker,6,2,4,1) && prio ==1 && !spell)
-        wcRunTalent_6_LavaSurge(attacker,victim);
+        wcRunTalent_6_LavaLash(attacker,victim);
       if(CheckRequirements(attacker,6,3,4,1) && prio ==1 && !spell)
         wcRunTalent_6_NaturesAvatar(attacker);
       if(CheckRequirements(attacker,6,1,3,2) && prio ==1 && spell)
@@ -1308,11 +1311,6 @@ public wcRunTalentHit(attacker,victim,String:source[],bool:spell,&damage,prio,ol
       if(CheckRequirements(victim,1,2,3,2) && prio == 1)
         wcRunTalent_1_BloodCrazed(victim);
     }
-    case 2:
-    {
-      //if(CheckRequirements(victim,2,2,2,4) && prio ==2 && !spell)
-        //wcRunTalent_2_LightningReflexes(victim,damage);
-    }
     case 3:
     {
       if(CheckRequirements(victim,3,2,1,4) && prio ==1)
@@ -1340,8 +1338,6 @@ public wcRunTalentHit(attacker,victim,String:source[],bool:spell,&damage,prio,ol
     {
       if(CheckRequirements(victim,6,1,3,3) && prio==2 && spell)
         wcRunTalent_6_Guardian(victim,damage);
-      if(CheckRequirements(victim,6,2,2,3) && prio==2 && !spell)
-        wcRunTalent_6_CounterStrike(victim,attacker,damage);
       if(CheckRequirements(victim,6,3,2,4) && prio==1)
         wcRunTalent_6_Watershield(victim);
       if(CheckRequirements(attacker,6,3,1,4) && prio ==1 && !spell)
@@ -1761,14 +1757,6 @@ wcRunTalent_1_12(client,bool:noisy) { //Armored To The Teeth
   wcRecalculateStats(client);
   if(noisy)
     WCMessage(client,"armored to the teeth used",client, bonus, GetDamage(client));
-}
-
-public wcRunTalent_1_13(client,&Float:damagemulti) //Impale
-{
-  decl String:line[255];
-  wcGetTalentInfo(1,3,2,1,client,"multi",line);
-  damagemulti+=StringToFloat(line);
-  return true;
 }
 
 wcRunTalent_1_FocusedRage(client)
@@ -2334,13 +2322,7 @@ public wcRunTalent_2_9(client)                                                  
   return damage;
 }*/
 
-public wcRunTalent_2_11(client,&Float:damagemulti)                              //Lethality
-{
-  decl String:line[255];
-  wcGetTalentInfo(2,3,2,4,client,"multi",line);
-  damagemulti+=StringToFloat(line);
-  return true;
-}
+
 
 wcRunTalent_2_12(client)                                                        //Precision
 {
@@ -2364,138 +2346,6 @@ wcRunTalent_2_ReinforcedLeather(client)
   SetBonusArmor(client, float(GetBonusArmor(client)) + bonus);
   wcRecalculateStats(client);
 }
-
-/*wcRunTalent_2_LightningReflexes(client, &damagemulti)
-{
-  decl String:line[255];
-  wcGetTalentInfo(2,2,2,4,client,"chance",line);
-  new chance = StringToInt(line);
-  new rand = GetRandomInt(1,100);
-  if (chance >= rand)
-  {
-    damagemulti = 0;
-    AddEMsgAff("dodge", true);
-  }
-}*/
-
-/*wcRunTalent_2_BladeTwisting(attacker,target)
-{
-  decl String:line[255];
-  wcGetTalentInfo(2,2,3,2,attacker,"chance",line);
-  new chance = StringToInt(line);
-  new rand = GetRandomInt(1,100);
-  if (chance >= rand && GetWeaponSpeed(attacker)<=1.15)
-  {
-    wcGetTalentInfo(2,2,3,2,attacker,"multi",line);
-    new Float:slowmulti=StringToFloat(line);
-    wcGetTalentInfo(2,2,3,2,attacker,"duration",line);
-    new Float:slowtime=StringToFloat(line);
-
-    new Float:oldspeed=GetClientSpeed(target); //Current
-    new Float:newspeed=GetNormalSpeed(target); //Base (right after spawn/etc)
-    newspeed*=slowmulti;
-    if(newspeed<oldspeed)
-    {
-      SetClientSpeed(target,newspeed);
-      new Handle:datapack2=CreateDataPack();
-      WritePackCell(datapack2,target); // Write the client index of owner
-      WritePackFloat(datapack2,newspeed);
-      WritePackFloat(datapack2,slowmulti);
-      CreateTimer(slowtime,RemoveSpeedEffect,datapack2,TIMER_HNDL_CLOSE);
-      AddEMsgAff("blade twisting", true);
-      new Float:location[3];
-      GetClientAbsOrigin(attacker,location);
-      location[2]+=50;
-      EmitAmbientSound("wc/spells/bladetwisting.wav",location);
-    }
-  }
-}*/
-
-/*wcRunTalent_2_KillingSpree(client)
-{
-  new rweapon = GetEntDataEnt2(client, ACTIVEWEAPON);
-  if(!IsValidEntity(rweapon))
-    return;
-  new ammo = GetEntData(rweapon, CLIPOFFSET, 4);
-  decl String:weapon[50];
-  GetEdictClassname(rweapon, weapon, sizeof(weapon));
-  new clip;
-  if(StrEqual("weapon_galil",weapon))
-    clip = 35;
-  else if(StrEqual("weapon_ak47",weapon))
-    clip = 30;
-  else if(StrEqual("weapon_scout",weapon))
-    clip = 10;
-  else if(StrEqual("weapon_sg552",weapon))
-    clip = 30;
-  else if(StrEqual("weapon_awp",weapon))
-    clip = 10;
-  else if(StrEqual("weapon_g3sg1",weapon))
-    clip = 30;
-  else if(StrEqual("weapon_famas",weapon))
-    clip = 25;
-  else if(StrEqual("weapon_m4a1",weapon))
-    clip = 30;
-  else if(StrEqual("weapon_aug",weapon))
-    clip = 30;
-  else if(StrEqual("weapon_sg550",weapon))
-    clip = 30;
-  else if(StrEqual("weapon_glock",weapon))
-    clip = 20;
-  else if(StrEqual("weapon_usp",weapon))
-    clip = 12;
-  else if(StrEqual("weapon_p228",weapon))
-    clip = 13;
-  else if(StrEqual("weapon_deagle",weapon))
-    clip = 7;
-  else if(StrEqual("weapon_elite",weapon))
-    clip = 30;
-  else if(StrEqual("weapon_fiveseven",weapon))
-    clip = 20;
-  else if(StrEqual("weapon_mac10",weapon))
-    clip = 30;
-  else if(StrEqual("weapon_tmp",weapon))
-    clip = 30;
-  else if(StrEqual("weapon_mp5navy",weapon))
-    clip = 30;
-  else if(StrEqual("weapon_ump45",weapon))
-    clip = 40;
-  else if(StrEqual("weapon_p90",weapon))
-    clip = 50;
-  else if(StrEqual("weapon_m249",weapon))
-    clip = 100;
-  else
-    clip = 0;
-
-  if(ammo < RoundToNearest(GetAttackSpeed(client) * clip))
-  {
-    decl String:line[255];
-    wcGetTalentInfo(2,2,4,1,client,"multi",line);
-    new Float:multi=StringToFloat(line);
-    clip=RoundToNearest(multi*float(clip));
-    ammo+=clip;
-    SetEntData(rweapon, CLIPOFFSET, ammo, 4, true);
-  }
-}*/
-
-/*wcRunTalent_2_MurderousIntent(client)
-{
-  decl String:line[255];
-  wcGetTalentInfo(2,3,3,2,client,"restore",line);
-  if(HasGlyph(client, GLYPH_ROGUE_MINTENT))
-  {
-    new Float:healamount = (StringToFloat(line)*0.005); //Turns 20 -> 0.10 and 40 -> 0.20
-    new bhealth = RoundToNearest(healamount*float(GetMaxHealth(client)));
-    bhealth = wcHeal(client,client,bhealth,0,false);
-  }
-  else
-  {
-  new mana = GetMana(client)+StringToInt(line);
-  if(mana > GetMaxMana(client))
-    mana = GetMaxMana(client);
-  wcSetMana(client,mana);
-  }
-}*/
 
 wcRunTalent_2_SwiftKiller(client)
 {
@@ -5277,130 +5127,7 @@ wcRunTalent_5_MindFlay(client)
     WCMessage(client,"no target",client);
 }
 
-/*public wcRunTalent_6_1(client)                                                  //Elemental Fury*/
-/*{*/
-  /*decl String:line[255];*/
-  /*wcGetTalentInfo(6,1,3,1,client,"cooldowntype",line);*/
-  /*new cdtype=StringToInt(line);*/
-  /*wcGetTalentInfo(6,1,3,1,client,"cooldown",line);*/
-  /*new Float:cd=StringToFloat(line);*/
-  /*wcGetTalentInfo(6,1,3,1,client,"duration",line);*/
-  /*new Float:duration=StringToFloat(line);*/
-  /*SetCdSpell(client,cdtype,cd, 0, "Elemental Fury");*/
-  /*WCMessage(client,"Elemental Fury",client,duration);*/
-  /*g_iElementalFury[client]=1;*/
-  /*new Handle:datapack=CreateDataPack();*/
-  /*WritePackCell(datapack,client);*/
-  /*CreateTimer(duration,EndElementalFury,datapack,TIMER_HNDL_CLOSE);*/
-/*}*/
 
-/*public wcRunTalent_6_1_2(client,mana)                                           //Elemental Fury mana reduction part
-{
-  decl String:line[255];
-  wcGetTalentInfo(6,1,3,1,client,"multi",line);
-  mana -= RoundToNearest(mana*StringToFloat(line));
-  return mana;
-}
-
-public Action:EndElementalFury(Handle:timer, Handle:datapack)
-{
-  ResetPack(datapack);
-  new client=ReadPackCell(datapack);
-  g_iElementalFury[client]=0;
-  return;
-}*/
-
-/*public wcRunTalent_6_2(client)                                                  //Dual Wielding
-{
-  decl String:line[255];
-  wcGetTalentInfo(6,2,2,3,client,"multi",line);
-  new Float:penetration = GetIgnoreArmor(client)*StringToFloat(line);
-  SetBonusIgnoreArmor(client,GetBonusIgnoreArmor(client)+penetration);
-  wcRecalculateStats(client);
-}
-*/
-
-new Float:g_fShamanisticRage[65];
-new g_iShamanisticRageProcs[65];
-stock SetShamanisticRage(client, Float:duration, procs)  {
-  g_fShamanisticRage[client] = GetTickedTime() + duration;
-  g_iShamanisticRageProcs[client] = procs;
-}
-stock bool:SpendShamanisticProc(client) {
-  return (g_iShamanisticRageProcs[client]-- > 0);
-}
-
-stock bool:HasShamanisticRage(client)  {
-  return (GetTickedTime() < g_fShamanisticRage[client]);
-}
-
-public wcRunTalent_6_3(client)                                                  //Shamanistic Rage
-{
-  decl String:line[255];
-  wcGetTalentInfo(6,2,3,1,client,"cooldowntype",line);
-  new cdtype=StringToInt(line);
-  wcGetTalentInfo(6,2,3,1,client,"cooldown",line);
-  new Float:cd=StringToFloat(line);
-  wcGetTalentInfo(6,2,3,1,client,"duration",line);
-  new Float:duration=StringToFloat(line);
-  wcGetTalentInfo(6,2,3,1,client,"procs",line);
-  new procs=StringToInt(line);
-
-  new manareq = GetTalentCost(client, 2, 3, 1);
-  wcSetMana(client,GetMana(client)-manareq);
-  SetCdSpell(client,cdtype,cd, 0, "Shamanistic Rage");
-  WCMessage(client,"Shamanistic Rage",client,duration);
-
-  SetEffectVictim(client,37);
-  SetEffectSpellVic(client,37);
-  SetEffectAttacker(client,38);
-  new Handle:datapack=CreateDataPack();
-  WritePackCell(datapack,client);
-  WritePackCell(datapack,37);
-  new Handle:datapack3=CreateDataPack();
-  WritePackCell(datapack3,client);
-  WritePackCell(datapack3,37);
-  new Handle:datapack2=CreateDataPack();
-  WritePackCell(datapack2,client);
-  WritePackCell(datapack2,38);
-  CreateTimer(duration,DestroyEffectSpellVic,datapack3,TIMER_HNDL_CLOSE); //fixed
-  CreateTimer(duration,DestroyEffectVictim,datapack,TIMER_HNDL_CLOSE);
-  CreateTimer(duration,DestroyEffectAttacker,datapack2,TIMER_HNDL_CLOSE);
-  new Float:location[3];
-  GetClientAbsOrigin(client, location);
-  EmitAmbientSound("wc/spells/shamanisticrage.wav",location);
-  SetShamanisticRage(client, duration, procs);
-  if(HasGlyph(client, GLYPH_SHAMAN_RAGE) && HasShamanisticRage(client))
-  {
-    new Float:oldspeed=GetClientSpeed(client);
-    new Float:newspeed=GetNormalSpeed(client);
-    if(newspeed>oldspeed)
-    {
-      SetClientSpeed(client,newspeed);
-    }
-  }
-  /*if(HasGlyph(client, GLYPH_SHAMAN_RAGE))
-  {
-    new Float:oldspeed=GetClientSpeed(client);
-    new Float:newspeed=GetNormalSpeed(client);
-    new Float:multi=1.20;
-    newspeed*=multi;
-    if(newspeed>oldspeed)
-    {
-      duration*=0.5;
-      wcClientSparks[client]=true;
-      SetClientSpeed(client,newspeed);
-      new Handle:datapack4=CreateDataPack();
-      WritePackCell(datapack4,client); // Write the client index of owner
-      CreateTimer(duration,RemoveSparksEffect,datapack4,TIMER_HNDL_CLOSE);
-      new Handle:datapack5=CreateDataPack();
-      WritePackCell(datapack5,client); // Write the client index of owner
-      WritePackFloat(datapack5,newspeed);
-      WritePackFloat(datapack5,multi);
-      CreateTimer(duration,RemoveSpeedEffect2,datapack5,TIMER_HNDL_CLOSE);
-    }
-  }*/
-}
 
 public wcRunTalent_6_4(client) //Chain Heal
 {
@@ -5441,16 +5168,7 @@ public wcRunTalent_6_4(client) //Chain Heal
     g_iEcho[client]=0;
   }
   wcSetMana(client,GetMana(client)-manareq);
-  wcGetTalentInfo(6,2,3,2,client,"chance",line);
-  new echochance = StringToInt(line);
-  new echorandom =GetRandomInt(1,100);
-  if(echochance>=echorandom) {
-    g_iEcho[client]=1;
-    wcRunTalent_6_4(client);
-    WCMessage(client,"Echo of the Elements activate",client);
-    }
-  else
-    SetCdSpell(client,cdtype,cd, 0, "Chain Heal");
+  SetCdSpell(client,cdtype,cd, 0, "Chain Heal");
   new Float:location[3],Float:locationatt[3];
   GetClientAbsOrigin(target,location);
   GetClientAbsOrigin(client,locationatt);
@@ -5588,19 +5306,9 @@ public wcRunTalent_6_5(client)                                                  
 public wcRunTalent_6_7(client)                                                  //Thundering Strikes
 {
   decl String:line[255];
-  wcGetTalentInfo(6,2,1,1,client,"increment",line);
+  wcGetTalentInfo(6,2,2,3,client,"critchance",line);
   new Float:crit = StringToFloat(line);
   SetCriticalStrikeBonus(client, GetCriticalStrikeBonus(client)+crit);
-  wcRecalculateStats(client);
-}
-
-public wcRunTalent_6_8(client) //Weapon Mastery
-{
-  decl String:line[255];
-  wcGetTalentInfo(6,2,1,3,client,"base",line);
-  new base = StringToInt(line);
-  wcGetTalentInfo(6,2,1,3,client,"multi",line);
-  SetBonusDamage(client, GetDamage(client)*StringToFloat(line)+GetBonusDamage(client)+float(base));
   wcRecalculateStats(client);
 }
 
@@ -5643,10 +5351,10 @@ public Action:EndSFlurry(Handle:timer, Handle:datapack)
   g_iFlurry[client]--;
 }
 
-public wcRunTalent_6_10(client)                                                 //Natures Combatant
+public wcRunTalent_6_10(client)        //Nature's Combatant
 {
   decl String:line[255];
-  wcGetTalentInfo(6,2,2,2,client,"chance",line);
+  wcGetTalentInfo(6,2,1,2,client,"chance",line);
   new chance = StringToInt(line);
   new random = GetRandomInt(1,100);
   if (chance >= random)
@@ -5661,7 +5369,7 @@ public wcRunTalent_6_10(client)                                                 
       //weapon = weapon_m3
       if((!StrEqual("weapon_xm1014",Sweapon))&&(!StrEqual("weapon_m3",Sweapon))&&(!StrEqual("weapon_c4",Sweapon))&&(!StrEqual("weapon_hegrenade",Sweapon)))
       {
-        wcGetTalentInfo(6,2,2,2,client,"restore",line);
+        wcGetTalentInfo(6,2,1,2,client,"restore",line);
         ammo += StringToInt(line);
         SetEntData(weapon, CLIPOFFSET, ammo, 4, true);
       }
@@ -5710,7 +5418,7 @@ public wcRunTalent_6_14(client, mana) //Shamanistic Focus
 wcRunTalent_6_NaturesPower(client)
 {
   decl String:line[255];
-  wcGetTalentInfo(6,1,2,1,client,"multi",line);
+  wcGetTalentInfo(6,2,4,2,client,"multi",line);
   new Float:multi = StringToFloat(line);
   new total = RoundToNearest(GetBonusSpellDmg(client,1.0)+float(GetDamage(client))*multi);
   SetBonusSpellDmg(client,float(total));
@@ -5958,9 +5666,9 @@ wcRunTalent_6_LightningNovaTotem(client)  {
   {
     new iTotem = -1;
     if(GetClientTeam(client)==2)
-      iTotem = SpawnTotem(location, true, hp, 3);
+      iTotem = SpawnTotem(location, true, hp, 3, client);
     else
-      iTotem = SpawnTotem(location, false, hp, 3);
+      iTotem = SpawnTotem(location, false, hp, 3, client);
     if((effectsdata[effid][4]=iTotem) > 0)
     {
       if(TotemToPlayer(client,effectsdata[effid][4]))
@@ -5969,74 +5677,19 @@ wcRunTalent_6_LightningNovaTotem(client)  {
   }
 }
 
-wcRunTalent_6_FeralForm(client)
-{
-  decl String:line[255];
-  wcGetTalentInfo(6,2,1,4,client,"increment",line);
-  SetNormalBonusSpeed(client,GetNormalBonusSpeed(client)+StringToFloat(line));
-  wcRecalculateStats(client);
-}
-
 Float:wcRunTalent_6_ImpRock(client)
 {
-  if(CheckRequirements(client,6,2,2,4))
+  if(CheckRequirements(client,6,2,1,3))
   {
     decl String:line[255];
-    wcGetTalentInfo(6,2,2,4,client,"increment",line);
+    wcGetTalentInfo(6,2,1,3,client,"increment",line);
     return StringToFloat(line)*2;
   }
   else
     return 0.0;
 }
 
-wcRunTalent_6_CounterStrike(client,attacker,&damage)
-{
-  decl String:line[255];
-  wcGetTalentInfo(6,2,2,3,client,"chance",line);
-  new chance = StringToInt(line);
-  new rand = GetRandomInt(1,100);
-  if (chance >= rand)
-  {
-    new Float:loc1[3];
-    new Float:loc2[3];
-    GetClientAbsOrigin(client,loc1);
-    GetClientAbsOrigin(attacker,loc2);
-    wcGetTalentInfo(6,2,2,3,client,"distance",line);
-    new Float:distance=StringToFloat(line);
-    if(GetDistanceBetween(loc1,loc2)<=distance)
-    {
-      wcGetTalentInfo(6,2,2,3,client,"multi",line);
-      new Float:multi = StringToFloat(line);
-      dealExtraHit(client,attacker,RoundToNearest(damage*multi),"Counter Strike","Counter Strike");
-    }
-  }
-}
-
-wcRunTalent_6_StormStrike(client,victim)
-{
-  if(GetResistance(victim)>0 || !IsBoss())
-  {
-    decl String:line[255];
-    wcGetTalentInfo(6,2,3,3,client,"decrease",line);
-    new decrease = StringToInt(line);
-    AddResistance(victim,float(-decrease));
-    wcGetTalentInfo(6,2,3,3,client,"duration",line);
-    new Float:duration = StringToFloat(line);
-    new Handle:datapack4=CreateDataPack();
-    WritePackCell(datapack4,victim);
-    WritePackCell(datapack4,decrease);
-    CreateTimer(duration,EndStormStrike,datapack4,TIMER_HNDL_CLOSE);
-  }
-}
-
-public Action:EndStormStrike(Handle:timer, Handle:datapack)
-{
-  ResetPack(datapack);
-  new victim=ReadPackCell(datapack);
-  new effect=ReadPackCell(datapack);
-  AddResistance(victim,float(effect));
-}
-wcRunTalent_6_LavaSurge(client,victim) //Lava Lash
+wcRunTalent_6_LavaLash(client,victim) //Lava Lash
 {
   decl String:line[255];
   wcGetTalentInfo(6,2,4,1,client,"chance",line);
@@ -6044,19 +5697,31 @@ wcRunTalent_6_LavaSurge(client,victim) //Lava Lash
   new random = GetRandomInt(1,100);
   if(chance>=random)
   {
+    decl String:clientname[30];
+    decl String:victimname[30];
+    GetClientName(victim, victimname, 30);
+    GetClientName(client, clientname, 30);
     wcGetTalentInfo(6,2,4,1,client,"multi",line);
     new Float:multi=StringToFloat(line);
     wcGetTalentInfo(6,2,4,1,client,"base",line);
-    new dmg=RoundToNearest(float(GetAgi(client)+GetBonusAgi(client))*multi)+StringToInt(line);
-    wcSpellDamage(victim,client,dmg, "", "",line);
-    AddEMsgAff("lava surge", true);
-    wcGetTalentInfo(6,2,3,2,client,"chance",line);
-    new echochance = StringToInt(line);
-    new echorandom =GetRandomInt(1,100);
-    if(echochance>=echorandom) {
-      g_iEcho[client]=1;
-      wcRunTalent_6_LavaSurge(client,victim);
-      WCMessage(client,"Echo of the Elements activate",client);
+    new dmg=RoundToNearest(float(GetDamage(client))*multi)+StringToInt(line);
+    
+    
+    
+    if(g_iFlameShock[victim]==1)
+    {
+      wcGetTalentInfo(6,2,4,1,client,"aoe",line);
+      new Float:aoe=StringToFloat(line);
+      new team=GetClientTeam(victim);
+      wcSpellAoeDamage(victim,client,dmg,RoundToNearest(aoe),team,line);
+      WCMessage(client, "Lava Lash attacker aoe", client, dmg, victimname);
+      WCMessage(victim, "Lava Lash victim aoe", victim, dmg, clientname);
+    }
+    else
+    {
+      wcSpellDamage(victim,client,dmg, "", "",line);
+      WCMessage(client, "Lava Lash attacker", client, dmg, victimname);
+      WCMessage(victim, "Lava Lash victim", victim, dmg, clientname);
     }
     if(HasGlyph(client, GLYPH_SHAMAN_LAVALASH))
     {
@@ -6074,7 +5739,7 @@ wcRunTalent_6_LavaSurge(client,victim) //Lava Lash
       }
     }
     decl Float:soundlocation[3];
-    GetClientAbsOrigin(client,soundlocation);
+    GetClientAbsOrigin(victim,soundlocation);
     EmitAmbientSound("wc/spells/lavasurge.wav",soundlocation);
 
   }
@@ -6893,9 +6558,9 @@ wcRunTalent_6_HealingTideTotem(client)  {
     new hp=RoundToNearest(float(GetMaxHealth(client))*0.05);
     new iTotem = -1;
     if(team==2)
-      iTotem = SpawnTotem(location, true, hp, 4);
+      iTotem = SpawnTotem(location, true, hp, 4, client);
     else
-      iTotem = SpawnTotem(location, false, hp, 4);
+      iTotem = SpawnTotem(location, false, hp, 4, client);
     if((effectsdata[effid][4]=iTotem) > 0)
     {
       if(TotemToPlayer(client,effectsdata[effid][4]))
@@ -7390,16 +7055,7 @@ public wcRunTalent_6_ChainLightning(client)
     return 0;
   }
   wcSetMana(client,GetMana(client)-manareq);
-  wcGetTalentInfo(6,2,3,2,client,"chance",line);
-  new echochance = StringToInt(line);
-  new echorandom =GetRandomInt(1,100);
-  if(echochance>=echorandom) {
-    g_iEcho[client]=1;
-    wcRunTalent_6_ChainLightning(client);
-    WCMessage(client,"Echo of the Elements activate",client);
-    }
-  else
-    SetCdSpell(client,cdtype,cd, 0, "Chain Lightning");
+  SetCdSpell(client,cdtype,cd, 0, "Chain Lightning");
   new dmg = RoundToNearest(GetSpellDmg(client,multi)+float(base));
   decl Float:location[3],Float:locationb[3];
   new targett;
@@ -7491,13 +7147,6 @@ wcRunTalent_6_ChainLightning(client,bool:echo=false)
     }
     wcSetMana(client,GetMana(client)-manareq);
     SetCdSpell(client,cdtype,cd, 0, "Chain Lightning");
-  }
-  wcGetTalentInfo(6,2,3,2,client,"chance",line);
-  new echochance = StringToInt(line);
-  if(echochance>=GetRandomInt(1,100))
-  {
-    wcRunTalent_6_ChainLightning(client,true);
-    WCMessage(client,"Echo of the Elements activate",client);
   }
 
   wcGetTalentInfo(6,1,2,3,client,"multi",line);
@@ -7716,24 +7365,6 @@ public wcRunTalent_6_LavaBurst(client,victim) //Lava Burst
   }
 }
 
-public wcRunTalent_6_AncestorsProtection(client)  {
-  decl String:line[255];
-  wcGetTalentInfo(6,2,4,2,client,"multi",line);
-  new Float:multi=StringToFloat(line);
-  wcGetTalentInfo(6,2,4,2,client,"multi_armor",line);
-  new Float:multi_armor=StringToFloat(line);
-
-  new agility = GetAgi(client)+GetBonusAgi(client);
-
-  new resbonus=RoundToNearest(float(agility)*multi);
-  wcClientsBonusStats[client][RESISTANCE]+=resbonus;
-
-  new bonus = RoundToNearest(float(agility)*multi_armor);
-  SetBonusArmor(client, float(GetBonusArmor(client)+bonus));
-
-  wcRecalculateStats(client);
-}
-
 public wcRunTalent_2_GarroteDamage(client,victim,&damage)
 {
   decl String:line[255];
@@ -7897,11 +7528,153 @@ public Action:RemoveRighteous(Handle:timer, any:client)
 }
 
 
+public wcRunTalent_6_GhostWolf(client) //Ghost Wolf
+{
+  decl String:line[255];
+  wcGetTalentInfo(6,2,1,1,client,"multi",line);
+  new Float:newspeed=GetNormalSpeed(client)*(1+StringToFloat(line));
+  SetClientSpeed(client,newspeed, true);
+  g_GhostWolf[client]=1;
+}
+
+public wcRunTalent_6_GhostWolfRemove(client)
+{
+  decl String:line[255];
+  wcGetTalentInfo(6,2,1,1,client,"multi",line);
+  new Float:newspeed=GetClientSpeed(client)/(1+StringToFloat(line));
+  SetClientSpeed(client,newspeed, true);
+  g_GhostWolf[client]=0;
+}
+
+public wcRunTalent_6_StrengthOfTheEarth(client, ent) //Strength of the Earth
+{
+  decl String:line[255];
+  wcGetTalentInfo(6,2,1,4,client,"multi",line);
+  new Float:multi = StringToFloat(line);
+  wcGetTalentInfo(6,2,1,4,client,"distance",line);
+  new Float:distance = StringToFloat(line);
+  new Float:position[3];
+  GetEntPropVector(ent, Prop_Send, "m_vecOrigin", position);
+  SetBonusStr(client,GetBonusStr(client)+RoundToNearest(float(GetBonusStr(client)+GetStr(client))*multi));
+  SetBonusAgi(client,GetBonusAgi(client)+RoundToNearest(float(GetBonusAgi(client)+GetAgi(client))*multi));
+  wcRecalculateStats(client);
+  g_SOTEActive[client]=1;
+  new Handle:datapack=CreateDataPack();
+  WritePackFloat(datapack,position[0]);
+  WritePackFloat(datapack,position[1]);
+  WritePackFloat(datapack,position[2]);
+  WritePackFloat(datapack,float(client));
+  WritePackFloat(datapack,float(ent));
+  WritePackFloat(datapack,multi);
+  WritePackFloat(datapack,distance);
+  CreateTimer(0.1,StrengthOTERepeat,datapack);
+}
+
+public Action:StrengthOTERepeat(Handle:timer, Handle:pack)  {
+  CreateTimer(0.5, StrengthOTE, pack, TIMER_REPEAT);
+}
 
 
+public Action:StrengthOTE(Handle:timer, Handle:pack)
+{
+  ResetPack(pack);
+  decl Float:position[3];
+  decl Float:multi;
+  decl Float:distance;
+  position[0] = ReadPackFloat(pack);
+  position[1] = ReadPackFloat(pack);
+  position[2] = ReadPackFloat(pack);
+  new client = RoundToNearest(ReadPackFloat(pack));
+  new ent = RoundToNearest(ReadPackFloat(pack));
+  multi = ReadPackFloat(pack);
+  distance = ReadPackFloat(pack);
 
+  new Float:position2[3];
+  GetClientAbsOrigin(client,position2);
+  position2[2]+=20.0;
+  if(GetDistanceBetween(position,position2)>distance || !IsValidEntity(ent))
+  {
+    SetBonusStr(client,GetBonusStr(client)-RoundToNearest(float(GetBonusStr(client)+GetStr(client))*multi));
+    SetBonusAgi(client,GetBonusAgi(client)-RoundToNearest(float(GetBonusAgi(client)+GetAgi(client))*multi));
+    wcRecalculateStats(client);
+    g_SOTEActive[client]=0;
+    return Plugin_Stop;
+  }
+  return Plugin_Continue;
+}
 
+public wcRunTalent_6_FeralLunge(attacker,victim,&damage) //Feral Lunge
+{
+  decl String:line[255];
+  
+  if(g_FeralLungeReady[attacker]==1) {
+    wcGetTalentInfo(6,2,2,2,attacker,"stacks",line);
+    g_FeralLunge[attacker]=StringToInt(line);
+    g_FeralLungeReady[attacker]=0;
+  }
+  wcGetTalentInfo(6,2,2,2,attacker,"multi",line);
+  new Float:multi=StringToFloat(line);
+  new dmg=RoundToNearest(float(GetDamage(attacker))*multi);
+  wcGetTalentInfo(6,2,2,2,attacker,"base",line);
+  dmg+=StringToInt(line);
+  damage+=dmg;
+  g_FeralLunge[attacker]-=1;
+  AddEMsgAff("Feral Lunge name", true);
+  return damage;
 
+}
 
+public wcRunTalent_6_FeralLungeHandler(client)
+{
+  decl String:line[255];
+  wcGetTalentInfo(6,2,2,2,client,"stacks",line);
+  g_FeralLunge[client]=StringToInt(line);
+  g_FeralLungeReady[client]=0;
+  wcGetTalentInfo(6,2,2,2,client,"duration",line);
+  new Float:duration = StringToFloat(line);
+  new Handle:datapack=CreateDataPack();
+  WritePackCell(datapack,client);
+  CreateTimer(duration,EndFeralLunge,datapack,TIMER_HNDL_CLOSE);
+}
 
+public Action:EndFeralLunge(Handle:timer, Handle:datapack)
+{
+  ResetPack(datapack);
+  new client=ReadPackCell(datapack);
+  if(g_FeralLunge[client]!=0)
+    g_FeralLunge[client]=0;
+}
 
+public wcRunTalent_6_Stormstrike(attacker,victim,&damage) //Stormstrike
+{
+  decl String:line[255];
+  wcGetTalentInfo(6,2,3,1,attacker,"multi",line);
+  new Float:multi=StringToFloat(line);
+  new dmg=RoundToNearest(float(GetDamage(attacker))*multi);
+  wcGetTalentInfo(6,2,3,1,attacker,"base",line);
+  dmg+=StringToInt(line);
+  damage+=dmg;
+  g_Stormstrike[attacker]-=1;
+  AddEMsgAff("Stormstrike name", true);
+  return damage;
+}
+
+public wcRunTalent_6_ShamanisticRage(client)
+{
+  decl String:line[255];
+  wcGetTalentInfo(6,2,3,2,client,"mana",line);
+  new mana = RoundToNearest(float(GetMaxMana(client))*StringToFloat(line));
+  if(mana>GetMaxMana(client))
+    mana=GetMaxMana(client);
+  wcSetMana(client,GetMana(client)+mana);
+}
+
+public wcRunTalent_6_ElementalGuidance(client)
+{
+  char line[255];
+  wcGetTalentInfo(6,1,2,1,client,"multi",line);
+  int bonus=RoundToNearest(float(GetInt(client)+GetBonusInt(client))*StringToFloat(line));
+  WCMessage(client,"Elemental Guidance cast",client,bonus);
+  SetBonusInt(client,GetBonusInt(client)+bonus);
+  wcRecalculateStats(client);
+}

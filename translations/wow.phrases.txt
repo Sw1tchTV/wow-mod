@@ -124,23 +124,23 @@
   }
   "Blessing of Kings info"
   {
-    "en"     "Increases all your stats (str,agi,int,sta)\nby 20 percent."
+    "en"     "Increases your base stats by 20%%"
   }
   "Greater Blessing of Kings info"
   {
-    "en"     "Increases all stats (str,agi,int,sta)\nby 20 percent of your team (Does not stack)."
+    "en"     "Increases your team's base stats by 20%%"
   }
   "kings cast"
   {
-    "en"     "You cast Blessing of Kings and increase your base stats."
+    "en"     "You cast @greenBlessing of Kings @defaultand increase your base stats."
   }
   "kings cast all"
   {
-    "en"     "You cast Blessing of Kings at @lightgreeneveryone @defaultin your team."
+    "en"     "You cast @greenBlessing of Kings @defaulton @lightgreeneveryone @defaultin your team."
   }
   "kings aff"
   {
-    "en"     "You are affected by @lightgreenBlessing of Kings @defaultyour stats are increased."
+    "en"     "You are affected by @greenBlessing of Kings@default, your base stats are increased by @lightgreen20@perc@default."
   }
   "Divine Shield info"
   {
@@ -1559,7 +1559,7 @@
   "show xp"
   {
     "#format"	"{1:i},{2:i},{3:i}"
-    "en"			"@lightgreenYour Level: @green{1} ({2}/{3})"
+    "en"			"Your @greenLevel: @lightgreen{1} @green(@lightgreen{2}@green/@lightgreen{3}@green)"
   }
   "LowLevelRound"
   {
@@ -1569,7 +1569,7 @@
   "RoundStats"
   {
     "#format"	"{1:i},{2:s},{3:i},{4:s},{5:i},{6:s}"
-    "en"			"@lightgreenThe Most: \n@defaultDamage: @green{1}@default by @lightgreen{2} @default\nTaken: @green{3} @defaultby @lightgreen{4} @default\nHealing: @green{5} @defaultby @lightgreen{6}"
+    "en"			"The Most: \n@greenDamage: @lightgreen{1}@default by @green{2} @green\nTaken: @lightgreen{3} @defaultby @green{4} @green\nHealing: @lightgreen{5} @defaultby @green{6}"
   }
   "XpForDamage"
   {
@@ -1978,7 +1978,7 @@
   }
   "Expose Armor info"
   {
-    "en"    "Increases your armor penetration by 30%%."
+    "en"    "Increases your armor penetration by 30%%"
   }
   "expose armor activated"
   {
@@ -1987,7 +1987,7 @@
   }
   "Cloak of Shadow info"
   {
-    "en"    "Increases your resistance by 30%%."
+    "en"    "Increases your resistance by 30%%"
   }
   "cloak of shadow activated"
   {
@@ -2009,7 +2009,7 @@
   }
   "Sprint info"
   {
-    "en"    "When activated, increases your movement speed by 20%%.\nAlso removes all movement impairing effects."
+    "en"    "When activated, increases your movement speed by 20%%\nAlso removes all movement impairing effects."
   }
   "sprint activated"
   {
@@ -2542,19 +2542,15 @@
   }
   "rockbiter cast"
   {
-    "en"     "You cast @greenRockbiter Weapon@default. Your weapon shots will deal @lightgreen50 percent @defaultmagic damage"
+    "en"     "You cast @greenRockbiter Weapon@default. Your weapon shots will deal @lightgreen50@perc @defaultmagic damage"
   }
   "rockbiter cast improved"
   {
-    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will deal @lightgreen62.5 percent @defaultmagic damage"
+    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will deal @lightgreen62.5@perc @defaultmagic damage"
   }
   "rockbiter cast improved2"
   {
-    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will deal @lightgreen75 percent @defaultmagic damage"
-  }
-  "rockbiter off"
-  {
-    "en"     "You have turned your @greenRockbiter Weapon @lightgreenOFF"
+    "en"     "You cast @greenImproved Rockbiter Weapon@default. Your weapon shots will deal @lightgreen75@perc @defaultmagic damage"
   }
   "bonus str"
   {
@@ -4459,11 +4455,6 @@
     "#format" "{1:s}"
     "en" "Changing settings for {1} Spell"
   }
-  "Shamanistic Rage"
-  {
-    "#format" "{1:0.1f}"
-    "en" "@lightgreenShamanistic Rage@default. For the next {1} seconds you will take less damage and your attacks have a chance to restore mana"
-  }
   "menu is loading"
   {
     "en"    "@greenThe menu is loading…"
@@ -4963,7 +4954,7 @@
   "deep wounds"
   {
     "#format" "{1:i},{2:0.1f}"
-    "en"    "Your attack leaves a deep wound dealing {1} damage over {2} seconds"
+    "en"    "Your attack leaves a @greendeep wound @defaultdealing @lightgreen{1} @defaultdamage over @lightgreen{2} seconds"
   }
   "Inner Will info"
   {
@@ -5135,13 +5126,9 @@
   {
     "en"     "Summons Infernal from the Twisting Nether.\nRequires 1 teammate soul nearby to give a breath for your Infernal!"
   }
-  "counter strike"
+  "Ghost Wolf"
   {
-    "en"    "Counter Strike"
-  }
-  "lava surge"
-  {
-    "en"    "Lava Lash"
+    "en"    "Ghost Wolf"
   }
   "cursed soul cast"
   {
@@ -5736,7 +5723,7 @@
   "2h weap spec used"
   {
     "#format" "{1:.1f},{2:.1f}"
-    "en" "Two-Handed Weapon Specialty: You increase your Crit. Chance by {1}@perc upto {2}@perc total"
+    "en" "@greenTwo-Handed Weapon Specialty@default: You increase your Crit. Chance by @lightgreen{1}@perc @defaultupto @lightgreen{2}@perc @defaulttotal"
   }
   "2h weap spec glyph used"
   {
@@ -5750,7 +5737,7 @@
   "armored to the teeth used"
   {
     "#format" "{1:0.1f},{2:i}"
-    "en" "Armored to the Teeth: You increase your DPS by {1} upto {2} DPS total"
+    "en" "@greenArmored to the Teeth@default: You increase your DPS by @lightgreen{1} @defaultupto @lightgreen{2} @defaultDPS total"
   }
   "Tactical Mastery name"
   {
@@ -6411,7 +6398,7 @@
   }
   "Natures Power name"
   {
-    "en"  	"Natures Power"
+    "en"  	"Nature's Power"
   }
   "Elemental Focus name"
   {
@@ -6449,17 +6436,17 @@
   {
     "en"  	"Thundering Strikes"
   }
-  "Elemental Weapons name"
+  "Feral Lunge name"
   {
-    "en"  	"Elemental Weapons"
+    "en"  	"Feral Lunge"
   }
   "Weapon Mastery name"
   {
     "en"  	"Weapon Mastery"
   }
-  "Feral Form name"
+  "Strength of the Earth name"
   {
-    "en"  	"Feral Form"
+    "en"  	"Strength of the Earth"
   }
   "Flurry name"
   {
@@ -6467,7 +6454,7 @@
   }
   "Natures Combatant name"
   {
-    "en"  	"Natures Combatant"
+    "en"  	"Nature's Combatant"
   }
   "Dual Wielding name"
   {
@@ -6475,21 +6462,21 @@
   }
   "Improved Rockbiter name"
   {
-    "en"  	"Improved Rockbiter"
+    "en"  	"Improved Rockbiter Weapon"
   }
   "Shamanistic Rage name"
   {
     "en"  	"Shamanistic Rage"
   }
-  "Counter Strike name"
+  "Ghost Wolf name"
   {
-    "en"  	"Counter Strike"
+    "en"  	"Ghost Wolf"
   }
   "Stormstrike name"
   {
     "en"  	"Stormstrike"
   }
-  "Lava Surge name"
+  "Lava Lash name"
   {
     "en"  	"Lava Lash"
   }
@@ -6993,7 +6980,7 @@
   }
   "Impale info"
   {
-    "en"		"<Passive> Increases your critical hit bonus damage.\n    Rank 1: +6%%\n    Rank 2: +13%%\n    Rank 3: +20%%"
+    "en"		"<Passive> Increases your attacks' and spells' critical hit damage.\n    Rank 1: +8%%\n    Rank 2: +16%%\n    Rank 3: +25%%"
   }
   "Juggernaut info"
   {
@@ -7113,7 +7100,7 @@
   }
   "Ambidexterity info"
   {
-    "en" "<Passive> Increases the amount of attack power you gain from agility\n    Rank 1: +25%% attack power\n    Rank 2: +50%% attack power"
+    "en" "<Passive> Increases the amount of attack power you gain from agility.\n    Rank 1: +16%% attack power.\n    Rank 2: +33%% attack power.\n    Rank 3: +50%% attack power."
   }
   "Adrenaline Rush info"
   {
@@ -7157,7 +7144,7 @@
   }
   "Lethality info"
   {
-    "en"		"<Passive> Increases your critical damage bonus by a percentage.\n    Rank 1: +10%% critical damage\n    Rank 2: +20%% critical damage"
+    "en"		"<Passive> Increases your critical damage bonus by a percentage.\n    Rank 1: +12.5%% critical damage\n    Rank 2: +25%% critical damage"
   }
   "Improved Poisons info"
   {
@@ -7341,7 +7328,7 @@
   }
   "Focused Mind info"
   {
-    "en"		"<Passive> Grants bonus Haste stat.\n    Rank 1: Grants 10.0 + 3%% Intellect as haste.\n    Rank 2: Grants 15.0 + 6%% Intellect as haste, Increases max cooldown reduction from 35%% to 40%%."
+    "en"		"<Passive> Grants bonus Haste stat.\n    Rank 1: Grants 10.0 + 3%% Intellect as haste.\n    Rank 2: Grants 15.0 + 6%% Intellect as haste, Increases max cooldown reduction from 35%% to 40%%"
   }
   "Master of Magic info"
   {
@@ -7461,7 +7448,7 @@
   }
   "Shield of the Righteous info"
   {
-    "en"		"<Active> Cause your next shot to deal increased damage, and to reduce the physical damage dealt to you for 5 seconds by 20%%.\n    Each use increases your next Greater Heal's strength by 50%%.\n    Costs 3 holy power."
+    "en"		"<Active> Cause your next shot to deal increased damage, and to reduce the physical damage dealt to you for 5 seconds by 20%%\n    Each use increases your next Greater Heal's strength by 50%%\n    Costs 3 holy power."
   }
   "Great Blessing of Kings info"
   {
@@ -7709,7 +7696,7 @@
   }
   "Natures Power info"
   {
-    "en"		"<Passive> Increases your spelldamage depending on your attack power\n    Rank 1: +10%% of attack power turned to spelldamage\n    Rank 2: +20%% of attack power turned to spelldamage\n    Rank 3: +30%% of attack power turned to spelldamage"
+    "en"		"<Passive> Increases your spell damage based on a portion of your attack power.\n    Rank 1: +15%%\n    Rank 2: +30%%"
   }
   "Elemental Focus info"
   {
@@ -7753,27 +7740,27 @@
   }
   "Thundering Strikes info"
   {
-    "en"		"<Passive> Increases your critical hit chance.\n    Rank 1: +2%% crit chance\n    Rank 2: +4%% crit chance\n    Rank 3: +6%% crit chance"
+    "en"		"<Passive> Increases your critical hit chance and physical critical damage.\n     Rank 1: +1%% critical chance, +8%% critical damage\n     Rank 2: +2%% critical chance, +16%% critical damage\n     Rank 3: +3%% critical chance, +25%% critical damage"
   }
-  "Elemental Weapons info"
+  "Feral Lunge info"
   {
-    "en"		"<Passive> Increases Windfury's bonus damage\n    Rank 1: +37.5%% damage\n    Rank 2: +75%% damage"
+    "en"		"<Passive> After entering combat, your attacks will deal bonus physical damage for 2 seconds.\n     Rank 1: 1 attack.\n     Rank 2: 2 attacks."
   }
   "Weapon Mastery info"
   {
-    "en"		"Increases DPS.\n    Rank 1: 2 & +5%% DPS\n    Rank 2: 5 & +10%% DPS"
+    "en" "<Passive> Increases the amount of attack power you gain from agility.\n    Rank 1: +16%% attack power.\n    Rank 2: +33%% attack power.\n    Rank 3: +50%% attack power."
   }
-  "Feral Form info"
+  "Strength of the Earth info"
   {
-    "en"		"<Passive> Increases your movement speed.\n     Rank 1: +3%%\n     Rank 2: +6%%\n     Rank 3: 10%%"
+    "en"		"<Passive> Increases your strength and agility while near your totem(s).\n     You cannot regain the buff by walking back to your totem after leaving its range.\n     Rank 1: +5%%\n     Rank 2: +10%%\n     Rank 3: +15%%"
   }
   "Flurry info"
   {
-    "en"		"Your crits have a 15/30/50%% chance to increase your damage by 3/6/10%% for 6 seconds, stacks up to 3 times"
+    "en"		"<Passive> Critically striking with an attack increases your attacks' damage\n     by 4% for 6 seconds, stacking up to 5 times."
   }
   "Natures Combatant info"
   {
-    "en"		"Gives your hits a 25/50%% chance to restore 2 bullets in your clip"
+    "en"		"Gives your hits a 25/50%% chance to restore 2 bullets in your clip."
   }
   "Dual Wielding info"
   {
@@ -7785,19 +7772,19 @@
   }
   "Shamanistic Rage info"
   {
-    "en"		"For 5 seconds, reduces damage taken by 20%% and your attacks \nhave a 25%% chance of restoring 5%% of your mana up to 6 times."
+    "en"		"<Passive> Your successful attacks restore a portion of your max mana.\n     Rank 1: 0.5%%\n     Rank 2: 1.0%\n     Rank 3: 1.5%%"
   }
-  "Counter Strike info"
+  "Ghost Wolf info"
   {
-    "en"		"<Passive> When an enemy close to you hits you there is a 10%% chance you reflect the attack back at them."
+    "en"		"<Passive> Increases your movement speed when out of combat by 6/13/20%%"
   }
   "Stormstrike info"
   {
-    "en"		"<Passive> Your critical hits reduce the target's resistance for 8 seconds.\n    Rank 1: Reduces resistance by 2 each critical strike\n    Rank 2: Reduces resistance by 4 each critical strike"
+    "en"		"<Passive> Your Windfury procs grant you a stack of Stormstrike. Your attacks\n    consume Stormstrike to deal bonus physical damage based off your attack power."
   }
-  "Lava Surge info"
+  "Lava Lash info"
   {
-    "en"		"Your attacks have a 20%% chance to proc Lavasurge dealing extra magical damage based on your agility"
+    "en"		"<Passive> Your attacks have a 20%% chance to proc Lava Lash, dealing bonus\n    magic damage based on your attack power. If the victim has Flame Shock\n    on them, Lava Lash will also damage all nearby enemies."
   }
   "Ancestor's Protection info"
   {
@@ -8081,7 +8068,7 @@
   }
   "Armor of Frost info"
   {
-    "en"		"When your are critically hit the attackers attack speed will be lowered by 2/5%%. Stacks"
+    "en"		"When your are critically hit the attackers attack speed will be lowered by 2/5%% Stacks"
   }
   "Threat of Thassarian info"
   {
@@ -8752,7 +8739,7 @@
   }
   "about drop"
   {
-    "en"  "Drop rate is increased by 25%%. Moreover you have a chance for LEGENDARY Unique Item"
+    "en"  "Drop rate is increased by 25%%, moreover you have a chance for LEGENDARY Unique Item"
   }
   "about hp"
   {
@@ -8933,11 +8920,6 @@
   {
     "en"     "@green@att@default's ghoul exploded near you dealing @lightgreen@dmg@default damage."
   }
-  "feral glyph"
-  {
-    "#format" "{1:i},{2:s},{3:s}"
-    "en"     "Your @greenGlyph of Feral Form@default increases your movement speed by @lightgreen{1} @defaultfor @lightgreen{2} @defaultseconds."
-  }
   "pwshaste glyph"
   {
     "en"     "Your @greenPower Word: Shield@default has increased your haste by @lightgreen25@default for @lightgreen 8@default seconds."
@@ -8971,7 +8953,7 @@
   "searingaoe"
   {
     "#format" "{1:s},{2:f}"
-    "en"     "@green{1}@default hit you with @lightgreenSearing Flames@default and reduced your health by {2}%%."
+    "en"     "@green{1}@default hit you with @lightgreenSearing Flames@default and reduced your health by {2}@perc"
   }
   "riptide target"
   {
@@ -10488,5 +10470,45 @@
   {
     "en"     "@greenRighteous Shield @defaulthas been activated"
   }
+  "Unruly Winds name"
+  {
+    "en"     "Unruly Winds"
+  }
+  "Unruly Winds info"
+  {
+    "en"     "<Passive> Your Windfury can now proc infinitely.\n    Rank 1: 12%% chance to proc again.\n    Rank 2: 25%% chance to proc again."
+  }
+  "Lava Lash attacker aoe"
+  {
+    "#format" "{1:i},{2:s}"
+    "en"     "Your @greenLava Lash exploded@default, dealing @lightgreen{1:i} @greendamage @defaultto @green{2:s}@default."
+  }
+  "Lava Lash victim aoe"
+  {
+    "#format" "{1:s},{2:i}"
+    "en"     "@green{1:s}@default's @greenLava Lash exploded@default, dealing @lightgreen{2:i} @greendamage @defaultto you."
+  }
+  "Lava Lash attacker"
+  {
+    "#format" "{1:i},{2:s}"
+    "en"     "Your @greenLava Lash @defaultdealt @lightgreen{1:i} @greendamage @defaultto @green{2:s}@default."
+  }
+  "Lava Lash victim"
+  {
+    "#format" "{1:s},{2:i}"
+    "en"     "@green{1:s}@default's @greenLava Lash @defaultdealt @lightgreen{2:i} @greendamage @defaultto you."
+  }
+  "Elemental Guidance name"
+  {
+    "en"		"Elemental Guidance"
+  }
+  "Elemental Guidance info"
+  {
+    "en"		"<Passive> Increases your intellect.\n     Rank 1: 10%%\n     Rank 2: 20%%\n     Rank 3: 30%%"
+  }
+  "Elemental Guidance cast"
+  {
+    "#format" "{1:i}"
+    "en"		"@greenElemental Guidance @defaultincreases your @greenintellect @defaultby @lightgreen{1:1}@perc"
+  }
 }
-

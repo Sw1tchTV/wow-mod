@@ -12,6 +12,10 @@ new g_iOffs_ActiveWeapon = -1;
 new g_vOffs_Punch = -1;
 new g_iOffs_NextPrimaryAttack = -1;
 new g_bShadowform[65];
+new g_GhostWolf[65];
+new g_SOTEActive[65];
+new g_FeralLunge[65];
+new g_FeralLungeReady[65];
 
 new wcClientSeal[65];
 //new wcClientSealP[65];
@@ -87,7 +91,20 @@ public Action:OnPlayerRunCmd(client, &buttons, &impulse, Float:vel[3], Float:ang
     buttons &= ~(IN_ATTACK & IN_JUMP & IN_DUCK & IN_FORWARD & IN_BACK & IN_MOVELEFT & IN_MOVERIGHT);
   }
 
-
+  if(CheckRequirements(client,6,2,1,1)) //Ghost Wolf
+    {
+      if(!(GetCombat(client)>0))
+        wcRunTalent_6_GhostWolf(client);
+      if(g_GhostWolf[client] == 1 && GetCombat(client)>0)
+        wcRunTalent_6_GhostWolfRemove(client);
+    }
+  if(CheckRequirements(client,6,2,2,2)) //Feral Lunge
+    {
+      if((!(GetCombat(client)>0)) && (g_FeralLungeReady[client] == 0))
+        g_FeralLungeReady[client]=1;
+      if(g_FeralLungeReady[client] == 1 && GetCombat(client)>0)
+        wcRunTalent_6_FeralLungeHandler(client);
+    }
 
   return Plugin_Continue;
 }
@@ -612,6 +629,8 @@ public PlayerSpawnEvent(Handle:event,const String:name[],bool:dontBroadcast)
     UnhookLand(client);
     removeCurse(client);
     removeDamageBuff(client);
+    g_GhostWolf[client]=1;
+    g_FeralLungeReady[client]=1;
 
     setPolymorph(client, 0.0);
     _setZombie(client, _getZombie(client), _getZombieType(client));
@@ -708,13 +727,13 @@ public PlayerSpawnEvent(Handle:event,const String:name[],bool:dontBroadcast)
       new inte= GetInt(client)+GetBonusInt(client);
       new stre= GetStr(client)+GetBonusStr(client);
       new stam= GetSta(client)+GetBonusSta(client);
-      CastKings(client, 0.05, false, true); //custom, is not affected by Kings rule, stacks with BoK or GBoK
+      CastKings(client, 0.10, false, true); //custom, is not affected by Kings rule, stacks with BoK or GBoK
       if(IsChat(client,Chat:Chat_Spawn))
       {
-        WCMessage(client,"spawn ench b1 agi",client,5.0,agil,GetAgi(client)+GetBonusAgi(client));
-        WCMessage(client,"spawn ench b1 int",client,5.0,inte,GetInt(client)+GetBonusInt(client));
-        WCMessage(client,"spawn ench b1 sta",client,5.0,stam,GetSta(client)+GetBonusSta(client));
-        WCMessage(client,"spawn ench b1 str",client,5.0,stre,GetStr(client)+GetBonusStr(client));
+        WCMessage(client,"spawn ench b1 agi",client,10.0,agil,GetAgi(client)+GetBonusAgi(client));
+        WCMessage(client,"spawn ench b1 int",client,10.0,inte,GetInt(client)+GetBonusInt(client));
+        WCMessage(client,"spawn ench b1 sta",client,10.0,stam,GetSta(client)+GetBonusSta(client));
+        WCMessage(client,"spawn ench b1 str",client,10.0,stre,GetStr(client)+GetBonusStr(client));
       }
     }
     if(PlayerHasBonusFast(client, Profession:Prof_EnchBonus2)) { //Enchanting bonus 2
@@ -758,7 +777,8 @@ public PlayerSpawnEvent(Handle:event,const String:name[],bool:dontBroadcast)
       LegacyClient[client]=false;
       ArcaneClient[client]=false;
       SetHarvest(client,0);
-      SetShamanisticRage(client, 0.0, 0);
+      g_Stormstrike[client]=0;
+      g_UnrulyWinds[client]=0;
       SetBoW(client, 0);
       SetBoM(client, 0.0);
       SetHealingBonus(client,0.0);
@@ -784,6 +804,11 @@ public PlayerSpawnEvent(Handle:event,const String:name[],bool:dontBroadcast)
       RemoveFear(client);
       if(GetFrostNovaFreeze(client)>0)
       RemoveFrostNovaFreeze(client);
+      if(CheckRequirements(client,6,2,1,1)) //Ghost Wolf
+        wcRunTalent_6_GhostWolf(client);
+      if(CheckRequirements(client,6,2,2,2)) //Feral Lunge
+        g_FeralLungeReady[client]=1;
+
 
       WCMessage(client,"show xp",client,GetLevel(client),GetXp(client),GetReqXp(client));
       new String:line[255];
@@ -847,7 +872,7 @@ public PlayerSpawnEvent(Handle:event,const String:name[],bool:dontBroadcast)
       }
 
       if(IsHeroic())
-      CastKings(client, 5.0, false, true);
+      CastKings(client, 10.0, false, true);
 
       wcSetHealth(client,GetMaxHealth(client));
       SetClientSpeed(client,GetNormalSpeed(client));
@@ -1689,6 +1714,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
   GetEventString(event, "weapon", weaponname, sizeof(weaponname));
   new vic=victim, att=attacker;
   new bool:acast=true, bool:vcast=true;
+  
   SetCombat(attacker, 8);
   SetCombat(victim,   8);
 
@@ -1805,7 +1831,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
 
       if(bCS)
       {
-        wcGetTalentCritDamageBonus(attacker,spellname,talentcritdamagebonus,true);
+        wcGetTalentCritDamageBonus(attacker,spellname,talentcritdamagebonus,true,false);
         damagemulti*=(1.50+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
         wcRunTalentSpellCrit(attacker,victim,spellname,damage,damagemulti,isAoe);
         AddEMsgAff("critical msg",true);
@@ -1870,8 +1896,9 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
       CalculateCrit(attacker,victim,false,"Physical",bCS);
 
       if(bCS) {
-        damagemulti*=1.5*(1.0 - GetMinusCrit(victim));
-        AddEMsgAff( "critical msg", true);        //do we rly want it here?
+        wcGetTalentCritDamageBonus(attacker,line,talentcritdamagebonus,false,true); //Impale etc for physical spells
+        damagemulti*=(1.5+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
+        AddEMsgAff( "critical msg", true);
       }
       new armor;
       if(CheckRequirements(attacker,2,2,3,2))
@@ -1980,15 +2007,8 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
         new armor=GetArmor(victim)-GetIgnoreArmor(attacker);
         new Float:improck=wcRunTalent_6_ImpRock(attacker);
         damagemulti *= (GetSpellReduction(victim,penetration)*(1.0+improck)+GetDmgRed(armor,victim)*(1.0-improck))/2.0;
-        //WCMessage(attacker,"testmessageF",attacker,"[rockbiter] penetration",penetration);
-        //WCMessage(attacker,"testmessage",attacker,"[rockbiter] armor",armor);
-        //WCMessage(attacker,"testmessageF",attacker,"[rockbiter] improck",improck);
-        //WCMessage(attacker,"testmessageF",attacker,"[rockbiter] damagemulti",damagemulti);
       }
       damagemulti*=GetWeaponModifier(weaponname,attacker);
-      if(CanWearShield(attacker) && HasShield(attacker) && GetClass(attacker)==1)
-        damagemulti *= 0.8;
-      CalculateCrit(attacker,victim,false,spellname,bCS);
       if(IsMageInvis(attacker))
       {
         SetMageInvis(attacker, false, true);
@@ -2021,41 +2041,37 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
           AddEMsgAff( "dispatch msg", true);
         }
       }
+      /*if(CheckRequirements(attacker,6,2,2,2) && g_FeralLunge[attacker]>=1)
+      {
+        AddEMsgAff("Feral Lunge name", true);
+      }*/
       SetStealth(attacker, 0.0, true);
-      if(bCS) {
-
-        wcRunTalentPhysicalCrit(attacker,victim,damagemulti,damage);
-        wcGetTalentCritDamageBonus(attacker,line,talentcritdamagebonus,false);
-        AddEMsgAff( "critical msg", true);
-        SetHolyPower(attacker,GetHolyPower(attacker)+1);
-        damagemulti*=(1.5+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
-      }
-
       if(wc_aPlayerHurtEvent>0) {
-        /*new newar=GetClientArmor(victim);*/
-        /*new oldar=wc_aPlayerHurtEvent;*/
-        /*wc_aPlayerHurtEvent=0;*/
-        /*new delta=oldar-newar;*/
-        /*delta=RoundToNearest(float(delta)*float(damage)/float(olddmg)*0.4);*/
-        /*newar=oldar-delta;*/
-        /*SetEntData(victim, offsArmor, newar);*/
         new cArmor = GetClientArmor(victim);
         if(cArmor > 0 && cArmor < 70)
         SetEntData(victim, offsArmor, 90);
-
-
       }
+      
       if(GetClientTeam(victim)!=GetClientTeam(attacker))
       {
         new bool:pass=true;
         if((StrEqual(weaponname,"m3")) || (StrEqual(weaponname,"xm1014")))
         if(GetRandomInt(1,2)==1)
         pass=false;
+        CalculateCrit(attacker,victim,false,spellname,bCS);
+        if(bCS) {
+          wcGetTalentCritDamageBonus(attacker,line,talentcritdamagebonus,false,false); //Impale etc for gun damage
+          SetHolyPower(attacker,GetHolyPower(attacker)+1);
+          damagemulti*=(1.5+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
+          AddEMsgAff( "critical msg", true);
+        }
         wcRunEffects(attacker,victim,damage,false,pass,1,olddmg,weaponname,bonushit,bCS);
         new tmp1=damage;
         wcRunEffects(attacker,victim,damage,false,pass,2,olddmg,weaponname,bonushit,bCS);
 
         damage=RoundToNearest(damagemulti*damage);
+        
+        
         if(bVanish[attacker])
         {
           decl Float:clienta[3],Float:targeta[3];
@@ -2066,21 +2082,12 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
           angle*=-1.0;
           if(angle>180.0)
           angle = 360.0-angle;
-          //if(CheckRequirements(attacker,2,3,2,4))
-          //{
-          //  wcGetTalentInfo(2,3,2,4,attacker,"multi",line);
-          //  angle*=(1-StringToFloat(line));
-          //}
 
           if(angle<=90.0 && IsValidShooting(attacker, victim))
           {
             wcGetTalentInfo(2,3,2,1,attacker,"increment",line);
             new Float:talentbonus=StringToFloat(line);
             damagemulti*=(1.30+talentbonus);
-            //damagemulti*=(1.5+talentbonus)*GetWeaponSpeed(attacker, true);
-
-            /*decl String:buffer[30];*/
-            /*Format(buffer,sizeof(buffer),"%T", "ambush hit", attacker);*/
             AddEMsgAff( "ambush hit", true);
             if(HasGlyph(attacker, GLYPH_ROGUE_AMBUSH))
             {
@@ -2144,6 +2151,9 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
         wcRunTalent_Vampirism(attacker, damage);
         if(GetClass(attacker)==1)
         wcRunTalent_Rampage(attacker, damage);
+        if(bCS) {
+          wcRunTalentWeaponCrit(attacker,victim,damagemulti,damage); //Deep Wounds etc
+        }
 
         if(StrEqual(weaponname, "knife") && GetClass(attacker)==2)
         {
@@ -2364,6 +2374,7 @@ stock CalculateCrit(attacker,victim,bool:spell,String:spellname[],&bool:bCS,bool
   new Float:CSchance = GetCriticalStrike(attacker) + talentcritbonuschance;
 
   //Motel Armor Glyph
+  //Trivago, amirite?
   if(IsManaShieldOn(attacker) && HasGlyph(attacker, GLYPH_MAGE_MOLTEN))
   CSchance+=0.03;
 

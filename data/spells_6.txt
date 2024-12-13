@@ -15,11 +15,9 @@
     "name"  "Windfury"
     "name_ru"   "TODO"
     "event" "player_attacker"
-    "chance"  "20"
+    "chance"  "25"
     "level" "1"
     "cost" "50"
-    "mana"  "0"
-    "manainc" "0.0"
     "multi" "1.25"
   }
   "3"

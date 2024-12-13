@@ -2363,7 +2363,6 @@ stock TreasureChest(Float:location[3],TreasureChestName)
     case 4: PrintToChatAll("\x03An extremely rare treasure chest has spawned!");
   }
   new entity = SpawnChestModel(location,NULL_VECTOR,chestrarity);
-  /*SpawnTotem(location, true, 200 );*/
   new roundcount=g_RoundCount;
   new Handle:datapack=CreateDataPack();
   WritePackCell(datapack,roundcount);
