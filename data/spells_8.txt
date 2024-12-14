@@ -17,13 +17,13 @@
     "event" "player_cast"
     "active"  "1"
     "level" "16"
-    "runes"  "1"
-    "regen"  "10"
-    "cooldown"  "6.0"
+    "runes"  "0"
+    "regen"  "0"
+    "cooldown"  "12.0"
     "cooldowntype"  "1"
 
-    "z" "110.0"  //Z coordinate modifier
-    "push"  "1.0"
+    "z" "130.0"  //Z coordinate modifier
+    "push"  "1.25"
     "threat"  "1000"
   }
   "3"
@@ -33,7 +33,7 @@
     "event" "player_attacker"
     "level" "1"
     "chance"  "15"
-    "regen" "5"
+    "regen" "15"
     "multi" "0.0"
 
     "tickdelay" "3.0"
@@ -46,12 +46,11 @@
   {
     "name"  "Icy Touch"
     "name_ru"   "TODO"
-    "event" "player_cast"
-    "active"       "1"
+    "event" "player_attacker"
     "level"        "1"
     "runes"        "1"
-    "regen"        "10"
-    "cooldown"     "4.0"
+    "regen"        "0"
+    "cooldown"     "6.0"
     "cooldowntype" "2"
 
     //slowdown
@@ -59,11 +58,11 @@
     "duration"  "1.5"
 
     //debuff
-    "tickdelay" "1.0"
+    "tickdelay" "2.0"
     "ticks"  "3"
     "aoe" "450"
-    "multief"   "0.045"
-    "baseef"  "3"
+    "multief"   "0.055"
+    "baseef"  "4"
   }
   "5"
   {
@@ -74,7 +73,7 @@
     "cooldowntype"  "3"
     "cooldown"      "4.0"
     "chance"       "30"
-    "regen"        "10"
+    "regen"        "15"
     "multi"         "0.10"
     "multief"       "0.10"
   }
@@ -82,13 +81,12 @@
   {
     "name"  "Death Coil"
     "name_ru"   "TODO"
-    "event" "player_cast"
-    "active"  "1"
+    "event" "player_attacker"
     "level" "30"
     "cooldowntype"  "4"
     "cooldown"  "2.5"
-    "mana"  "40"
-    "multi" "0.26"
+    "mana"  "30"
+    "multi" "0.34"
     "basedmg" "12"
   }
   "7"
@@ -110,7 +108,7 @@
     "cooldowntype"  "5"
     "cooldown"  "13.0"
     "mana"  "20"
-    "duration"  "3.0"
+    "duration"  "2.0"
   }
   "9"
   {
@@ -143,10 +141,10 @@
     "cooldowntype"  "11"
     "cooldown"      "15.0"
     "runes"         "1"
-    "regen"         "10"
+    "regen"         "15"
     "base"          "2"
     "distance"      "1000.0"
-    "aoe"           "250.0" //Code assumes it is 300, modifying will make no effect
+    "aoe"           "250.0"
     "duration"      "12.0"
     "multi"         "0.12"
     "tick"          "1.0"

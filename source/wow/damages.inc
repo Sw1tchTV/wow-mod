@@ -211,7 +211,7 @@ wcHeal(client,target,heal, spellid=0, bool:cancrit=true)
     bCS=false;
   if(bCS)
   {
-    heal = RoundToNearest(float(heal)*1.5);
+    heal = RoundToNearest(float(heal)*1.75);
     if(GetClass(client)==4)
     {
       if(CheckRequirements(client,4,1,1,1))
@@ -501,7 +501,7 @@ stock wcPhysicalDamage(userid,attacker,amount, String:amsg[]="", String:vmsg[]="
 stock Float:GetDmgRed(armor, userid)   {
    new Float:dred;
    if (armor>0)
-      dred=float(1) - (float(armor) / (float(armor) + (10.0*float(GetLevel(userid))+20.0)));
+      dred=float(1) - (float(armor) / (float(armor) + (6.0*float(GetLevel(userid))+20.0)));
    else
       dred=1.0;
    if (dred < 0.1)

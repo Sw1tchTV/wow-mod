@@ -1803,7 +1803,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
       if(bCS)
       {
         wcGetTalentCritDamageBonus(attacker,spellname,talentcritdamagebonus,true,false);
-        damagemulti*=(1.50+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
+        damagemulti*=(1.75+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
         wcRunTalentSpellCrit(attacker,victim,spellname,damage,damagemulti,isAoe);
         AddEMsgAff("critical msg",true);
       }
@@ -1871,7 +1871,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
 
       if(bCS) {
         wcGetTalentCritDamageBonus(attacker,line,talentcritdamagebonus,false,true); //Impale etc for physical spells
-        damagemulti*=(1.5+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
+        damagemulti*=(1.75+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
         AddEMsgAff( "critical msg", true);
       }
       new armor;
@@ -2038,7 +2038,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
         if(bCS) {
           wcGetTalentCritDamageBonus(attacker,line,talentcritdamagebonus,false,false); //Impale etc for gun damage
           SetHolyPower(attacker,GetHolyPower(attacker)+1);
-          damagemulti*=(1.5+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
+          damagemulti*=(1.75+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
           AddEMsgAff( "critical msg", true);
         }
         wcRunEffects(attacker,victim,damage,false,pass,1,olddmg,weaponname,bonushit,bCS);

@@ -448,7 +448,7 @@ Float:GetItemRating(UniqueItem item)  {
   return rating;
 }
 
-public wcRecalculateStats(client) { //Stats
+public wcRecalculateStats(client) { //Stats, recalculating stats
   new id=GetPlayerID(client);
   char line[255];
   if(IsZombie(client))

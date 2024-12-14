@@ -4595,21 +4595,21 @@
   }
   "Obliterate info"
   {
-    "en"    "Has a chance to increase your melee damage on targets who are slowed. Gives 10 Runic Power.\n    Rank 1: +20%% damage\n    Rank 2: +40%% damage"
+    "en"    "Has a chance to increase your physical damage on targets who are slowed. Gives 10 Runic Power.\n    Rank 1: +20%% damage\n    Rank 2: +40%% damage"
   }
   "Blood Strike info"
   {
-    "en"    "Increases your melee damage by 15%% and generates 15 Runic Power.\n15%% chance to cast on hit."
+    "en"    "Increases your physical damage by 15%% and generates 15 Runic Power.\n15%% chance to cast on hit."
   }
   "death grip caster"
   {
     "#format" "{1:s}"
-    "en"     "You cast @lightgreenDeath Grip@default at @green{1} @default and push him towards you."
+    "en"     "You cast @greenDeath Grip@default at @green{1} @default and pull him towards you."
   }
   "death grip target"
   {
     "#format" "{1:s}"
-    "en"     "@green{1} @default has pushed you towards him with @lightgreenDeath Grip."
+    "en"     "@green{1} @default has pulled you towards him with @greenDeath Grip."
   }
   "Death Grip info"
   {
@@ -4625,7 +4625,7 @@
   }
   "Plague Strike info"
   {
-    "en"    "Has a chance of increasing melee damage by 20%\nand put a strong debuff on a victim which has AOE effect and ticks 3 times over 9 seconds.\nAlso generates Runic Power"
+    "en"    "Has a chance of increasing physical damage by 20%\nand put a strong debuff on a victim which has AOE effect and ticks 3 times over 9 seconds.\nAlso generates Runic Power"
   }
   "icy touch caster"
   {
@@ -4647,7 +4647,7 @@
   }
   "Death Strike info"
   {
-    "en"    "A moderate chance on hit to increase your melee damage by 10%%, also:\nHeals you for 10%% of your maximum health\nGenerates Runic Power."
+    "en"    "A moderate chance on hit to increase your physical damage by 10%%, also:\nHeals you for 10%% of your maximum health\nGenerates Runic Power."
   }
   "death coil caster"
   {
@@ -8136,7 +8136,7 @@
   }
   "Bone Shield info"
   {
-    "en"   "Reduces damage taken from melee hits by 10. Maximum 5 charges. Gains 1 charge each 5 seconds."
+    "en"   "Reduces damage taken from physical hits by 10. Maximum 5 charges. Gains 1 charge each 5 seconds."
   }
   "Morbidity info"
   {
@@ -10150,7 +10150,7 @@
   }
   "chi burst cast"
   {
-    "en" "@lightgreenChi Burst is unleashed"
+    "en" "@greenChi Burst @defaultis unleashed"
   }
   "Stance of the Ox name"
   {
@@ -10195,12 +10195,12 @@
   "chi burst ally"
   {
     "#format" "{1:s},{2:i}"
-    "en"     "@lightgreen{1}@default's Chi Burst went past you and healed you for @lightgreen{2} health."
+    "en"     "@green{1}'s Chi Burst @defaultwent past you and healed you for @lightgreen{2} health."
   }
   "chi burst enemy"
   {
     "#format" "{1:s},{2:i}"
-    "en"     "@lightgreen{1}@default's Chi Burst went past you and hit you for @lightgreen{2} damage."
+    "en"     "@green{1}'s Chi Burst @defaultwent past you and hit you for @lightgreen{2} damage."
   }
   "chi burst caster ally"
   {
@@ -10490,7 +10490,7 @@
   }
   "Lava Lash victim aoe"
   {
-    "#format" "{1:s},{2:i}"
+    "#format" "{1:i},{2:s}"
     "en"     "@green{1:s}@default's @greenLava Lash exploded@default, dealing @lightgreen{2:i} @greendamage @defaultto you."
   }
   "Lava Lash attacker"
