@@ -917,7 +917,7 @@ public Action:HostageRescueEvent(Handle:event,const String:name[],bool:dontBroad
   wcGiveXp(client,xp,true);
   return Plugin_Continue;
 }
-public Action:PlayerDeathEvent(Handle:event,const String:name[],bool:dontBroadcast) //Deathevent, Death, Death event, Playerdeath, Player death
+public Action:PlayerDeathEvent(Handle:event,const String:name[],bool:dontBroadcast) //Deathevent, Death, Death event, Playerdeath, Player death, on death, ondeath
 {
   //PrintToServer("player death");
   new userid=GetClientOfUserId(GetEventInt(event,"userid"));
@@ -1001,6 +1001,7 @@ public Action:PlayerDeathEvent(Handle:event,const String:name[],bool:dontBroadca
       }
     }
     wcRunOnDeathTalents(userid,attacker);
+    SetCombat(userid,0);
 
     new owner = GetZombie(userid);
     if(owner > 0)

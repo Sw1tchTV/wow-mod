@@ -8072,7 +8072,7 @@
   }
   "Threat of Thassarian info"
   {
-    "en"		"Increases your critical strike damage with both spells and physical attacks\n    Rank 1: +10%%\n    Rank 2: +20%%"
+    "en"		"Increases your critical strike damage\n    Rank 1: +12.5%%\n    Rank 2: +25%%"
   }
   "Force of the Glacier info"
   {
@@ -10073,11 +10073,11 @@
   }
   "legacy cast all"
   {
-    "en"     "You cast @lightgreenLegacy of the White Tiger @defaultat @greeneveryone @defaultin your team."
+    "en"     "Your @greenLegacy of the White Tiger @defaultinspires your teammates, increasing their @lightgreencritical strike chance."
   }
   "legacy aff"
   {
-    "en"     "You are affected by @lightgreenLegacy of the White Tiger@default, which increases your critical strike chance."
+    "en"     "You are affected by @greenLegacy of the White Tiger, @defaultwhich increases your @lightgreencritical strike chance."
   }
   "Legacy of the White Tiger name"
   {
@@ -10085,7 +10085,7 @@
   }
   "Legacy of the White Tiger info"
   {
-    "en" "<Passive> Increases your and your team's critical hit chance by 3%%"
+    "en" "<Passive> Increases your and your team's critical strike chance by 3%%"
   }
   "Thunder Focus Tea name"
   {
