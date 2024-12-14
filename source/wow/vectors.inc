@@ -2040,6 +2040,9 @@ public ReloadDBs()
   BuildPath(Path_SM,path,PLATFORM_MAX_PATH,thepath);
   FileToKeyValues(StatsDB,path);
 
+  BuildPath(Path_SM, path, sizeof(path), "data/unique_item_stats.txt");
+  UniqueItemStatsDB = new KeyValues("unique_item_stats");
+  UniqueItemStatsDB.ImportFromFile(path);
 
 
   //end of reloading spells dbs

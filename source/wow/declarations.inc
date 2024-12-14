@@ -227,6 +227,8 @@ enum struct Buff {
 new Handle:g_dmgArray=INVALID_HANDLE;
 new Handle:StatsDB=INVALID_HANDLE;
 
+KeyValues UniqueItemStatsDB;
+
 enum StatPoint  {
   SP_None,
   SP_Strength,

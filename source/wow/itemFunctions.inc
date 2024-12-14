@@ -588,6 +588,8 @@ stock GetItemProperties(UniqueItem item, itemId, uniqueId=-1)  {
         item.Item_res=uniItem.Item_res;
       if(uniItem.Item_regen>-100)
         item.Item_regen=uniItem.Item_regen;
+      if(uniItem.Item_haste>-100)
+        item.Item_haste=uniItem.Item_haste;
       if(uniItem.Item_ai>-100)
         item.Item_ai=uniItem.Item_ai;
       if(uniItem.Item_weapon_ap>-1)
@@ -1639,7 +1641,7 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
   }
   //Quality?
   new quality = GetRandomInt(1,100);
-  if(quality > 99 && isClientPDModule(client))  quality = 4; //7% epic
+  if(quality > 99)  quality = 4; //1% legendary
   else if(quality > 93)  quality = 3; //7% epic
   else if(quality > 70)  quality = 2; //23% rare
   else quality = 1; //Common
@@ -1648,7 +1650,7 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
     quality = forceRarity;
   //Class?
   new race = GetClass(client);
-  if(GetRandomInt(0,1) == 0 || race == 0)  race = GetRandomInt(1,MAX_CLASS);
+  if(GetRandomInt(0,10) >= 7 || race == 0)  race = GetRandomInt(1,MAX_CLASS);
 
   while(cat == 18 && (!CanWearShield(race)) && (!CanWearOffhand(race)) ) {
     cat = GetRandomInt(10,23);
@@ -1657,7 +1659,7 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
 
   //Level?
   new level = GetLevel(client);
-  level = GetRandomInt(level-6, level);
+  level = GetRandomInt(level-6, 85);
   if(level == GetLevel(client) && level < 85-1) {
     level += GetRandomInt(0,2);
   }
@@ -1907,7 +1909,7 @@ stock bool:GetRandomName(race, cat, quality, level, String:name[], size, pStat, 
 stock SetRandomValues(UniqueItem item) {
   //Find Slot, Quality, dred ...
   new Float:slots[] = { 0.3, 1.0, 0.65, 0.5, 0.8, 0.9, 0.65, 0.6, 2.0, 0.6, 0.9, 0.5, 1.0, 0.4 };
-  new Float:qualities[] = { 1.0, 1.0, 1.2, 1.4, 1.7, 1.25, 1.45 };
+  new Float:qualities[] = { 1.0, 1.0, 1.3, 1.7, 2.0, 1.25, 1.45 };
   new Float:dreds[] = { 0.16, 0.28, 0.48 };
   new Float:slot, Float:quality;
   slot = slots[item.Item_category-10];
@@ -1925,7 +1927,7 @@ stock SetRandomValues(UniqueItem item) {
   new classes[10];
   ConvertBitToClasses(item.Item_class, classes);
   new race = classes[0];
-  new Float:pointMulti=1.0;
+  new Float:pointMulti=1.2;
 
   if(item.Item_category == 22) {
     //Give random Weapon Speed
@@ -1953,14 +1955,12 @@ stock SetRandomValues(UniqueItem item) {
       dred = dreds[2];
       dmg = 1.0;
       sp = 0.0;
-      pointMulti = 0.6;
       armorType = 3;
     }
     case 2: {
       dred = dreds[1];
       dmg = 1.0;
       sp = 0.0;
-      pointMulti = 0.8;
       armorType = 2;
     }
     case 3: {
@@ -1973,7 +1973,6 @@ stock SetRandomValues(UniqueItem item) {
       dred = dreds[2];
       dmg = 0.7;
       sp = 0.7;
-      pointMulti = 0.6;
       armorType = 3;
     }
     case 5: {
@@ -1986,7 +1985,6 @@ stock SetRandomValues(UniqueItem item) {
       dred = dreds[1];
       dmg = 0.7;
       sp = 0.7;
-      pointMulti = 0.8;
       armorType = 2;
     }
     case 7: {
@@ -1999,14 +1997,12 @@ stock SetRandomValues(UniqueItem item) {
       dred = dreds[2];
       dmg = 1.0;
       sp = 0.0;
-      pointMulti = 0.6;
       armorType = 3;
     }
     case 9: {
       dred = dreds[1];
       dmg = 0.7;
       sp= 0.7;
-      pointMulti = 0.8;
       armorType = 2;
     }
   }
@@ -2016,9 +2012,9 @@ stock SetRandomValues(UniqueItem item) {
   new Float:points = float(item.Item_ilevel) * 0.272277 * slot * (item.Item_category == 22?0.7:1.0) * quality * pointMulti;
 
   dmg = 0.26 * level * slot * quality * 0.5;
+
   sp = level * slot * 0.275 * 0.75 * Pow(quality, 0.5);
   armor = (level * 6.25 + 20.0) * dred * slot / ((1.0 - dred) * 7.65) * quality;
-
   if(item.Item_category != 22) {
     dmg = 0.0;
     sp = 0.0;
@@ -2050,154 +2046,165 @@ stock SetRandomValues(UniqueItem item) {
   item.Item_cost = RoundToCeil( Pow(1.3, level / 4.0) * 31.0 * Pow(quality, 2.0) / 10.1  * slot * 1.8 * (item.Item_2hand == 1?2.0:1.0) );
 
   //Stat - secondary stats balance
-  new Float:division = GetRandomFloat(0.0,1.0);
-  new Float:statPoints = points * division;
-  new Float:secPoints = points * (1.0 - division);
+  //new Float:division = GetRandomFloat(0.0,1.0);
+  //new Float:statPoints = points * division;
+  //new Float:secPoints = points * (1.0 - division);
 
   //Give stat points based on stats.txt
-  new str,agi,inte,sta;
-  new Float:oldPoints = statPoints;
-  while(statPoints > 0.0) {
-    statPoints = statPoints - 1.0;
-
-    new StatPoint:point = _getNextStat(race, str, agi, inte, sta);
-    switch(point) {
-      case SP_Strength: str++;
-      case SP_Agility: agi++;
-      case SP_Intellect: inte++;
-      case SP_Stamina: sta++;
+  char selectedStats[5][10];
+  //Select main stat to use
+  char race_string[10], agi_string[10], int_string[10], sta_string[10], str_string[10], ap_string[10], sp_string[10];
+  char aspd_string[10], mspd_string[10], crit_string[10], haste_string[10], parry_string[10], acc_string[10], pen_string[10];
+  char regen_string[10], res_string[10], main_stat[10];
+  IntToString(classes[0], race_string, sizeof(race_string));
+  UniqueItemStatsDB.Rewind();
+  UniqueItemStatsDB.JumpToKey(race_string);
+  UniqueItemStatsDB.GotoFirstSubKey();
+  UniqueItemStatsDB.GetString("agi", agi_string, 10, "0");
+  UniqueItemStatsDB.GetString("int", int_string, 10, "0");
+  UniqueItemStatsDB.GetString("sta", sta_string, 10, "0");
+  UniqueItemStatsDB.GetString("str", str_string, 10, "0");
+  UniqueItemStatsDB.GetString("ap", ap_string, 10, "0");
+  UniqueItemStatsDB.GetString("sp", sp_string, 10, "0");
+  UniqueItemStatsDB.GetString("aspd", aspd_string, 10, "0");
+  UniqueItemStatsDB.GetString("mspd", mspd_string, 10, "0");
+  UniqueItemStatsDB.GetString("crit", crit_string, 10, "0");
+  UniqueItemStatsDB.GetString("haste", haste_string, 10, "0");
+  UniqueItemStatsDB.GetString("parry", parry_string, 10, "0");
+  UniqueItemStatsDB.GetString("acc", acc_string, 10, "0");
+  UniqueItemStatsDB.GetString("pen", pen_string, 10, "0");
+  UniqueItemStatsDB.GetString("mana_regen", regen_string, 10, "0");
+  UniqueItemStatsDB.GetString("res", res_string, 10, "0");
+  
+  int agi=StringToInt(agi_string), inte=StringToInt(int_string), sta=StringToInt(sta_string), str=StringToInt(str_string), ap=StringToInt(ap_string), spellpower=StringToInt(sp_string);
+  int haste=StringToInt(haste_string), pen=StringToInt(pen_string), regen=StringToInt(regen_string), res=StringToInt(res_string);
+  int aspd=StringToInt(aspd_string), mspd=StringToInt(mspd_string), crit=StringToInt(crit_string), parry=StringToInt(parry_string), acc=StringToInt(acc_string);
+  int total_primary_stats = str+agi+inte;
+  int total_secondary_stats = ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry+acc;
+  int roll = GetRandomInt(0, total_primary_stats);
+  int selected_stats_weightings[5];
+  if(roll < str) {
+    main_stat = "str";
+    selected_stats_weightings[0]=str;
+  } else if(roll < str+agi) {
+    main_stat = "agi";
+    selected_stats_weightings[0]=agi;
+  } else {
+    main_stat = "int";
+    selected_stats_weightings[0]=inte;
+  }
+  selectedStats[0] = main_stat;
+  selectedStats[1] = "sta";
+  selected_stats_weightings[1]=sta;
+  for(int i=2;i<5;i++) {
+    roll = GetRandomInt(0, total_secondary_stats);
+    if(roll < ap && (race != 3 && race != 5 && race != 7 && race != 9) && (item.Item_category != 18) && !StrEqual(main_stat, "int")) {
+      selectedStats[i] = "ap";
+      selected_stats_weightings[i]=ap;
+    } else if(roll < ap+spellpower && (race != 1 && race != 2 && race != 8 && race != 9) && StrEqual(main_stat, "int")) {
+      selectedStats[i] = "sp";
+      selected_stats_weightings[i]=spellpower;
+    } else if(roll < ap+spellpower+haste) {
+      selectedStats[i] = "haste";
+      selected_stats_weightings[i]=haste;
+    } else if(roll < ap+spellpower+haste+pen && (race != 3 && race != 4 && race != 5 && race != 7) && (item.Item_category != 18) && !StrEqual(main_stat, "int")) {
+      selectedStats[i] = "pen";
+      selected_stats_weightings[i]=pen;
+    } else if(roll < ap+spellpower+haste+pen+regen && (race != 1 && race != 2 && race != 8 && race != 9) && StrEqual(main_stat, "int")) {
+      selectedStats[i] = "regen";
+      selected_stats_weightings[i]=regen;
+    } else if(roll < ap+spellpower+haste+pen+regen+res) {
+      selectedStats[i] = "res";
+      selected_stats_weightings[i]=res;
+    } else if(roll < ap+spellpower+haste+pen+regen+res+crit) {
+      selectedStats[i] = "crit";
+      selected_stats_weightings[i]=crit;
+    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd && (item.Item_category == 16 || item.Item_category == 17 || item.Item_category == 12)) {
+      selectedStats[i] = "mspd";
+      selected_stats_weightings[i]=mspd;
+    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd && (item.Item_category != 18) && (race != 9 && race != 8)) {
+      selectedStats[i] = "aspd";
+      selected_stats_weightings[i]=aspd;
+    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry && (item.Item_category == 13 || item.Item_category == 17 || item.Item_category == 20 || item.Item_category == 22 || item.Item_category == 23)) { // Gloves, Ring, Trinket, Weapon, Wrist
+      selectedStats[i] = "parry";
+      selected_stats_weightings[i]=parry;
+    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry+acc && (race != 3 && race != 5 && race != 7 && race != 9) && (item.Item_category != 18) && !StrEqual(main_stat, "int")) {
+      selectedStats[i] = "acc";
+      selected_stats_weightings[i]=acc;
     }
   }
-  //Now randomize stat points we got
-  new total = str+agi+inte+sta;
-  if(total > 0)  {
-    new Float:qStr = float(str) / total;
-    new Float:qAgi = float(agi) / total;
-    new Float:qInt = float(inte) / total;
-    new Float:qSta = float(sta) / total;
-    qStr *= GetRandomFloat(0.0, 2.0);
-    qAgi *= GetRandomFloat(0.0, 2.0);
-    qInt *= GetRandomFloat(0.0, 2.0);
-    qSta *= GetRandomFloat(0.0, 2.0);
-    new Float:norm = qStr + qAgi + qInt + qSta;
-    qStr /= norm;
-    qAgi /= norm;
-    qSta /= norm;
-    qInt /= norm;
-    str = RoundToNearest(qStr * oldPoints);
-    agi = RoundToNearest(qAgi * oldPoints);
-    sta = RoundToNearest(qSta * oldPoints);
-    inte = RoundToNearest(qInt * oldPoints);
+
+  int total_selected_stats;
+  for(int i=0;i<5;i++) {
+    total_selected_stats+=selected_stats_weightings[i];
   }
 
-  item.Item_str = str;
-  item.Item_agi = agi;
-  item.Item_sta = sta;
-  item.Item_int = inte;
-
-  while(secPoints > 0.0)  {
-    //AS, resis, MS, haste CS
-
-    //Regen, SP
-    //Accu, AI
-    new q = GetRandomInt(1,20);
-
-    if(q<=17) //85% chance (78% originally)
-    { //'common' stats, AP,SP,AI,Res,Regen & Haste
-      new stat = GetRandomInt(0,6);
-
-      switch(stat)
-      {
-        case 0:
-        {
-          if(race != 1 && race != 2 && race != 8 && race != 9)
-          {
-            item.Item_spelldmg += 1;
-            secPoints -= 3.5;
-          }
-        }
-        case 1:
-        {
-          if(race != 3 && race != 5 && race != 7 && race != 9)
-          {
-            item.Item_damage += 1;
-            secPoints -= 3.5;
-          }
-        }
-        case 2:
-        {
-          if(race != 1 && race != 2 && race != 8 && race != 9)
-          {
-            item.Item_regen += 1;
-            secPoints -= 2.0;
-          }
-        }
-        case 3:
-        {
-          if(race != 3 && race != 4 && race != 5 && race != 7)
-          {
-            item.Item_ai += 1;
-            secPoints -= 0.5;
-          }
-        }
-        case 4:
-        {
-          item.Item_res += 1;
-          secPoints -= 1;
-        }
-        case 5:
-        {
-          item.Item_haste += 1;
-          secPoints -= 1;
-        }
-        case 6:
-        {
-          if (item.Item_category == 13 || //Gloves
-              item.Item_category == 17 || //Ring
-              item.Item_category == 20 || //Trinket
-              item.Item_category == 22 || //Weapon
-              item.Item_category == 23 )  //Wrist
-          {
-            item.Item_parry += 0.01;
-            secPoints -= 3;
-          }
-        }
-      }
+  while(points > 0.0)  {
+    roll = GetRandomInt(0,total_selected_stats);
+    if(roll < selected_stats_weightings[0]) {
+      IncrementItemStat(item, selectedStats[0], points);
+    } else if(roll < selected_stats_weightings[0]+selected_stats_weightings[1]) {
+      IncrementItemStat(item, selectedStats[1], points);
+    } else if(roll < selected_stats_weightings[0]+selected_stats_weightings[1]+selected_stats_weightings[2]) {
+      IncrementItemStat(item, selectedStats[2], points);
+    } else if(roll < selected_stats_weightings[0]+selected_stats_weightings[1]+selected_stats_weightings[2]+selected_stats_weightings[3]) {
+      IncrementItemStat(item, selectedStats[3], points);
+    } else if(roll < selected_stats_weightings[0]+selected_stats_weightings[1]+selected_stats_weightings[2]+selected_stats_weightings[3]+selected_stats_weightings[4]) {
+      IncrementItemStat(item, selectedStats[4], points);
     }
-    else    //'uncommon' stats, Crit,MS,AS,Acc.
-    {
-      new stat = GetRandomInt(0,3);
+  }
+}
 
-      switch(stat)
-      {
-        case 0:
-        {
-          if(race != 9 && race != 8)
-          {
-          item.Item_as += 0.01;
-          secPoints -= 0.01 * 0.25 * 15.0 * (9.0 + level);
-          }
-        }
-        case 1:
-        {
-          item.Item_speed += 0.01;
-          secPoints -= 0.01 * 0.25 * 32.0 * (10.0 + level);
-        }
-        case 2:
-        {
-          item.Item_cs += 0.01;
-          secPoints -= 0.01 * 0.25 * 29.0 * (25.0 + level);
-        }
-        case 3:
-        {
-          if(race != 3 && race != 5 && race != 7 && race != 9)
-          {
-            item.Item_acc += 0.01;
-            secPoints -= 0.01 * 0.25 * 9.5 * (10.0 + level);
-          }
-        }
-      }
-    }
+IncrementItemStat(UniqueItem item, char[] s, float &points)
+{
+	char[] stat = new char[10];
+	VFormat(stat, 10, s, 2);
+  float level = float(item.Item_ilevel);
+  if (StrEqual(stat, "str")) {
+    item.Item_str += 1;
+    points -= 1.0;
+  } else if (StrEqual(stat, "agi")) {
+      item.Item_agi += 1;
+      points -= 1.0;
+  } else if (StrEqual(stat, "sta")) {
+      item.Item_sta += 1;
+      points -= 1.0;
+  } else if (StrEqual(stat, "int")) {
+      item.Item_int += 1;
+      points -= 1.0;
+  } else if (StrEqual(stat, "ap")) {
+      item.Item_damage += 1;
+      points -= 3.0;
+  } else if (StrEqual(stat, "sp")) {
+      item.Item_spelldmg += 1;
+      points -= 3.5;
+  } else if (StrEqual(stat, "haste")) {
+      item.Item_haste += 1;
+      points -= 1.0;
+  } else if (StrEqual(stat, "pen")) {
+      item.Item_ai += 1;
+      points -= 0.25;
+  } else if (StrEqual(stat, "regen")) {
+      item.Item_regen += 1;
+      points -= 2.0;
+  } else if (StrEqual(stat, "res")) {
+      item.Item_res += 1;
+      points -= 0.5;
+  } else if (StrEqual(stat, "crit")) {
+      item.Item_cs += 0.01;
+      points -= 0.01 * 0.25 * 29.0 * (25.0 + level);
+  } else if (StrEqual(stat, "mspd")) {
+      item.Item_speed += 0.01;
+      points -= 0.01 * 0.25 * 10.0 * (3.0 + level);
+  } else if (StrEqual(stat, "aspd")) {
+      item.Item_as += 0.01;
+      points -= 0.01 * 0.25 * 15.0 * (9.0 + level);
+  } else if (StrEqual(stat, "parry")) {
+      item.Item_parry += 0.01;
+      points -= 2;
+  } else if (StrEqual(stat, "acc")) {
+      item.Item_acc += 0.01;
+      points -= 0.01 * 0.25 * 9.5 * (10.0 + level);
   }
 }
 

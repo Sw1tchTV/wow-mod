@@ -5264,7 +5264,7 @@
   "haste"
   {
     "#format" "{1:0.2f},{2:d}"
-    "en"    "Cooldown Reduction: {1}% ({2} Haste)"
+    "en"    "Cooldown Reduction: {1}%% ({2} Haste)"
   }
   "in combat"
   {
@@ -9635,7 +9635,7 @@
   "bonus haste"
   {
     "#format" "{1:i}"
-    "en" "Bonus Haste: {1}%"
+    "en" "Haste: {1}"
   }
   "enhanced parry spawn"
   {
