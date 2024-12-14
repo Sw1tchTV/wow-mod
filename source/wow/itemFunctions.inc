@@ -1960,14 +1960,12 @@ stock SetRandomValues(UniqueItem item) {
       dred = dreds[2];
       dmg = 1.0;
       sp = 0.0;
-      pointMulti = 0.6;
       armorType = 3;
     }
     case 2: {
       dred = dreds[1];
       dmg = 1.0;
       sp = 0.0;
-      pointMulti = 0.8;
       armorType = 2;
     }
     case 3: {
@@ -1980,7 +1978,6 @@ stock SetRandomValues(UniqueItem item) {
       dred = dreds[2];
       dmg = 0.7;
       sp = 0.7;
-      pointMulti = 0.6;
       armorType = 3;
     }
     case 5: {
@@ -1993,7 +1990,6 @@ stock SetRandomValues(UniqueItem item) {
       dred = dreds[1];
       dmg = 0.7;
       sp = 0.7;
-      pointMulti = 0.8;
       armorType = 2;
     }
     case 7: {
@@ -2006,14 +2002,12 @@ stock SetRandomValues(UniqueItem item) {
       dred = dreds[2];
       dmg = 1.0;
       sp = 0.0;
-      pointMulti = 0.6;
       armorType = 3;
     }
     case 9: {
       dred = dreds[1];
       dmg = 0.7;
       sp= 0.7;
-      pointMulti = 0.8;
       armorType = 2;
     }
   }
@@ -2137,7 +2131,7 @@ stock SetRandomValues(UniqueItem item) {
     } else if(roll < ap+spellpower+haste+pen+regen+res+crit) {
       selectedStats[i] = "crit";
       selected_stats_weightings[i]=crit;
-    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd) {
+    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd &&  && (item.Item_category == 16 || item.Item_category == 17 || item.Item_category == 12)) {
       selectedStats[i] = "mspd";
       selected_stats_weightings[i]=mspd;
     } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd && (race != 9 && race != 8)) {
@@ -2193,7 +2187,7 @@ IncrementItemStat(UniqueItem item, char[] s, float &points)
       points -= 1.0;
   } else if (StrEqual(stat, "ap")) {
       item.Item_damage += 1;
-      points -= 3.5;
+      points -= 3.0;
   } else if (StrEqual(stat, "sp")) {
       item.Item_spelldmg += 1;
       points -= 3.5;
@@ -2202,25 +2196,25 @@ IncrementItemStat(UniqueItem item, char[] s, float &points)
       points -= 1.0;
   } else if (StrEqual(stat, "pen")) {
       item.Item_ai += 1;
-      points -= 0.5;
+      points -= 0.25;
   } else if (StrEqual(stat, "regen")) {
       item.Item_regen += 1;
       points -= 2.0;
   } else if (StrEqual(stat, "res")) {
       item.Item_res += 1;
-      points -= 1.0;
+      points -= 0.5;
   } else if (StrEqual(stat, "crit")) {
       item.Item_cs += 0.01;
       points -= 0.01 * 0.25 * 29.0 * (25.0 + level);
   } else if (StrEqual(stat, "mspd")) {
       item.Item_speed += 0.01;
-      points -= 0.01 * 0.25 * 32.0 * (10.0 + level);
+      points -= 0.01 * 0.25 * 10.0 * (3.0 + level);
   } else if (StrEqual(stat, "aspd")) {
       item.Item_as += 0.01;
       points -= 0.01 * 0.25 * 15.0 * (9.0 + level);
   } else if (StrEqual(stat, "parry")) {
       item.Item_parry += 0.01;
-      points -= 3;
+      points -= 2;
   } else if (StrEqual(stat, "acc")) {
       item.Item_acc += 0.01;
       points -= 0.01 * 0.25 * 9.5 * (10.0 + level);
