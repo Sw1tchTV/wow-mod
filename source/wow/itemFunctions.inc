@@ -588,6 +588,8 @@ stock GetItemProperties(UniqueItem item, itemId, uniqueId=-1)  {
         item.Item_res=uniItem.Item_res;
       if(uniItem.Item_regen>-100)
         item.Item_regen=uniItem.Item_regen;
+      if(uniItem.Item_haste>-100)
+        item.Item_haste=uniItem.Item_haste;
       if(uniItem.Item_ai>-100)
         item.Item_ai=uniItem.Item_ai;
       if(uniItem.Item_weapon_ap>-1)
@@ -2020,12 +2022,6 @@ stock SetRandomValues(UniqueItem item) {
 
   sp = level * slot * 0.275 * 0.75 * Pow(quality, 0.5);
   armor = (level * 6.25 + 20.0) * dred * slot / ((1.0 - dred) * 7.65) * quality;
-  if(item.Item_category == 22)  {
-    PrintToChatAll("Level: %f", level);
-    PrintToChatAll("Slot: %f", slot);
-    PrintToChatAll("Quality: %f", quality);
-    PrintToChatAll("Damage: %f, Spellpower: %f", dmg, sp);
-  }
   if(item.Item_category != 22) {
     dmg = 0.0;
     sp = 0.0;
@@ -2068,8 +2064,6 @@ stock SetRandomValues(UniqueItem item) {
   char aspd_string[10], mspd_string[10], crit_string[10], haste_string[10], parry_string[10], acc_string[10], pen_string[10];
   char regen_string[10], res_string[10], main_stat[10];
   IntToString(classes[0], race_string, sizeof(race_string));
-  PrintToChatAll("Item class: %i", classes[0]);
-  PrintToChatAll("Race string: %s", race_string);
   UniqueItemStatsDB.Rewind();
   UniqueItemStatsDB.JumpToKey(race_string);
   UniqueItemStatsDB.GotoFirstSubKey();
@@ -2096,9 +2090,6 @@ stock SetRandomValues(UniqueItem item) {
   int total_secondary_stats = ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry+acc;
   int roll = GetRandomInt(0, total_primary_stats);
   int selected_stats_weightings[5];
-  PrintToChatAll("Selected main stat roll: %i", roll);
-  PrintToChatAll("str: %i, agi: %i, inte: %i", str, agi, inte);
-  PrintToChatAll("Secondary stats: %i", total_secondary_stats);
   if(roll < str) {
     main_stat = "str";
     selected_stats_weightings[0]=str;
@@ -2114,7 +2105,6 @@ stock SetRandomValues(UniqueItem item) {
   selected_stats_weightings[1]=sta;
   for(int i=2;i<5;i++) {
     roll = GetRandomInt(0, total_secondary_stats);
-    PrintToChatAll("Selected stat roll: %i", roll);
     if(roll < ap && (race != 3 && race != 5 && race != 7 && race != 9) && (item.Item_category != 18) && !StrEqual(main_stat, "int")) {
       selectedStats[i] = "ap";
       selected_stats_weightings[i]=ap;
@@ -2124,10 +2114,10 @@ stock SetRandomValues(UniqueItem item) {
     } else if(roll < ap+spellpower+haste) {
       selectedStats[i] = "haste";
       selected_stats_weightings[i]=haste;
-    } else if(roll < ap+spellpower+haste+pen && (race != 3 && race != 4 && race != 5 && race != 7) && !StrEqual(main_stat, "int")) {
+    } else if(roll < ap+spellpower+haste+pen && (race != 3 && race != 4 && race != 5 && race != 7) && (item.Item_category != 18) && !StrEqual(main_stat, "int")) {
       selectedStats[i] = "pen";
       selected_stats_weightings[i]=pen;
-    } else if(roll < ap+spellpower+haste+pen+regen && (race != 1 && race != 2 && race != 8 && race != 9) && (item.Item_category != 18) && StrEqual(main_stat, "int")) {
+    } else if(roll < ap+spellpower+haste+pen+regen && (race != 1 && race != 2 && race != 8 && race != 9) && StrEqual(main_stat, "int")) {
       selectedStats[i] = "regen";
       selected_stats_weightings[i]=regen;
     } else if(roll < ap+spellpower+haste+pen+regen+res) {
@@ -2157,7 +2147,6 @@ stock SetRandomValues(UniqueItem item) {
   }
 
   while(points > 0.0)  {
-    PrintToChatAll("Points: %f", points);
     roll = GetRandomInt(0,total_selected_stats);
     if(roll < selected_stats_weightings[0]) {
       IncrementItemStat(item, selectedStats[0], points);
