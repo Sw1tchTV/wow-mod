@@ -104,7 +104,7 @@
     "crit" "70"
     "mana_regen" "35"
     "acc" "70"
-    "pen" "0"
+    "pen" "70"
     "parry" "30"
     "res" "30"
   }
