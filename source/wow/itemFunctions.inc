@@ -1914,7 +1914,7 @@ stock bool:GetRandomName(race, cat, quality, level, String:name[], size, pStat, 
 stock SetRandomValues(UniqueItem item) {
   //Find Slot, Quality, dred ...
   new Float:slots[] = { 0.3, 1.0, 0.65, 0.5, 0.8, 0.9, 0.65, 0.6, 2.0, 0.6, 0.9, 0.5, 1.0, 0.4 };
-  new Float:qualities[] = { 1.0, 1.0, 1.2, 1.4, 1.7, 1.25, 1.45 };
+  new Float:qualities[] = { 1.0, 1.0, 1.3, 1.7, 2.0, 1.25, 1.45 };
   new Float:dreds[] = { 0.16, 0.28, 0.48 };
   new Float:slot, Float:quality;
   slot = slots[item.Item_category-10];
@@ -1932,7 +1932,7 @@ stock SetRandomValues(UniqueItem item) {
   new classes[10];
   ConvertBitToClasses(item.Item_class, classes);
   new race = classes[0];
-  new Float:pointMulti=1.0;
+  new Float:pointMulti=1.2;
 
   if(item.Item_category == 22) {
     //Give random Weapon Speed
@@ -2017,9 +2017,15 @@ stock SetRandomValues(UniqueItem item) {
   new Float:points = float(item.Item_ilevel) * 0.272277 * slot * (item.Item_category == 22?0.7:1.0) * quality * pointMulti;
 
   dmg = 0.26 * level * slot * quality * 0.5;
+
   sp = level * slot * 0.275 * 0.75 * Pow(quality, 0.5);
   armor = (level * 6.25 + 20.0) * dred * slot / ((1.0 - dred) * 7.65) * quality;
-
+  if(item.Item_category == 22)  {
+    PrintToChatAll("Level: %f", level);
+    PrintToChatAll("Slot: %f", slot);
+    PrintToChatAll("Quality: %f", quality);
+    PrintToChatAll("Damage: %f, Spellpower: %f", dmg, sp);
+  }
   if(item.Item_category != 22) {
     dmg = 0.0;
     sp = 0.0;
