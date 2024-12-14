@@ -730,28 +730,28 @@
           {
             "0"
             {
-              "name"  "Two-Handed Weapon Speciality"
+              "name"  "Two-Handed Weapon Specialty"
               "max"  "3"
               "saveid"  "e"
             }
             "1"
             {
               "increment"  "0.02"
-              "name"  "Two-Handed Weapon Speciality"
+              "name"  "Two-Handed Weapon Specialty"
               "max"  "3"
               "saveid"  "e"
             }
             "2"
             {
               "increment"  "0.04"
-              "name"  "Two-Handed Weapon Speciality"
+              "name"  "Two-Handed Weapon Specialty"
               "max"  "3"
               "saveid"  "e"
             }
             "3"
             {
               "increment"  "0.06"
-              "name"  "Two-Handed Weapon Speciality"
+              "name"  "Two-Handed Weapon Specialty"
               "max"  "3"
               "saveid"  "e"
             }
