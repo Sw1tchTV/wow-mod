@@ -13,8 +13,6 @@
 public RegAdminCommands()
 {
   // Hook all admin cmds
-
-  RegAdminCmd("treasure_spawn_menu", Command_TreasureSpawnMenu, ADMFLAG_CUSTOM6, "Edits Treasure spawn points");
   
   RegAdminCmd("wc_test",wcTest,ADMFLAG_CUSTOM6);
   RegAdminCmd("wc_angletest",AngleTest,ADMFLAG_CUSTOM6);
@@ -78,7 +76,6 @@ public RegAdminCommands()
   RegConsoleCmd("wc_debug_me", DebugMeCmd, "Debug your character, be careful!");
   RegConsoleCmd("sm_debug_me", DebugMeCmd, "Debug your character, be careful!");
   RegAdminCmd("wc_debug_give_talent",AdminCmd_debug_talents,ADMFLAG_ROOT);
-  RegAdminCmd("wc_debug_fog", AdminCmd_debug_fog, ADMFLAG_ROOT);
   RegAdminCmd("wc_debug_premium", AdminCmd_debug_premium, ADMFLAG_ROOT);
 
   //chat commands
@@ -2152,12 +2149,6 @@ public Action:AdminCmd_reload_pds(client, argc)
 public Action:AdminCmd_debug_premium(client, argc)
 {
   debugOutdatedPDs(client);
-  return Plugin_Handled;
-}
-
-public Action:AdminCmd_debug_fog(client, argc)
-{
-  Darken(client);
   return Plugin_Handled;
 }
 

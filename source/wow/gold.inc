@@ -1516,7 +1516,7 @@ _setClientExpansions(client, bitstring) {
   g_clientExpansions[client]=bitstring;
 }
 
-stock GetClientExpansions(client, Expansion:expansions[], max)  {
+stock GetClientExpansions(client, Expansion:expansions[])  {
   new total = 0;
   for(new i=0; i<EXPANSIONS; i++)
     if(HasExpansion(client, g_expansions[i]))
@@ -1982,9 +1982,4 @@ stock OpenCP(client, String:login[], String:key[], String:path[]) {
   decl String:fullPath[300];
   Format(fullPath, sizeof(fullPath), "http://cp.wowmod.eu/motd_login/%s/%s/%s", login, key, path);
   ShowMOTDPanel(client, "WoW Control Panel", fullPath, MOTDPANEL_TYPE_URL);
-}
-
-
-stock GetPremiumCost(client, PremiumData data) {
-  return 500; //let's say it's 5g now / month. TODO unfinished
 }

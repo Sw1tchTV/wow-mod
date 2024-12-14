@@ -146,13 +146,6 @@ public Action:SayCommand(index,argc)
     GetCmdArgString(args,255);
     GetLiteralString(args,command,255);
 
-    if(g_TreasureMenuOccupiedByClient == index)
-    {
-      WCMessage(index,"testmessage",index,"YES: if(g_TreasureMenuOccupiedByClient == index)",index);
-      GetCmdArgString(g_TreasureSpawnName,32);
-      PrepareTreasureSpawnMenu(index, g_TreasureSpawnName);
-    }
-
     if(StrEqual(command, "exit") && g_ffSlideStep[index] > 0) {
       //Turn off slides for this person
       TurnOffSlides(index);
@@ -1415,7 +1408,7 @@ public Action:CommandJoinTeam(client, args)
     new bool:pass=TeamController(client,team);
     if(!pass)   {
       ChangeClientTeam(client,1);
-      CheckArenaChange(client,false);
+      CheckArenaChange(client);
       return Plugin_Handled;
     }
   }

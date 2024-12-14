@@ -72,16 +72,6 @@ stock bool:GetCachedPlayer(item[CachedPlayer], client)  {
   return true;
 }
 
-CachePlayerData(client) {
-  new id = GetClient32BitSteam(client);
-  new data[CachedPlayer];
-  grabCache(client, data);
-  data[CP_id] = id;
-  data[CP_time] = GetEngineTime();
-  PushArrayArray(g_cachedPlayers, data[0]);
-  PrintToServer("Cached player");
-}
-
 grabCache(client, data[CachedPlayer]) {
   if(client)  {
   }

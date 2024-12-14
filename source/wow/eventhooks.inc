@@ -126,10 +126,6 @@ public RoundStartEvent(Handle:event,const String:name[],bool:dontBroadcast)
     g_iCombatReady[i]=0;
     g_iHStone[i]=0;
   }
-  /*for(new i=0;i<5;i++)
-  {
-    g_iTreasureChestRarity[i]=0;
-  }*/
   SpawnChests(true);
   //Add getting flag positions here, this is only temporary
   new Float:startloc[3];

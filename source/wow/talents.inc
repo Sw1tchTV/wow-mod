@@ -4286,7 +4286,7 @@ public wcRunTalent_5_7(client) //Prayer of Fortitude
   CreateTimer(0.5, CastFortAll, client);
 }
 
-stock bool:CastFort(client, bonus, bool:cast=false, bool:custom=false,caster=0)
+stock bool:CastFort(client, bonus, bool:custom=false,caster=0)
 {
   if((!custom) && g_iFortCast[client]>=bonus)
   return false;
@@ -4324,7 +4324,7 @@ public Action:CastFortAll(Handle:timer, any:client)
   for(new i=0;i<amount;i++)
   {
     if(IsClientInGame(clients[i]))
-      CastFort(clients[i],bonus,true,false,client);
+      CastFort(clients[i],bonus,false,client);
   }
 }
 public wcRunTalent_5_8(client, target) //Inspiration

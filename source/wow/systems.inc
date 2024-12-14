@@ -318,10 +318,6 @@ public UniqueID(client)
   return ret;
 }
 
-GetClient32BitSteam(client) {
-  return g_ff_32bitIds[client];
-}
-
 public wcGiveXp(client,amount,bool:display)
 {
    if(g_ArenaRunning)
