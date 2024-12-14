@@ -1369,8 +1369,6 @@ public wcRunTalentHit(attacker,victim,String:source[],bool:spell,&damage,prio,ol
     }
     case 9:
     {
-      //if(GetMonkStance(victim)==1 && prio==2)
-        //wcRunTalent_9_Brewmaster(victim);
       if(CheckRequirements(victim,9,1,4,2) && prio ==2)
         wcRunTalent_9_DampenedHarm(victim,damage);
       if(CheckRequirements(victim,9,1,3,3) && prio ==2)

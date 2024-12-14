@@ -140,7 +140,7 @@
   }
   "kings aff"
   {
-    "en"     "You are affected by @greenBlessing of Kings@default, your base stats are increased by @lightgreen20@perc@default."
+    "en"     "You are affected by @greenBlessing of Kings@default, your base stats are increased by @lightgreen20@perc@default"
   }
   "Divine Shield info"
   {
@@ -4739,15 +4739,15 @@
   }
   "activated presence_1"
   {
-    "en"     "You have activated @lightgreenBlood Presence, @defaultgiving you +8%% additional health, +20%% armor and you take 8% less damage"
+    "en"     "Your @greenBlood Presence@default increases your @lightgreenarmor, @lightgreenhealth @defaultand @lightgreendamage reduction."
   }
   "activated presence_2"
   {
-    "en"     "You have activated @lightgreenFrost Presence, @defaultgiving you +10%% physical damage and +20%% @greenRunic Power@default generation"
+    "en"     "Your @greenFrost Presence@default increases your @lightgreenRunic Power generation, @lightgreenphysical damage, @defaultand allows you to @greenDual Wield."
   }
   "activated presence_3"
   {
-    "en"     "You have activated @lightgreenUnholy Presence, @defaultgiving you +10%% attack speed, +10%% movement speed and +15%% haste"
+    "en"     "Your @greenUnholy Presence@default increases your @lightgreenmovement speed, @lightgreenattack speed @defaultand @lightgreenhaste."
   }
   "butchery cast"
   {
@@ -10515,5 +10515,29 @@
   {
     "#format" "{1:i}"
     "en"		"@greenElemental Guidance @defaultincreases your @greenintellect @defaultby @lightgreen{1:1}@default."
+  }
+  "Blood Presence name"
+  {
+    "en"     "Blood Presence"
+  }
+  "Blood Presence info"
+  {
+    "en"     "Increases your health by 8%%, armor by 20%%, and reduces all damage taken by 8%%\n  Unlocked by putting most of your points in the Blood talent tree."
+  }
+  "Frost Presence name"
+  {
+    "en"     "Frost Presence"
+  }
+  "Frost Presence info"
+  {
+    "en"     "Increases your physical damage by 10%% and your runic power generation by 25%% and\n  lets you dual wield.\n  Unlocked by putting most of your points in the Frost talent tree."
+  }
+  "Unholy Presence name"
+  {
+    "en"     "Unholy Presence"
+  }
+  "Unholy Presence info"
+  {
+    "en"     "Increases your attack speed by 10%%, your movement speed by 10%%, and your haste by 15%%\n  Unlocked by putting most of your points in the Unholy talent tree."
   }
 }

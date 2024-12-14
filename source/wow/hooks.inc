@@ -1701,8 +1701,10 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
   damagemulti*=1.05;
   if(PlayerHasBonusFast(victim, Profession:Prof_ExtraDef))
   damagemulti*=0.95;
-  if(GetStance(victim)==1)
-    damagemulti*=0.92;
+  if(GetStance(victim)==1) {
+    wcGetSpellInfo(GetClass(victim),12,"damagereduction",line);
+    damagemulti *= StringToFloat(line);
+  }
   if(GetEventBool(event,"bonushit"))
     bonushit=1;
   if(g_iRenewingGlyph[victim]>0)
@@ -1852,8 +1854,11 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
     else if(StrEqual(weaponname,"Physical",false)) //physical damage
     {
       new bool:red = GetEventBool(event, "reduction");
-      if(GetStance(attacker)==2)
-        damagemulti *= 1.1;
+      if(GetStance(attacker)==2) {
+        wcGetSpellInfo(GetClass(attacker),13,"physdamage",line);
+        damagemulti *= StringToFloat(line);
+      }
+
       //Curse?
       if(hasCurse(attacker))
       damagemulti*=(1.0-getCursePower(attacker));
@@ -1919,7 +1924,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
           damage = KpdRule(victim, damage, 2);
       }
     }
-    else //Not Physical, Not Spell.
+    else //Not Physical, Not Spell. Gun damage etc.
     {
 
       if(wc_iPlayerHurtEvent!=0)
@@ -1962,8 +1967,10 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
       }
       SetPolymorphOff(victim);
 
-      if(GetStance(attacker)==2)
-        damagemulti *= 1.1;
+      if(GetStance(attacker)==2) {
+        wcGetSpellInfo(GetClass(attacker),13,"physdamage",line);
+        damagemulti *= StringToFloat(line);
+      }
       if(g_iCarry[attacker]>0)
         damagemulti*CTF_NERF;
       if(!bMagicDamage[attacker])
