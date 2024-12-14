@@ -2115,7 +2115,7 @@ stock SetRandomValues(UniqueItem item) {
   for(int i=2;i<5;i++) {
     roll = GetRandomInt(0, total_secondary_stats);
     PrintToChatAll("Selected stat roll: %i", roll);
-    if(roll < ap && (race != 3 && race != 5 && race != 7 && race != 9) && !StrEqual(main_stat, "int")) {
+    if(roll < ap && (race != 3 && race != 5 && race != 7 && race != 9) && (item.Item_category != 18) && !StrEqual(main_stat, "int")) {
       selectedStats[i] = "ap";
       selected_stats_weightings[i]=ap;
     } else if(roll < ap+spellpower && (race != 1 && race != 2 && race != 8 && race != 9) && StrEqual(main_stat, "int")) {
@@ -2127,10 +2127,9 @@ stock SetRandomValues(UniqueItem item) {
     } else if(roll < ap+spellpower+haste+pen && (race != 3 && race != 4 && race != 5 && race != 7) && !StrEqual(main_stat, "int")) {
       selectedStats[i] = "pen";
       selected_stats_weightings[i]=pen;
-    } else if(roll < ap+spellpower+haste+pen+regen && (race != 1 && race != 2 && race != 8 && race != 9) && StrEqual(main_stat, "int")) {
+    } else if(roll < ap+spellpower+haste+pen+regen && (race != 1 && race != 2 && race != 8 && race != 9) && (item.Item_category != 18) && StrEqual(main_stat, "int")) {
       selectedStats[i] = "regen";
       selected_stats_weightings[i]=regen;
-      PrintToChatAll("Selected regen");
     } else if(roll < ap+spellpower+haste+pen+regen+res) {
       selectedStats[i] = "res";
       selected_stats_weightings[i]=res;
@@ -2140,13 +2139,13 @@ stock SetRandomValues(UniqueItem item) {
     } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd && (item.Item_category == 16 || item.Item_category == 17 || item.Item_category == 12)) {
       selectedStats[i] = "mspd";
       selected_stats_weightings[i]=mspd;
-    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd && (race != 9 && race != 8)) {
+    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd && (item.Item_category != 18) && (race != 9 && race != 8)) {
       selectedStats[i] = "aspd";
       selected_stats_weightings[i]=aspd;
     } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry && (item.Item_category == 13 || item.Item_category == 17 || item.Item_category == 20 || item.Item_category == 22 || item.Item_category == 23)) { // Gloves, Ring, Trinket, Weapon, Wrist
       selectedStats[i] = "parry";
       selected_stats_weightings[i]=parry;
-    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry+acc && (race != 3 && race != 5 && race != 7 && race != 9) && !StrEqual(main_stat, "int")) {
+    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry+acc && (race != 3 && race != 5 && race != 7 && race != 9) && (item.Item_category != 18) && !StrEqual(main_stat, "int")) {
       selectedStats[i] = "acc";
       selected_stats_weightings[i]=acc;
     }
