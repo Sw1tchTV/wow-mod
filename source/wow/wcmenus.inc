@@ -6097,7 +6097,6 @@ public ItemInfMenu(client,UniqueItem item,bool:back)
       Format(fbuffer, sizeof(fbuffer), "%T", "bonus speed", client, RoundToNearest(bufferf*100.0));
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
-   PrintToChatAll("Item ID: %i", item.Item_haste);
    bufferi=item.Item_haste;
    if (bufferi>0)
    {
