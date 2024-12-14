@@ -5691,9 +5691,9 @@
   {
     "en"  	"Rampage"
   }
-  "Two-Handed Weapon Speciality name"
+  "Two-Handed Weapon Specialty name"
   {
-    "en"  	"Two-Handed Weapon Speciality"
+    "en"  	"Two-Handed Weapon Specialty"
   }
   "Improved Hamstring name"
   {
@@ -5718,17 +5718,17 @@
   "juggernaut used"
   {
     "#format" "{1:i},{2:i}"
-    "en" "Juggernaut: You increase your Strength by {1} upto {2} total"
+    "en" "@greenJuggernaut: @defaultYou increase your @greenStrength @defaultby @lightgreen{1} @defaultupto @lightgreen{2}."
   }
   "2h weap spec used"
   {
     "#format" "{1:.1f},{2:.1f}"
-    "en" "@greenTwo-Handed Weapon Specialty@default: You increase your Crit. Chance by @lightgreen{1}@perc @defaultupto @lightgreen{2}@perc @defaulttotal"
+    "en" "@greenTwo-Handed Weapon Specialty: @defaultYou increase your @greencritical hit chance @defaultby @lightgreen{1}@perc @defaultupto @lightgreen{2}@perc"
   }
   "2h weap spec glyph used"
   {
     "#format" "{1:.1f},{2:.1f}"
-    "en" "Two-Handed Weapon Specialty: You increase your Accuracy by {1}@perc upto {2}@perc total"
+    "en" "@greenTwo-Handed Weapon Specialty: @defaultYou increase your @greenAccuracy @defaultby @lightgreen{1}@perc @defaultupto @lightgreen{2}@perc"
   }
   "Armored to the Teeth name"
   {
@@ -5737,7 +5737,7 @@
   "armored to the teeth used"
   {
     "#format" "{1:0.1f},{2:i}"
-    "en" "@greenArmored to the Teeth@default: You increase your DPS by @lightgreen{1} @defaultupto @lightgreen{2} @defaultDPS total"
+    "en" "@greenArmored to the Teeth: @defaultYou increase your @greenattack power @defaultby @lightgreen{1} @defaultupto @lightgreen{2}."
   }
   "Tactical Mastery name"
   {
@@ -5758,7 +5758,7 @@
   "controlled rage used"
   {
     "#format" "{1:i},{2:i}"
-    "en" "Controlled Rage: You increase your max Rage by {1} upto {2} Rage total"
+    "en" "@greenControlled Rage: @defaultYou increase your max @greenRage @defaultby @lightgreen{1} @defaultupto @lightgreen{2} @greenRage."
   }
   "Execute name"
   {
@@ -6962,7 +6962,7 @@
   {
     "en"		"<Passive> Your physical attacks heal you.\n    Rank 1: Heal 2%% of damage dealt\n    Rank 2: Heal 3%% of damage dealt"
   }
-  "Two-Handed Weapon Speciality info"
+  "Two-Handed Weapon Specialty info"
   {
     "en"		"<Passive> Increases your critical hit chance when wielding a Two-Handed weapon.\n    Rank 1: +2%% chance\n    Rank 2: +4%% chance\n    Rank 3: +6%% chance"
   }

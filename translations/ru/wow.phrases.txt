@@ -4858,7 +4858,7 @@
 {
   "ru"   "Неистовство Героя"
 }
-"Two-Handed Weapon Speciality name"
+"Two-Handed Weapon Specialty name"
 {
   "ru"   "Специализация на двуручном оружии"
 }
@@ -6055,7 +6055,7 @@
 {
   "ru"   "Ваши атаки исцеляют вас на 2/3%% от нанесенного урона"
 }
-"Two-Handed Weapon Speciality info"
+"Two-Handed Weapon Specialty info"
 {
   "ru"   "Увеличивает шанс крита на 2/4/6%% при использовании 2-ручного оружия"
 }
