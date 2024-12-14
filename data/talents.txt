@@ -730,28 +730,28 @@
           {
             "0"
             {
-              "name"  "Two-Handed Weapon Speciality"
+              "name"  "Two-Handed Weapon Specialty"
               "max"  "3"
               "saveid"  "e"
             }
             "1"
             {
               "increment"  "0.02"
-              "name"  "Two-Handed Weapon Speciality"
+              "name"  "Two-Handed Weapon Specialty"
               "max"  "3"
               "saveid"  "e"
             }
             "2"
             {
               "increment"  "0.04"
-              "name"  "Two-Handed Weapon Speciality"
+              "name"  "Two-Handed Weapon Specialty"
               "max"  "3"
               "saveid"  "e"
             }
             "3"
             {
               "increment"  "0.06"
-              "name"  "Two-Handed Weapon Speciality"
+              "name"  "Two-Handed Weapon Specialty"
               "max"  "3"
               "saveid"  "e"
             }
@@ -1644,21 +1644,21 @@
             "name"  "Ambidexterity"
               "max" "3"
               "saveid"  "r"
-              "increase"  "0.1600"
+              "increase"  "0.0800"
           }
           "2"
           {
             "name"  "Ambidexterity"
               "max" "3"
               "saveid"  "r"
-              "increase"  "0.3300"
+              "increase"  "0.1600"
           }
           "3"
           {
             "name"  "Ambidexterity"
               "max" "3"
               "saveid"  "r"
-              "increase"  "0.5000"
+              "increase"  "0.2500"
           }
         }
       }
@@ -5964,21 +5964,21 @@
             "name"  "Weapon Mastery"
               "max"  "3"
               "saveid"  "r"
-              "increase" "0.1700"
+              "increase" "0.0800"
           }
           "2"
           {
             "name"  "Weapon Mastery"
               "max"  "3"
               "saveid"  "r"
-              "increase" "0.3300"
+              "increase" "0.1600"
           }
           "3"
           {
             "name"  "Weapon Mastery"
               "max"  "3"
               "saveid"  "r"
-              "increase" "0.500"
+              "increase" "0.250"
           }
         }
       }

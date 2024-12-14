@@ -29,13 +29,6 @@ new bool:g_auctionclean=false;
 new bool:g_playerpurge=false;
 new bool:g_cronjob=false;
 new offsSpeed;
-#define MAX_TREASURE_SPAWNS      256
-#define MAX_TREASURE               5  //max # of active treasure chests
-new String:g_TreasureSpawnName[32];
-new bool:g_occupiedTreasureSpawns[MAX_TREASURE_SPAWNS];
-new bool:g_AreWeSpawningTreasure = false;
-new g_TreasureMenuOccupiedByClient=0;
-new Handle:hTreasureSpawnMenu=INVALID_HANDLE;
 #define DB_VERSION 30
 #define VERSION 5.11
 #define STR_VERSION "5.11a"
@@ -227,7 +220,6 @@ public OnMapStart()
   PrecacheHP();
   //restart kpd
   resetKpdKv();
-  g_AreWeSpawningTreasure = LoadTreasureMapConfig();
   //Bind entity manager
   new PMIndex = FindEntityByClassname(0, "cs_player_manager");
   SDKHook(PMIndex, SDKHook_ThinkPost, OnThinkPost);
@@ -254,9 +246,7 @@ public OnClientPutInServer(client)
 {
   SDKHook(client,SDKHook_OnTakeDamage,TraceAttack); //hooks.inc
   SDKHook(client, SDKHook_SetTransmit, SetTransmitHook);
-  //PrintToServer("hooking weapon can use for client %d", client);
   SDKHook(client, SDKHook_WeaponCanUse, OnWeaponCanUse); //weapon touch and equip only
-  //Darken(client);
   SDKHook(client, SDKHook_PreThink, PreThinkHook);
   SDKHook(client, SDKHook_ThinkPost, OnThinkPostClient);
 }
@@ -291,7 +281,6 @@ public OnClientDisconnect(index)
     saveKpd(index); //save kpd
     wcSavePlayerName(index);
     wcSavePlayerData(index,true);
-    /*CachePlayerData(index);*/
   }
 
   playerloaded[index]=0;

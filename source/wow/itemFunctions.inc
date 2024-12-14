@@ -218,7 +218,7 @@ stock GetCharUnique(client, slot) {
 }
 
 stock SetCharUnique(client, slot, value)  {
-  CheckUnique(value, client);
+  CheckUnique(value);
   wcUsers2[client][slot]=value;
 }
 
@@ -231,7 +231,7 @@ stock SetInvUnique(client, slot, value) {
     LogError("Ignoring high value unique, setting %i to 0", value);
     value=0;
   }
-  CheckUnique(value, client);
+  CheckUnique(value);
   wcUsers2[client][slot+50]=value;
 }
 
@@ -487,7 +487,7 @@ stock SaveItemCode(UniqueItem item)  {
   SQL_TQuery(SSQL,TRepeating,profbuffer,AddQuery(Repeat, 3, profbuffer, 0 ),DBPrio_Normal);
 }
 
-stock bool:CheckUnique(value, client=0)  {
+stock bool:CheckUnique(value)  {
   if(value<=0)
     return false;
   if(!IsUniqueInDB(value))  {
@@ -903,7 +903,7 @@ public public_ApplyEnchant(id, Handle:pack) {
   SQL_TQuery(SSQL,TRepeating,query,AddQuery(Repeat, 3, query, 0 ),DBPrio_High);
 
 
-  if(CheckUnique(id, client)) {
+  if(CheckUnique(id)) {
     new uslot = GetUniqueInDB(id);
     UniqueItem uitem;
     GetArrayArray(g_itemsArray, uslot, uitem);
@@ -915,7 +915,7 @@ public public_ApplyEnchant(id, Handle:pack) {
 
 }
 
-stock ApplyEnchant(client, slot, enchid, bool:insert=true)  {
+stock ApplyEnchant(client, slot, enchid)  {
   UniqueItem item;
   GetInvItem(item, client, slot);
   new id = item.Item_id;
@@ -937,7 +937,7 @@ stock ApplyEnchant(client, slot, enchid, bool:insert=true)  {
 
     return;
   }
-  if(CheckUnique(id, client)) {
+  if(CheckUnique(id)) {
     new uslot = GetUniqueInDB(id);
 
     /*PrintToServer("Saving info to cache. Uslot = %d", uslot);*/
@@ -1062,7 +1062,7 @@ stock UseItem(client, islot, bool:nosuicide=false)  {
     new x=GetFilledInventory(client);
     if ((100-x)>=2)
     {
-      GetItemOn(client,islot, nosuicide);
+      GetItemOn(client,islot);
     }
     else
       WCMessage(client,"low free slots",client,100-x);
@@ -1140,13 +1140,8 @@ stock UseItem(client, islot, bool:nosuicide=false)  {
   }
 }
 
-stock GetItemOn(client,slot, nosuicide)
+stock GetItemOn(client,slot)
 {
-  /*if(IsPlayerAlive(client) && (!nosuicide))*/
-  /*{*/
-    /*ForcePlayerSuicide(client);*/
-    /*WCMessage(client,"can not put items while alive",client);*/
-  /*}*/
   UniqueItem item;
   GetInvItem(item, client, slot);
   new cat=item.Item_category;
@@ -1168,8 +1163,6 @@ stock GetItemOn(client,slot, nosuicide)
         SetCharUnique(client, 22, 0);
         AddItem(ritem, compSum);
       }
-      //if (cat==18)
-      //  categoryname="leftweapons";
       if (cat==22)
       {
         new hand2=item.Item_2hand;

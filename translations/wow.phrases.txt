@@ -140,7 +140,7 @@
   }
   "kings aff"
   {
-    "en"     "You are affected by @greenBlessing of Kings@default, your base stats are increased by @lightgreen20@perc@default."
+    "en"     "You are affected by @greenBlessing of Kings@default, your base stats are increased by @lightgreen20@perc@default"
   }
   "Divine Shield info"
   {
@@ -4739,15 +4739,15 @@
   }
   "activated presence_1"
   {
-    "en"     "You have activated @lightgreenBlood Presence, @defaultgiving you +8%% additional health, +20%% armor and you take 8% less damage"
+    "en"     "Your @greenBlood Presence@default increases your @lightgreenarmor, @lightgreenhealth @defaultand @lightgreendamage reduction."
   }
   "activated presence_2"
   {
-    "en"     "You have activated @lightgreenFrost Presence, @defaultgiving you +10%% physical damage and +20%% @greenRunic Power@default generation"
+    "en"     "Your @greenFrost Presence@default increases your @lightgreenRunic Power generation, @lightgreenphysical damage, @defaultand allows you to @greenDual Wield."
   }
   "activated presence_3"
   {
-    "en"     "You have activated @lightgreenUnholy Presence, @defaultgiving you +10%% attack speed, +10%% movement speed and +15%% haste"
+    "en"     "Your @greenUnholy Presence@default increases your @lightgreenmovement speed, @lightgreenattack speed @defaultand @lightgreenhaste."
   }
   "butchery cast"
   {
@@ -5691,9 +5691,9 @@
   {
     "en"  	"Rampage"
   }
-  "Two-Handed Weapon Speciality name"
+  "Two-Handed Weapon Specialty name"
   {
-    "en"  	"Two-Handed Weapon Speciality"
+    "en"  	"Two-Handed Weapon Specialty"
   }
   "Improved Hamstring name"
   {
@@ -5718,17 +5718,17 @@
   "juggernaut used"
   {
     "#format" "{1:i},{2:i}"
-    "en" "Juggernaut: You increase your Strength by {1} upto {2} total"
+    "en" "@greenJuggernaut: @defaultYou increase your @greenStrength @defaultby @lightgreen{1} @defaultupto @lightgreen{2}."
   }
   "2h weap spec used"
   {
     "#format" "{1:.1f},{2:.1f}"
-    "en" "@greenTwo-Handed Weapon Specialty@default: You increase your Crit. Chance by @lightgreen{1}@perc @defaultupto @lightgreen{2}@perc @defaulttotal"
+    "en" "@greenTwo-Handed Weapon Specialty: @defaultYou increase your @greencritical hit chance @defaultby @lightgreen{1}@perc @defaultupto @lightgreen{2}@perc"
   }
   "2h weap spec glyph used"
   {
     "#format" "{1:.1f},{2:.1f}"
-    "en" "Two-Handed Weapon Specialty: You increase your Accuracy by {1}@perc upto {2}@perc total"
+    "en" "@greenTwo-Handed Weapon Specialty: @defaultYou increase your @greenAccuracy @defaultby @lightgreen{1}@perc @defaultupto @lightgreen{2}@perc"
   }
   "Armored to the Teeth name"
   {
@@ -5737,7 +5737,7 @@
   "armored to the teeth used"
   {
     "#format" "{1:0.1f},{2:i}"
-    "en" "@greenArmored to the Teeth@default: You increase your DPS by @lightgreen{1} @defaultupto @lightgreen{2} @defaultDPS total"
+    "en" "@greenArmored to the Teeth: @defaultYou increase your @greenattack power @defaultby @lightgreen{1} @defaultupto @lightgreen{2}."
   }
   "Tactical Mastery name"
   {
@@ -5758,7 +5758,7 @@
   "controlled rage used"
   {
     "#format" "{1:i},{2:i}"
-    "en" "Controlled Rage: You increase your max Rage by {1} upto {2} Rage total"
+    "en" "@greenControlled Rage: @defaultYou increase your max @greenRage @defaultby @lightgreen{1} @defaultupto @lightgreen{2} @greenRage."
   }
   "Execute name"
   {
@@ -6962,7 +6962,7 @@
   {
     "en"		"<Passive> Your physical attacks heal you.\n    Rank 1: Heal 2%% of damage dealt\n    Rank 2: Heal 3%% of damage dealt"
   }
-  "Two-Handed Weapon Speciality info"
+  "Two-Handed Weapon Specialty info"
   {
     "en"		"<Passive> Increases your critical hit chance when wielding a Two-Handed weapon.\n    Rank 1: +2%% chance\n    Rank 2: +4%% chance\n    Rank 3: +6%% chance"
   }
@@ -7100,7 +7100,7 @@
   }
   "Ambidexterity info"
   {
-    "en" "<Passive> Increases the amount of attack power you gain from agility.\n    Rank 1: +16%% attack power.\n    Rank 2: +33%% attack power.\n    Rank 3: +50%% attack power."
+    "en" "<Passive> Increases the amount of attack power you gain from agility.\n    Rank 1: +8%% attack power.\n    Rank 2: +16%% attack power.\n    Rank 3: +25%% attack power."
   }
   "Adrenaline Rush info"
   {
@@ -7748,7 +7748,7 @@
   }
   "Weapon Mastery info"
   {
-    "en" "<Passive> Increases the amount of attack power you gain from agility.\n    Rank 1: +16%% attack power.\n    Rank 2: +33%% attack power.\n    Rank 3: +50%% attack power."
+    "en" "<Passive> Increases the amount of attack power you gain from agility.\n    Rank 1: +8%% attack power.\n    Rank 2: +16%% attack power.\n    Rank 3: +25%% attack power."
   }
   "Strength of the Earth info"
   {
@@ -8072,7 +8072,7 @@
   }
   "Threat of Thassarian info"
   {
-    "en"		"Increases your critical strike damage with both spells and physical attacks\n    Rank 1: +10%%\n    Rank 2: +20%%"
+    "en"		"Increases your critical strike damage\n    Rank 1: +12.5%%\n    Rank 2: +25%%"
   }
   "Force of the Glacier info"
   {
@@ -10073,11 +10073,11 @@
   }
   "legacy cast all"
   {
-    "en"     "You cast @lightgreenLegacy of the White Tiger @defaultat @greeneveryone @defaultin your team."
+    "en"     "Your @greenLegacy of the White Tiger @defaultinspires your teammates, increasing their @lightgreencritical strike chance."
   }
   "legacy aff"
   {
-    "en"     "You are affected by @lightgreenLegacy of the White Tiger@default, which increases your critical strike chance."
+    "en"     "You are affected by @greenLegacy of the White Tiger, @defaultwhich increases your @lightgreencritical strike chance."
   }
   "Legacy of the White Tiger name"
   {
@@ -10085,7 +10085,7 @@
   }
   "Legacy of the White Tiger info"
   {
-    "en" "<Passive> Increases your and your team's critical hit chance by 3%%"
+    "en" "<Passive> Increases your and your team's critical strike chance by 3%%"
   }
   "Thunder Focus Tea name"
   {
@@ -10515,5 +10515,29 @@
   {
     "#format" "{1:i}"
     "en"		"@greenElemental Guidance @defaultincreases your @greenintellect @defaultby @lightgreen{1:1}@default."
+  }
+  "Blood Presence name"
+  {
+    "en"     "Blood Presence"
+  }
+  "Blood Presence info"
+  {
+    "en"     "Increases your health by 8%%, armor by 20%%, and reduces all damage taken by 8%%\n  Unlocked by putting most of your points in the Blood talent tree."
+  }
+  "Frost Presence name"
+  {
+    "en"     "Frost Presence"
+  }
+  "Frost Presence info"
+  {
+    "en"     "Increases your physical damage by 10%% and your runic power generation by 25%% and\n  lets you dual wield.\n  Unlocked by putting most of your points in the Frost talent tree."
+  }
+  "Unholy Presence name"
+  {
+    "en"     "Unholy Presence"
+  }
+  "Unholy Presence info"
+  {
+    "en"     "Increases your attack speed by 10%%, your movement speed by 10%%, and your haste by 15%%\n  Unlocked by putting most of your points in the Unholy talent tree."
   }
 }

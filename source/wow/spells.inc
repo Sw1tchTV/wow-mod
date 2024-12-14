@@ -60,28 +60,11 @@ stock SetCdSpell(client,type,Float:cd, spellId=0, String:name[]="")
   {
     if(!((GetCDSpell(client,type)-GetTickedTime())>0.0))
     {
-      //if(GetStance(client)==3)
-      //{
-      //  cd -= 1.0;
-      //}
       if(GetPoisoned(client)>0)
       cd+=GetPoisoned(client);
       if(hasCurse(client))
       cd = cd * (1.0 + getCursePower(client) );
       cd = cd * (1.0 - GetHasteEffect(client));
-
-      //Shocks?
-      /*if(GetClass(client) == 6 && CheckRequirements(client,6,1,3,1))
-      {
-        if(spellId == 3 || spellId == 4 || spellId == 5)
-        {
-          decl String:buffer[255];
-          wcGetTalentInfo(6,1,3,1,client,"multi",buffer);
-          cd *= StringToFloat(buffer);
-        }
-
-      }
-      */
     }
     ClientCDSpells[client][type]=GetTickedTime()+cd;
   }
@@ -3116,7 +3099,7 @@ public wcRunSpell_5_7(spellid,race,client) //Power Word: Fortitude
   wcGetSpellInfo(race,spellid,"multi",line);
   new Float:multi=StringToFloat(line);
   new bonus=RoundToNearest(float(GetLevel(client))*multi);
-  CastFort(client,bonus,true);
+  CastFort(client,bonus);
 }
 
 public wcRunSpell_5_8(spellid, race, client)  { //Resurrection
@@ -5585,53 +5568,6 @@ SetHolyPower(client, amount)
     amount = 5;
   if(amount>=0)
     g_iHolyPower[client]=amount;
-}
-
-FindRandomSeal(client)
-{
-  new holy = GetRandomInt(1,20)+wcGetTreeTotal(client, getActiveSpec(client),1);
-  new protection = GetRandomInt(1,20)+wcGetTreeTotal(client, getActiveSpec(client),2);
-  new retribution = GetRandomInt(1,20)+wcGetTreeTotal(client, getActiveSpec(client),3);
-  new random = GetRandomInt(1,2);
-  new seal =0;
-  if(holy > protection && holy > retribution)
-  {
-    if(GetLevel(client)>=50 && random==1)
-    {
-      seal=15;
-    }
-    else
-    {
-      seal=14;
-    }
-  }
-  else if(protection > holy && protection > retribution)
-  {
-    if(GetLevel(client)>=50 && random==1)
-    {
-      seal=13;
-    }
-    else
-    {
-      seal=12;
-    }
-  }
-  else if(retribution > holy && retribution > protection)
-  {
-    if(GetLevel(client)>=50 && random==1)
-    {
-      seal=6;
-    }
-    else
-    {
-      seal=7;
-    }
-  }
-  else
-  {
-    seal = FindRandomSeal(client);
-  }
-  return seal;
 }
 
 RunSealsHit(attacker,victim,&damage,prio,Float:weaponmodifier,bool:crit, bool:spell, bool:bonus=false)

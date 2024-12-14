@@ -496,8 +496,6 @@ wcRunSpell_8_4(spellid,race,client)  { //Icy Touch
       return;
   }
   new regen = wcGetSpellInfoInt(race,spellid,"regen");
-  if(GetStance(client)==2)
-    regen+=RoundToNearest(float(regen)*0.50);
   if(regen>0) AddMana(client, regen);
 
   //Cooldown

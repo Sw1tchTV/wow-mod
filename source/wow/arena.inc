@@ -326,7 +326,7 @@ AnnounceLeader()  {
          WCMessage(i,"new arena leader",i,name);
 }
 
-stock CheckArenaChange(client, bool:disc = true)   {
+stock CheckArenaChange(client)   {
    new team;
    if(FindArenaMember(client,team)>=0) {
       if(g_ArenaRunning) {

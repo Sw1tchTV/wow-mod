@@ -151,23 +151,6 @@ public PreloadWeaponsMenu() {
 
 }
 
-stock Darken(client)  {
-  new sprite = CreateEntityByName("env_fog_controller");
-  if (IsValidEntity(sprite)) {
-      DispatchKeyValue(sprite, "fogcolor", "0 0 0");
-      DispatchKeyValue(sprite, "fogend", "4500");
-      DispatchKeyValue(sprite, "fogenable", "1");
-      DispatchKeyValue(sprite, "spawnflag", "1");
-
-      DispatchSpawn(sprite);
-
-      AcceptEntityInput(sprite, "TurnOn");
-
-  }
-  else
-    LogError("error 51: could not create sprite");
-}
-
 
 public Action:RunQuiz(client, args)
 {
@@ -810,8 +793,7 @@ stock TriggerPlugins(bool:enable) {
 
 }
 
-//new g_iTreasureChestName = 0; //Changed into non-global
-//new g_iTreasureChestRarity[65]; // replaced with checkrarity
+
 new g_iTreasureChestRound = 0;
 new g_iTaken= 0;
 new g_iTakenb= 0;
@@ -829,6 +811,37 @@ new g_iTakenm= 0;
 new g_iTakenn= 0;
 new g_iTakeno= 0;
 new g_iTreasureChestNumber=-1;
+new Float:g_fLastChestSpawn;
+
+stock bool:SpawnChests(bool:safe=true)  {
+  if (safe && !IsTreasureHunt()
+      && (GetEngineTime() - 90.0 < g_fLastChestSpawn)) {
+    return false;
+  }
+  new chance = 7;
+  new times = 1;
+  if(IsDmEnabled())
+    chance = 1000;
+  if(IsTreasureHunt()) {
+    chance = 1000;
+    if(PlayersInTeams(true)>8)
+      times++;
+    if(PlayersInTeams(true)>12)
+      times++;
+    if(PlayersInTeams(true)>16)
+      times++;
+    if(PlayersInTeams(true)>24)
+      times++;
+  }
+  new bool:spawned = TreasureChestMap(chance, times) > 0;
+  if (spawned)  {
+    g_fLastChestSpawn = GetEngineTime();
+  }
+  return spawned;
+}
+
+
+
 
 stock TreasureChestMap(chance, times=1)
 {
@@ -2685,7 +2698,6 @@ public Action:TreasureChestTick(Handle: timer, Handle:datapack)
     PrintToChatAll("\x04%s \x03has opened a treasure chest!",name);
     SetChestTick(claimer,chestrarity);
     KillChest(entity);
-    //TreasureRank(claimer,chestrarity);
     return Plugin_Stop;
   }
   PrintToChat(claimer,"\x03%f seconds left till the chest opens!",float(g_iTreasureChestTicks[claimer])/2);
@@ -2951,18 +2963,6 @@ stock TreasureChestOpen(client,chestrarity)
     WCMessage(client, "chest item", client,itemname,damount);
   }
 }
-
-stock TreasureRank(client,chestrarity)
-{
-
-
-
-
-
-
-
-}
-
 
 
 

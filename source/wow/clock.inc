@@ -173,12 +173,9 @@ public Action:goldCycle(Handle:timer, any:trash)
 }
 
 playerWonGoldCycle(client, amount)  {
-  decl String:format[255];
-  decl String:MenuName[15];
+  char format[255];
   AddGold(client, amount, "event", "Gold Cycle event");
   IntToStringfloat(amount, format, sizeof(format));
-  Format(format, sizeof(format), "%T", "You won gold", client, format);
-  Format(MenuName, sizeof(MenuName), "%T", "gold", client);
-  panelMessage(client, MenuName, format);
+  WCMessage(client,"You won gold",client,format);
 }
 

@@ -569,7 +569,6 @@ new tmsql=0;  //queue
 
 #include "wow/dk"
 #include "wow/monk"
-#include "wow/treasure"
 
 #include "wow/bg"
 #include "wow/wsg"

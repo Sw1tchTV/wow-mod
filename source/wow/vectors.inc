@@ -450,6 +450,7 @@ Float:GetItemRating(UniqueItem item)  {
 
 public wcRecalculateStats(client) { //Stats
   new id=GetPlayerID(client);
+  char line[255];
   if(IsZombie(client))
   {
     RecalculatePetStats(client);
@@ -458,13 +459,10 @@ public wcRecalculateStats(client) { //Stats
 
   wcClientsStats[id][ARMORIGNORE]=(float(GetBonusAgi(client))+float(GetAgi(client)))/4.5+wcClientsBonusStats[id][ARMORIGNORE];
   wcClientsStats[id][ATTACKSPEED]=GetWeaponSpeed(client, false)-1+(float(1)+(float(GetAgi(client)+GetBonusAgi(client)))/(30.0 * float(GetLevel(client)) + 22.0)+wcClientsBonusStats[id][ATTACKSPEED]);
-  if(GetStance(client)==3) //Unholy DK
-  wcClientsStats[id][ATTACKSPEED]+=0.1;
 
-  new Float:multi = 1.0;
-  if(CheckRequirements(client,2,2,2,4) || CheckRequirements(client,6,2,2,4))
+  float multi = 1.0;
+  if(CheckRequirements(client,2,2,2,4) || CheckRequirements(client,6,2,2,4)) //AP / Attack Power Scaling talents
   {
-    decl String:line[255];
     new class=GetClass(client);
     switch(class)
     {
@@ -480,18 +478,14 @@ public wcRecalculateStats(client) { //Stats
       }
     }
 
-    wcClientsStats[id][DAMAGE]=(float(GetStr(client)+GetBonusStr(client))*0.29714+wcClientsBonusStats[id][DAMAGE])+(float(GetAgi(client)+GetBonusAgi(client))*(0.08335*multi));
+    wcClientsStats[id][DAMAGE]=(float(GetStr(client)+GetBonusStr(client))*0.29714+wcClientsBonusStats[id][DAMAGE])+(float(GetAgi(client)+GetBonusAgi(client))*(0.14857*multi));
   }
-  else if(GetMonkStance(client)!=3)
-    wcClientsStats[id][DAMAGE]=(float(GetStr(client)+GetBonusStr(client))*0.29714+wcClientsBonusStats[id][DAMAGE])+(float(GetAgi(client)+GetBonusAgi(client))*(0.08335));
-  if(GetMonkStance(client)==3)
-    wcClientsStats[id][DAMAGE]=float(GetStr(client)+GetBonusStr(client))*0.29714+wcClientsBonusStats[id][DAMAGE];
+  else
+    wcClientsStats[id][DAMAGE]=(float(GetStr(client)+GetBonusStr(client))*0.29714+wcClientsBonusStats[id][DAMAGE])+(float(GetAgi(client)+GetBonusAgi(client))*(0.14857));
 
   wcClientsStats[id][MAXHP]=150.0+(float(GetSta(client))+float(GetBonusSta(client)))*0.95+float(GetLevel(client))*1.2+wcClientsBonusStats[id][MAXHP];
   if(IsHeroic())
-  wcClientsStats[id][MAXHP]+=150.0;
-  if(GetStance(client) == 1) //Blood DK
-  wcClientsStats[id][MAXHP] *= 1.08;
+    wcClientsStats[id][MAXHP]+=150.0;
 
   if(GetClass(client)!= 1 && GetClass(client)!= 2 && GetClass(client)!= 8 && GetClass(client) != 9)
   wcClientsStats[id][MAXMP]=30.0+float(GetLevel(client))*1.3+float(GetInt(client)+GetBonusInt(client))*5.0+wcClientsBonusStats[id][MAXMP];
@@ -501,8 +495,9 @@ public wcRecalculateStats(client) { //Stats
 
   wcClientsStats[id][MPREGEN]=1.0+float(GetInt(client)+GetBonusInt(client))/15.0+wcClientsBonusStats[id][MPREGEN];
   wcClientsStats[id][ARMOR]=float(GetAgi(client)+GetBonusAgi(client))/3+wcClientsBonusStats[id][ARMOR];
-  if(GetStance(client) == 1) //Blood DK
-  wcClientsStats[id][ARMOR] *= 1.2;
+
+
+
 
   if(GetClass(client) == 9)
     wcClientsStats[id][SPELLDAMAGE]=float(GetAgi(client)+GetBonusAgi(client))/5.0+wcClientsBonusStats[id][SPELLDAMAGE];
@@ -510,8 +505,6 @@ public wcRecalculateStats(client) { //Stats
     wcClientsStats[id][SPELLDAMAGE]=float(GetInt(client)+GetBonusInt(client))/5.0+wcClientsBonusStats[id][SPELLDAMAGE];
   //MS
   wcClientsStats[id][MOVESPEED]=1.0+float(GetAgi(client)+GetBonusAgi(client))/(32.625 * float(GetLevel(client)) + 150.0)+wcClientsBonusStats[id][MOVESPEED];
-  if(GetStance(client)==3) //Unholy DK
-  wcClientsStats[id][MOVESPEED]+=0.1;
 
   //resistance
   wcClientsStats[id][RESISTANCE]= float(GetLevel(client))*0.125 + wcClientsBonusStats[id][RESISTANCE];
@@ -526,6 +519,22 @@ public wcRecalculateStats(client) { //Stats
   wcClientsStats[id][MINUSCRITCHANCE] = (wcClientsStats[id][RESILIENCE] / 14.2857) * 0.06 + MinusCritChanceBonus(id);
   // -crit damage
   wcClientsStats[id][MINUSCRITDAMAGE] = (wcClientsStats[id][RESILIENCE] / 25.0) * 0.06 + MinusCritDamageBonus(id);
+
+  switch(GetStance(client)) //Death Knight Stance Buffs
+  {
+    case 1: { //Blood, also has a damage reduction buff elsewhere.
+      wcGetSpellInfo(GetClass(client),12,"hp",line);
+      wcClientsStats[id][MAXHP] += wcClientsStats[id][MAXHP]*StringToFloat(line);
+      wcGetSpellInfo(GetClass(client),12,"armor",line);
+      wcClientsStats[id][ARMOR] += wcClientsStats[id][ARMOR]*StringToFloat(line);
+    }
+    case 3: { //Unholy
+      wcGetSpellInfo(GetClass(client),14,"movementspeed",line);
+      wcClientsStats[id][MOVESPEED]+=StringToFloat(line);
+      wcGetSpellInfo(GetClass(client),14,"attackspeed",line);
+      wcClientsStats[id][ATTACKSPEED]+=StringToFloat(line);
+    }
+  }
 }
 
 RecalculatePetStats(id) {
@@ -920,8 +929,11 @@ public wcSetMana(client,amount)
 }
 
 AddMana(client, amount) {
-  if(GetStance(client)==2)
-  amount = RoundToNearest(float(amount)*1.2);
+  if(GetStance(client)==2) {
+    char line[255];
+    wcGetSpellInfo(GetClass(client),13,"rpgeneration",line);
+    amount = RoundToNearest(float(amount)*StringToFloat(line));
+  }
   amount += GetMana(client);
   amount = GetMinInt(amount, GetMaxMana(client));
   wcSetMana(client, amount);
@@ -2972,7 +2984,6 @@ stock bool:CanDoubleHand(client)  {
     }
     case 9:
     {
-      //if(GetMonkStance(client)==2)
       return true;
     }
   }
@@ -3134,8 +3145,11 @@ Float:GetHasteEffect(client)
   }
 
   new Float:reduction = haste/(haste + 198);
-  if(GetStance(client)==3)
-    reduction+=0.15;
+  if(GetStance(client)==3){
+    char line[255];
+    wcGetSpellInfo(GetClass(client),14,"haste",line);
+    reduction+=StringToFloat(line);
+  }
   if (reduction>cap)
   {
     reduction=cap;

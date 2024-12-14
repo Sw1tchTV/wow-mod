@@ -151,4 +151,33 @@
     "multi"         "0.12"
     "tick"          "1.0"
   }
+  "12"
+  {
+    "name"  "Blood Presence"
+    "name_ru"   "TODO"
+    "event" "player_spawn"
+    "level"     "20"
+    "hp"  "0.08"
+    "armor" "0.20"
+    "damagereduction" "0.92"
+  }
+  "13"
+  {
+    "name"  "Frost Presence"
+    "name_ru"   "TODO"
+    "event" "player_spawn"
+    "level"     "20"
+    "physdamage"  "1.10"
+    "rpgeneration"  "1.25"
+  }
+  "14"
+  {
+    "name"  "Unholy Presence"
+    "name_ru"   "TODO"
+    "event" "player_spawn"
+    "level"     "20"
+    "attackspeed" "0.10"
+    "movementspeed" "0.10"
+    "haste" "0.15"
+  }
 }
