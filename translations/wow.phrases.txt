@@ -7100,7 +7100,7 @@
   }
   "Ambidexterity info"
   {
-    "en" "<Passive> Increases the amount of attack power you gain from agility.\n    Rank 1: +16%% attack power.\n    Rank 2: +33%% attack power.\n    Rank 3: +50%% attack power."
+    "en" "<Passive> Increases the amount of attack power you gain from agility.\n    Rank 1: +8%% attack power.\n    Rank 2: +16%% attack power.\n    Rank 3: +25%% attack power."
   }
   "Adrenaline Rush info"
   {
@@ -7748,7 +7748,7 @@
   }
   "Weapon Mastery info"
   {
-    "en" "<Passive> Increases the amount of attack power you gain from agility.\n    Rank 1: +16%% attack power.\n    Rank 2: +33%% attack power.\n    Rank 3: +50%% attack power."
+    "en" "<Passive> Increases the amount of attack power you gain from agility.\n    Rank 1: +8%% attack power.\n    Rank 2: +16%% attack power.\n    Rank 3: +25%% attack power."
   }
   "Strength of the Earth info"
   {
