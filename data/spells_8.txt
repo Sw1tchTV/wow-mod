@@ -178,4 +178,29 @@
     "movementspeed" "0.10"
     "haste" "0.15"
   }
+  "15"
+  {
+    "name"  "Remorseless Winter"
+    "name_ru"   "TODO"
+    "event" "player_cast"
+    "level"     "40"
+    "active"    "1"
+    "cooldowntype"  "25"
+    "cooldown"      "15.0"
+    "runes" "1"
+    "regen" "15"
+    "multi" "0.12"
+    "ticks" "6"
+    "timebetweenticks" "1.0"
+    "base" "2"
+  }
+  "16"
+  {
+    "name"  "Soul Reaper"
+    "name_ru"   "TODO"
+    "event" "player_attacker"
+    "level"     "60"
+    "cooldowntype"  "26"
+    "cooldown"      "8.0"
+  }
 }

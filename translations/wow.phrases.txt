@@ -10540,4 +10540,20 @@
   {
     "en"     "Increases your attack speed by 10%%, your movement speed by 10%%, and your haste by 15%%\n  Unlocked by putting most of your points in the Unholy talent tree."
   }
+  "Remorseless Winter name"
+  {
+    "en"     "Remorseless Winter"
+  }
+  "Remorseless Winter info"
+  {
+    "en"     "You become the embodiment of frost, damaging and slowing all nearby enemies for the next 6 seconds.\nCosts 1 rune."
+  }
+  "Soul Reaper name"
+  {
+    "en"     "Soul Reaper"
+  }
+  "Soul Reaper info"
+  {
+    "en"     "Your attacks have a chance to afflict the target with Soul Reaper.\nSoul Reaper expires after five seconds, dealing a large amount of magic damage.\nCosts 1 rune."
+  }
 }

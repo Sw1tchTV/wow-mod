@@ -1713,3 +1713,134 @@ public Action:EndAMZoneAction(Handle:timer, any:effid)
     DeleteEffectData(effid);
   }
 }
+
+public wcRunSpell_8_15(spellid,race,client) //Remorseless Winter
+{
+  char line[255];
+  //DK Runes
+  if(wcGetSpellInfoInt(race,spellid,"runes")>0)
+    if(!SpendRune(client))  {
+      WCMessage(client, "no runes", client);
+      return;
+  }
+  //Runic Power
+  int regen = wcGetSpellInfoInt(race,spellid,"regen");
+  if(regen>0) AddMana(client, regen);
+  //Cooldown
+  wcGetSpellInfo(race,spellid,"cooldowntype",line);
+  int cdtype=StringToInt(line);
+  wcGetSpellInfo(race,spellid,"cooldown",line);
+  float cd=StringToFloat(line);
+  SetCdSpell(client, cdtype, cd, spellid);
+  //Damage&duration
+  wcGetSpellInfo(race,spellid,"timebetweenticks",line);
+  float period=StringToFloat(line)*(1.0-GetHasteEffect(client));
+  wcGetSpellInfo(race,spellid,"base",line);
+  int base=StringToInt(line);
+  wcGetSpellInfo(race,spellid,"ticks",line);
+  int ticks=StringToInt(line);
+  wcGetSpellInfo(race,spellid,"multi",line);
+  int dmg = base+RoundToNearest(GetDamage(client)*StringToFloat(line));
+
+  float location[3];
+  GetClientAbsOrigin(client,location);
+  location[2]+=50;
+  EmitAmbientSound("wc/spells/hellfire.wav",location); 
+
+  //Setting up effect
+  int team = (GetClientTeam(client)-1) % 2 + 2;
+  int effid=CreateEffectData(client,spellid,dmg,0,aoe,team,0,0,g_RoundCount,0);
+  if (multi==0.0 || period == 0.0 || castTime == 0.0) {
+    LogError("ERROR: hellfire spell corrupted.");
+    DeleteEffectData(effid);
+  }
+  else if(effid!=0)
+  {
+    effectsdata[effid][7]=RemorselessWinterEffect(client);
+    CreateTimer((period-0.05), RemorselessWinterDamageEffect, effid, TIMER_REPEAT);
+  }
+}
+
+public Action:RemorselessWinterDamageEffect(Handle:timer, any:effid)
+{
+  if (effectsdata[effid][0]==0)
+    return Plugin_Stop;
+  int eff = effectsdata[effid][7];
+  if (effectsdata[effid][9]!=g_RoundCount    || //round changed
+      !IsClientInGame(effectsdata[effid][1]) || //player left
+      !IsPlayerAlive(effectsdata[effid][1]))    //player died
+  {
+    DeleteEffectData(effid);
+    KillEntity(eff);
+    return Plugin_Stop;
+  }
+  int client = effectsdata[effid][1];
+  if (GetEngineTime()>=g_fCast[client])
+  {
+    DeleteEffectData(effid);
+    KillEntity(eff);
+    return Plugin_Stop;
+  }
+  int selfDmg = effectsdata[effid][4];
+  if(GetClientHealth(client) <= selfDmg)
+  {
+    DeleteEffectData(effid);
+    KillEntity(eff);
+    return Plugin_Stop;
+  }
+
+  decl String:line[255];
+  wcGetSpellInfo(7,9,"name",line);
+  wcSpellDamage(client, client, selfDmg, "", "",line);
+
+  int dmg = effectsdata[effid][3];
+  int aoe = effectsdata[effid][5];
+  int team = effectsdata[effid][6];
+  if (effectsdata[effid][8]>0 && CheckRequirements(client,7,3,4,2))
+  {
+    decl String:buf[255];
+    wcGetTalentInfo(7,3,4,2,client,"multi",buf);
+    dmg = RoundToNearest(dmg * StringToFloat(buf));
+    wcHeal(client,effectsdata[effid][8],dmg,0,true);
+    float location[3];
+    GetClientAbsOrigin(effectsdata[effid][8],location);
+    wcSpellAoeDamage(client, client, dmg, aoe, team, line,location);
+  }
+  else
+  {
+    wcSpellAoeDamage(client, client, dmg, aoe, team, line);
+  }
+  return Plugin_Continue;
+}
+
+
+
+
+
+
+
+
+RemorselessWinterVisualEffect(target)   {
+  new sprite = CreateEntityByName("env_smokestack");
+  if (IsValidEntity(sprite)) {
+    DispatchKeyValue(sprite, "basespread", "100");
+    DispatchKeyValue(sprite, "spreadspeed", "200");
+    DispatchKeyValue(sprite, "speed", "22");
+    DispatchKeyValue(sprite, "startsize", "40");
+    DispatchKeyValue(sprite, "endsize", "40");
+    DispatchKeyValue(sprite, "rate", "80");
+    DispatchKeyValue(sprite, "jetlength", "100");
+    DispatchKeyValue(sprite, "twist", "80");
+    DispatchKeyValue(sprite, "SmokeMaterial", "particle/fire.vmt");
+    DispatchKeyValue(sprite, "rendercolor", "25 128 255");
+    DispatchKeyValue(sprite, "lifetime", "1.0");
+    DispatchSpawn(sprite);
+    new Float:Client_Origin[3];
+    GetClientAbsOrigin(target,Client_Origin);
+    Client_Origin[2] += 2.0;
+    TeleportEntity(sprite, Client_Origin, NULL_VECTOR, NULL_VECTOR);
+    AcceptEntityInput(sprite, "TurnOn");
+    return sprite;
+  }
+  return 0;
+}

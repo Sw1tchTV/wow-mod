@@ -3133,13 +3133,8 @@ bool:GetViewPoint(client,Float:distance,Float:end[3]) {
 
 Float:GetHasteEffect(client)
 {
-  //new level = GetLevel(client);
-  //new Float:haste = wcClientsStats[client][HASTE] + wcClientsBonusStats[client][HASTE];
-  //new Float:reduction = haste/(haste + (level*5) + 25);
-
-  //  22haste = 10% cooldown, 100haste=33% cooldown
-  new Float:cap = 0.35;
-  new Float:haste = wcClientsStats[client][HASTE] + wcClientsBonusStats[client][HASTE];
+  float cap = 0.35;
+  float haste = wcClientsStats[client][HASTE] + wcClientsBonusStats[client][HASTE];
   if (GetClass(client) == 3)
   {
     decl String:line[255];

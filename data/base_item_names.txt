@@ -181,7 +181,7 @@
     {
       "num" "4"
       "1"   "Gloves"
-      "2"   "Finger-less Gloves"
+      "2"   "Fingerless Gloves"
       "3"   "Leather Gloves"
       "4"   "Grips"
     }

@@ -326,12 +326,8 @@ public wcGiveXp(client,amount,bool:display)
     return;
 
 
-   if(isClientPDModule(client, PDModule:PDM_xp)) {
-    new pdbonus = RoundToNearest(float(amount)*0.35);
-    if(pdbonus>10)
-      WCMessage(client, "pdm xp increased", client, pdbonus);
-    amount+=pdbonus;
-   }
+   if(isClientPDModule(client, PDModule:PDM_xp))
+     amount+=RoundToNearest(float(amount)*0.35);
 
 
    new reqxp=GetReqXp(client);
