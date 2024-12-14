@@ -2131,7 +2131,7 @@ stock SetRandomValues(UniqueItem item) {
     } else if(roll < ap+spellpower+haste+pen+regen+res+crit) {
       selectedStats[i] = "crit";
       selected_stats_weightings[i]=crit;
-    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd &&  && (item.Item_category == 16 || item.Item_category == 17 || item.Item_category == 12)) {
+    } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd && (item.Item_category == 16 || item.Item_category == 17 || item.Item_category == 12)) {
       selectedStats[i] = "mspd";
       selected_stats_weightings[i]=mspd;
     } else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd && (race != 9 && race != 8)) {
