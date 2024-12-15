@@ -127,7 +127,7 @@
       "manainc"   "1.0"
       "multi"  "0.24"
       "multief"   "0.5"
-      "cast"   "5.5"
+      "ticks"   "12"
       "period" "0.5"
       "aoe" "450"
       "distance"  "450.0"  //Just for information, doesn't affect code

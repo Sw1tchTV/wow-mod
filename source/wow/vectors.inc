@@ -1877,6 +1877,11 @@ public wcRunSpell(spellid,race,&tmp1,&tmp2,&tmp3,&any:tmp4,&tmp5,&tmp6,&tmp7,&tm
               wcRunSpell_8_10(spellid,race,tmp2,tmp1,tmp3); //Necrotic Strike
           case 11:
             wcRunSpell_8_11(spellid, race, tmp1); //Death and Decay
+          case 15:
+            wcRunSpell_8_15(spellid, race, tmp1); //Remorseless Winter
+          /*case 16:
+            if(tmp9==2)
+              wcRunSpell_8_16(spellid, race, tmp2, tmp1, tmp3);*/
         }
       }
       case 9: // Monk
@@ -3133,7 +3138,7 @@ bool:GetViewPoint(client,Float:distance,Float:end[3]) {
 
 Float:GetHasteEffect(client)
 {
-  float cap = 0.35;
+  float cap = 0.80;
   float haste = wcClientsStats[client][HASTE] + wcClientsBonusStats[client][HASTE];
   if (GetClass(client) == 3)
   {

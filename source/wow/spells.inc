@@ -4119,16 +4119,17 @@ public wcRunSpell_7_9(spellid,race,client)
   new manareq = GetSpellCost(client, spellid);
   wcSetMana(client,GetMana(client)-manareq);
   //Channeling
-  wcGetSpellInfo(race,spellid,"cast",line);
-  new Float:castTime=StringToFloat(line);
+  wcGetSpellInfo(race,spellid,"period",line); //Getting time between ticks
+  float period=StringToFloat(line); //0.5 by default
+  wcGetSpellInfo(race,spellid,"ticks",line); //Getting ticks
+  int ticks=StringToInt(line); //12 by default
+  ticks += RoundToNearest(float(ticks)*GetHasteEffect(client)); //Adding bonus ticks from haste.
+  period = period*(1.0-GetHasteEffect(client)); //Reducing total time ticked by haste
+  float castTime = float(ticks)*period; //Multiply ticks with period to get cast time if needed, 6 seconds by default.
   SetCasting(client,spellid,castTime);
-
   //Getting values
   wcGetSpellInfo(race,spellid,"multi",line);
   new Float:multi=StringToFloat(line);
-  wcGetSpellInfo(race,spellid,"period",line);
-  new Float:period=StringToFloat(line);
-  period = period*(1.0-GetHasteEffect(client));
   wcGetSpellInfo(race,spellid,"multief",line);
   new Float:multief=StringToFloat(line);
   wcGetSpellInfo(race,spellid,"aoe",line);

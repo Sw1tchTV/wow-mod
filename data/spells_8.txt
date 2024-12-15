@@ -190,17 +190,9 @@
     "runes" "1"
     "regen" "15"
     "multi" "0.12"
-    "ticks" "6"
-    "timebetweenticks" "1.0"
+    "ticks" "12"
+    "period" "0.5"
     "base" "2"
-  }
-  "16"
-  {
-    "name"  "Soul Reaper"
-    "name_ru"   "TODO"
-    "event" "player_attacker"
-    "level"     "60"
-    "cooldowntype"  "26"
-    "cooldown"      "8.0"
+    "aoe" "300"
   }
 }

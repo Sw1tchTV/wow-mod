@@ -1559,7 +1559,7 @@
   "show xp"
   {
     "#format"	"{1:i},{2:i},{3:i}"
-    "en"			"Your @greenLevel: @lightgreen{1} @green(@lightgreen{2}@green/@lightgreen{3}@green)"
+    "en"			"@greenLevel: @lightgreen{1} @green(@lightgreen{2}@green/@lightgreen{3}@green)"
   }
   "LowLevelRound"
   {
@@ -2349,17 +2349,17 @@
   "demon skin cast"
   {
     "#format" "{1:i},{2:i}"
-    "en"     "@defaultYou cast @lightgreenDemon Skin@default and increase your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
+    "en"     "@defaultYou cast @greenDemon Skin@default and increase your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
   }
   "demon skin cast with talent"
   {
     "#format" "{1:i},{2:i}"
-    "en"     "@lightgreenFel Armor@default: You cast @lightgreenDemon Skin@default and increase your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
+    "en"     "@lightgreenFel Armor@default: You cast @greenDemon Skin@default and increase your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
   }
   "demon skin cast pet"
   {
     "#format" "{1:i},{2:i}"
-    "en"     "@lightgreenFel Armor@default: Your summoner casts @lightgreenDemon Skin@default and increases your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
+    "en"     "@lightgreenFel Armor@default: Your summoner casts @greenDemon Skin@default and increases your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
   }
   "Demon Skin info"
   {
@@ -4048,7 +4048,7 @@
   "lvl average info"
   {
     "#format" "{1:i},{2:i},{3:s},{4:i}"
-    "en"     "(Your level: @lightgreen{1}@default, Server average: @lightgreen{2}@default, @green{3}@default's level: @lightgreen{4}@default)"
+    "en"     "@green(Your level: @lightgreen{1}@default, Server average: @lightgreen{2}@default, @green{3}@default's level: @lightgreen{4}@green)"
   }
   "debug kpr info"
   {

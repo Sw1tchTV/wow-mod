@@ -1714,8 +1714,11 @@ public Action:EndAMZoneAction(Handle:timer, any:effid)
   }
 }
 
+
+
 public wcRunSpell_8_15(spellid,race,client) //Remorseless Winter
 {
+  PrintToChatAll("Got here2");
   char line[255];
   //DK Runes
   if(wcGetSpellInfoInt(race,spellid,"runes")>0)
@@ -1732,37 +1735,43 @@ public wcRunSpell_8_15(spellid,race,client) //Remorseless Winter
   wcGetSpellInfo(race,spellid,"cooldown",line);
   float cd=StringToFloat(line);
   SetCdSpell(client, cdtype, cd, spellid);
-  //Damage&duration
-  wcGetSpellInfo(race,spellid,"timebetweenticks",line);
-  float period=StringToFloat(line)*(1.0-GetHasteEffect(client));
+  //Haste
+  wcGetSpellInfo(race,spellid,"period",line); //Getting time between ticks
+  float period=StringToFloat(line); //0.5 by default
+  wcGetSpellInfo(race,spellid,"ticks",line); //Getting ticks
+  int ticks=StringToInt(line); //12 by default
+  ticks += RoundToNearest(float(ticks)*GetHasteEffect(client)); //Adding bonus ticks from haste.
+  period = period*(1.0-GetHasteEffect(client)); //Reducing total time ticked by haste
+  float castTime = float(ticks)*period; //Multiply ticks with period to get cast time if needed, 6 seconds by default.
+  //Damage
   wcGetSpellInfo(race,spellid,"base",line);
-  int base=StringToInt(line);
-  wcGetSpellInfo(race,spellid,"ticks",line);
-  int ticks=StringToInt(line);
+  int dmg=StringToInt(line);
   wcGetSpellInfo(race,spellid,"multi",line);
-  int dmg = base+RoundToNearest(GetDamage(client)*StringToFloat(line));
-
+  dmg = dmg+RoundToNearest(GetDamage(client)*StringToFloat(line));
+  //Location
   float location[3];
   GetClientAbsOrigin(client,location);
   location[2]+=50;
   EmitAmbientSound("wc/spells/hellfire.wav",location); 
-
   //Setting up effect
   int team = (GetClientTeam(client)-1) % 2 + 2;
-  int effid=CreateEffectData(client,spellid,dmg,0,aoe,team,0,0,g_RoundCount,0);
-  if (multi==0.0 || period == 0.0 || castTime == 0.0) {
-    LogError("ERROR: hellfire spell corrupted.");
+  wcGetSpellInfo(race,spellid,"aoe",line); //Grab AoE
+  int effid=CreateEffectData(client,spellid,dmg,0,StringToInt(line),team,0,0,g_RoundCount,0);
+  if (period == 0.0 || castTime == 0.0) {
+    LogError("ERROR: remorseless winter corrupted.");
     DeleteEffectData(effid);
   }
   else if(effid!=0)
   {
-    effectsdata[effid][7]=RemorselessWinterEffect(client);
+    PrintToChatAll("Got here");
+    effectsdata[effid][7]=RemorselessWinterVisualEffect(client);
     CreateTimer((period-0.05), RemorselessWinterDamageEffect, effid, TIMER_REPEAT);
   }
 }
 
 public Action:RemorselessWinterDamageEffect(Handle:timer, any:effid)
 {
+  PrintToChatAll("Got here");
   if (effectsdata[effid][0]==0)
     return Plugin_Stop;
   int eff = effectsdata[effid][7];
@@ -1781,46 +1790,18 @@ public Action:RemorselessWinterDamageEffect(Handle:timer, any:effid)
     KillEntity(eff);
     return Plugin_Stop;
   }
-  int selfDmg = effectsdata[effid][4];
-  if(GetClientHealth(client) <= selfDmg)
-  {
-    DeleteEffectData(effid);
-    KillEntity(eff);
-    return Plugin_Stop;
-  }
 
-  decl String:line[255];
-  wcGetSpellInfo(7,9,"name",line);
-  wcSpellDamage(client, client, selfDmg, "", "",line);
+  char line[255];
 
   int dmg = effectsdata[effid][3];
   int aoe = effectsdata[effid][5];
   int team = effectsdata[effid][6];
-  if (effectsdata[effid][8]>0 && CheckRequirements(client,7,3,4,2))
-  {
-    decl String:buf[255];
-    wcGetTalentInfo(7,3,4,2,client,"multi",buf);
-    dmg = RoundToNearest(dmg * StringToFloat(buf));
-    wcHeal(client,effectsdata[effid][8],dmg,0,true);
-    float location[3];
-    GetClientAbsOrigin(effectsdata[effid][8],location);
-    wcSpellAoeDamage(client, client, dmg, aoe, team, line,location);
-  }
-  else
-  {
-    wcSpellAoeDamage(client, client, dmg, aoe, team, line);
-  }
+  wcSpellAoeDamage(client, client, dmg, aoe, team, line);
   return Plugin_Continue;
 }
 
-
-
-
-
-
-
-
 RemorselessWinterVisualEffect(target)   {
+  PrintToChatAll("Got here");
   new sprite = CreateEntityByName("env_smokestack");
   if (IsValidEntity(sprite)) {
     DispatchKeyValue(sprite, "basespread", "100");
