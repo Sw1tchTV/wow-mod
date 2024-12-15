@@ -1983,6 +1983,9 @@ stock SetRandomValues(UniqueItem item) {
     }
     case 6: {
       dred = dreds[1];
+      if (item.Item_category == 18) {
+        dred = dreds[2];
+      }
       dmg = 0.7;
       sp = 0.7;
       armorType = 2;
@@ -2082,11 +2085,11 @@ stock SetRandomValues(UniqueItem item) {
   int total_primary_stats = str+agi+inte;
   int total_secondary_stats = ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry+acc;
   int roll = GetRandomInt(0, total_primary_stats);
-  int selected_stats_weightings[5];
+  int selected_stats_weightings[4];
   if(roll < str) {
     main_stat = "str";
     selected_stats_weightings[0]=str;
-  } else if(roll < str+agi) {
+  } else if(roll < str+agi && item.Item_category != 18) {
     main_stat = "agi";
     selected_stats_weightings[0]=agi;
   } else {
@@ -2096,7 +2099,8 @@ stock SetRandomValues(UniqueItem item) {
   selectedStats[0] = main_stat;
   selectedStats[1] = "sta";
   selected_stats_weightings[1]=sta;
-  for(int i=2;i<5;i++) {
+  int i=2;
+  do {
     roll = GetRandomInt(0, total_secondary_stats);
     if(roll < ap && (race != 3 && race != 5 && race != 7 && race != 9) && (item.Item_category != 18) && !StrEqual(main_stat, "int")) {
       selectedStats[i] = "ap";
@@ -2132,11 +2136,17 @@ stock SetRandomValues(UniqueItem item) {
       selectedStats[i] = "acc";
       selected_stats_weightings[i]=acc;
     }
-  }
+    if(selected_stats_weightings[i]>0 && i==3 && !StrEqual(selectedStats[i], selectedStats[i-1])) {
+      i++;
+    }
+    else if(selected_stats_weightings[i]>0 && i==2) {
+      i++;
+    }
+  } while (i<4);
 
   int total_selected_stats;
-  for(int i=0;i<5;i++) {
-    total_selected_stats+=selected_stats_weightings[i];
+  for(int j=0;j<4;j++) {
+    total_selected_stats+=selected_stats_weightings[j];
   }
 
   while(points > 0.0)  {
@@ -2149,8 +2159,6 @@ stock SetRandomValues(UniqueItem item) {
       IncrementItemStat(item, selectedStats[2], points);
     } else if(roll < selected_stats_weightings[0]+selected_stats_weightings[1]+selected_stats_weightings[2]+selected_stats_weightings[3]) {
       IncrementItemStat(item, selectedStats[3], points);
-    } else if(roll < selected_stats_weightings[0]+selected_stats_weightings[1]+selected_stats_weightings[2]+selected_stats_weightings[3]+selected_stats_weightings[4]) {
-      IncrementItemStat(item, selectedStats[4], points);
     }
   }
 }
@@ -2164,47 +2172,47 @@ IncrementItemStat(UniqueItem item, char[] s, float &points)
     item.Item_str += 1;
     points -= 1.0;
   } else if (StrEqual(stat, "agi")) {
-      item.Item_agi += 1;
-      points -= 1.0;
+    item.Item_agi += 1;
+    points -= 1.0;
   } else if (StrEqual(stat, "sta")) {
-      item.Item_sta += 1;
-      points -= 1.0;
+    item.Item_sta += 1;
+    points -= 1.0;
   } else if (StrEqual(stat, "int")) {
-      item.Item_int += 1;
-      points -= 1.0;
+    item.Item_int += 1;
+    points -= 1.0;
   } else if (StrEqual(stat, "ap")) {
-      item.Item_damage += 1;
-      points -= 3.0;
+    item.Item_damage += 1;
+    points -= 3.0;
   } else if (StrEqual(stat, "sp")) {
-      item.Item_spelldmg += 1;
-      points -= 3.5;
+    item.Item_spelldmg += 1;
+    points -= 3.5;
   } else if (StrEqual(stat, "haste")) {
-      item.Item_haste += 1;
-      points -= 1.0;
+    item.Item_haste += 1;
+    points -= 1.0;
   } else if (StrEqual(stat, "pen")) {
-      item.Item_ai += 1;
-      points -= 0.25;
+    item.Item_ai += 1;
+    points -= 0.25;
   } else if (StrEqual(stat, "regen")) {
-      item.Item_regen += 1;
-      points -= 2.0;
+    item.Item_regen += 1;
+    points -= 2.0;
   } else if (StrEqual(stat, "res")) {
-      item.Item_res += 1;
-      points -= 0.5;
+    item.Item_res += 1;
+    points -= 0.5;
   } else if (StrEqual(stat, "crit")) {
-      item.Item_cs += 0.01;
-      points -= 0.01 * 0.25 * 29.0 * (25.0 + level);
+    item.Item_cs += 0.01;
+    points -= 0.01 * 0.25 * 29.0 * (25.0 + level);
   } else if (StrEqual(stat, "mspd")) {
-      item.Item_speed += 0.01;
-      points -= 0.01 * 0.25 * 10.0 * (3.0 + level);
+    item.Item_speed += 0.01;
+    points -= 0.01 * 0.25 * 10.0 * (3.0 + level);
   } else if (StrEqual(stat, "aspd")) {
-      item.Item_as += 0.01;
-      points -= 0.01 * 0.25 * 15.0 * (9.0 + level);
+    item.Item_as += 0.01;
+    points -= 0.01 * 0.25 * 15.0 * (9.0 + level);
   } else if (StrEqual(stat, "parry")) {
-      item.Item_parry += 0.01;
-      points -= 2;
+    item.Item_parry += 0.01;
+    points -= 2;
   } else if (StrEqual(stat, "acc")) {
-      item.Item_acc += 0.01;
-      points -= 0.01 * 0.25 * 9.5 * (10.0 + level);
+    item.Item_acc += 0.01;
+    points -= 0.01 * 0.25 * 9.5 * (10.0 + level);
   }
 }
 
