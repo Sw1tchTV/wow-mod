@@ -457,7 +457,7 @@ public wcRecalculateStats(client) { //Stats, recalculating stats
     return;
   }
 
-  wcClientsStats[id][ARMORIGNORE]=(float(GetBonusAgi(client))+float(GetAgi(client)))/4.5+wcClientsBonusStats[id][ARMORIGNORE];
+  wcClientsStats[id][ARMORIGNORE]=(float(GetBonusAgi(client))+float(GetAgi(client)))/2.0+wcClientsBonusStats[id][ARMORIGNORE];
   wcClientsStats[id][ATTACKSPEED]=GetWeaponSpeed(client, false)-1+(float(1)+(float(GetAgi(client)+GetBonusAgi(client)))/(30.0 * float(GetLevel(client)) + 22.0)+wcClientsBonusStats[id][ATTACKSPEED]);
 
   float multi = 1.0;
