@@ -7990,10 +7990,6 @@
   {
     "en"		"Your critical spell hits will deal 15/30/45%% of their damage as AoE"
   }
-//"Shadow Well info"
-//{
-//  "en"		"Casts beneath the feet of the target, slowing and reducing healing of all nearby targets.\nThe closer they are to the center of the spell the higher effect Last 8 seconds."
-//}
   "Blade Barrier info"
   {
     "en" "<Passive> Reduces damage taken depending on how many runes you are missing.\n    Rank 1: -1/2/3%% damage\n    Rank 2: -2/4/7%% damage\n    Rank 3: -3/7/10%% damage"

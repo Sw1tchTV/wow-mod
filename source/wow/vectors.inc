@@ -1860,12 +1860,12 @@ public wcRunSpell(spellid,race,&tmp1,&tmp2,&tmp3,&any:tmp4,&tmp5,&tmp6,&tmp7,&tm
             if(tmp9==2)
               wcRunSpell_8_3(spellid,race,tmp2,tmp1,tmp3); //plague strike
           case 4:
-            wcRunSpell_8_4(spellid,race,tmp1); //icy touch
+            wcRunSpell_8_4(spellid,race,tmp2,tmp1,tmp3); //icy touch
           case 5:
             if(tmp9==2)
               wcRunSpell_8_5(spellid,race,tmp2,tmp1,tmp3); //death Strike
           case 6:
-            wcRunSpell_8_6(spellid,race,tmp1); //death coil
+            wcRunSpell_8_6(spellid,race,tmp2,tmp1,tmp3); //death coil
           case 7:
             wcRunSpell_8_7(tmp1,tmp3); //Anti-Magic Shell
           case 8:
@@ -1877,6 +1877,12 @@ public wcRunSpell(spellid,race,&tmp1,&tmp2,&tmp3,&any:tmp4,&tmp5,&tmp6,&tmp7,&tm
               wcRunSpell_8_10(spellid,race,tmp2,tmp1,tmp3); //Necrotic Strike
           case 11:
             wcRunSpell_8_11(spellid, race, tmp1); //Death and Decay
+          case 12:
+            return 0;
+          case 13:
+            return 0;
+          case 14:
+            return 0;
           case 15:
             wcRunSpell_8_15(spellid, race, tmp1); //Remorseless Winter
           /*case 16:

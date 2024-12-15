@@ -473,42 +473,17 @@ public Action:EndPlaguebringer(Handle:timer, Handle:datapack)
   RemoveEffectSpellVic(client,48);
 }
 
-wcRunSpell_8_4(spellid,race,client)  { //Icy Touch
-  //Standard Targetting
-  new target=GetAimTarget(client,15.0);
-  if(target<=0) {
-    if(IsChat(client,Chat:Chat_Target))
-      WCMessage(client,"no target",client);
-    return;
-  }
-  if((GetClientTeam(client)==GetClientTeam(target)) || (!IsPlayerAlive(target)) ) {
-    if(IsChat(client,Chat:Chat_Target))
-      WCMessage(client,"wrong target",client);
-    return;
-  }
+wcRunSpell_8_4(spellid,race,target,client,&totaldmg)  { //Icy Touch
 
-
-  //DK specific
-  new runes = wcGetSpellInfoInt(race,spellid,"runes");
-  if(runes>0)
-    if(!SpendRune(client))  {
-      WCMessage(client, "no runes", client);
-      return;
-  }
-  new regen = wcGetSpellInfoInt(race,spellid,"regen");
-  if(regen>0) AddMana(client, regen);
-
-  //Cooldown
-  new cdtype=wcGetSpellInfoInt(race,spellid,"cooldowntype");
-  new Float:cd=wcGetSpellInfoFloat(race,spellid,"cooldown");
+  int cdtype=wcGetSpellInfoInt(race,spellid,"cooldowntype");
+  float timeleft=GetCDSpell(client,cdtype)-GetTickedTime();
+  if(timeleft > 0.0)
+    return totaldmg;
+  float cd=wcGetSpellInfoFloat(race,spellid,"cooldown");
   SetCdSpell(client, cdtype, cd, spellid);
 
-  //Take mana off
-  new manareq=GetSpellCost(client, spellid);
-  wcSetMana(client,GetMana(client)-manareq);
-
-
-  //Spell Specific variables
+  int regen = wcGetSpellInfoInt(race,spellid,"regen");
+  if(regen>0) AddMana(client, regen);
 
   //Slowdown
   new Float:oldspeed=GetClientSpeed(target);
@@ -582,6 +557,7 @@ wcRunSpell_8_4(spellid,race,client)  { //Icy Touch
   GetClientName(target,name2,30);
   WCMessage(client,"icy touch caster", client, name2, dmgef);
   WCMessage(target,"icy touch target", target, name);
+  return totaldmg;
 }
 
 wcRunSpell_8_5(spellid,race,victim,client,&totaldmg) //Death Strike
@@ -643,37 +619,18 @@ wcRunSpell_8_5(spellid,race,victim,client,&totaldmg) //Death Strike
 }
 
 
-wcRunSpell_8_6(spellid,race,client)  {
-  //Standard Targetting
-  new target=GetAimTarget(client,15.0);
-  if(target<=0) {
-    if(IsChat(client,Chat:Chat_Target))
-      WCMessage(client,"no target",client);
-    return;
-  }
-  if((GetClientTeam(client)==GetClientTeam(target)) || (!IsPlayerAlive(target)) ) {
-    if(IsChat(client,Chat:Chat_Target))
-      WCMessage(client,"wrong target",client);
-    return;
-  }
+wcRunSpell_8_6(spellid,race,target,client,&totaldmg)  { //Death Coil
 
-  //DK specific
-  new runes = wcGetSpellInfoInt(race,spellid,"runes");
-  if(runes>0)
-    if(!SpendRune(client))  {
-      WCMessage(client, "no runes", client);
-      return;
-  }
-  new regen = wcGetSpellInfoInt(race,spellid,"regen");
-  if(regen>0) AddMana(client, regen);
-
-  //Cooldown
-  new cdtype=wcGetSpellInfoInt(race,spellid,"cooldowntype");
-  new Float:cd=wcGetSpellInfoFloat(race,spellid,"cooldown");
+  //Check for mana & CD
+  int manareq=GetSpellCost(client, spellid);
+  if(GetMana(client) < manareq)
+    return totaldmg;
+  int cdtype=wcGetSpellInfoInt(race,spellid,"cooldowntype");
+  float timeleft=GetCDSpell(client,cdtype)-GetTickedTime();
+  if(timeleft > 0.0)
+    return totaldmg;
+  float cd=wcGetSpellInfoFloat(race,spellid,"cooldown");
   SetCdSpell(client, cdtype, cd, spellid);
-
-  //Take mana off
-  new manareq=GetSpellCost(client, spellid);
   wcSetMana(client,GetMana(client)-manareq);
 
 
@@ -709,6 +666,7 @@ wcRunSpell_8_6(spellid,race,client)  {
   decl String:line[255];
   wcGetSpellInfo(race,spellid,"name",line);
   wcSpellDamage(target,client,damage, attMsg, vicMsg,line);
+  return totaldmg;
 }
 
 
@@ -1714,11 +1672,8 @@ public Action:EndAMZoneAction(Handle:timer, any:effid)
   }
 }
 
-
-
 public wcRunSpell_8_15(spellid,race,client) //Remorseless Winter
 {
-  PrintToChatAll("Got here2");
   char line[255];
   //DK Runes
   if(wcGetSpellInfoInt(race,spellid,"runes")>0)
@@ -1756,14 +1711,14 @@ public wcRunSpell_8_15(spellid,race,client) //Remorseless Winter
   //Setting up effect
   int team = (GetClientTeam(client)-1) % 2 + 2;
   wcGetSpellInfo(race,spellid,"aoe",line); //Grab AoE
-  int effid=CreateEffectData(client,spellid,dmg,0,StringToInt(line),team,0,0,g_RoundCount,0);
+  int aoe = StringToInt(line);
+  int effid=CreateEffectData(client,spellid,dmg,0,aoe,team,0,0,g_RoundCount,0);
   if (period == 0.0 || castTime == 0.0) {
     LogError("ERROR: remorseless winter corrupted.");
     DeleteEffectData(effid);
   }
   else if(effid!=0)
   {
-    PrintToChatAll("Got here");
     effectsdata[effid][7]=RemorselessWinterVisualEffect(client);
     CreateTimer((period-0.05), RemorselessWinterDamageEffect, effid, TIMER_REPEAT);
   }
@@ -1771,7 +1726,6 @@ public wcRunSpell_8_15(spellid,race,client) //Remorseless Winter
 
 public Action:RemorselessWinterDamageEffect(Handle:timer, any:effid)
 {
-  PrintToChatAll("Got here");
   if (effectsdata[effid][0]==0)
     return Plugin_Stop;
   int eff = effectsdata[effid][7];
@@ -1801,7 +1755,6 @@ public Action:RemorselessWinterDamageEffect(Handle:timer, any:effid)
 }
 
 RemorselessWinterVisualEffect(target)   {
-  PrintToChatAll("Got here");
   new sprite = CreateEntityByName("env_smokestack");
   if (IsValidEntity(sprite)) {
     DispatchKeyValue(sprite, "basespread", "100");
@@ -1813,7 +1766,7 @@ RemorselessWinterVisualEffect(target)   {
     DispatchKeyValue(sprite, "jetlength", "100");
     DispatchKeyValue(sprite, "twist", "80");
     DispatchKeyValue(sprite, "SmokeMaterial", "particle/fire.vmt");
-    DispatchKeyValue(sprite, "rendercolor", "25 128 255");
+    DispatchKeyValue(sprite, "rendercolor", "25 128 240");
     DispatchKeyValue(sprite, "lifetime", "1.0");
     DispatchSpawn(sprite);
     new Float:Client_Origin[3];

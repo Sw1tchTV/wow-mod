@@ -49,10 +49,9 @@
     "event" "player_attacker"
     "level"        "1"
     "runes"        "1"
-    "regen"        "0"
     "cooldown"     "6.0"
     "cooldowntype" "2"
-
+    "regen" "15"
     //slowdown
     "multi" "0.85"
     "duration"  "1.5"
@@ -85,7 +84,7 @@
     "level" "30"
     "cooldowntype"  "4"
     "cooldown"  "2.5"
-    "mana"  "30"
+    "mana"  "40"
     "multi" "0.34"
     "basedmg" "12"
   }
@@ -153,7 +152,6 @@
   {
     "name"  "Blood Presence"
     "name_ru"   "TODO"
-    "event" "player_spawn"
     "level"     "20"
     "hp"  "0.08"
     "armor" "0.20"
@@ -163,7 +161,6 @@
   {
     "name"  "Frost Presence"
     "name_ru"   "TODO"
-    "event" "player_spawn"
     "level"     "20"
     "physdamage"  "1.10"
     "rpgeneration"  "1.25"
@@ -172,7 +169,6 @@
   {
     "name"  "Unholy Presence"
     "name_ru"   "TODO"
-    "event" "player_spawn"
     "level"     "20"
     "attackspeed" "0.10"
     "movementspeed" "0.10"
