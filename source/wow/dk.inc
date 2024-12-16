@@ -475,6 +475,8 @@ public Action:EndPlaguebringer(Handle:timer, Handle:datapack)
 
 wcRunSpell_8_4(spellid,race,target,client,&totaldmg)  { //Icy Touch
 
+  if(wcGetSpellInfoInt(race,spellid,"chance") < GetRandomInt(1,100))
+    return totaldmg;
   int cdtype=wcGetSpellInfoInt(race,spellid,"cooldowntype");
   float timeleft=GetCDSpell(client,cdtype)-GetTickedTime();
   if(timeleft > 0.0)
@@ -619,8 +621,10 @@ wcRunSpell_8_5(spellid,race,victim,client,&totaldmg) //Death Strike
 }
 
 
-wcRunSpell_8_6(spellid,race,target,client,&totaldmg)  { //Death Coil
-
+wcRunSpell_8_6(spellid,race,target,client,&totaldmg) //Death Coil
+{
+  if(wcGetSpellInfoInt(race,spellid,"chance") < GetRandomInt(1,100))
+    return totaldmg;
   //Check for mana & CD
   int manareq=GetSpellCost(client, spellid);
   if(GetMana(client) < manareq)
@@ -1698,6 +1702,7 @@ public wcRunSpell_8_15(spellid,race,client) //Remorseless Winter
   ticks += RoundToNearest(float(ticks)*GetHasteEffect(client)); //Adding bonus ticks from haste.
   period = period*(1.0-GetHasteEffect(client)); //Reducing total time ticked by haste
   float castTime = float(ticks)*period; //Multiply ticks with period to get cast time if needed, 6 seconds by default.
+  SetCasting(client,spellid,castTime);
   //Damage
   wcGetSpellInfo(race,spellid,"base",line);
   int dmg=StringToInt(line);
@@ -1757,17 +1762,17 @@ public Action:RemorselessWinterDamageEffect(Handle:timer, any:effid)
 RemorselessWinterVisualEffect(target)   {
   new sprite = CreateEntityByName("env_smokestack");
   if (IsValidEntity(sprite)) {
-    DispatchKeyValue(sprite, "basespread", "100");
-    DispatchKeyValue(sprite, "spreadspeed", "200");
-    DispatchKeyValue(sprite, "speed", "22");
-    DispatchKeyValue(sprite, "startsize", "40");
-    DispatchKeyValue(sprite, "endsize", "40");
-    DispatchKeyValue(sprite, "rate", "80");
-    DispatchKeyValue(sprite, "jetlength", "100");
-    DispatchKeyValue(sprite, "twist", "80");
+    DispatchKeyValue(sprite, "basespread", "50");
+    DispatchKeyValue(sprite, "spreadspeed", "150");
+    DispatchKeyValue(sprite, "speed", "16");
+    DispatchKeyValue(sprite, "startsize", "25");
+    DispatchKeyValue(sprite, "endsize", "30");
+    DispatchKeyValue(sprite, "rate", "60");
+    DispatchKeyValue(sprite, "jetlength", "75");
+    DispatchKeyValue(sprite, "twist", "65");
     DispatchKeyValue(sprite, "SmokeMaterial", "particle/fire.vmt");
     DispatchKeyValue(sprite, "rendercolor", "25 128 240");
-    DispatchKeyValue(sprite, "lifetime", "1.0");
+    DispatchKeyValue(sprite, "lifetime", "0.5");
     DispatchSpawn(sprite);
     new Float:Client_Origin[3];
     GetClientAbsOrigin(target,Client_Origin);
@@ -1777,4 +1782,70 @@ RemorselessWinterVisualEffect(target)   {
     return sprite;
   }
   return 0;
+}
+
+public wcRunSpell_8_16(spellid,race,victim,client,&totaldmg) //Soul Reaper
+{
+  if(wcGetSpellInfoInt(race,spellid,"chance") < GetRandomInt(1,100))
+    return totaldmg;
+  char line[255];
+  //DK Runes
+  if(wcGetSpellInfoInt(race,spellid,"runes")>0)
+    if(!SpendRune(client))
+      return totaldmg;
+  //Cooldown
+  int cdtype=wcGetSpellInfoInt(race,spellid,"cooldowntype");
+  float timeleft=GetCDSpell(client,cdtype)-GetTickedTime();
+  if(timeleft > 0.0)
+    return totaldmg;
+  wcGetSpellInfo(race,spellid,"cooldown",line);
+  float cd=StringToFloat(line);
+  SetCdSpell(client, cdtype, cd, spellid);
+  //Runic Power
+  int regen = wcGetSpellInfoInt(race,spellid,"regen");
+  if(regen>0) AddMana(client, regen);
+
+  //Damage
+  wcGetSpellInfo(race,spellid,"base",line);
+  int dmg=StringToInt(line);
+  wcGetSpellInfo(race,spellid,"multi",line);
+  dmg = dmg+RoundToNearest(GetDamage(client)*StringToFloat(line));
+  //Location
+  float location[3];
+  GetClientAbsOrigin(victim,location);
+  location[2]+=50;
+  EmitAmbientSound("wc/spells/butchery.wav",location); 
+
+  new Handle:datapack2=CreateDataPack();
+  WritePackCell(datapack2,client); // Write the client index of owner
+  WritePackCell(datapack2,dmg);
+  WritePackCell(datapack2,victim);
+  WritePackCell(datapack2,GetClientDeaths(victim));
+  WritePackCell(datapack2,g_RoundCount);
+  wcGetSpellInfo(race,spellid,"duration",line);
+  CreateTimer(StringToFloat(line),SoulReaperDamageEffect,datapack2,TIMER_HNDL_CLOSE);
+  AddEMsgAff("Soul Reaper name", true);
+  return totaldmg;
+}
+
+public Action:SoulReaperDamageEffect(Handle:timer, Handle:datapack)
+{
+  ResetPack(datapack);
+  int attacker = ReadPackCell(datapack);
+  int dmg = ReadPackCell(datapack);
+  int victim = ReadPackCell(datapack);
+  int deaths = ReadPackCell(datapack);
+  int roundcount = ReadPackCell(datapack);
+  if ((attacker == 0) || (victim == 0))
+    return Plugin_Stop;
+  if (deaths!=GetClientDeaths(victim))
+    return Plugin_Stop;
+  if (roundcount!=g_RoundCount || !IsClientInGame(attacker) ||!IsPlayerAlive(attacker) || !IsClientInGame(victim) || !IsPlayerAlive(victim))
+    return Plugin_Stop;
+  char vicMsg[300];
+  char attMsg[300];
+  Format(vicMsg,sizeof(vicMsg),"%T","Soul Reaper vic", victim);
+  Format(attMsg,sizeof(attMsg),"%T","Soul Reaper att", attacker);
+  wcSpellDamage(victim,attacker,dmg, attMsg, vicMsg);
+  return Plugin_Stop;
 }

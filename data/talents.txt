@@ -5500,27 +5500,27 @@
             {
               "name"  "Elemental Guidance"
               "max"  "3"
-              "saveid"  "l"
+              "saveid"  "5"
             }
             "1"
             {
               "name"  "Elemental Guidance"
               "max"  "3"
-              "saveid"  "l"
+              "saveid"  "5"
               "multi" "0.1"
             }
             "2"
             {
               "name"  "Elemental Guidance"
               "max"  "3"
-              "saveid"  "l"
+              "saveid"  "5"
               "multi" "0.2"
             }
             "3"
             {
               "name"  "Elemental Guidance"
               "max"  "3"
-              "saveid"  "l"
+              "saveid"  "5"
               "multi" "0.3"
             }
           }
@@ -5530,7 +5530,7 @@
           {
             "name"  "Rolling Thunder"
               "max"  "2"
-              "saveid"  "5"
+              "saveid"  "6"
           }
           "1"
           {
@@ -5538,7 +5538,7 @@
             "duration"  "3.0"
               "name"  "Rolling Thunder"
               "max"  "2"
-              "saveid"  "5"
+              "saveid"  "6"
           }
           "2"
           {
@@ -5546,7 +5546,7 @@
             "duration"  "3.0"
               "name"  "Rolling Thunder"
               "max"  "2"
-              "saveid"  "5"
+              "saveid"  "6"
           }
         }
         "3"
@@ -5555,7 +5555,7 @@
           {
             "name"  "Chain Lightning"
               "max"  "1"
-              "saveid"  "6"
+              "saveid"  "7"
           }
           "1"
           {
@@ -5567,7 +5567,7 @@
               "cooldown"  "8.0"
               "mana"  "85"
               "max"  "1"
-              "saveid"  "6"
+              "saveid"  "7"
               "active"  "1"
               "talentid"  "7"
           }
@@ -5578,20 +5578,20 @@
           {
             "name"  "Voice of Power"
               "max"  "2"
-              "saveid"  "m"
+              "saveid"  "8"
           }
           "1"
           {
             "name"  "Voice of Power"
               "max"  "2"
-              "saveid"  "m"
+              "saveid"  "8"
               "chance"  "25"
           }
           "2"
           {
             "name"  "Voice of Power"
               "max"  "2"
-              "saveid"  "m"
+              "saveid"  "8"
               "chance"  "50"
           }
         }
@@ -5605,13 +5605,13 @@
             {
               "name"  "Lava Burst"
               "max"  "1"
-              "saveid"  "7"
+              "saveid"  "9"
             }
             "1"
             {
               "name"  "Lava Burst"
               "max"  "1"
-              "saveid"  "7"
+              "saveid"  "9"
               "multi"   "0.18"
               "basedmg" "6"
               "mana"  "70"
@@ -5626,13 +5626,13 @@
           {
             "name"  "Maelstrom Weapon"
               "max"  "3"
-              "saveid"  "n"
+              "saveid"  "a"
           }
           "1"
           {
             "name"  "Maelstrom Weapon"
               "max"  "3"
-              "saveid"  "n"
+              "saveid"  "a"
               "chance"  "33"
               "distance"  "150"
               "multi" "0.4"
@@ -5641,7 +5641,7 @@
           {
             "name"  "Maelstrom Weapon"
               "max"  "3"
-              "saveid"  "n"
+              "saveid"  "a"
               "chance"  "66"
               "distance"  "150"
               "multi" "0.4"
@@ -5650,7 +5650,7 @@
           {
             "name"  "Maelstrom Weapon"
               "max"  "3"
-              "saveid"  "n"
+              "saveid"  "a"
               "chance"  "100"
               "distance"  "150"
               "multi" "0.5"
@@ -5662,20 +5662,20 @@
           {
             "name"  "Natures Guardian"
               "max"  "2"
-              "saveid"  "o"
+              "saveid"  "b"
           }
           "1"
           {
             "name"  "Natures Guardian"
               "max"  "2"
-              "saveid"  "o"
+              "saveid"  "b"
               "chance"  "5"
           }
           "2"
           {
             "name"  "Natures Guardian"
               "max"  "2"
-              "saveid"  "o"
+              "saveid"  "b"
               "chance"  "10"
           }
         }
@@ -5689,13 +5689,13 @@
             {
               "name"  "Lightning Nova Totem"
               "max"  "1"
-              "saveid"  "B"
+              "saveid"  "c"
             }
             "1"
             {
               "name"  "Lightning Nova Totem"
               "max"  "1"
-              "saveid"  "B"
+              "saveid"  "c"
               "active" "1"
               "manareq"  "95"
               "cooldowntype"  "17"
@@ -5715,13 +5715,13 @@
             {
               "name"  "Air Shock"
               "max"  "2"
-              "saveid"  "p"
+              "saveid"  "d"
             }
             "1"
             {
               "name"  "Air Shock"
               "max"  "2"
-              "saveid"  "p"
+              "saveid"  "d"
               "mana"  "20"
               "manainc" "0.30"
               "multi" "0.25"
@@ -5734,7 +5734,7 @@
             {
               "name"  "Air Shock"
               "max"  "2"
-              "saveid"  "p"
+              "saveid"  "d"
               "mana"  "20"
               "manainc" "0.30"
               "multi" "0.25"
@@ -5758,28 +5758,28 @@
               {
               "name"  "Ghost Wolf"
                 "max"  "3"
-                "saveid"  "8"
+                "saveid"  "e"
               }
               "1"
               {
                 "name"  "Ghost Wolf"
                 "multi"  "0.0660"
                 "max"  "3"
-                "saveid"  "8"
+                "saveid"  "e"
               }
               "2"
               {
                 "name"  "Ghost Wolf"
                 "multi"  "0.1330"
                 "max"  "3"
-                "saveid"  "8"
+                "saveid"  "e"
               }
               "3"
               {
                 "name"  "Ghost Wolf"
                 "multi"  "0.20"
                 "max"  "3"
-                "saveid"  "8"
+                "saveid"  "e"
               }
             }
           "2"
@@ -5788,7 +5788,7 @@
             {
               "name"  "Natures Combatant"
                 "max"  "2"
-                "saveid"  "b"
+                "saveid"  "f"
             }
             "1"
             {
@@ -5796,7 +5796,7 @@
                 "restore" "2"
                 "name"  "Natures Combatant"
                 "max"  "2"
-                "saveid"  "b"
+                "saveid"  "f"
             }
             "2"
             {
@@ -5804,7 +5804,7 @@
                 "restore" "2"
                 "name"  "Natures Combatant"
                 "max"  "2"
-                "saveid"  "b"
+                "saveid"  "f"
             }
           }
           "3"
@@ -5813,21 +5813,21 @@
             {
               "name"  "Improved Rockbiter"
               "max"  "2"
-              "saveid"  "0"
+              "saveid"  "g"
             }
             "1"
             {
               "increment" "0.125"
               "name"  "Improved Rockbiter"
               "max"  "2"
-              "saveid"  "0"
+              "saveid"  "g"
             }
             "2"
             {
               "increment" "0.25"
               "name"  "Improved Rockbiter"
               "max"  "2"
-              "saveid"  "0"
+              "saveid"  "g"
             }
           }
           "4"
@@ -5836,13 +5836,13 @@
             {
               "name"  "Strength of the Earth"
               "max"  "3"
-              "saveid"  "q"
+              "saveid"  "h"
             }
             "1"
             {
               "name"  "Strength of the Earth"
               "max"  "3"
-              "saveid"  "q"
+              "saveid"  "h"
               "multi" "0.050"
               "distance" "600.00"
               "timer" "0.50"
@@ -5851,7 +5851,7 @@
             {
               "name"  "Strength of the Earth"
               "max"  "3"
-              "saveid"  "q"
+              "saveid"  "h"
               "multi" "0.100"
               "distance" "600.00"
               "timer" "0.50"
@@ -5860,7 +5860,7 @@
             {
               "name"  "Strength of the Earth"
               "max"  "3"
-              "saveid"  "q"
+              "saveid"  "h"
               "multi" "0.150"
               "distance" "600.00"
               "timer" "0.50"
@@ -5876,17 +5876,18 @@
             {
               "name"  "Flurry"
               "max"  "1"
-              "saveid"  "a"
+              "saveid"  "i"
             }
             "1"
             {
+              "name"  "Flurry"
+              "max"  "1"
+              "saveid"  "i"
               "multi"  "0.040000"
               "chance"  "100"
               "stacks" "5"
               "duration" "6.0"
-              "name"  "Flurry"
-              "max"  "1"
-              "saveid"  "a"
+
             }
           }
         "2"
@@ -5895,13 +5896,13 @@
           {
             "name"  "Feral Lunge"
               "max"  "2"
-              "saveid"  "b"
+              "saveid"  "j"
           }
           "1"
           {
               "name"  "Feral Lunge"
               "max"  "2"
-              "saveid"  "b"
+              "saveid"  "j"
               "multi" "0.12"
               "base"  "8"
               "stacks"  "1"
@@ -5911,7 +5912,7 @@
           {
               "name"  "Feral Lunge"
               "max"  "2"
-              "saveid"  "b"
+              "saveid"  "j"
               "multi" "0.12"
               "base"  "8"
               "stacks"  "2"
@@ -5924,13 +5925,13 @@
           {
             "name"  "Thundering Strikes"
               "max"  "3"
-              "saveid"  "c"
+              "saveid"  "k"
           }
           "1"
           {
             "name"  "Thundering Strikes"
               "max"  "3"
-              "saveid"  "c"
+              "saveid"  "k"
               "critchance" "0.010"
               "critdamage"  "0.080"
           }
@@ -5938,7 +5939,7 @@
           {
             "name"  "Thundering Strikes"
               "max"  "3"
-              "saveid"  "c"
+              "saveid"  "k"
               "critchance" "0.020"
               "critdamage"  "0.160"
           }
@@ -5946,7 +5947,7 @@
           {
             "name"  "Thundering Strikes"
               "max"  "3"
-              "saveid"  "c"
+              "saveid"  "k"
               "critchance" "0.030"
               "critdamage"  "0.250"
           }
@@ -5957,27 +5958,27 @@
           {
             "name"  "Weapon Mastery"
               "max"  "3"
-              "saveid"  "r"
+              "saveid"  "l"
           }
           "1"
           {
             "name"  "Weapon Mastery"
               "max"  "3"
-              "saveid"  "r"
+              "saveid"  "l"
               "increase" "0.0800"
           }
           "2"
           {
             "name"  "Weapon Mastery"
               "max"  "3"
-              "saveid"  "r"
+              "saveid"  "l"
               "increase" "0.1600"
           }
           "3"
           {
             "name"  "Weapon Mastery"
               "max"  "3"
-              "saveid"  "r"
+              "saveid"  "l"
               "increase" "0.250"
           }
         }
@@ -5991,13 +5992,13 @@
             {
               "name"  "Stormstrike"
               "max"  "1"
-              "saveid"  "d"
+              "saveid"  "m"
             }
             "1"
             {
               "name"  "Stormstrike"
               "max"  "1"
-              "saveid"  "d"
+              "saveid"  "m"
               "multi" "0.19"
               "base"  "3"
               "stacksperwf"  "1"
@@ -6010,27 +6011,27 @@
           {
             "name"  "Shamanistic Rage"
               "max"  "3"
-              "saveid"  "s"
+              "saveid"  "n"
           }
           "1"
           {
             "name"  "Shamanistic Rage"
               "max"  "3"
-              "saveid"  "s"
+              "saveid"  "n"
               "mana"  "0.00500"
           }
           "2"
           {
             "name"  "Shamanistic Rage"
               "max"  "3"
-              "saveid"  "s"
+              "saveid"  "n"
               "mana"  "0.0100"
           }
           "3"
           {
             "name"  "Shamanistic Rage"
               "max"  "3"
-              "saveid"  "s"
+              "saveid"  "n"
               "mana"  "0.01500"
           }
         }
@@ -6040,20 +6041,20 @@
           {
             "name"  "Unruly Winds"
               "max"  "2"
-              "saveid"  "t"
+              "saveid"  "o"
           }
           "1"
           {
             "name"  "Unruly Winds"
               "max"  "2"
-              "saveid"  "t"
+              "saveid"  "o"
               "windfurychance" "12"
           }
           "2"
           {
             "name"  "Unruly Winds"
               "max"  "2"
-              "saveid"  "t"
+              "saveid"  "o"
               "windfurychance" "25"
           }
         }
@@ -6067,13 +6068,13 @@
             {
               "name"  "Lava Lash"
               "max"  "1"
-              "saveid"  "u"
+              "saveid"  "p"
             }
             "1"
             {
               "name"  "Lava Lash"
               "max"  "1"
-              "saveid"  "u"
+              "saveid"  "p"
               "multi" "0.23"
               "chance"  "20"
               "base"  "9"
@@ -6086,20 +6087,20 @@
             {
               "name"  "Natures Power"
               "max"  "2"
-              "saveid"  "p"
+              "saveid"  "q"
             }
             "1"
             {
               "name"  "Natures Power"
               "max"  "2"
-              "saveid"  "p"
+              "saveid"  "q"
               "multi" "0.15"
             }
             "2"
             {
               "name"  "Natures Power"
               "max"  "2"
-              "saveid"  "p"
+              "saveid"  "q"
               "multi" "0.3"
             }
           }
@@ -6117,21 +6118,21 @@
               {
               "name"  "Shamanistic Focus"
                 "max"  "2"
-                "saveid"  "e"
+                "saveid"  "r"
               }
               "1"
               {
               "multi"  "0.0750000"
                 "name"  "Shamanistic Focus"
                 "max"  "2"
-                "saveid"  "e"
+                "saveid"  "r"
               }
               "2"
               {
               "multi"  "0.15000"
                 "name"  "Shamanistic Focus"
                 "max"  "2"
-                "saveid"  "e"
+                "saveid"  "r"
               }
             }
           "2"
@@ -6140,7 +6141,7 @@
             {
               "name"  "Restorative Casting"
               "max"  "3"
-              "saveid"  "f"
+              "saveid"  "s"
             }
             "1"
             {
@@ -6148,7 +6149,7 @@
               "base"  "1"
               "name"  "Restorative Casting"
               "max"  "3"
-              "saveid"  "f"
+              "saveid"  "s"
             }
             "2"
             {
@@ -6156,7 +6157,7 @@
               "base"  "3"
               "name"  "Restorative Casting"
               "max"  "3"
-              "saveid"  "f"
+              "saveid"  "s"
             }
             "3"
             {
@@ -6164,7 +6165,7 @@
               "base"  "5"
               "name"  "Restorative Casting"
               "max"  "3"
-              "saveid"  "f"
+              "saveid"  "s"
             }
           }
           "3"
@@ -6173,21 +6174,21 @@
             {
               "name"  "Natures Protection"
               "max"  "2"
-              "saveid"  "g"
+              "saveid"  "t"
             }
             "1"
             {
               "multi"  "0.0750000"
               "name"  "Natures Protection"
               "max"  "2"
-              "saveid"  "g"
+              "saveid"  "t"
             }
             "2"
             {
               "multi"  "0.1500000"
               "name"  "Natures Protection"
               "max"  "2"
-              "saveid"  "g"
+              "saveid"  "t"
             }
           }
           "4"
@@ -6196,27 +6197,27 @@
             {
               "name"  "Natures Grace"
               "max"  "3"
-              "saveid"  "v"
+              "saveid"  "u"
             }
             "1"
             {
               "name"  "Natures Grace"
               "max"  "3"
-              "saveid"  "v"
+              "saveid"  "u"
               "cooldown"  "0.2"
             }
             "2"
             {
               "name"  "Natures Grace"
               "max"  "3"
-              "saveid"  "v"
+              "saveid"  "u"
               "cooldown"  "0.4"
             }
             "3"
             {
               "name"  "Natures Grace"
               "max"  "3"
-              "saveid"  "v"
+              "saveid"  "u"
               "cooldown"  "0.6"
             }
           }
@@ -6230,21 +6231,21 @@
             {
               "name"  "Improved Reincarnation"
               "max"  "2"
-              "saveid"  "h"
+              "saveid"  "v"
             }
             "1"
             {
               "multi"  "15"
               "name"  "Improved Reincarnation"
               "max"  "2"
-              "saveid"  "h"
+              "saveid"  "v"
             }
             "2"
             {
               "multi"  "30"
               "name"  "Improved Reincarnation"
               "max"  "2"
-              "saveid"  "h"
+              "saveid"  "v"
             }
           }
         "2"
@@ -6253,7 +6254,7 @@
           {
             "name"  "Chain Heal"
               "max"  "1"
-              "saveid"  "i"
+              "saveid"  "w"
           }
           "1"
           {
@@ -6269,7 +6270,7 @@
               "manainc"  "0.600000"
               "name"  "Chain Heal"
               "max"  "1"
-              "saveid"  "i"
+              "saveid"  "w"
               "talentid" "4"
           }
         }
@@ -6279,28 +6280,28 @@
           {
             "name"  "Improved Healing Wave"
               "max"  "3"
-              "saveid"  "j"
+              "saveid"  "x"
           }
           "1"
           {
             "increment"  "0.1000"
               "name"  "Improved Healing Wave"
               "max"  "3"
-              "saveid"  "j"
+              "saveid"  "x"
           }
           "2"
           {
             "increment"  "0.2000"
               "name"  "Improved Healing Wave"
               "max"  "3"
-              "saveid"  "j"
+              "saveid"  "x"
           }
           "3"
           {
             "increment"  "0.30000"
               "name"  "Improved Healing Wave"
               "max"  "3"
-              "saveid"  "j"
+              "saveid"  "x"
           }
         }
         "4"
@@ -6309,13 +6310,13 @@
           {
             "name"  "Watershield"
               "max"  "2"
-              "saveid"  "w"
+              "saveid"  "y"
           }
           "1"
           {
             "name"  "Watershield"
               "max"  "2"
-              "saveid"  "w"
+              "saveid"  "y"
               "multi" "0.01"
               "cooldown"  "2.0"
               "cooldowntype"  "8"
@@ -6325,7 +6326,7 @@
           {
             "name"  "Watershield"
               "max"  "2"
-              "saveid"  "w"
+              "saveid"  "y"
               "multi" "0.02"
               "cooldown"  "2.0"
               "cooldowntype"  "8"
@@ -6342,7 +6343,7 @@
             {
               "name"  "Earth Shield"
               "max"  "1"
-              "saveid"  "k"
+              "saveid"  "z"
             }
             "1"
             {
@@ -6357,7 +6358,7 @@
               "manainc"  "0.500000"
               "name"  "Earth Shield"
               "max"  "1"
-              "saveid"  "k"
+              "saveid"  "z"
               "talentid" "3"
             }
           }
@@ -6367,13 +6368,13 @@
           {
             "name"  "Natures Blessing"
               "max"  "3"
-              "saveid"  "x"
+              "saveid"  "A"
           }
           "1"
           {
             "name"  "Natures Blessing"
               "max"  "3"
-              "saveid"  "x"
+              "saveid"  "A"
               "increment" "0.01"
               "max" "0.3"
           }
@@ -6381,7 +6382,7 @@
           {
             "name"  "Natures Blessing"
               "max"  "3"
-              "saveid"  "x"
+              "saveid"  "A"
               "increment" "0.02"
               "max" "0.3"
           }
@@ -6389,7 +6390,7 @@
           {
             "name"  "Natures Blessing"
               "max"  "3"
-              "saveid"  "x"
+              "saveid"  "A"
               "increment" "0.03"
               "max" "0.3"
           }
@@ -6400,13 +6401,13 @@
           {
             "name"  "Earth Grip"
               "max"  "2"
-              "saveid"  "y"
+              "saveid"  "B"
           }
           "1"
           {
             "name"  "Earth Grip"
               "max"  "2"
-              "saveid"  "y"
+              "saveid"  "B"
               "duration"  "2.0"
               "slowmulti" "0.10" //What their new speed should be
           }
@@ -6414,7 +6415,7 @@
           {
             "name"  "Earth Grip"
               "max"  "2"
-              "saveid"  "y"
+              "saveid"  "B"
               "duration"  "4.0"
               "slowmulti" "0.10"
           }
@@ -6429,13 +6430,13 @@
           {
             "name"  "Natures Avatar"
             "max"  "2"
-            "saveid"  "z"
+            "saveid"  "C"
           }
           "1"
           {
             "name"  "Natures Avatar"
             "max"  "2"
-            "saveid"  "z"
+            "saveid"  "C"
             "distance"  "250"
             "multi" "0.20"
             "base"  "5"
@@ -6449,7 +6450,7 @@
           {
             "name"  "Natures Avatar"
             "max"  "2"
-            "saveid"  "z"
+            "saveid"  "C"
             "distance"  "450"
             "multi" "0.35"
             "base"  "5"
@@ -6466,13 +6467,13 @@
           {
             "name"          "Healing Tide Totem"
             "max"           "1"
-            "saveid"        "A"
+            "saveid"        "D"
           }
           "1"
           {
             "name"          "Healing Tide Totem"
             "max"           "1"
-            "saveid"        "A"
+            "saveid"        "D"
             "talentid"      "5"
             "active"        "1"
             "cooldown"      "20.0"

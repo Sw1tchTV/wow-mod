@@ -1913,21 +1913,6 @@ TriggerBossDrop() {
             new targets[65];
             new pamount=FindMatchingPlayers("@ct",targets);
             new winner=RollBetween(targets,pamount);
-            
-            //This breaks bossmod, DO NOT UNCOMMENT WITHOUT FIXING
-            /*new bool:foundwinner=false;
-            while(!foundwinner)
-            {
-              winner=RollBetween(targets,pamount);
-
-              if(wcDamageDone[winner]<g_iBossDropDmgMin && wcHealingDone[winner]<g_iBossDropHealMin)
-              {
-                PrintToChat(winner,"Ineligible for boss drops.");
-                foundwinner=false;
-              }
-              else
-                foundwinner=true;
-            }*/
 
             if(winner==0)
             LogError("[WC] Could not roll for item");

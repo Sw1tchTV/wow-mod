@@ -9036,7 +9036,7 @@
   "You won gold"
   {
     "#format"  "{1:s}"
-    "en"  "You won {1} gold for being active player (and lucky)!"
+    "en"  "@greenYou won @lightgreen{1} @greengold for being an active player (and lucky)!"
   }
   "Progress"
   {
@@ -10551,5 +10551,13 @@
   "Soul Reaper info"
   {
     "en"     "Your attacks have a chance to afflict the target with Soul Reaper.\nSoul Reaper expires after five seconds, dealing a large amount of magic damage.\nCosts 1 rune."
+  }
+  "Soul Reaper vic"
+  {
+    "en"     "@att's @greenSoul Reaper @defaultdamages you for @dmg damage."
+  }
+  "Soul Reaper att"
+  {
+    "en"     "@greenSoul Reaper @defaultdamaged @vic @defaultfor @dmg damage."
   }
 }

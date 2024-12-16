@@ -52,6 +52,7 @@
     "cooldown"     "6.0"
     "cooldowntype" "2"
     "regen" "15"
+    "chance"  "15"
     //slowdown
     "multi" "0.85"
     "duration"  "1.5"
@@ -87,6 +88,7 @@
     "mana"  "40"
     "multi" "0.34"
     "basedmg" "12"
+    "chance"  "20"
   }
   "7"
   {
@@ -190,5 +192,20 @@
     "period" "0.5"
     "base" "2"
     "aoe" "300"
+  }
+  "16"
+  {
+    "name"  "Soul Reaper"
+    "name_ru"   "TODO"
+    "event" "player_attacker"
+    "level"     "40"
+    "cooldowntype"  "26"
+    "cooldown"      "8.0"
+    "runes" "1"
+    "regen" "15"
+    "multi" "0.32"
+    "duration" "5.0"
+    "base" "12"
+    "chance"  "20"
   }
 }

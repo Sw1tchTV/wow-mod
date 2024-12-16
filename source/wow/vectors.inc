@@ -461,7 +461,7 @@ public wcRecalculateStats(client) { //Stats, recalculating stats
   wcClientsStats[id][ATTACKSPEED]=GetWeaponSpeed(client, false)-1+(float(1)+(float(GetAgi(client)+GetBonusAgi(client)))/(30.0 * float(GetLevel(client)) + 22.0)+wcClientsBonusStats[id][ATTACKSPEED]);
 
   float multi = 1.0;
-  if(CheckRequirements(client,2,2,2,4) || CheckRequirements(client,6,2,2,4)) //AP / Attack Power Scaling talents
+  if(CheckRequirements(client,2,2,2,4) || CheckRequirements(client,6,2,2,4)) //AP, Attack Power Scaling talents
   {
     new class=GetClass(client);
     switch(class)
@@ -1885,9 +1885,9 @@ public wcRunSpell(spellid,race,&tmp1,&tmp2,&tmp3,&any:tmp4,&tmp5,&tmp6,&tmp7,&tm
             return 0;
           case 15:
             wcRunSpell_8_15(spellid, race, tmp1); //Remorseless Winter
-          /*case 16:
+          case 16:
             if(tmp9==2)
-              wcRunSpell_8_16(spellid, race, tmp2, tmp1, tmp3);*/
+              wcRunSpell_8_16(spellid, race, tmp2, tmp1, tmp3);
         }
       }
       case 9: // Monk

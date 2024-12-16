@@ -19,8 +19,8 @@ new Handle:SpellsDB6;
 new Handle:SpellsDB7;
 new Handle:SpellsDB8;
 new Handle:SpellsDB9;
-new Float:ClientCDSpells[65][20];
-new String:ClientCDSpellsNames[65][20][30];
+new Float:ClientCDSpells[65][255]; //Spell cooldowntype limit
+new String:ClientCDSpellsNames[65][255][30];
 new g_iBT[65];
 new g_iCombatTimer[65];
 new g_iHolyPower[65];
@@ -47,7 +47,7 @@ stock bool:addToSpellbar(client, id)  {
 
 public Float:GetCDSpell(client,type)
 {
-  if((type<20)&&(type>=0))
+  if((type<255)&&(type>=0))
   return ClientCDSpells[client][type];
   else
   return float(0);
@@ -56,7 +56,7 @@ public Float:GetCDSpell(client,type)
 
 stock SetCdSpell(client,type,Float:cd, spellId=0, String:name[]="")
 {
-  if((type<20)&&(type>=0))
+  if((type<255)&&(type>=0))
   {
     if(!((GetCDSpell(client,type)-GetTickedTime())>0.0))
     {
@@ -1393,7 +1393,6 @@ public wcRunSpell_1_10(spellid,race,client)
 
 public wcRunSpell_3_1(spellid,race,target, client)
 {
-  //new target=GetAimTarget(client,15.0);
   if(target>0)
   {
     if((GetClientTeam(client)!=GetClientTeam(target))&&IsPlayerAlive(target))
