@@ -560,7 +560,7 @@ public wcRunSpell_6_2(spellid,race,victim,attacker,&dmg) //Windfury
       }
       if(CheckRequirements(attacker,6,2,3,3)) //Unruly Winds
       {
-        wcGetTalentInfo(6,2,3,3,attacker,"windfurychance",line);
+        wcGetTalentInfo(6,2,3,3,attacker,"chance",line);
         if(StringToInt(line)>=GetRandomInt(1,100))
           wcRunSpell_6_2(spellid,race,victim,attacker,dmg);
       }
