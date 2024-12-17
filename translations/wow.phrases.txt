@@ -201,7 +201,7 @@
   "profession change to"
   {
     "#format" "{1:s}"
-    "en"     "UNlearn profession{1} and learn new:"
+    "en"     "Unlearn profession {1} and learn new:"
   }
   "profession select sort"
   {
@@ -223,7 +223,7 @@
   }
   "wrong profession"
   {
-    "en"  "You do not have required profession."
+    "en"  "You do not have the required profession."
   }
   "wc make item"
   {
@@ -231,19 +231,19 @@
   }
   "no free/no reagents"
   {
-    "en"  "No reagents or no free slot."
+    "en"  "No reagents or no free slots."
   }
   "no free slots"
   {
-    "en"  "@lightgreen!!!You have No Free Slots in the Inventory!!!"
+    "en"  "@lightgreen!!!You have no free slots in your inventory!!!"
   }
   "prof warning"
   {
-    "en"  "YOU WILL LOOSE SKILLS AND KNOWLEDGE OF CURRENT"
+    "en"  "YOU WILL LOSE SKILLS AND KNOWLEDGE OF CURRENT PROFESSIONS"
   }
   "prof_0"
   {
-    "en"  "No Profession yet"
+    "en"  "No professions yet"
   }
   "prof_1"
   {
@@ -279,7 +279,7 @@
   }
   "prof_10"
   {
-    "en"  "Herbalism (For Inscription)"
+    "en"  "Herbalism (for Inscription)"
   }
   "prof_9"
   {
@@ -287,7 +287,7 @@
   }
   "no recipes"
   {
-    "en"  "No recipes are known yet."
+    "en"  "No recipes learned yet."
   }
   "no bonuses"
   {
@@ -295,7 +295,7 @@
   }
   "you already know"
   {
-    "en"  "You already know it."
+    "en"  "You already know this recipe."
   }
   "create item"
   {
@@ -335,11 +335,11 @@
 
   "change prof1"
   {
-    "en"  "Change Profession !1!, YOU WILL LOOSE SKILL"
+    "en"  "Change Profession 1, YOU WILL LOSE SKILL"
   }
   "change prof2"
   {
-    "en"  "Change Profession !2!, YOU WILL LOOSE SKILL"
+    "en"  "Change Profession 2, YOU WILL LOSE SKILL"
   }
   "failed drop"
   {
@@ -981,7 +981,7 @@
   }
   "wc other players"
   {
-    "en"    "Other player's characters"
+    "en"    "Other players' characters"
   }
   "no player found"
   {
@@ -1569,7 +1569,7 @@
   "RoundStats"
   {
     "#format"	"{1:i},{2:s},{3:i},{4:s},{5:i},{6:s}"
-    "en"			"The Most: \n@greenDamage: @lightgreen{1}@default by @green{2} @green\nTaken: @lightgreen{3} @defaultby @green{4} @green\nHealing: @lightgreen{5} @defaultby @green{6}"
+    "en"			"The most: \n@greenDamage: @lightgreen{1}@default by @green{2} @green\nTaken: @lightgreen{3} @defaultby @green{4} @green\nHealing: @lightgreen{5} @defaultby @green{6}"
   }
   "XpForDamage"
   {
@@ -1650,11 +1650,11 @@
   }
   "wc class spells"
   {
-    "en"     "Your Spell Bar"
+    "en"     "Your Spellbar"
   }
   "wc manage spells"
   {
-    "en"     "Manage your Spells Bar, Spells Book"
+    "en"     "Manage your Spellbar"
   }
   "wc buy spells"
   {
@@ -1662,7 +1662,7 @@
   }
   "spellbar"
   {
-    "en"     "Spell Bar"
+    "en"     "Spellbar"
   }
   "no spell"
   {
@@ -1670,7 +1670,7 @@
   }
   "manage spells"
   {
-    "en"     "Manage Your Spells Bar"
+    "en"     "Manage Your Spellbar"
   }
   "spell menu"
   {
@@ -1726,12 +1726,12 @@
   "wc spellbook2"
   {
     "#format"   "{1:d}"
-    "en"     "SpellBook. (Your Level: {1})"
+    "en"     "Spellbook. (Your Level: {1})"
   }
 
   "wc spellbook"
   {
-    "en"     "SpellBook"
+    "en"     "Spellbook"
   }
   "blocked damage"
   {
@@ -1983,7 +1983,7 @@
   "expose armor activated"
   {
     "#format" "{1:0.1f},{2:0.1f}"
-    "en"     "Your Armor Penetration for this round is increased by @lightgreen{1} @defaultto @lightgreen {2} @defaultpoints."
+    "en"     "Your @greenArmor Penetration @defaultfor this round is increased by @lightgreen{1} @defaultto @lightgreen {2} @defaultpoints."
   }
   "Cloak of Shadow info"
   {
@@ -1992,7 +1992,7 @@
   "cloak of shadow activated"
   {
     "#format" "{1:0.1f},{2:0.1f}"
-    "en"     "Cloak of Shadow increased your resistance by @lightgreen{1} @defaultto @lightgreen{2} @defaultpoints."
+    "en"     "@greenCloak of Shadow @defaultincreases your resistance by @lightgreen{1} @defaultto @lightgreen{2} @defaultpoints."
   }
   "Stealth info"
   {
@@ -2534,7 +2534,7 @@
   "intellect cast"
   {
     "#format" "{1:i}"
-    "en"     "You cast @greenArcane Intellect @defaultand increase your intellect by @lightgreen{1}."
+    "en"     "@greenArcane Intellect @defaultincreases your @greenintellect @defaultby @lightgreen{1}."
   }
   "Rockbiter Weapon info"
   {
@@ -2758,15 +2758,15 @@
   }
   "char data loaded"
   {
-    "en"  "Your data has successfuly loaded, enjoy playing on this realm."
+    "en"  "@lightgreenYour data has successfully loaded, enjoy playing on this realm."
   }
   "char not loaded"
   {
-    "en"  "@lightgreen!Your data is not loaded yet, please wait or try reconnecting if the error repeats contact administrator for help!"
+    "en"  "@lightgreenYour data is not loaded yet, please wait or try reconnecting if the error repeats contact administrator for help."
   }
   "can not load same"
   {
-    "en"  "@lightgreen!You are not allowed to load same character as you play now!"
+    "en"  "@lightgreenYou're not allowed to the character you're playing on!"
   }
   "reboot progress"
   {
@@ -4134,7 +4134,7 @@
   }
   "wc preitems1 menu"
   {
-    "en"  "Choose Type of items you want"
+    "en"  "Choose type of items you want"
   }
   "stamina cast all"
   {
@@ -5499,7 +5499,7 @@
   }
   "select category"
   {
-    "en"  "Select Category"
+    "en"  "Select category"
   }
   "special items"
   {
@@ -5527,7 +5527,7 @@
   }
   "for you"
   {
-    "en"    "(For you)"
+    "en"    "equipment"
   }
   "affected by"
   {
@@ -8581,7 +8581,7 @@
   }
   "wc shops"
   {
-    "en"  "Items"
+    "en"  "Items and shop"
   }
   "item compare"
   {
@@ -8940,7 +8940,7 @@
   }
   "arcaneint cast all"
   {
-    "en"     "You cast Arcane Intellect at @lightgreeneveryone @defaultin your team for half of its effect."
+    "en"     "@greenArcane Intellect increases the @greenintellect @default of @lightgreeneveryone @default in your team."
   }
   "arcaneint aff"
   {

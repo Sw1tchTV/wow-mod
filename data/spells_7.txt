@@ -95,7 +95,7 @@
     "ticks"  "4"
     "baseef"  "4"
     "aoe" "300"
-    "multief"   "0.085"
+    "multief"   "0.105"
     "cooldowntype"  "5"
     "cooldown"  "13.0"
   }

@@ -2124,7 +2124,7 @@ GetRequiredSkill(item)
    return 0;
 }
 
-GetClasses(item,classes[10])
+GetClasses(item,classes[55])
 {
   KvRewind(items);
   new String:info[50];

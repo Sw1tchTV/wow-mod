@@ -1927,10 +1927,8 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
         wc_iPlayerHurtEvent=0;
       }
 
-      new olddmg=damage;
-      new Float:wspeed = GetWeaponSpeed(attacker, true);
-      if(wspeed < 1.0)
-      wspeed = 1.0;
+      int olddmg=damage;
+      float wspeed = GetWeaponSpeed(attacker, true);
       damage=RoundToNearest((float(damage)/2.1+float(damage)/200*GetDamage(attacker)) / wspeed);   //Converting to mod damage from console damage.
       if(GetEventInt(event,"hitgroup")==1)
       {

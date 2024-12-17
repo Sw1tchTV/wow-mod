@@ -458,8 +458,7 @@ public wcRecalculateStats(client) { //Stats, recalculating stats
   }
 
   wcClientsStats[id][ARMORIGNORE]=(float(GetBonusAgi(client))+float(GetAgi(client)))/2.0+wcClientsBonusStats[id][ARMORIGNORE];
-  wcClientsStats[id][ATTACKSPEED]=GetWeaponSpeed(client, false)-1+(float(1)+(float(GetAgi(client)+GetBonusAgi(client)))/(30.0 * float(GetLevel(client)) + 22.0)+wcClientsBonusStats[id][ATTACKSPEED]);
-
+  wcClientsStats[id][ATTACKSPEED]=GetWeaponSpeed(client, false)*(float(1)+(float(GetAgi(client)+GetBonusAgi(client)))/(30.0 * float(GetLevel(client)) + 22.0)+wcClientsBonusStats[id][ATTACKSPEED]);
   float multi = 1.0;
   if(CheckRequirements(client,2,2,2,4) || CheckRequirements(client,6,2,2,4)) //AP, Attack Power Scaling talents
   {
@@ -510,7 +509,8 @@ public wcRecalculateStats(client) { //Stats, recalculating stats
   wcClientsStats[id][RESISTANCE]= float(GetLevel(client))*0.125 + wcClientsBonusStats[id][RESISTANCE];
   //cs
   wcClientsStats[id][CRITCHANCE]=wcClientsBonusStats[id][CRITCHANCE]+0.05+float(GetAgi(client)+GetBonusAgi(client))/( 0.125 * float(GetLevel(client)) + 0.8)/100.0 + float(GetInt(client)+GetBonusInt(client))/(0.25 * float(GetLevel ( client )) +  3.0) / 100.0;
-  wcClientsStats[id][PARRY] = 0.05 + wcClientsBonusStats[id][PARRY];
+  wcClientsStats[id][PARRY] = 0.05 + wcClientsBonusStats[id][PARRY] + (float(GetStr(client)+GetBonusStr(client)) / 6.66)*0.01;
+
   //resilence
   wcClientsStats[id][RESILIENCE] = wcClientsBonusStats[id][RESILIENCE];
   //accuracy

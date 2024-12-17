@@ -1604,7 +1604,7 @@ Float:GetParryChance(client,attacker=0) {
   if(GetBoss(client)>0)
     return 0.08 + spar;
   float strength = wcClientsBonusStats[client][STR] + wcClientsStats[client][STR];
-  return wcClientsStats[client][PARRY] + spar + 0.1 *(strength / (50.0+strength));
+  return (wcClientsStats[client][PARRY] + spar + (strength / 6.66)*0.01);
 }
 public SetParry(client,Float:amount) {
   wcClientsStats[client][PARRY]=amount;
