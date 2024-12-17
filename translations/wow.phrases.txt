@@ -132,7 +132,7 @@
   }
   "kings cast"
   {
-    "en"     "You cast @greenBlessing of Kings @defaultand increase your base stats."
+    "en"     "You cast @greenBlessing of Kings @defaultand increase your @greenbase stats."
   }
   "kings cast all"
   {
@@ -140,7 +140,7 @@
   }
   "kings aff"
   {
-    "en"     "You are affected by @greenBlessing of Kings@default, your base stats are increased by @lightgreen20@perc@default"
+    "en"     "You are affected by @greenBlessing of Kings@default, your @greenbase stats @defaultare increased by @lightgreen20@perc@default"
   }
   "Divine Shield info"
   {
@@ -2330,7 +2330,7 @@
   }
   "Windfury info"
   {
-    "en"     "<Passive> Your physical attacks have a 20%% chance to deal 25%% additional damage"
+    "en"     "<Passive> Your physical attacks have a 25%% chance to deal 25%% additional damage"
   }
   "fear caster"
   {
@@ -10222,7 +10222,7 @@
   }
   "Sparring info"
   {
-    "en" "<Passive> Increases your Parry chance against attackers from the front."
+    "en" "<Passive> Increases your Parry chance."
   }
   "Sparring name"
   {

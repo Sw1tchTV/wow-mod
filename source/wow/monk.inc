@@ -1539,6 +1539,19 @@ public RunParry(victim,attacker,&totaldmg) //Monk Parry
   if (GetDistanceBetween(loc1,loc2) > 750.0)
     return totaldmg;
 
+
+  float clienta[3];
+  float targeta[3];
+  GetClientEyeAngles(attacker, clienta);
+  GetClientEyeAngles(victim, targeta);
+  float angle=clienta[1]-targeta[1];
+  if(angle<0.0)
+    angle*=-1.0;
+  if(angle>180.0)
+    angle = 360.0-angle;
+  if(angle<=90.0)
+    return totaldmg;
+
   new reduceBy = RoundToNearest(float(totaldmg) * GetParryReduce(victim));
 
   wcRunOnParrySpells( victim,attacker,reduceBy,totaldmg);
@@ -1554,19 +1567,9 @@ public RunParry(victim,attacker,&totaldmg) //Monk Parry
 }
 public runSpar(victim, attacker)
 {
-  decl Float:clienta[3],Float:targeta[3];
-  GetClientEyeAngles(attacker, clienta);
-  GetClientEyeAngles(victim, targeta);
-  new Float:anglee=clienta[1]-targeta[1];
-  if(anglee<0.0)
-    anglee*=-1.0;
-  if(anglee>180.0)
-    anglee = 360.0-anglee;
-  if(anglee < 100.0)
-  {
-    addSpar(victim,attacker);
-    g_bSpar[victim]=true;
-  }
+  addSpar(victim,attacker);
+  g_bSpar[victim]=true;
+}
 }
 public addSpar(victim, attacker)
 {
