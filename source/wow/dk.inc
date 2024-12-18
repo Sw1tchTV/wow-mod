@@ -9,7 +9,7 @@
 #define MAX_RUNES 3
 
 new g_ff_runes[65];
-new g_ff_runesTimer[65];
+float g_ff_runesTimer[65];
 
 
 /*** DK Stances ***/
@@ -173,19 +173,21 @@ public Action:RunesTimer(Handle:timer, any:trash) {
       continue;
     if(GetClass(client)!=8) {
       g_ff_runes[client]=0;
-      g_ff_runesTimer[client]=0;
+      g_ff_runesTimer[client]=0.0;
       continue;
     }
     _regenAntiMagic(client);
     if(GetRunes(client) == MAX_RUNES)  {
-      g_ff_runesTimer[client]=0;
+      g_ff_runesTimer[client]=0.0;
       continue;
     }
-    g_ff_runesTimer[client]++;
-    if(g_ff_runesTimer[client] % 5 == 0) // regen speed of bone shield counters
+    g_ff_runesTimer[client]+=0.10; //IF CHANGING THIS, CHANGE THE CREATETIMER AS WELL
+    if(g_ff_runesTimer[client] % 5.0 == 0.0) // regen speed of bone shield counters
       regenBoneShield(client);
-    if(g_ff_runesTimer[client]==8) {
-      g_ff_runesTimer[client]=0;
+
+    float runeregentime = 8.0 * (1.0-GetHasteEffect(client));
+    if(g_ff_runesTimer[client]==runeregentime) {
+      g_ff_runesTimer[client]=0.0;
       _addRunes(client, 1);
     }
   }
@@ -1723,55 +1725,49 @@ public wcRunSpell_8_15(spellid,race,client) //Remorseless Winter
     DeleteEffectData(effid);
   }
   else if(effid!=0)
-  {
-    effectsdata[effid][7]=RemorselessWinterVisualEffect(client);
     CreateTimer((period-0.05), RemorselessWinterDamageEffect, effid, TIMER_REPEAT);
-  }
 }
 
 public Action:RemorselessWinterDamageEffect(Handle:timer, any:effid)
 {
   if (effectsdata[effid][0]==0)
     return Plugin_Stop;
-  int eff = effectsdata[effid][7];
   if (effectsdata[effid][9]!=g_RoundCount    || //round changed
       !IsClientInGame(effectsdata[effid][1]) || //player left
       !IsPlayerAlive(effectsdata[effid][1]))    //player died
   {
     DeleteEffectData(effid);
-    KillEntity(eff);
     return Plugin_Stop;
   }
   int client = effectsdata[effid][1];
   if (GetEngineTime()>=g_fCast[client])
   {
     DeleteEffectData(effid);
-    KillEntity(eff);
     return Plugin_Stop;
   }
 
   char line[255];
-
   int dmg = effectsdata[effid][3];
   int aoe = effectsdata[effid][5];
   int team = effectsdata[effid][6];
+  RemorselessWinterVisualEffect(client);
   wcSpellAoeDamage(client, client, dmg, aoe, team, line);
   return Plugin_Continue;
 }
 
 RemorselessWinterVisualEffect(target)   {
-  new sprite = CreateEntityByName("env_smokestack");
+  int sprite = CreateEntityByName("env_smokestack");
   if (IsValidEntity(sprite)) {
-    DispatchKeyValue(sprite, "basespread", "50");
-    DispatchKeyValue(sprite, "spreadspeed", "150");
-    DispatchKeyValue(sprite, "speed", "16");
-    DispatchKeyValue(sprite, "startsize", "25");
-    DispatchKeyValue(sprite, "endsize", "30");
-    DispatchKeyValue(sprite, "rate", "60");
+    DispatchKeyValue(sprite, "basespread", "60");
+    DispatchKeyValue(sprite, "spreadspeed", "500");
+    DispatchKeyValue(sprite, "speed", "160");
+    DispatchKeyValue(sprite, "startsize", "60");
+    DispatchKeyValue(sprite, "endsize", "61");
+    DispatchKeyValue(sprite, "rate", "600");
     DispatchKeyValue(sprite, "jetlength", "75");
-    DispatchKeyValue(sprite, "twist", "65");
+    DispatchKeyValue(sprite, "twist", "650");
     DispatchKeyValue(sprite, "SmokeMaterial", "particle/fire.vmt");
-    DispatchKeyValue(sprite, "rendercolor", "25 128 240");
+    DispatchKeyValue(sprite, "rendercolor", "25 55 240");
     DispatchKeyValue(sprite, "lifetime", "0.5");
     DispatchSpawn(sprite);
     new Float:Client_Origin[3];
@@ -1779,9 +1775,12 @@ RemorselessWinterVisualEffect(target)   {
     Client_Origin[2] += 2.0;
     TeleportEntity(sprite, Client_Origin, NULL_VECTOR, NULL_VECTOR);
     AcceptEntityInput(sprite, "TurnOn");
-    return sprite;
   }
-  return 0;
+  CreateTimer((0.50), KillRemorselessWinterVisualEffect, sprite, TIMER_REPEAT);
+}
+public Action:KillRemorselessWinterVisualEffect(Handle:timer, any:eff) {
+  KillEntity(eff);
+  return Plugin_Stop;
 }
 
 public wcRunSpell_8_16(spellid,race,victim,client,&totaldmg) //Soul Reaper

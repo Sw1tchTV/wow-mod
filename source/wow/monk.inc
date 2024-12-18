@@ -1570,7 +1570,7 @@ public runSpar(victim, attacker)
   addSpar(victim,attacker);
   g_bSpar[victim]=true;
 }
-}
+
 public addSpar(victim, attacker)
 {
   g_iSpar[victim][attacker] += 0.01;
