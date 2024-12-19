@@ -1769,7 +1769,7 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
 
 stock bool:GetRandomName(race, cat, quality, level, String:name[], size, pStat, handedness) {
   handedness++;
-  decl String:names[50][50];
+  decl String:names[500][500];
   new found=0;
   KvRewind(wcitemnames);
   KvGotoFirstSubKey(wcitemnames);

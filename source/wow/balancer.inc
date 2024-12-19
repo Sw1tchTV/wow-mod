@@ -385,16 +385,14 @@ stock ItemDropBalancer(client)  {
   if(GetClientTeam(client) != 2 && GetClientTeam(client) != 3)  return; //No specs
 
   //Chance
-  //The higher level the lower chance
-  new dice = level / 2;
-  if(dice < 3)  dice = 3;
-  if(GetRandomInt(1,dice) != 1)  return;
+  if(GetRandomFloat(1.0,100.0) >= 1.0*GLOBAL_DROP)  return;
   /*new dropped = GetDroppedItems(client);*/   //No more needed to limit total amount
   /*if(RoundToCeil(1.0*level) < dropped)  return; //Got enough items by now*/
 
   /*new epicChance=(GetRandomInt(1,100)<=10)?4:3;*/
-
-
+  char name[50];
+  GetClientName(client,name,50);
+  PrintToChatAll("Item drop for %s", name);
   GivePlayerRandomItem(client);
 
   //Item request from SQL
