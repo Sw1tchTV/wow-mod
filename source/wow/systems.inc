@@ -902,24 +902,11 @@ public wcSetLevel(client,amount)
    // 80 lvl ratio gold/exp 0.009
 }
 stock _getReqXp(amount)  {
-  new d = amount % 4;
-  new d2 = RoundToFloor(float(amount)/4.0);
   new Float:modifier = 0.2;
-  switch(d)   {
-    case 1:
-    modifier = 0.22;
-    case 2:
-    modifier = 0.28;
-    case 3:
-    modifier = 0.3;
-  }
   //amount = Roun
   //2nd version. 1st had 1.58 power, 220.0 coef
-  new Float:reqxp=Pow(1.49,float(d2));
-  if(amount >= 80) {
-    reqxp *= 1.25;
-  }
-  return RoundToCeil(500.0*reqxp*modifier);
+  new Float:reqxp=Pow(float(amount),1.6);
+  return RoundToCeil(600.0*reqxp*modifier);
 }
 
 stock RemoveLevelSpells(client) {
