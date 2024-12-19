@@ -1053,6 +1053,8 @@ public Action:PlayerDeathEvent(Handle:event,const String:name[],bool:dontBroadca
         }
       }
   }
+  if(GetClass(attacker)==8)
+    SetCdSpell(attacker, 3, 0.0, 5);
   SetHarvest(userid, 0);
   return Plugin_Continue;
 }

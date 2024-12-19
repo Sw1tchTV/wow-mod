@@ -19,7 +19,7 @@
     "level" "16"
     "runes"  "0"
     "regen"  "0"
-    "cooldown"  "12.0"
+    "cooldown"  "15.0"
     "cooldowntype"  "1"
 
     "z" "130.0"  //Z coordinate modifier
@@ -71,11 +71,11 @@
     "event"        "player_attacker"
     "level"        "54"
     "cooldowntype"  "3"
-    "cooldown"      "4.0"
-    "chance"       "30"
+    "cooldown"      "12.0"
+    "chance"       "100"
     "regen"        "15"
-    "multi"         "0.10"
-    "multief"       "0.10"
+    "multi"         "0.15"
+    "multief"       "0.15"
   }
   "6"
   {
@@ -97,7 +97,7 @@
     "event" "player_spellvictim"
     "level" "1"
     "max"   "30"
-    "tick"  "3"
+    "tick"  "2"
   }
   "8"
   {
@@ -121,16 +121,6 @@
     "cooldowntype"  "6"
     "cooldown"      "60.0"
     "distance"  "400.0"
-  }
-  "10"
-  {
-    "name"  "Necrotic Strike"
-    "name_ru"   "TODO"
-    "event" "player_attacker"
-    "level" "77"
-    "chance"  "8" // max 100%
-    "multi" "0.7"
-    "duration"  "8.0"
   }
   "11"
   {

@@ -1872,17 +1872,8 @@ public wcRunSpell(spellid,race,&tmp1,&tmp2,&tmp3,&any:tmp4,&tmp5,&tmp6,&tmp7,&tm
             wcRunSpell_8_8(spellid,race,tmp1); //Mind Freeze
           case 9:
             wcRunSpell_8_9(spellid,race,tmp1); //Raise Ally
-          case 10:
-            if(tmp9==1)
-              wcRunSpell_8_10(spellid,race,tmp2,tmp1,tmp3); //Necrotic Strike
           case 11:
             wcRunSpell_8_11(spellid, race, tmp1); //Death and Decay
-          case 12:
-            return 0;
-          case 13:
-            return 0;
-          case 14:
-            return 0;
           case 15:
             wcRunSpell_8_15(spellid, race, tmp1); //Remorseless Winter
           case 16:

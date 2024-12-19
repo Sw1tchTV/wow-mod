@@ -181,12 +181,12 @@ public Action:RunesTimer(Handle:timer, any:trash) {
       g_ff_runesTimer[client]=0.0;
       continue;
     }
-    g_ff_runesTimer[client]+=0.10; //IF CHANGING THIS, CHANGE THE CREATETIMER AS WELL
+    g_ff_runesTimer[client] = g_ff_runesTimer[client]+0.10; //IF CHANGING THIS, CHANGE THE CREATETIMER AS WELL
     if(g_ff_runesTimer[client] % 5.0 == 0.0) // regen speed of bone shield counters
       regenBoneShield(client);
 
     float runeregentime = 8.0 * (1.0-GetHasteEffect(client));
-    if(g_ff_runesTimer[client]==runeregentime) {
+    if(g_ff_runesTimer[client]>=runeregentime) {
       g_ff_runesTimer[client]=0.0;
       _addRunes(client, 1);
     }
@@ -203,10 +203,8 @@ _setRunes(client, amount) {
 _addRunes(client, amount)  {
   new runes = amount + GetRunes(client);
   runes = GetMinInt(runes, MAX_RUNES);
-  if(GetRunes(client) < MAX_RUNES)  {
-
+  if(GetRunes(client) < MAX_RUNES)
     PlaySound(client, "wc/spells/runes_regen.wav");
-  }
   _setRunes(client, runes);
 }
 
@@ -564,10 +562,20 @@ wcRunSpell_8_4(spellid,race,target,client,&totaldmg)  { //Icy Touch
   return totaldmg;
 }
 
-wcRunSpell_8_5(spellid,race,victim,client,&totaldmg) //Death Strike
+wcRunSpell_8_5(spellid,race,victim,client,&totaldmg) //Death Strike, if changing spellID from 5, make sure to change on death event as well.
 {
-  new random=GetRandomInt(1,100);
-  new chance=wcGetSpellInfoInt(race,spellid,"chance");
+  float multief=wcGetSpellInfoFloat(race,spellid,"multief");
+  char line[255];
+  wcGetTalentInfo(8,1,3,3,client,"multi",line);
+  float talentBonus = StringToFloat(line);
+  if(talentBonus>0.0)
+    multief*=talentBonus;
+  if(wcGetHealth(client)>RoundToNearest(float(GetMaxHealth(client))*(1.0-multief)))
+    return totaldmg;
+  int random=GetRandomInt(1,100);
+  int chance=wcGetSpellInfoInt(race,spellid,"chance");
+
+
   if(chance>=random)
   {
     //CD check
@@ -594,20 +602,11 @@ wcRunSpell_8_5(spellid,race,victim,client,&totaldmg) //Death Strike
 
 
     new Float:multi=wcGetSpellInfoFloat(race,spellid,"multi");
-
-    new Float:talentBonus;
-    decl String:line[255];
-    wcGetTalentInfo(8,1,3,3,client,"multi",line);
-    talentBonus = StringToFloat(line);
     if(talentBonus > 1.0)
       multi *= talentBonus;
 
     new dmg=RoundToNearest(float(totaldmg)*multi);
     totaldmg+=dmg;
-
-    new Float:multief=wcGetSpellInfoFloat(race,spellid,"multief");
-    if(talentBonus > 1.0)
-      multief *= talentBonus;
     RestoreHealthP(client, multief);
 
     decl Float:location[3];
@@ -1307,42 +1306,6 @@ public Action:EndHeartfire(Handle:timer, Handle:datapack)
     KillEntity(effect);
 }
 
-public wcRunSpell_8_10(spellid,race,victim,attacker,&totaldmg) //Necrotic Strike
-{
-  new random=GetRandomInt(1,100);
-  decl String:line[255];
-  {
-    wcGetSpellInfo(race,spellid,"chance",line);
-    new chance=StringToInt(line);
-    if(chance>=random)
-    {
-      wcGetSpellInfo(race,spellid,"multi",line);
-      new Float:multief=StringToFloat(line);
-      decl Float:location[3];
-      GetClientAbsOrigin(attacker,location);
-      EmitAmbientSound("wc/spells/necroticstrike.wav",location);
-      wcGetSpellInfo(race,spellid,"duration",line);
-      new Float:duration=StringToFloat(line);
-      if(HasGlyph(attacker, GLYPH_DK_NECROTIC)) {
-        duration = 6.0;
-        totaldmg = RoundToNearest(1.1 * totaldmg);
-      }
-      if(HasGlyph(attacker, GLYPH_DK_NECROTICSTRIKE))
-        g_iNecrotic[victim]+=RoundToNearest(totaldmg*0.20);
-      SetHM(victim,multief);
-      SetHMT(victim,duration);
-      /*decl String:buffer[30];*/
-      /*Format(buffer,sizeof(buffer),"%T", "necrotic strike ef", attacker);*/
-      AddEMsgAff("necrotic strike ef", true);
-      decl Float:position[3];
-      GetClientAbsOrigin(victim, position);
-      VS_GlowSprite(position, g_ef_greenglow1, 1.00, 3.00, 255);
-      VS_Smoke(position, g_ef_greenglow1, Float:1092616192, 10);
-    }
-  }
-  return totaldmg;
-}
-
 wcRunSpell_8_11(spellid,race,client) //Death and decay
 {
 
@@ -1835,10 +1798,18 @@ public Action:SoulReaperDamageEffect(Handle:timer, Handle:datapack)
   int victim = ReadPackCell(datapack);
   int deaths = ReadPackCell(datapack);
   int roundcount = ReadPackCell(datapack);
-  if ((attacker == 0) || (victim == 0))
+  if (attacker == 0)
     return Plugin_Stop;
-  if (deaths!=GetClientDeaths(victim))
+  if(victim==0) {
+    if(IsPlayerAlive(attacker))
+      _addRunes(attacker, 1);
     return Plugin_Stop;
+  }
+  if (deaths!=GetClientDeaths(victim)){
+    if(IsPlayerAlive(attacker))
+      _addRunes(attacker, 1);
+    return Plugin_Stop;
+  }
   if (roundcount!=g_RoundCount || !IsClientInGame(attacker) ||!IsPlayerAlive(attacker) || !IsClientInGame(victim) || !IsPlayerAlive(victim))
     return Plugin_Stop;
   char vicMsg[300];

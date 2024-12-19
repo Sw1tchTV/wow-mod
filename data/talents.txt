@@ -2309,7 +2309,7 @@
               }
               "1"
               {
-              "increment"  "0.080000"
+              "increment"  "0.050000"
                 "cooldown" "0.1"
                 "name"  "Improved Frost Bolt"
                 "max"  "3"
@@ -2317,7 +2317,7 @@
               }
               "2"
               {
-              "increment"  "0.160000"
+              "increment"  "0.100000"
                 "cooldown" "0.3"
                 "name"  "Improved Frost Bolt"
                 "max"  "3"
@@ -2325,7 +2325,7 @@
               }
               "3"
               {
-              "increment"  "0.250000"
+              "increment"  "0.150000"
                 "cooldown" "0.50"
                 "name"  "Improved Frost Bolt"
                 "max"  "3"
@@ -2704,7 +2704,7 @@
             }
             "1"
             {
-              "increment"  "0.1250000"
+              "increment"  "0.100000"
               "cooldown"  "0.250000"
               "name"  "Improved Fireball"
               "max"  "2"
@@ -2712,7 +2712,7 @@
             }
             "2"
             {
-              "increment"  "0.250000"
+              "increment"  "0.200000"
               "cooldown"  "0.500000"
               "name"  "Improved Fireball"
               "max"  "2"
@@ -7837,14 +7837,14 @@
           }
           "1"
           {
-            "multi"  "0.07000"
+            "multi"  "0.075000"
             "name"  "Butchery"
             "max"  "2"
             "saveid"  "e"
           }
           "2"
           {
-            "multi"  "0.14000"
+            "multi"  "0.15000"
             "name"  "Butchery"
             "max"  "2"
             "saveid"  "e"

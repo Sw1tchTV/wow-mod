@@ -411,10 +411,31 @@ stock BotThinkWarlock(client) {
 }
 
 stock BotThinkDK(client) {
-  new Float:hp = GetFloatHealth(client);
-  if(hp > 0.5)  {
+
+  if(GetCombat(client)>0)  {
     TryCast(client, 2);  //Death Grip
+    int target=GetAimTarget(client,15.0);
+    if(GetClass(target)==3 || GetClass(target)==4 || GetClass(target)==5 || GetClass(target)==6 || GetClass(target)==7)
+      TryCast(client, 8); //Mind Freeze
+    if((GetRunes(client)>1) && target>0) //Save one rune for passive effects since DnD is unreliable
+      TryCast(client, 11); //Death and Decay
   }
+  int targets[MAXPLAYERS];
+  float location[3];
+  GetClientAbsOrigin(client,location);
+  int team=GetClientTeam(client);
+  int amount;
+
+  if(team==2)
+    amount=GetNearClients("@ct",location,targets,300.0);
+  if(team==3)
+    amount=GetNearClients("@t",location,targets,300.0);
+
+  if(amount >= 1) {
+    TryCast(client, 15); //Remorseless Winter
+  }
+
+
   TryCast(client, 9); //Raise Ally
 
 }
