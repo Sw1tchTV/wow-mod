@@ -963,7 +963,7 @@ public Action:PlayerDeathEvent(Handle:event,const String:name[],bool:dontBroadca
         wcKillHeadshot=false;
         Killed(userid, true);
         TriggerDrop(attacker,userid);
-        ItemDropBalancer(attacker);
+        ItemDropBalancer(attacker, userid);
       }
     }
 
