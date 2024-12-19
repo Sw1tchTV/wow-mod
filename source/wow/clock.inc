@@ -49,7 +49,7 @@ InitClock() {
   //DK runes timer
   if(!g_runesTimer)
   {
-    CreateTimer(1.0, RunesTimer,0, TIMER_REPEAT);
+    CreateTimer(0.10, RunesTimer,0, TIMER_REPEAT); //IF CHANGING THIS, CHANGE THE VALUE IN RUNESTIMER AS WELL
     g_runesTimer=true;
   }
   //end

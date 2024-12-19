@@ -287,7 +287,8 @@ public RoundEndEvent(Handle:event,const String:name[],bool:dontBroadcast)
 public PlayerMoveEvent(Handle:event,const String:name[],bool:dontBroadcast)
 {
   new client=GetClientOfUserId(GetEventInt(event,"userid"));
-  SetCasting(client,0,0.0);
+  if((GetClass(client)!=8)) //If DK, moving does not stop channeling.
+    SetCasting(client,0,0.0);
   if(wcClientSparks[client] || FreedomClient[client])
   {
     decl Float:location[3];
@@ -329,7 +330,9 @@ public Action:CheckMove(Handle:timer, any:trash)   {
 }
 
 PlayerMoved(client)  {
-   SetCasting(client,0,0.0);
+  if((GetClass(client)!=8)) //If DK, moving does not stop channeling.
+    SetCasting(client,0,0.0);
+  if((GetClass(client)!=10)) //Druids don't lose stealth when moving
    SetStealth(client, 0.0);
 }
 

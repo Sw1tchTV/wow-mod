@@ -15,12 +15,12 @@ enum struct SpellSetting {
 }
 
 
- SpellSetting g_ff_spellSettings[65][25];
+ SpellSetting g_ff_spellSettings[65][50];
  SpellSetting g_ff_talentSettings[65][MAX_TALENTS+30];
 
 
 clearSpellSettings(client)  {
-  for(new i=0;i<25;i++) {
+  for(new i=0;i<50;i++) {
     g_ff_spellSettings[client][i].SS_isEnabled=true;
     g_ff_spellSettings[client][i].SS_minRage=0;
   }

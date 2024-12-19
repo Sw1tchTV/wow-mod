@@ -344,11 +344,12 @@ stock BotThinkShaman(client) {
   if(team==3)
     amount=GetNearClients("@ct",location,targets,800.0);
 
-  new lowHps=0;
+  float hp = GetFloatHealth(client);
+  int lowHps=0;
   for(new i=0; i < amount; i++)
     if(GetFloatHealth(targets[i]) < 0.8)
       lowHps++;
-  if(lowHps > 2)
+  if((lowHps > 2) || hp < 0.60)
     TryCast(client, 11);  //aoe heal
 
   //Totems
@@ -357,14 +358,12 @@ stock BotThinkShaman(client) {
   if(team==3)
     amount=GetNearClients("@t",location,targets,380.0);
 
-  if(amount > 2)
+  if(amount > 1)
     TryCast(client, 9); //nova totem
-  if(amount > 3)
+  if(amount > 1 && GetCombat(client)>0)
     TryCast(client, 10);  //earthbind totem
 
-  new Float:hp = GetFloatHealth(client);
-
-  if(hp < 0.60)
+  if(hp < 0.80)
     TryCast(client, 6);
 
 }
@@ -412,19 +411,31 @@ stock BotThinkWarlock(client) {
 }
 
 stock BotThinkDK(client) {
-  new Float:hp = GetFloatHealth(client);
 
-  new target=GetAimTarget(client,15.0);
-  new Float:targetHp = 0.0;
-  if(target > 0)
-    targetHp = GetFloatHealth(target);
-  if(hp > 0.5)  {
+  if(GetCombat(client)>0)  {
     TryCast(client, 2);  //Death Grip
+    int target=GetAimTarget(client,15.0);
+    if(GetClass(target)==3 || GetClass(target)==4 || GetClass(target)==5 || GetClass(target)==6 || GetClass(target)==7)
+      TryCast(client, 8); //Mind Freeze
+    if((GetRunes(client)>1) && target>0) //Save one rune for passive effects since DnD is unreliable
+      TryCast(client, 11); //Death and Decay
   }
-  if(targetHp > 0.2)
-    TryCast(client, 4); //Icy Touch
+  int targets[MAXPLAYERS];
+  float location[3];
+  GetClientAbsOrigin(client,location);
+  int team=GetClientTeam(client);
+  int amount;
 
-  TryCast(client, 6); //Death Coil
+  if(team==2)
+    amount=GetNearClients("@ct",location,targets,300.0);
+  if(team==3)
+    amount=GetNearClients("@t",location,targets,300.0);
+
+  if(amount >= 1) {
+    TryCast(client, 15); //Remorseless Winter
+  }
+
+
   TryCast(client, 9); //Raise Ally
 
 }

@@ -13,12 +13,12 @@
       "cost" "20"
       "cooldowntype"  "3"
       "cooldown"  "4.9"
-      "basedmg" "18"
+      "basedmg" "6"
       "mana"  "10"
       "manainc" "0.32"
       "slowtime"  "3.0"
       "slowmulti" "0.85"
-      "multi" "0.20"
+      "multi" "0.36"
   }
   "2"
   {
@@ -32,7 +32,7 @@
     "cooldown"      "25.0"
     "mana"          "20"
     "manainc"       "0.5"
-    "slowtime"      "2.0"
+    "slowtime"      "1.5"
     "breakdmg"      "50"
     "ticktime"      "0.1"
     "slowmulti"     "0.0" //Yes 0.0, to reduce their speed TO zero
@@ -52,10 +52,10 @@
     "cost" "50"
     "cooldowntype"  "5"
     "cooldown"  "5.5"
-    "basedmg" "22"
+    "basedmg" "9"
     "mana"  "10"
     "manainc" "0.32"
-    "multi" "0.28"
+    "multi" "0.40"
   }
   "4"
   {
@@ -69,7 +69,7 @@
     "cost" "39"
     "mana"  "10"
     "manainc" "0.13"
-    "multi" "0.155"
+    "multi" "0.1650"
   }
   "5"
   {
@@ -105,10 +105,10 @@
     "cost" "1000"
     "cooldowntype"  "7"
     "cooldown"  "2.0"
-    "basedmg" "12"
+    "basedmg" "5"
     "mana"  "32"
     "manainc" "1.0"
-    "multi" "0.13"
+    "multi" "0.22"
     "distance"  "400.0"
   }
   "8"
@@ -177,9 +177,9 @@
     "level" "80"
     "cooldowntype"  "13"
     "cooldown"  "15.0"
-    "basedmg" "10"
+    "basedmg" "6"
     "mana"  "240"
-    "multi" "0.063"
+    "multi" "0.1222"
     "distance"  "1700.0"
     "steps"     "12"
     "delay"     "0.5"

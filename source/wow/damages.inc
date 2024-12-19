@@ -157,7 +157,11 @@ stock PushHealed(const client, const amount)  {
 }
 
 //Percentage heals should not crit as they heal a set percent.
-wcHeal(client,target,heal, spellid=0, bool:cancrit=true)
+//Percentage heals crit even in WoW, so Idk who came up with this logic ^
+//There's also a ton of spells like Vampirism that just can't crit heal to avoid double dipping but that's such a non-issue. 
+//Oh no, 0.12*0.12(your crit) chance to heal 1.75*1.75...*0.10 or something because that's how vampirism scales.
+//Changing all heals to be able to crit in the lazy way, im not going through 100 wcheal functions individually...
+wcHeal(client,target,heal, spellid=0, bool:cancrit=true) //CANCRIT IS DECREPIT
 {
   //heal = HealControl(target, heal);
   SetFocusedWill(client,false);
@@ -205,13 +209,13 @@ wcHeal(client,target,heal, spellid=0, bool:cancrit=true)
   }
 
   //crit?
+  if(cancrit==false)
+    cancrit=true; //Decrepits cancrit
   new bool:bCS=false;
   CalculateCrit(client,target,true,"heal",bCS,true);
-  if(cancrit==false)
-    bCS=false;
   if(bCS)
   {
-    heal = RoundToNearest(float(heal)*1.5);
+    heal = RoundToNearest(float(heal)*1.75);
     if(GetClass(client)==4)
     {
       if(CheckRequirements(client,4,1,1,1))
@@ -501,7 +505,7 @@ stock wcPhysicalDamage(userid,attacker,amount, String:amsg[]="", String:vmsg[]="
 stock Float:GetDmgRed(armor, userid)   {
    new Float:dred;
    if (armor>0)
-      dred=float(1) - (float(armor) / (float(armor) + (10.0*float(GetLevel(userid))+20.0)));
+      dred=float(1) - (float(armor) / (float(armor) + (6.0*float(GetLevel(userid))+20.0)));
    else
       dred=1.0;
    if (dred < 0.1)

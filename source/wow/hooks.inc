@@ -1054,6 +1054,8 @@ public Action:PlayerDeathEvent(Handle:event,const String:name[],bool:dontBroadca
         }
       }
   }
+  if(GetClass(attacker)==8)
+    SetCdSpell(attacker, 3, 0.0, 5);
   SetHarvest(userid, 0);
   return Plugin_Continue;
 }
@@ -1804,7 +1806,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
       if(bCS)
       {
         wcGetTalentCritDamageBonus(attacker,spellname,talentcritdamagebonus,true,false);
-        damagemulti*=(1.50+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
+        damagemulti*=(1.75+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
         wcRunTalentSpellCrit(attacker,victim,spellname,damage,damagemulti,isAoe);
         AddEMsgAff("critical msg",true);
       }
@@ -1872,7 +1874,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
 
       if(bCS) {
         wcGetTalentCritDamageBonus(attacker,line,talentcritdamagebonus,false,true); //Impale etc for physical spells
-        damagemulti*=(1.5+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
+        damagemulti*=(1.75+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
         AddEMsgAff( "critical msg", true);
       }
       new armor;
@@ -1928,10 +1930,8 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
         wc_iPlayerHurtEvent=0;
       }
 
-      new olddmg=damage;
-      new Float:wspeed = GetWeaponSpeed(attacker, true);
-      if(wspeed < 1.0)
-      wspeed = 1.0;
+      int olddmg=damage;
+      float wspeed = GetWeaponSpeed(attacker, true);
       damage=RoundToNearest((float(damage)/2.1+float(damage)/200*GetDamage(attacker)) / wspeed);   //Converting to mod damage from console damage.
       if(GetEventInt(event,"hitgroup")==1)
       {
@@ -2039,7 +2039,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
         if(bCS) {
           wcGetTalentCritDamageBonus(attacker,line,talentcritdamagebonus,false,false); //Impale etc for gun damage
           SetHolyPower(attacker,GetHolyPower(attacker)+1);
-          damagemulti*=(1.5+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
+          damagemulti*=(1.75+talentcritdamagebonus)*(1.0 - GetMinusCrit(victim));
           AddEMsgAff( "critical msg", true);
         }
         wcRunEffects(attacker,victim,damage,false,pass,1,olddmg,weaponname,bonushit,bCS);

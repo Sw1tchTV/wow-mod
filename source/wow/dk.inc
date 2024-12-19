@@ -9,7 +9,7 @@
 #define MAX_RUNES 3
 
 new g_ff_runes[65];
-new g_ff_runesTimer[65];
+float g_ff_runesTimer[65];
 
 
 /*** DK Stances ***/
@@ -173,19 +173,21 @@ public Action:RunesTimer(Handle:timer, any:trash) {
       continue;
     if(GetClass(client)!=8) {
       g_ff_runes[client]=0;
-      g_ff_runesTimer[client]=0;
+      g_ff_runesTimer[client]=0.0;
       continue;
     }
     _regenAntiMagic(client);
     if(GetRunes(client) == MAX_RUNES)  {
-      g_ff_runesTimer[client]=0;
+      g_ff_runesTimer[client]=0.0;
       continue;
     }
-    g_ff_runesTimer[client]++;
-    if(g_ff_runesTimer[client] % 5 == 0) // regen speed of bone shield counters
+    g_ff_runesTimer[client] = g_ff_runesTimer[client]+0.10; //IF CHANGING THIS, CHANGE THE CREATETIMER AS WELL
+    if(g_ff_runesTimer[client] % 5.0 == 0.0) // regen speed of bone shield counters
       regenBoneShield(client);
-    if(g_ff_runesTimer[client]==8) {
-      g_ff_runesTimer[client]=0;
+
+    float runeregentime = 8.0 * (1.0-GetHasteEffect(client));
+    if(g_ff_runesTimer[client]>=runeregentime) {
+      g_ff_runesTimer[client]=0.0;
       _addRunes(client, 1);
     }
   }
@@ -201,10 +203,8 @@ _setRunes(client, amount) {
 _addRunes(client, amount)  {
   new runes = amount + GetRunes(client);
   runes = GetMinInt(runes, MAX_RUNES);
-  if(GetRunes(client) < MAX_RUNES)  {
-
+  if(GetRunes(client) < MAX_RUNES)
     PlaySound(client, "wc/spells/runes_regen.wav");
-  }
   _setRunes(client, runes);
 }
 
@@ -473,42 +473,19 @@ public Action:EndPlaguebringer(Handle:timer, Handle:datapack)
   RemoveEffectSpellVic(client,48);
 }
 
-wcRunSpell_8_4(spellid,race,client)  { //Icy Touch
-  //Standard Targetting
-  new target=GetAimTarget(client,15.0);
-  if(target<=0) {
-    if(IsChat(client,Chat:Chat_Target))
-      WCMessage(client,"no target",client);
-    return;
-  }
-  if((GetClientTeam(client)==GetClientTeam(target)) || (!IsPlayerAlive(target)) ) {
-    if(IsChat(client,Chat:Chat_Target))
-      WCMessage(client,"wrong target",client);
-    return;
-  }
+wcRunSpell_8_4(spellid,race,target,client,&totaldmg)  { //Icy Touch
 
-
-  //DK specific
-  new runes = wcGetSpellInfoInt(race,spellid,"runes");
-  if(runes>0)
-    if(!SpendRune(client))  {
-      WCMessage(client, "no runes", client);
-      return;
-  }
-  new regen = wcGetSpellInfoInt(race,spellid,"regen");
-  if(regen>0) AddMana(client, regen);
-
-  //Cooldown
-  new cdtype=wcGetSpellInfoInt(race,spellid,"cooldowntype");
-  new Float:cd=wcGetSpellInfoFloat(race,spellid,"cooldown");
+  if(wcGetSpellInfoInt(race,spellid,"chance") < GetRandomInt(1,100))
+    return totaldmg;
+  int cdtype=wcGetSpellInfoInt(race,spellid,"cooldowntype");
+  float timeleft=GetCDSpell(client,cdtype)-GetTickedTime();
+  if(timeleft > 0.0)
+    return totaldmg;
+  float cd=wcGetSpellInfoFloat(race,spellid,"cooldown");
   SetCdSpell(client, cdtype, cd, spellid);
 
-  //Take mana off
-  new manareq=GetSpellCost(client, spellid);
-  wcSetMana(client,GetMana(client)-manareq);
-
-
-  //Spell Specific variables
+  int regen = wcGetSpellInfoInt(race,spellid,"regen");
+  if(regen>0) AddMana(client, regen);
 
   //Slowdown
   new Float:oldspeed=GetClientSpeed(target);
@@ -582,12 +559,23 @@ wcRunSpell_8_4(spellid,race,client)  { //Icy Touch
   GetClientName(target,name2,30);
   WCMessage(client,"icy touch caster", client, name2, dmgef);
   WCMessage(target,"icy touch target", target, name);
+  return totaldmg;
 }
 
-wcRunSpell_8_5(spellid,race,victim,client,&totaldmg) //Death Strike
+wcRunSpell_8_5(spellid,race,victim,client,&totaldmg) //Death Strike, if changing spellID from 5, make sure to change on death event as well.
 {
-  new random=GetRandomInt(1,100);
-  new chance=wcGetSpellInfoInt(race,spellid,"chance");
+  float multief=wcGetSpellInfoFloat(race,spellid,"multief");
+  char line[255];
+  wcGetTalentInfo(8,1,3,3,client,"multi",line);
+  float talentBonus = StringToFloat(line);
+  if(talentBonus>0.0)
+    multief*=talentBonus;
+  if(wcGetHealth(client)>RoundToNearest(float(GetMaxHealth(client))*(1.0-multief)))
+    return totaldmg;
+  int random=GetRandomInt(1,100);
+  int chance=wcGetSpellInfoInt(race,spellid,"chance");
+
+
   if(chance>=random)
   {
     //CD check
@@ -614,20 +602,11 @@ wcRunSpell_8_5(spellid,race,victim,client,&totaldmg) //Death Strike
 
 
     new Float:multi=wcGetSpellInfoFloat(race,spellid,"multi");
-
-    new Float:talentBonus;
-    decl String:line[255];
-    wcGetTalentInfo(8,1,3,3,client,"multi",line);
-    talentBonus = StringToFloat(line);
     if(talentBonus > 1.0)
       multi *= talentBonus;
 
     new dmg=RoundToNearest(float(totaldmg)*multi);
     totaldmg+=dmg;
-
-    new Float:multief=wcGetSpellInfoFloat(race,spellid,"multief");
-    if(talentBonus > 1.0)
-      multief *= talentBonus;
     RestoreHealthP(client, multief);
 
     decl Float:location[3];
@@ -643,37 +622,20 @@ wcRunSpell_8_5(spellid,race,victim,client,&totaldmg) //Death Strike
 }
 
 
-wcRunSpell_8_6(spellid,race,client)  {
-  //Standard Targetting
-  new target=GetAimTarget(client,15.0);
-  if(target<=0) {
-    if(IsChat(client,Chat:Chat_Target))
-      WCMessage(client,"no target",client);
-    return;
-  }
-  if((GetClientTeam(client)==GetClientTeam(target)) || (!IsPlayerAlive(target)) ) {
-    if(IsChat(client,Chat:Chat_Target))
-      WCMessage(client,"wrong target",client);
-    return;
-  }
-
-  //DK specific
-  new runes = wcGetSpellInfoInt(race,spellid,"runes");
-  if(runes>0)
-    if(!SpendRune(client))  {
-      WCMessage(client, "no runes", client);
-      return;
-  }
-  new regen = wcGetSpellInfoInt(race,spellid,"regen");
-  if(regen>0) AddMana(client, regen);
-
-  //Cooldown
-  new cdtype=wcGetSpellInfoInt(race,spellid,"cooldowntype");
-  new Float:cd=wcGetSpellInfoFloat(race,spellid,"cooldown");
+wcRunSpell_8_6(spellid,race,target,client,&totaldmg) //Death Coil
+{
+  if(wcGetSpellInfoInt(race,spellid,"chance") < GetRandomInt(1,100))
+    return totaldmg;
+  //Check for mana & CD
+  int manareq=GetSpellCost(client, spellid);
+  if(GetMana(client) < manareq)
+    return totaldmg;
+  int cdtype=wcGetSpellInfoInt(race,spellid,"cooldowntype");
+  float timeleft=GetCDSpell(client,cdtype)-GetTickedTime();
+  if(timeleft > 0.0)
+    return totaldmg;
+  float cd=wcGetSpellInfoFloat(race,spellid,"cooldown");
   SetCdSpell(client, cdtype, cd, spellid);
-
-  //Take mana off
-  new manareq=GetSpellCost(client, spellid);
   wcSetMana(client,GetMana(client)-manareq);
 
 
@@ -709,6 +671,7 @@ wcRunSpell_8_6(spellid,race,client)  {
   decl String:line[255];
   wcGetSpellInfo(race,spellid,"name",line);
   wcSpellDamage(target,client,damage, attMsg, vicMsg,line);
+  return totaldmg;
 }
 
 
@@ -1343,42 +1306,6 @@ public Action:EndHeartfire(Handle:timer, Handle:datapack)
     KillEntity(effect);
 }
 
-public wcRunSpell_8_10(spellid,race,victim,attacker,&totaldmg) //Necrotic Strike
-{
-  new random=GetRandomInt(1,100);
-  decl String:line[255];
-  {
-    wcGetSpellInfo(race,spellid,"chance",line);
-    new chance=StringToInt(line);
-    if(chance>=random)
-    {
-      wcGetSpellInfo(race,spellid,"multi",line);
-      new Float:multief=StringToFloat(line);
-      decl Float:location[3];
-      GetClientAbsOrigin(attacker,location);
-      EmitAmbientSound("wc/spells/necroticstrike.wav",location);
-      wcGetSpellInfo(race,spellid,"duration",line);
-      new Float:duration=StringToFloat(line);
-      if(HasGlyph(attacker, GLYPH_DK_NECROTIC)) {
-        duration = 6.0;
-        totaldmg = RoundToNearest(1.1 * totaldmg);
-      }
-      if(HasGlyph(attacker, GLYPH_DK_NECROTICSTRIKE))
-        g_iNecrotic[victim]+=RoundToNearest(totaldmg*0.20);
-      SetHM(victim,multief);
-      SetHMT(victim,duration);
-      /*decl String:buffer[30];*/
-      /*Format(buffer,sizeof(buffer),"%T", "necrotic strike ef", attacker);*/
-      AddEMsgAff("necrotic strike ef", true);
-      decl Float:position[3];
-      GetClientAbsOrigin(victim, position);
-      VS_GlowSprite(position, g_ef_greenglow1, 1.00, 3.00, 255);
-      VS_Smoke(position, g_ef_greenglow1, Float:1092616192, 10);
-    }
-  }
-  return totaldmg;
-}
-
 wcRunSpell_8_11(spellid,race,client) //Death and decay
 {
 
@@ -1712,4 +1639,183 @@ public Action:EndAMZoneAction(Handle:timer, any:effid)
   {
     DeleteEffectData(effid);
   }
+}
+
+public wcRunSpell_8_15(spellid,race,client) //Remorseless Winter
+{
+  char line[255];
+  //DK Runes
+  if(wcGetSpellInfoInt(race,spellid,"runes")>0)
+    if(!SpendRune(client))  {
+      WCMessage(client, "no runes", client);
+      return;
+  }
+  //Runic Power
+  int regen = wcGetSpellInfoInt(race,spellid,"regen");
+  if(regen>0) AddMana(client, regen);
+  //Cooldown
+  wcGetSpellInfo(race,spellid,"cooldowntype",line);
+  int cdtype=StringToInt(line);
+  wcGetSpellInfo(race,spellid,"cooldown",line);
+  float cd=StringToFloat(line);
+  SetCdSpell(client, cdtype, cd, spellid);
+  //Haste
+  wcGetSpellInfo(race,spellid,"period",line); //Getting time between ticks
+  float period=StringToFloat(line); //0.5 by default
+  wcGetSpellInfo(race,spellid,"ticks",line); //Getting ticks
+  int ticks=StringToInt(line); //12 by default
+  ticks += RoundToNearest(float(ticks)*GetHasteEffect(client)); //Adding bonus ticks from haste.
+  period = period*(1.0-GetHasteEffect(client)); //Reducing total time ticked by haste
+  float castTime = float(ticks)*period; //Multiply ticks with period to get cast time if needed, 6 seconds by default.
+  SetCasting(client,spellid,castTime);
+  //Damage
+  wcGetSpellInfo(race,spellid,"base",line);
+  int dmg=StringToInt(line);
+  wcGetSpellInfo(race,spellid,"multi",line);
+  dmg = dmg+RoundToNearest(GetDamage(client)*StringToFloat(line));
+  //Location
+  float location[3];
+  GetClientAbsOrigin(client,location);
+  location[2]+=50;
+  EmitAmbientSound("wc/spells/hellfire.wav",location); 
+  //Setting up effect
+  int team = (GetClientTeam(client)-1) % 2 + 2;
+  wcGetSpellInfo(race,spellid,"aoe",line); //Grab AoE
+  int aoe = StringToInt(line);
+  int effid=CreateEffectData(client,spellid,dmg,0,aoe,team,0,0,g_RoundCount,0);
+  if (period == 0.0 || castTime == 0.0) {
+    LogError("ERROR: remorseless winter corrupted.");
+    DeleteEffectData(effid);
+  }
+  else if(effid!=0)
+    CreateTimer((period-0.05), RemorselessWinterDamageEffect, effid, TIMER_REPEAT);
+}
+
+public Action:RemorselessWinterDamageEffect(Handle:timer, any:effid)
+{
+  if (effectsdata[effid][0]==0)
+    return Plugin_Stop;
+  if (effectsdata[effid][9]!=g_RoundCount    || //round changed
+      !IsClientInGame(effectsdata[effid][1]) || //player left
+      !IsPlayerAlive(effectsdata[effid][1]))    //player died
+  {
+    DeleteEffectData(effid);
+    return Plugin_Stop;
+  }
+  int client = effectsdata[effid][1];
+  if (GetEngineTime()>=g_fCast[client])
+  {
+    DeleteEffectData(effid);
+    return Plugin_Stop;
+  }
+
+  char line[255];
+  int dmg = effectsdata[effid][3];
+  int aoe = effectsdata[effid][5];
+  int team = effectsdata[effid][6];
+  RemorselessWinterVisualEffect(client);
+  wcSpellAoeDamage(client, client, dmg, aoe, team, line);
+  return Plugin_Continue;
+}
+
+RemorselessWinterVisualEffect(target)   {
+  int sprite = CreateEntityByName("env_smokestack");
+  if (IsValidEntity(sprite)) {
+    DispatchKeyValue(sprite, "basespread", "60");
+    DispatchKeyValue(sprite, "spreadspeed", "500");
+    DispatchKeyValue(sprite, "speed", "160");
+    DispatchKeyValue(sprite, "startsize", "60");
+    DispatchKeyValue(sprite, "endsize", "61");
+    DispatchKeyValue(sprite, "rate", "600");
+    DispatchKeyValue(sprite, "jetlength", "75");
+    DispatchKeyValue(sprite, "twist", "650");
+    DispatchKeyValue(sprite, "SmokeMaterial", "particle/fire.vmt");
+    DispatchKeyValue(sprite, "rendercolor", "25 55 240");
+    DispatchKeyValue(sprite, "lifetime", "0.5");
+    DispatchSpawn(sprite);
+    new Float:Client_Origin[3];
+    GetClientAbsOrigin(target,Client_Origin);
+    Client_Origin[2] += 2.0;
+    TeleportEntity(sprite, Client_Origin, NULL_VECTOR, NULL_VECTOR);
+    AcceptEntityInput(sprite, "TurnOn");
+  }
+  CreateTimer((0.50), KillRemorselessWinterVisualEffect, sprite, TIMER_REPEAT);
+}
+public Action:KillRemorselessWinterVisualEffect(Handle:timer, any:eff) {
+  KillEntity(eff);
+  return Plugin_Stop;
+}
+
+public wcRunSpell_8_16(spellid,race,victim,client,&totaldmg) //Soul Reaper
+{
+  if(wcGetSpellInfoInt(race,spellid,"chance") < GetRandomInt(1,100))
+    return totaldmg;
+  char line[255];
+  //DK Runes
+  if(wcGetSpellInfoInt(race,spellid,"runes")>0)
+    if(!SpendRune(client))
+      return totaldmg;
+  //Cooldown
+  int cdtype=wcGetSpellInfoInt(race,spellid,"cooldowntype");
+  float timeleft=GetCDSpell(client,cdtype)-GetTickedTime();
+  if(timeleft > 0.0)
+    return totaldmg;
+  wcGetSpellInfo(race,spellid,"cooldown",line);
+  float cd=StringToFloat(line);
+  SetCdSpell(client, cdtype, cd, spellid);
+  //Runic Power
+  int regen = wcGetSpellInfoInt(race,spellid,"regen");
+  if(regen>0) AddMana(client, regen);
+
+  //Damage
+  wcGetSpellInfo(race,spellid,"base",line);
+  int dmg=StringToInt(line);
+  wcGetSpellInfo(race,spellid,"multi",line);
+  dmg = dmg+RoundToNearest(GetDamage(client)*StringToFloat(line));
+  //Location
+  float location[3];
+  GetClientAbsOrigin(victim,location);
+  location[2]+=50;
+  EmitAmbientSound("wc/spells/butchery.wav",location); 
+
+  new Handle:datapack2=CreateDataPack();
+  WritePackCell(datapack2,client); // Write the client index of owner
+  WritePackCell(datapack2,dmg);
+  WritePackCell(datapack2,victim);
+  WritePackCell(datapack2,GetClientDeaths(victim));
+  WritePackCell(datapack2,g_RoundCount);
+  wcGetSpellInfo(race,spellid,"duration",line);
+  CreateTimer(StringToFloat(line),SoulReaperDamageEffect,datapack2,TIMER_HNDL_CLOSE);
+  AddEMsgAff("Soul Reaper name", true);
+  return totaldmg;
+}
+
+public Action:SoulReaperDamageEffect(Handle:timer, Handle:datapack)
+{
+  ResetPack(datapack);
+  int attacker = ReadPackCell(datapack);
+  int dmg = ReadPackCell(datapack);
+  int victim = ReadPackCell(datapack);
+  int deaths = ReadPackCell(datapack);
+  int roundcount = ReadPackCell(datapack);
+  if (attacker == 0)
+    return Plugin_Stop;
+  if(victim==0) {
+    if(IsPlayerAlive(attacker))
+      _addRunes(attacker, 1);
+    return Plugin_Stop;
+  }
+  if (deaths!=GetClientDeaths(victim)){
+    if(IsPlayerAlive(attacker))
+      _addRunes(attacker, 1);
+    return Plugin_Stop;
+  }
+  if (roundcount!=g_RoundCount || !IsClientInGame(attacker) ||!IsPlayerAlive(attacker) || !IsClientInGame(victim) || !IsPlayerAlive(victim))
+    return Plugin_Stop;
+  char vicMsg[300];
+  char attMsg[300];
+  Format(vicMsg,sizeof(vicMsg),"%T","Soul Reaper vic", victim);
+  Format(attMsg,sizeof(attMsg),"%T","Soul Reaper att", attacker);
+  wcSpellDamage(victim,attacker,dmg, attMsg, vicMsg);
+  return Plugin_Stop;
 }
