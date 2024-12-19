@@ -16,7 +16,7 @@ new g_GhostWolf[65];
 new g_SOTEActive[65];
 new g_FeralLunge[65];
 new g_FeralLungeReady[65];
-
+int g_RazoriceStack[65];
 new wcClientSeal[65];
 //new wcClientSealP[65];
 //seal duration, heal modifier, heal modifier duration
@@ -1809,6 +1809,11 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
         wcRunTalentSpellCrit(attacker,victim,spellname,damage,damagemulti,isAoe);
         AddEMsgAff("critical msg",true);
       }
+      if(g_RazoriceStack[victim]>0) {
+        wcGetTalentInfo(8,2,2,3,attacker,"multi",line);
+        float razoricemulti=StringToFloat(line) * float(g_RazoriceStack[victim]);
+        damagemulti*=1.0+razoricemulti;
+      }
       wcRunEffects(attacker,victim,damage,true,true,1,0,spellname,bonushit,bCS);
       wcRunEffects(attacker,victim,damage,true,true,2,0,spellname,bonushit,bCS);
       damage=RoundToNearest(damagemulti*damage);
@@ -2128,7 +2133,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
         if(GetClass(attacker)==1)
         wcRunTalent_Rampage(attacker, damage);
         if(bCS) {
-          wcRunTalentWeaponCrit(attacker,victim,damagemulti,damage); //Deep Wounds etc
+          wcRunTalentWeaponCrit(attacker,victim,damagemulti,damage); //Deep Wounds etc, keep at bottom of list
         }
 
         if(StrEqual(weaponname, "knife") && GetClass(attacker)==2)
