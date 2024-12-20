@@ -680,6 +680,7 @@ CREATE TABLE `wc_Items` (
   `haste` int(4) NOT NULL DEFAULT '-100',
   `parry` int(4) DEFAULT '0',
   `block` int(4) DEFAULT '0',
+  `block_strength` int(4) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
