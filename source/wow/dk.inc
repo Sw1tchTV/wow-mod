@@ -10,7 +10,6 @@
 
 new g_ff_runes[65];
 float g_ff_runesTimer[65];
-int g_PermaFrostStacks[255][255];
 
 
 /*** DK Stances ***/
@@ -492,10 +491,10 @@ wcRunSpell_8_4(spellid,race,target,client,&totaldmg)  { //Icy Touch
   new Float:oldspeed=GetClientSpeed(target);
   new Float:newspeed=GetNormalSpeed(target);
   new Float:time=wcGetSpellInfoFloat(race,spellid,"duration");
-  new Float:multi= wcGetSpellInfoFloat(race,spellid,"multi");
-  char line[255];
+  new Float:multi=wcGetSpellInfoFloat(race,spellid,"multi");
   if(CheckRequirements(client, 8, 2, 1, 3)) {
-    wcGetTalentInfo(8,2,1,3,client,"slow",line);
+    decl String:line[255];
+    wcGetTalentInfo(8,2,1,3,client,"multi",line);
     new Float:talentMulti = StringToFloat(line);
     multi -= talentMulti;
   }
@@ -532,10 +531,7 @@ wcRunSpell_8_4(spellid,race,target,client,&totaldmg)  { //Icy Touch
   if(HasGlyph(client, GLYPH_DK_HOWLING))  {
     dmgef = RoundToNearest(1.2 * dmgef);
   }
-  if(CheckRequirements(client, 8, 2, 1, 3)) {
-    wcGetTalentInfo(8,2,1,3,client,"multi",line);
-    dmgef = RoundToNearest(StringToFloat(line)*dmgef);
-  }
+
   new team=GetClientTeam(target);
   new effid=CreateEffectData(target,client,ticks,dmgef,aoe,team,0,804,g_RoundCount,GetClientDeaths(target));
   if (tickdelay==0.0 || ticks == 0 || dmgef == 0)
@@ -628,11 +624,6 @@ wcRunSpell_8_5(spellid,race,victim,client,&totaldmg) //Death Strike, if changing
 
 wcRunSpell_8_6(spellid,race,target,client,&totaldmg) //Death Coil
 {
-  if(CheckRequirements(client,8,2,2,1)) {
-    wcRunTalent_FrostStrike(client, target, spellid, totaldmg);
-    return totaldmg;
-  }
-
   if(wcGetSpellInfoInt(race,spellid,"chance") < GetRandomInt(1,100))
     return totaldmg;
   //Check for mana & CD
@@ -702,7 +693,7 @@ wcRunSpell_8_7(victim,&totaldmg)
 }
 
 
-wcRunSpell_8_8(spellid,race,client)  { //Mind Freeze
+wcRunSpell_8_8(spellid,race,client)  {
   //Standard Targetting
   new target=GetAimTarget(client,15.0);
   if(target<=0) {
@@ -736,10 +727,11 @@ wcRunSpell_8_8(spellid,race,client)  { //Mind Freeze
   new manareq=GetSpellCost(client, spellid);
   wcSetMana(client,GetMana(client)-manareq);
 
-  char line[255];
+
   //Spell Specific variables
   new Float:duration = wcGetSpellInfoFloat(race,spellid,"duration");
   if(CheckRequirements(client, 8, 3, 1, 3)) {
+    decl String:line[255];
     wcGetTalentInfo(8,3,1,3,client,"duration",line);
     duration += StringToFloat(line);
   }
@@ -750,27 +742,12 @@ wcRunSpell_8_8(spellid,race,client)  { //Mind Freeze
   GetClientAbsOrigin(target,location);
   EmitAmbientSound("wc/spells/mindfreeze.wav", location);
 
-  int base = wcGetTalentInfo(8,2,1,1,client,"base",line);
-  wcGetTalentInfo(8,2,1,1,client,"duration",line);
-  float multi = StringToFloat(line);
-  int damage = RoundToNearest(float(base)*multi);
-
-  if(CheckRequirements(client, 8,2,1,1))
-    wcSpellDamage(target,client,damage, "", "", "");
-
   //Message
   decl String:name[30],String:name2[30];
   GetClientName(client,name,30);
   GetClientName(target,name2,30);
-  if(CheckRequirements(client, 8,2,1,1)) {
-    WCMessage(client,"mind freeze caster imp", client, name2, damage, duration);
-    WCMessage(target,"mind freeze target imp", target, name, damage, duration);
-  }
-  else
-  {
-    WCMessage(client,"mind freeze caster", client, name2, duration);
-    WCMessage(target,"mind freeze target", target, name, duration);
-  }
+  WCMessage(client,"mind freeze caster", client, name2, duration);
+  WCMessage(target,"mind freeze target", target, name, duration);
 }
 
 public wcRunSpell_8_9(spellid, race, client)  {
@@ -1027,35 +1004,34 @@ wcRunTalent_VampiricBlood(client) { // 1 -> 2 -> 2
   VS_BeamRingPoint(locationvbfx, 5.00, 8.00, g_ef_lgtning, g_ef_lgtning, 100, 300, 3.00, 10.00, 1.00, {255, 24, 25, 255}, 30, 0);
 }
 
-public wcRunTalent_FrostStrike(client, victim, spellid, &totaldmg) //Frost Strike
+public wcRunTalent_FrostStrike(client, victim) // Frost Strike
 {
-  char line[255];
-  wcGetTalentInfo(8,2,2,1,client,"mana",line);
-  int mana = StringToInt(line);
+  decl String:line[255];
+  wcGetTalentInfo(8,2,3,2,client,"mana",line);
+  new mana = StringToInt(line);
   if(mana<=GetMana(client))
   {
-    wcGetTalentInfo(8,2,2,1,client,"chance",line);
-    int chance = StringToInt(line);
+    wcGetTalentInfo(8,2,3,2,client,"chance",line);
+    new chance = StringToInt(line);
     if(HasGlyph(client, GLYPH_DK_FROST))
       chance +=5;
-    int random = GetRandomInt(1,100);
+    new random = GetRandomInt(1,100);
+    if(IsDoubleHand(client))
+      chance+=RoundToNearest(float(chance)*0.50);
     if ( chance >= random )
     {
-      wcGetTalentInfo(8,2,2,1,client,"multi",line);
-      float multi = StringToFloat(line);
-      int damage = RoundToNearest(multi*GetDamage(client));
-      int cdtype=wcGetTalentInfo(8,2,2,1,client,"cooldowntype",line);
-      wcGetTalentInfo(8,2,2,1,client,"cooldown",line);
-      float cd=StringToFloat(line);
-      SetCdSpell(client, cdtype, cd, spellid); //Runs off Death Coil, so no need to check if it's on cooldown.
       wcSetMana(client,GetMana(client)-mana);
+      wcGetTalentInfo(8,2,3,2,client,"multi",line);
+      new Float:multi = StringToFloat(line);
+      new damage = RoundToNearest(multi*GetDamage(client));
+
+      wcGetTalentInfo(4,1,3,1,client,"name",line, false);
       decl String:vicMsg[300], String:attMsg[300];
       Format(vicMsg,sizeof(vicMsg),"%T","froststrike target", victim);
       Format(attMsg,sizeof(attMsg),"%T","froststrike caster", client);
       wcSpellDamage(victim,client, damage, attMsg, vicMsg, line);
     }
   }
-  return totaldmg;
 }
 
 
@@ -1465,6 +1441,15 @@ public Action:EffectDecayAction(Handle:timer, any:effid)
   return Plugin_Continue;
 }
 
+wcRunTalent_8_CuttingChill(client)
+{
+  decl String:line[255];
+  wcGetTalentInfo(8,2,3,3,client,"multi",line);
+  new Float:penetration = GetIgnoreArmor(client)*StringToFloat(line);
+  SetBonusIgnoreArmor(client,GetBonusIgnoreArmor(client)+penetration);
+  wcRecalculateStats(client);
+}
+
 wcRunTalent_8_FotG(client,&damage)
 {
   if(GetNormalSpeed(client)>GetClientSpeed(client))
@@ -1506,6 +1491,18 @@ wcRunTalent_8_ArmorOfFrost(client,attacker)
   WritePackFloat(datapack3,restoreAs);
   CreateTimer(slowtime,RemoveSlowAttack,datapack3,TIMER_HNDL_CLOSE);
 
+}
+
+wcRunTalent_8_PowerOfFrost(client,&mana)
+{
+  if(mana>GetMana(client))
+  {
+    decl String:line[255];
+    wcGetTalentInfo(8,2,1,4,client,"multi",line);
+    mana = RoundToNearest((mana-GetMana(client))*(1+StringToFloat(line))+GetMana(client));
+    if(mana>GetMaxMana(client))
+      mana=GetMaxMana(client);
+  }
 }
 
 wcRunTalent_8_Hypothermia(client)
@@ -1718,69 +1715,7 @@ public Action:RemorselessWinterDamageEffect(Handle:timer, any:effid)
   int team = effectsdata[effid][6];
   RemorselessWinterVisualEffect(client);
   wcSpellAoeDamage(client, client, dmg, aoe, team, line);
-
-  if(CheckRequirements(client,8,2,1,2)) {
-    int clients[65];
-    int amount=0;
-    wcGetTalentInfo(8,2,1,2,client,"multi",line);
-    float slow = StringToFloat(line);
-    wcGetTalentInfo(8,2,1,2,client,"slowtime",line);
-    float slowtime = StringToFloat(line);
-    if(team==2)
-      amount=FindMatchingAlive("@t",clients);
-    else if(team==3)
-      amount = FindMatchingAlive("@ct",clients);
-    for(int i=0;i<amount;i++)  {
-        int clients2 = clients[i];
-        g_PermaFrostStacks[clients2][i]+=1;
-        float oldspeed=GetClientSpeed(clients2);
-        float newspeed=GetNormalSpeed(clients2);
-        for(int x=0;x<g_PermaFrostStacks[clients2][i];x++)
-          newspeed*=slow;
-        if(newspeed<oldspeed)
-        {
-          SetClientSpeed(clients2,newspeed);
-          new Handle:datapack2=CreateDataPack();
-          WritePackCell(datapack2,clients2);
-          WritePackCell(datapack2,i);
-          WritePackCell(datapack2,GetClientDeaths(clients2));
-          WritePackFloat(datapack2,newspeed);
-          CreateTimer(slowtime,RemoveRemorseSlow,datapack2,TIMER_HNDL_CLOSE); //This...works, but it shouldn't. Might cause issues. :)
-        }
-    }
-  }
   return Plugin_Continue;
-}
-
-public Action:RemoveRemorseSlow(Handle:timer, Handle:datapack)
-{
-  ResetPack(datapack); // Set the reading position to the first cell
-  int client=ReadPackCell(datapack);  // Get the client index of owner
-  int clients=ReadPackCell(datapack);
-  int deaths=ReadPackCell(datapack);
-  float oldspeed=ReadPackFloat(datapack); //current speed
-  if (!IsClientInGame(client))
-  {
-    return Plugin_Stop;
-  }
-  if (!IsPlayerAlive(client))
-  {
-    g_PermaFrostStacks[clients][client]=0;
-    return Plugin_Stop;
-  }
-  if (GetClientSpeed(client)!=oldspeed)
-  {
-    return Plugin_Stop;
-  }
-  if (deaths != GetClientDeaths(client)) {
-    g_PermaFrostStacks[clients][client]=0;
-    return Plugin_Stop;
-  }
-  g_PermaFrostStacks[client][clients]=0;
-  //float speed=GetClientSpeed(client);
-  SetClientSpeed(client,GetNormalSpeed(client));
-  SetEntityMoveType(client, MOVETYPE_WALK);
-  return Plugin_Stop;
 }
 
 RemorselessWinterVisualEffect(target)   {
@@ -1883,88 +1818,4 @@ public Action:SoulReaperDamageEffect(Handle:timer, Handle:datapack)
   Format(attMsg,sizeof(attMsg),"%T","Soul Reaper att", attacker);
   wcSpellDamage(victim,attacker,dmg, attMsg, vicMsg);
   return Plugin_Stop;
-}
-
-public wcRunTalent_8_IcyTalons(client) { //Icy Talons
-  if(HasDual(client)) {
-    char line[255];
-    wcGetTalentInfo(8,2,2,2,client,"attackspeed",line);
-    float bonus=StringToFloat(line);
-    SetBonusAttackSpeed(client,GetBonusAttackSpeed(client)+bonus);
-    wcRecalculateStats(client);
-  }
-}
-
-public wcRunTalent_8_ThreatOfThassarian(client, &totaldmg) { //Threat of Thassarian
-  char line[255];
-  wcGetTalentInfo(8,2,2,2,client,"multi",line);
-  float multi=StringToFloat(line);
-  wcGetTalentInfo(8,2,2,2,client,"maxdmg",line);
-  int maxdmg = StringToInt(line);
-  int dmg = totaldmg;
-  if(totaldmg>maxdmg)
-    dmg = maxdmg;
-  int rp = RoundToNearest(dmg*multi);
-  AddMana(client, rp);
-  return totaldmg;
-}
-
-public wcRunTalent_8_RuneOfRazorice(client, victim, &totaldmg) { //Rune of Razorice
-  char line[255];
-  int chance = wcGetTalentInfo(8,2,2,3,client,"chance",line);
-  if(chance>=GetRandomInt(1,100)) {
-    int maxstacks = wcGetTalentInfo(8,2,2,3,client,"stacks",line);
-    g_RazoriceStack[victim]+=1;
-    if(g_RazoriceStack[victim]>maxstacks)
-      g_RazoriceStack[victim]=maxstacks;
-    new Handle:datapack2=CreateDataPack();
-    WritePackCell(datapack2,client); // Write the client index of owner
-    WritePackCell(datapack2,victim);
-    WritePackCell(datapack2,GetClientDeaths(victim));
-    WritePackCell(datapack2,g_RoundCount);
-    wcGetTalentInfo(8,2,2,3,client,"duration",line);
-    CreateTimer(StringToFloat(line),RemoveRazorice,datapack2,TIMER_HNDL_CLOSE);
-  }
-  return totaldmg;
-}
-public Action:RemoveRazorice(Handle:timer, Handle:datapack) {
-
-  ResetPack(datapack);
-  int attacker = ReadPackCell(datapack);
-  int victim = ReadPackCell(datapack);
-  int deaths = ReadPackCell(datapack);
-  int roundcount = ReadPackCell(datapack);
-  if(g_RazoriceStack[victim]==0)
-    return Plugin_Stop;
-  if(victim==0)
-    return Plugin_Stop;
-  if (deaths!=GetClientDeaths(victim)){
-    g_RazoriceStack[victim]=0;
-    return Plugin_Stop;
-  }
-  if (roundcount!=g_RoundCount || !IsClientInGame(attacker) ||!IsPlayerAlive(attacker) || !IsClientInGame(victim) || !IsPlayerAlive(victim))
-    return Plugin_Stop;
-  g_RazoriceStack[victim]-=1;
-  return Plugin_Stop;
-}
-
-public wcRunTalent_8_RunicMastery(client,&mana)
-{
-
-}
-
-public wcRunTalent_8_RunicEmpowerment(client) {
-  if(CheckRequirements(client,8,2,2,4)) {
-    char line[255];
-    g_RunicEmpowerment[client]+=amount-GetMana(client);
-    wcGetTalentInfo(8,2,2,4,client,"runicpower",line);
-    int runicpower = StringToInt(line);
-    PrintToChatAll("RP is %i",runicpower);
-    PrintToChatAll("RE was %i",g_RunicEmpowerment[client]);
-    if(g_RunicEmpowerment[client]>=runicpower) {
-      g_RunicEmpowerment[client]-=runicpower;
-      PrintToChatAll("RE is %i",g_RunicEmpowerment[client]);
-      _addRunes(client, 1);
-    }
-  }
 }

@@ -155,7 +155,7 @@
     "name_ru"   "TODO"
     "level"     "20"
     "physdamage"  "1.10"
-    "rpgeneration"  "1.15"
+    "rpgeneration"  "1.25"
   }
   "14"
   {

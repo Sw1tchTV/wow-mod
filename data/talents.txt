@@ -7956,66 +7956,60 @@
             {
               "0"
               {
-              "name"  "Brain Freeze"
+              "name"  "Runic Power Mastery"
                 "max" "2"
                 "saveid"  "g"
-                "base"  "0"
-                "multi" "0.00"
               }
               "1"
               {
-              "name"  "Brain Freeze"
+              "name"  "Runic Power Mastery"
                 "max" "2"
                 "saveid"  "g"
-                "base"  "5"
-                "multi" "0.10"
+                "bonus" "15"
               }
               "2"
               {
-              "name"  "Brain Freeze"
+              "name"  "Runic Power Mastery"
                 "max" "2"
                 "saveid"  "g"
-                "base" "10"
-                "multi" "0.20"
+                "bonus" "30"
               }
             }
           "2"
           {
             "0"
             {
-              "name"  "Permafrost DK"
+              "name"  "Improved Death Coil"
               "max"   "3"
               "saveid"  "h"
             }
             "1"
             {
-              "name"  "Permafrost DK"
+              "name"  "Improved Death Coil"
               "max"   "3"
               "saveid"  "h"
-              "multi" "0.9900"
-              "slowtime" "2.0"
+              "multi" "1.1"
             }
             "2"
             {
-              "name"  "Permafrost DK"
+              "name"  "Improved Death Coil"
               "max"   "3"
               "saveid"  "h"
-              "multi" "0.9800"
-              "slowtime" "2.0"
+              "multi" "1.2"
             }
             "3"
             {
-              "name"  "Permafrost DK"
+              "name"  "Improved Death Coil"
               "max"   "3"
               "saveid"  "h"
-              "multi" "0.9700"
-              "slowtime" "2.0"
+              "multi" "1.3"
             }
           }
           "3"
           {
             "0"
             {
+              //Multiplier values are correct considering base slowdown is 0.7
               "name"  "Chilblains"
               "max"   "3"
               "saveid"  "l"
@@ -8025,47 +8019,44 @@
               "name"  "Chilblains"
               "max"   "3"
               "saveid"  "l"
-              "multi" "1.1666"
-              "slow"  "0.0250"
+              "multi" "0.03"
             }
             "2"
             {
               "name"  "Chilblains"
               "max"   "3"
               "saveid"  "l"
-              "multi" "1.3333"
-              "slow"  "0.0500"
+              "multi" "0.06"
             }
             "3"
             {
               "name"  "Chilblains"
               "max"   "3"
               "saveid"  "l"
-              "multi" "1.5000"
-              "slow"  "0.0750"
+              "multi" "0.1"
             }
           }
           "4"
           {
             "0"
             {
-              "name"  "Runic Mastery"
+              "name"  "Power of Frost"
                 "max"  "2"
                 "saveid"  "I"
             }
             "1"
             {
-              "name"  "Runic Mastery"
+              "name"  "Power of Frost"
                 "max"  "2"
                 "saveid"  "I"
-                "multi" "1.15"
+                "multi" "0.15"
             }
             "2"
             {
-              "name"  "Runic Mastery"
+              "name"  "Power of Frost"
                 "max"  "2"
                 "saveid"  "I"
-                "multi" "1.30"
+                "multi" "0.3"
             }
           }
         }
@@ -8076,119 +8067,93 @@
           {
             "0"
             {
-              "name"  "Frost Strike"
+              "name"  "Lichborne"
               "max"   "1"
               "saveid"  "4"
             }
             "1"
             {
-              "name"  "Frost Strike"
+              "name"  "Lichborne"
               "max"   "1"
               "saveid"  "4"
-              "mana"  "30"
-              "base"  "15"
-              "multi" "0.42"
-              "chance"  "40"
-              "cooldowntype"  "4"
-              "cooldown"  "2.0"
             }
           }
         "2"
         {
           "0"
           {
-            "name"  "Icy Talons Threat of Thassarian"
-              "max"  "3"
+            "name"  "Armor of Frost"
+              "max"  "2"
               "saveid"  "H"
           }
           "1"
           {
-            "name"  "Icy Talons Threat of Thassarian"
-              "max"  "3"
+            "name"  "Armor of Frost"
+              "max"  "2"
               "saveid"  "H"
-              "attackspeed" "0.0333"
-              "multi"  "0.066"
-              "maxdmg"  "100"
+              "slow"  "0.02"
+              "duration"  "2.0"
           }
           "2"
           {
-            "name"  "Icy Talons Threat of Thassarian"
-              "max"  "3"
+            "name"  "Armor of Frost"
+              "max"  "2"
               "saveid"  "H"
-              "attackspeed" "0.0666"
-              "multi"  "0.133"
-              "maxdmg"  "100"
-          }
-          "3"
-          {
-            "name"  "Icy Talons Threat of Thassarian"
-              "max"  "3"
-              "saveid"  "H"
-              "attackspeed" "0.1000"
-              "multi"  "0.200"
-              "maxdmg"  "100"
+              "slow"  "0.05"
+              "duration"  "2.0"
           }
         }
         "3"
         {
           "0"
           {
-            "name"   "Rune of Razorice"
-            "max"    "3"
+            "name"   "Threat of Thassarian"
+            "max"    "2"
             "saveid" "a"
           }
           "1"
           {
-            "name"   "Rune of Razorice"
-            "max"    "3"
+            "name"   "Threat of Thassarian"
+            "max"    "2"
             "saveid" "a"
-            "multi"  "0.0500"
-            "chance"  "33"
-            "duration"  "5.0"
-            "stacks"  "5"
+            "increment"  "0.12500"
           }
           "2"
           {
-            "name"   "Rune of Razorice"
-            "max"    "3"
+            "name"   "Threat of Thassarian"
+            "max"    "2"
             "saveid" "a"
-            "multi"  "0.0500"
-            "chance"  "66"
-            "duration"  "5.0"
-            "stacks"  "5"
-          }
-          "3"
-          {
-            "name"   "Rune of Razorice"
-            "max"    "3"
-            "saveid" "a"
-            "multi"  "0.0500"
-            "chance"  "100"
-            "duration"  "5.0"
-            "stacks"  "5"
+            "increment"  "0.2500"
           }
         }
         "4"
         {
           "0"
           {
-            "name"  "Runic Empowerment"
-              "max"  "2"
+            "name"  "Force of the Glacier"
+              "max"  "3"
               "saveid"  "G"
           }
           "1"
           {
-            "name"  "Runic Empowerment"
-              "max"  "2"
+            "name"  "Force of the Glacier"
+              "max"  "3"
               "saveid"  "G"
-              "runicpower" "100"
+              "multi" "0.05"
           }
           "2"
           {
-            "name"  "Runic Empowerment"
-              "max"  "2"
+            "name"  "Force of the Glacier"
+              "max"  "3"
               "saveid"  "G"
-              "runicpower" "50"
+              "multi" "0.1"
+          }
+          "3"
+          {
+            "name"  "Force of the Glacier"
+              "max"  "3"
+              "saveid"  "G"
+              "multi" "0.15"
           }
         }
       }
@@ -8199,37 +8164,49 @@
           {
             "0"
             {
-              "name"  "Obliterate"
+              "name"  "Hungering Cold"
               "max"   "1"
               "saveid"  "6"
             }
             "1"
             {
-              "name"  "Obliterate"
+              "name"  "Hungering Cold"
               "max"   "1"
               "saveid"  "6"
-              "event"  "player_attacker"
+              "talentid"  "3" //Hungering Cold
+              "event"  "player_cast"
+              "active"  "1"
               "cooldowntype"   "9"
               "cooldown"       "25.0"
+              "duration"       "1.5"
+              "maxdmg"         "40"
+              "mana"           "40"
+              "distance"       "400.0"
             }
           }
         "2"
         {
           "0"
           {
-            "name"        "Hypothermia"
+            "name"        "Frost Strike"
             "max"         "2"
             "saveid"      "5"
           }
           "1"
           {
-            "name"        "Hypothermia"
+            "multi"       "0.15"
+            "chance"      "15"
+            "mana"        "10"
+            "name"        "Frost Strike"
             "max"         "2"
             "saveid"      "5"
           }
           "2"
           {
-            "name"        "Hypothermia"
+            "multi"       "0.30"
+            "chance"      "15"
+            "mana"        "10"
+            "name"        "Frost Strike"
             "max"         "2"
             "saveid"      "5"
           }
@@ -8238,27 +8215,27 @@
         {
           "0"
           {
-            "name"  "Pillar of Frost"
+            "name"  "Cutting Chill"
             "max"  "3"
             "saveid"  "F"
           }
           "1"
           {
-            "name"  "Pillar of Frost"
+            "name"  "Cutting Chill"
             "max"  "3"
             "saveid"  "F"
             "multi" "0.50"
           }
           "2"
           {
-            "name"  "Pillar of Frost"
+            "name"  "Cutting Chill"
             "max"  "3"
             "saveid"  "F"
             "multi" "1.00"
           }
           "3"
           {
-            "name"  "Pillar of Frost"
+            "name"  "Cutting Chill"
             "max"  "3"
             "saveid"  "F"
             "multi" "1.50"
@@ -8272,17 +8249,18 @@
           {
             "0"
             {
-              "name"  "Howling Blast"
+              "name"  "Hypothermia"
               "max"  "1"
               "saveid"  "J"
             }
             "1"
             {
-              "name"  "Howling Blast"
+              "name"  "Hypothermia"
               "max"  "1"
               "saveid"  "J"
-              "slowmulti" "0.6"
-              "multi" "0.023"
+              "runes" "1"
+              "multi" "0.6"
+              "scaling" "0.023"
               "cooldown"  "12.0"
               "cooldowntype"  "14"
               "talentid"  "5" //Hypothermia
@@ -8293,21 +8271,27 @@
           {
             "0"
             {
-              "name"  "Arctic Assault"
+              "name"  "Obliterate"
               "max"  "2"
               "saveid"  "T"
             }
             "1"
             {
-              "name"  "Arctic Assault"
+              "name"  "Obliterate"
               "max"  "2"
               "saveid"  "T"
+              "chance" "20"
+              "mana"  "10"
+              "multi" "0.20"
             }
             "2"
             {
-              "name"  "Arctic Assault"
+              "name"  "Obliterate"
               "max"  "2"
               "saveid"  "T"
+              "chance" "20"
+              "mana"  "10"
+              "multi" "0.40"
             }
           }
 

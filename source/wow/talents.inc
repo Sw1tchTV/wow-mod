@@ -831,7 +831,7 @@ wcRunOnDeathTalents(victim,attacker)
   }
 }
 
-public wcRunPassiveTalents(client) //Passive talents, spawn talents, onspawn
+public wcRunPassiveTalents(client) //Passive talents, spawn talents
 {
   if(IsZombie(client))
     return;
@@ -980,9 +980,9 @@ public wcRunPassiveTalents(client) //Passive talents, spawn talents, onspawn
     case 8:
     {
       if(CheckRequirements(client,8,1,1,2))
-        wcRunTalent_1_4(client,class,noisy); //Toughness
-      if(CheckRequirements(client,8,2,2,2)) //Icy Talons
-        wcRunTalent_8_IcyTalons(client);
+        wcRunTalent_1_4(client,class,noisy); //Toughness /wcmessage
+      if(CheckRequirements(client,8,2,3,3))
+        wcRunTalent_8_CuttingChill(client);
       if(CheckRequirements(client,8,3,1,4))
         wcRunTalent_8_InateResistance(client);
     }
@@ -1133,7 +1133,7 @@ public wcRunTalentSpellCrit(attacker,victim,String:spellname[],&damage,&Float:da
   }
 }
 
-public wcRunTalentWeaponCrit(attacker,victim,&Float:damagemulti, &damage) //This procs off gun/knife attacks. On crit. Oncrit.
+public wcRunTalentWeaponCrit(attacker,victim,&Float:damagemulti, &damage) //This procs off gun/knife attacks.
 {
   new class=GetClass(attacker);
   if(!IsZombie(attacker))  switch(class)
@@ -1149,11 +1149,6 @@ public wcRunTalentWeaponCrit(attacker,victim,&Float:damagemulti, &damage) //This
     {
       if(CheckRequirements(attacker,6,2,2,1))
         wcRunTalent_6_9(attacker);
-    }
-    case 8:
-    {
-      if(CheckRequirements(attacker,8,2,2,2) && (IsDoubleHand(attacker)))
-        wcRunTalent_8_ThreatOfThassarian(attacker,damage);
     }
     case 9:
     {
@@ -1288,6 +1283,8 @@ public wcRunTalentHit(attacker,victim,String:source[],bool:spell,&damage,prio,ol
     }
     case 8:
     {
+      if(CheckRequirements(attacker,8,2,3,2) && prio ==1 && !spell)
+        wcRunTalent_FrostStrike(attacker,victim);
       if(CheckRequirements(attacker,8,2,2,4) && prio ==2)
         wcRunTalent_8_FotG(attacker,damage);
       if(CheckRequirements(attacker,8,1,4,2) && prio == 1 && !spell)
