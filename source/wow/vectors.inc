@@ -936,8 +936,6 @@ public GetMana(client)
 
 public wcSetMana(client,amount)
 {
-  if(CheckRequirements(client,8,2,1,4))
-  wcRunTalent_8_PowerOfFrost(client,amount);
   if((GetMaxMana(client) > 0) && (GetMaxMana(client) < amount))
   amount = GetMaxMana(client);
   wcClientsStats[GetPlayerID(client)][CURMP]=float(amount);

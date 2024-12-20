@@ -4615,7 +4615,7 @@
   }
   "Obliterate info"
   {
-    "en"    "Has a chance to increase your physical damage on targets who are slowed. Gives 10 Runic Power.\n    Rank 1: +20%% damage\n    Rank 2: +40%% damage"
+    "en"    "Placeholder"
   }
   "Blood Strike info"
   {
@@ -4659,7 +4659,7 @@
   }
   "Icy Touch info"
   {
-    "en"    "At cost of 1 rune you slowdown enemy\n to 80 percent speed for 4 seconds and\napply a poison for 4 seconds\nGenerates 10 Runic Power, 50% more if in Frost Presence"
+    "en"    "Slows your opponent by 20%% and applies a damage over time effect on them."
   }
   "death strike"
   {
@@ -8092,7 +8092,7 @@
   }
   "Frost Strike info"
   {
-    "en" "20%% chance to deal additional magic damage on the target, scales from attack power.\n    Costs 10 runic power and has a 50%% higher chance to proc with a 2-handed weapon.\n    Rank 1: 15%% damage\n    Rank 2: 30%% damage"
+    "en" "Placeholder"
   }
   "Power of Frost info"
   {
@@ -8100,7 +8100,7 @@
   }
   "Hypothermia info"
   {
-    "en"		"Deal a massive amount of spell damage upon a target enemy, consuming all runic power. Costs 1 rune."
+    "en"		"Placeholder"
   }
   "Virulance info"
   {
@@ -10527,10 +10527,101 @@
   "Admin hp set"
   {
     "#format" "{1:s},{2:1.i}"
-    "en"    "Admin @green{1} @defaultset your hp to @lightgreen{2}."
+    "en"    "Admin {1} set your hp to {2}."
   }
   "adm cmd hp syntax"
   {
     "en"    "wc_hp <player (@all,@ct,@t,#userid)> <amount>"
+  }
+  "mind freeze caster imp"
+  {
+    "#format" "{1:s},{2:i},{3:0.2f}"
+    "en"     "You cast @greenMind Freeze @defaultat @lightgreen{1}, @defaultdamaging them for @lightgreen{2} magic damage @defaultand @greensilencing @defaultthem for @lightgreen{3} seconds."
+  }
+  "mind freeze target imp"
+  {
+    "#format" "{1:s},{2:i},{3:0.2f}"
+    "en"     "@lightgreen{1} @defaultcasts @greenMind Freeze @defaultat you, damaging you for @lightgreen{2} magic damage @defaultand @greensilencing @defaultfor @lightgreen{3} seconds."
+  }
+  "Brain Freeze name"
+  {
+    "en"     "Brain Freeze"
+  }
+  "Brain Freeze info"
+  {
+    "en"     "Placeholder"
+  }
+
+  "Permafrost DK name"
+  {
+    "en"     "Permafrost"
+  }
+  "Permafrost DK info"
+  {
+    "en"     "Placeholder"
+  }
+  "Chilblains name"
+  {
+    "en"     "Chilblains"
+  }
+  "Chilblains info"
+  {
+    "en"     "Placeholder"
+  }
+  "Runic Mastery name"
+  {
+    "en"     "Runic Mastery"
+  }
+  "Runic Mastery info"
+  {
+    "en"     "Placeholder"
+  }
+  "Icy Talons Threat of Thassarian name"
+  {
+    "en"     "Icy Talons / Threat of Thassarian"
+  }
+  "Icy Talons Threat of Thassarian info"
+  {
+    "en"     "Placeholder"
+  }
+  "Rune of Razorice name"
+  {
+    "en"     "Rune of Razorice"
+  }
+  "Rune of Razorice info"
+  {
+    "en"     "Placeholder"
+  }
+  "Runic Empowerment name"
+  {
+    "en"     "Runic Empowerment"
+  }
+  "Runic Empowerment info"
+  {
+    "en"     "Placeholder"
+  }
+  "Pillar of Frost name"
+  {
+    "en"     "Pillar of Frost"
+  }
+  "Pillar of Frost info"
+  {
+    "en"     "Placeholder"
+  }
+  "Howling Blast name"
+  {
+    "en"     "Howling Blast"
+  }
+  "Howling Blast info"
+  {
+    "en"     "Placeholder"
+  }
+  "Arctic Assault name"
+  {
+    "en"     "Arctic Assault"
+  }
+  "Arctic Assault info"
+  {
+    "en"     "Placeholder"
   }
 }
