@@ -963,6 +963,7 @@ public Action:PlayerDeathEvent(Handle:event,const String:name[],bool:dontBroadca
         wcKillHeadshot=false;
         Killed(userid, true);
         TriggerDrop(attacker,userid);
+        ItemDropBalancer(attacker, userid);
       }
     }
 
@@ -2048,10 +2049,8 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
         }
         wcRunEffects(attacker,victim,damage,false,pass,1,olddmg,weaponname,bonushit,bCS);
         new tmp1=damage;
-        wcRunEffects(attacker,victim,damage,false,pass,2,olddmg,weaponname,bonushit,bCS);
-
-        damage=RoundToNearest(damagemulti*damage);
         
+        damage=RoundToNearest(damagemulti*damage);
         
         if(bVanish[attacker])
         {
@@ -2140,7 +2139,7 @@ public Action:PlayerHurtEvent(Handle:event,const String:name[],bool:dontBroadcas
         {
           wcRunTalent_RogueVampirism(attacker, damage, victim);
         }
-
+        wcRunEffects(attacker,victim,damage,false,pass,2,olddmg,weaponname,bonushit,bCS);
       }
     }
     //else  damage=0;

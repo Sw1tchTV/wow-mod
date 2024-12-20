@@ -378,23 +378,32 @@ KpdRule(client, damage, type=1, level=0) {
  * Give out rare-epic items to 5-84 levels functionality
  * v2: No longer a 85 limitation, as it is dynamic now.
  */
-stock ItemDropBalancer(client)  {
+stock ItemDropBalancer(client, victim=0)  {
   //Verify if person is eligable for drop
   new level = GetLevel(client);
   if(level < 5) return;
   if(GetClientTeam(client) != 2 && GetClientTeam(client) != 3)  return; //No specs
-
+  float chance = 1.0;
   //Chance
-  //The higher level the lower chance
-  new dice = level / 2;
-  if(dice < 3)  dice = 3;
-  if(GetRandomInt(1,dice) != 1)  return;
+  if (victim>0 && IsFakeClient(victim)) {
+    switch(SERVER_LEVEL_POLICY)
+    {
+      case 0: chance *= BOT_NORMAL_RATE;
+      case 1: chance *= BOT_HIGH_RATE;
+      case 2: chance *= BOT_NORMAL_RATE;
+    }
+    PrintToChatAll("Bot kill, chance: %f", chance);
+  }
+  PrintToChatAll("Item chance %f, needed %f", chance, 1.0*GLOBAL_DROP);
+  if(GetRandomFloat(1.0,100.0)/chance >= 1.0*GLOBAL_DROP)  return;
+  
   /*new dropped = GetDroppedItems(client);*/   //No more needed to limit total amount
   /*if(RoundToCeil(1.0*level) < dropped)  return; //Got enough items by now*/
 
   /*new epicChance=(GetRandomInt(1,100)<=10)?4:3;*/
-
-
+  char name[50];
+  GetClientName(client,name,50);
+  PrintToChatAll("Item drop for %s", name);
   GivePlayerRandomItem(client);
 
   //Item request from SQL

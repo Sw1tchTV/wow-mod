@@ -577,6 +577,8 @@ public OtherPlayerMenu(client,id)
    // block chance
    Format(buffer,sizeof(buffer),"%T","block",client,RoundToNearest(GetBlockChance(id) * 100.0));
    AddMenuItem(menu_op,"block",buffer,ITEMDRAW_DISABLED);
+   Format(buffer,sizeof(buffer),"%T","block strength",client,GetBlockStrength(id));
+   AddMenuItem(menu_op,"block_str",buffer,ITEMDRAW_DISABLED);
    //end
    // Spell Reduction
    new sred;
@@ -6067,6 +6069,18 @@ public ItemInfMenu(client,UniqueItem item,bool:back)
       Format(fbuffer, sizeof(fbuffer), "%T", "bonus parry", client, RoundToNearest(bufferf*100.0));
       AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
    }
+    bufferf=item.Item_block;
+    if (bufferf>0.0)
+    {
+      Format(fbuffer, sizeof(fbuffer), "%T", "bonus block", client, RoundToNearest(bufferf*100.0));
+      AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
+    }
+    bufferi=item.Item_block_strength;
+    if (bufferi>0.0)
+    {
+      Format(fbuffer, sizeof(fbuffer), "%T", "bonus block strength", client, bufferi);
+      AddMenuItem(menu_iteminf,info,fbuffer,ITEMDRAW_DISABLED);
+    }
    bufferi=item.Item_effect;
    if (bufferi>0)
    {
@@ -6365,6 +6379,8 @@ public wcPlayerStats(client)
    // block chance
    Format(buffer,sizeof(buffer),"%T","block",client,RoundToNearest(GetBlockChance(client) * 100.0));
    AddMenuItem(menu_playerstats,"block",buffer,ITEMDRAW_DISABLED);
+   Format(buffer,sizeof(buffer),"%T","block strength",client,GetBlockStrength(client));
+   AddMenuItem(menu_playerstats,"block strength",buffer,ITEMDRAW_DISABLED);
    //end
    // Spell Reduction
    new sred;

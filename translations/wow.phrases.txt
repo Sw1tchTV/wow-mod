@@ -1361,6 +1361,11 @@
     "#format"	"{1:i}"
     "en"			"Block Chance: {1}%"
   }
+  "block strength"
+  {
+    "#format"	"{1:i}"
+    "en"			"Block Strength: {1}"
+  }
   "critical strike hit"
   {
     "#format"	"{1:i}"
@@ -1414,6 +1419,21 @@
   {
     "#format"	"{1:i}"
     "en"			"Bonus Haste: {1}"
+  }
+  "bonus parry"
+  {
+    "#format"	"{1:i}"
+    "en"			"Bonus Parry: {1}"
+  }
+  "bonus block"
+  {
+    "#format"	"{1:i}"
+    "en"			"Bonus Block: {1}"
+  }
+  "bonus block strength"
+  {
+    "#format"	"{1:i}"
+    "en"			"Bonus Block Strength: {1}"
   }
   "maxhp"
   {
@@ -8614,6 +8634,14 @@
   "name haste"
   {
     "en"  "Haste"
+  }
+  "name block"
+  {
+    "en"  "Block"
+  }
+  "name block strength"
+  {
+    "en"  "Block Strength"
   }
   "name as"
   {

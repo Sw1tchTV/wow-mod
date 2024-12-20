@@ -334,8 +334,16 @@ AddItemBonuses(id, UniqueItem item, &effect, &Float:rating)  {
     rating+= bufferf * RATING_HASTE;
 
     bufferf=item.Item_parry; //parry
-    wcClientsStats[id][PARRY]+=bufferf;
+    wcClientsBonusStats[id][PARRY]+=bufferf;
     rating+= bufferf * RATING_PARRY;
+
+    bufferf=item.Item_block; //block
+    wcClientsBonusStats[id][BLOCK]+=bufferf;
+    rating+= bufferf * RATING_BLOCK;
+
+    bufferf=float(item.Item_block_strength); //block strength
+    wcClientsBonusStats[id][BLOCKSTR]+=bufferf;
+    rating+= bufferf * RATING_BLOCK_STR;
 
     bufferf=float(item.Item_effect);
     if (bufferf != float(0))
@@ -425,6 +433,9 @@ Float:GetItemRating(UniqueItem item)  {
     bufferf=item.Item_parry; //parry
     rating+= bufferf * RATING_PARRY;
 
+    bufferf=item.Item_block; //block
+    rating+= bufferf * RATING_BLOCK;
+
     bufferf=float(item.Item_weapon_ap); //weapon_ap
     rating+= bufferf * RATING_DAMAGE;
 
@@ -509,8 +520,12 @@ public wcRecalculateStats(client) { //Stats, recalculating stats
   wcClientsStats[id][RESISTANCE]= float(GetLevel(client))*0.125 + wcClientsBonusStats[id][RESISTANCE];
   //cs
   wcClientsStats[id][CRITCHANCE]=wcClientsBonusStats[id][CRITCHANCE]+0.05+float(GetAgi(client)+GetBonusAgi(client))/( 0.125 * float(GetLevel(client)) + 0.8)/100.0 + float(GetInt(client)+GetBonusInt(client))/(0.25 * float(GetLevel ( client )) +  3.0) / 100.0;
+  //parry
   wcClientsStats[id][PARRY] = 0.05 + wcClientsBonusStats[id][PARRY] + (float(GetStr(client)+GetBonusStr(client)) / 6.66)*0.01;
-
+  //block
+  wcClientsStats[id][BLOCK] = wcClientsBonusStats[id][BLOCK];
+  //block strength
+  wcClientsStats[id][BLOCKSTR] = 15 + wcClientsBonusStats[id][BLOCKSTR];
   //resilence
   wcClientsStats[id][RESILIENCE] = wcClientsBonusStats[id][RESILIENCE];
   //accuracy
@@ -3157,6 +3172,14 @@ Float:GetHasteEffect(client)
 
 GetHaste(client)  {
   return RoundToNearest(wcClientsStats[client][HASTE] + wcClientsBonusStats[client][HASTE]);
+}
+
+GetBlockStrength(client)  {
+  return RoundToNearest(wcClientsStats[client][BLOCKSTR]);
+}
+
+GetBlockStrengthBonus(client)  {
+  return RoundToNearest(wcClientsBonusStats[client][BLOCKSTR]);
 }
 
 AddHaste(client, Float:amount)  {

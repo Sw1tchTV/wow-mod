@@ -313,6 +313,8 @@ bool:LoadItemCode(Handle:query, id, bool:noSQL=false)  {
     item.Item_speed = float(GetSQLDataInt(query,"speed")) / 100.0;
     item.Item_acc = float(GetSQLDataInt(query,"acc")) / 100.0;
     item.Item_parry = float(GetSQLDataInt(query,"parry")) / 100.0;
+    item.Item_block = float(GetSQLDataInt(query,"block")) / 100.0;
+    item.Item_block_strength = GetSQLDataInt(query,"block_strength");
 
     item.Item_resilence = GetSQLDataInt(query,"resilence");
     item.Item_armor = GetSQLDataInt(query,"armor");
@@ -457,6 +459,8 @@ stock SaveItemCode(UniqueItem item)  {
   len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `speed` = '%i'", RoundToNearest(item.Item_speed*100.0));
   len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `acc` = '%i'", RoundToNearest(item.Item_acc*100.0));
   len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `parry` = '%i'", RoundToNearest(item.Item_parry*100.0));
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `block` = '%i'", RoundToNearest(item.Item_block*100.0));
+  len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `block_strength` = '%i'", item.Item_block_strength);
 
   len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `resilence` = '%i'", item.Item_resilence);
   len+=Format(profbuffer[len],sizeof(profbuffer)-len,", `armor` = '%i'", item.Item_armor);
@@ -590,6 +594,12 @@ stock GetItemProperties(UniqueItem item, itemId, uniqueId=-1)  {
         item.Item_regen=uniItem.Item_regen;
       if(uniItem.Item_haste>-100)
         item.Item_haste=uniItem.Item_haste;
+      if(uniItem.Item_parry>0)
+        item.Item_parry=uniItem.Item_parry;
+      if(uniItem.Item_block>0)
+        item.Item_block=uniItem.Item_block;
+      if(uniItem.Item_block_strength>0)
+        item.Item_block_strength=uniItem.Item_block_strength;
       if(uniItem.Item_ai>-100)
         item.Item_ai=uniItem.Item_ai;
       if(uniItem.Item_weapon_ap>-1)
@@ -733,6 +743,8 @@ stock GetStandardItem(UniqueItem item, id) {
   item.Item_ai = KvGetNum(items, "ai", 0);
   item.Item_haste = KvGetNum(items, "haste", 0);
   item.Item_parry = KvGetFloat(items, "parry", 0.0);
+  item.Item_block = KvGetFloat(items, "block", 0.0);
+  item.Item_block_strength = KvGetNum(items, "block_strength", 0);
 
   item.Item_as = KvGetFloat(items, "as", 0.0);
   item.Item_cs = KvGetFloat(items, "cs", 0.0);
@@ -795,6 +807,8 @@ stock GiveItemUnknownProps(UniqueItem item)  {
 	item.Item_ai=0;
 	item.Item_haste=0;
 	item.Item_parry=0.0;
+  item.Item_block=0.0;
+  item.Item_block_strength=0;
 	
 	item.Item_as=0.0;
 	item.Item_cs=0.0;
@@ -1385,6 +1399,14 @@ Float:addTempItem(client, UniqueItem item) {
     wcClientsBonusStats[id][PARRY]+=bufferf;
     rating+= bufferf * RATING_PARRY;
 
+    bufferf=item.Item_block;
+    wcClientsBonusStats[id][BLOCK]+=bufferf;
+    rating+= bufferf * RATING_BLOCK;
+
+    bufferf=float(item.Item_block_strength);
+    wcClientsBonusStats[id][BLOCKSTR]+=bufferf;
+    rating+= bufferf * RATING_BLOCK_STR;
+
     wcRecalculateStats(client);
   }
   return rating;
@@ -1481,6 +1503,14 @@ Float:removeTempItem(client, UniqueItem item)  {
     bufferf=item.Item_parry;
     wcClientsBonusStats[id][PARRY]-=bufferf;
     rating-= bufferf * RATING_PARRY;
+
+    bufferf=item.Item_block;
+    wcClientsBonusStats[id][BLOCK]-=bufferf;
+    rating-= bufferf * RATING_BLOCK;
+
+    bufferf=float(item.Item_block_strength);
+    wcClientsBonusStats[id][BLOCKSTR]-=bufferf;
+    rating-= bufferf * RATING_BLOCK_STR;
 
     wcRecalculateStats(client);
   }
@@ -1769,7 +1799,7 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
 
 stock bool:GetRandomName(race, cat, quality, level, String:name[], size, pStat, handedness) {
   handedness++;
-  decl String:names[50][50];
+  decl String:names[500][500];
   new found=0;
   KvRewind(wcitemnames);
   KvGotoFirstSubKey(wcitemnames);
@@ -1983,6 +2013,9 @@ stock SetRandomValues(UniqueItem item) {
     }
     case 6: {
       dred = dreds[1];
+      if (item.Item_category == 18) {
+        dred = dreds[2];
+      }
       dmg = 0.7;
       sp = 0.7;
       armorType = 2;
@@ -2055,7 +2088,7 @@ stock SetRandomValues(UniqueItem item) {
   //Select main stat to use
   char race_string[10], agi_string[10], int_string[10], sta_string[10], str_string[10], ap_string[10], sp_string[10];
   char aspd_string[10], mspd_string[10], crit_string[10], haste_string[10], parry_string[10], acc_string[10], pen_string[10];
-  char regen_string[10], res_string[10], main_stat[10];
+  char regen_string[10], res_string[10], main_stat[10], block_string[10], block_str_string[10];
   IntToString(classes[0], race_string, sizeof(race_string));
   UniqueItemStatsDB.Rewind();
   UniqueItemStatsDB.JumpToKey(race_string);
@@ -2071,6 +2104,8 @@ stock SetRandomValues(UniqueItem item) {
   UniqueItemStatsDB.GetString("crit", crit_string, 10, "0");
   UniqueItemStatsDB.GetString("haste", haste_string, 10, "0");
   UniqueItemStatsDB.GetString("parry", parry_string, 10, "0");
+  UniqueItemStatsDB.GetString("block", block_string, 10, "0");
+  UniqueItemStatsDB.GetString("block_str", block_str_string, 10, "0");
   UniqueItemStatsDB.GetString("acc", acc_string, 10, "0");
   UniqueItemStatsDB.GetString("pen", pen_string, 10, "0");
   UniqueItemStatsDB.GetString("mana_regen", regen_string, 10, "0");
@@ -2079,14 +2114,15 @@ stock SetRandomValues(UniqueItem item) {
   int agi=StringToInt(agi_string), inte=StringToInt(int_string), sta=StringToInt(sta_string), str=StringToInt(str_string), ap=StringToInt(ap_string), spellpower=StringToInt(sp_string);
   int haste=StringToInt(haste_string), pen=StringToInt(pen_string), regen=StringToInt(regen_string), res=StringToInt(res_string);
   int aspd=StringToInt(aspd_string), mspd=StringToInt(mspd_string), crit=StringToInt(crit_string), parry=StringToInt(parry_string), acc=StringToInt(acc_string);
+  int block=StringToInt(block_string), block_str=StringToInt(block_str_string);
   int total_primary_stats = str+agi+inte;
-  int total_secondary_stats = ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry+acc;
+  int total_secondary_stats = ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry+acc+block+block_str;
   int roll = GetRandomInt(0, total_primary_stats);
-  int selected_stats_weightings[5];
+  int selected_stats_weightings[4];
   if(roll < str) {
     main_stat = "str";
     selected_stats_weightings[0]=str;
-  } else if(roll < str+agi) {
+  } else if(roll < str+agi && item.Item_category != 18) {
     main_stat = "agi";
     selected_stats_weightings[0]=agi;
   } else {
@@ -2096,7 +2132,8 @@ stock SetRandomValues(UniqueItem item) {
   selectedStats[0] = main_stat;
   selectedStats[1] = "sta";
   selected_stats_weightings[1]=sta;
-  for(int i=2;i<5;i++) {
+  int i=2;
+  do {
     roll = GetRandomInt(0, total_secondary_stats);
     if(roll < ap && (race != 3 && race != 5 && race != 7 && race != 9) && (item.Item_category != 18) && !StrEqual(main_stat, "int")) {
       selectedStats[i] = "ap";
@@ -2132,11 +2169,25 @@ stock SetRandomValues(UniqueItem item) {
       selectedStats[i] = "acc";
       selected_stats_weightings[i]=acc;
     }
-  }
+    else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry+acc+block && item.Item_category == 18) {
+      selectedStats[i] = "block";
+      selected_stats_weightings[i]=block;
+    }
+    else if(roll < ap+spellpower+haste+pen+regen+res+crit+mspd+aspd+parry+acc+block+block_str && item.Item_category == 18) {
+      selectedStats[i] = "block_str";
+      selected_stats_weightings[i]=block_str;
+    }
+    if(selected_stats_weightings[i]>0 && i==3 && !StrEqual(selectedStats[i], selectedStats[i-1])) {
+      i++;
+    }
+    else if(selected_stats_weightings[i]>0 && i==2) {
+      i++;
+    }
+  } while (i<4);
 
   int total_selected_stats;
-  for(int i=0;i<5;i++) {
-    total_selected_stats+=selected_stats_weightings[i];
+  for(int j=0;j<4;j++) {
+    total_selected_stats+=selected_stats_weightings[j];
   }
 
   while(points > 0.0)  {
@@ -2149,8 +2200,6 @@ stock SetRandomValues(UniqueItem item) {
       IncrementItemStat(item, selectedStats[2], points);
     } else if(roll < selected_stats_weightings[0]+selected_stats_weightings[1]+selected_stats_weightings[2]+selected_stats_weightings[3]) {
       IncrementItemStat(item, selectedStats[3], points);
-    } else if(roll < selected_stats_weightings[0]+selected_stats_weightings[1]+selected_stats_weightings[2]+selected_stats_weightings[3]+selected_stats_weightings[4]) {
-      IncrementItemStat(item, selectedStats[4], points);
     }
   }
 }
@@ -2164,47 +2213,55 @@ IncrementItemStat(UniqueItem item, char[] s, float &points)
     item.Item_str += 1;
     points -= 1.0;
   } else if (StrEqual(stat, "agi")) {
-      item.Item_agi += 1;
-      points -= 1.0;
+    item.Item_agi += 1;
+    points -= 1.0;
   } else if (StrEqual(stat, "sta")) {
-      item.Item_sta += 1;
-      points -= 1.0;
+    item.Item_sta += 1;
+    points -= 1.0;
   } else if (StrEqual(stat, "int")) {
-      item.Item_int += 1;
-      points -= 1.0;
+    item.Item_int += 1;
+    points -= 1.0;
   } else if (StrEqual(stat, "ap")) {
-      item.Item_damage += 1;
-      points -= 3.0;
+    item.Item_damage += 1;
+    points -= 3.0;
   } else if (StrEqual(stat, "sp")) {
-      item.Item_spelldmg += 1;
-      points -= 3.5;
+    item.Item_spelldmg += 1;
+    points -= 3.5;
   } else if (StrEqual(stat, "haste")) {
-      item.Item_haste += 1;
-      points -= 1.0;
+    item.Item_haste += 1;
+    points -= 1.0;
   } else if (StrEqual(stat, "pen")) {
-      item.Item_ai += 1;
-      points -= 0.25;
+    item.Item_ai += 1;
+    points -= 0.25;
   } else if (StrEqual(stat, "regen")) {
-      item.Item_regen += 1;
-      points -= 2.0;
+    item.Item_regen += 1;
+    points -= 2.0;
   } else if (StrEqual(stat, "res")) {
-      item.Item_res += 1;
-      points -= 0.5;
+    item.Item_res += 1;
+    points -= 0.5;
   } else if (StrEqual(stat, "crit")) {
-      item.Item_cs += 0.01;
-      points -= 0.01 * 0.25 * 29.0 * (25.0 + level);
+    item.Item_cs += 0.01;
+    points -= 0.01 * 0.25 * 29.0 * (25.0 + level);
   } else if (StrEqual(stat, "mspd")) {
-      item.Item_speed += 0.01;
-      points -= 0.01 * 0.25 * 10.0 * (3.0 + level);
+    item.Item_speed += 0.01;
+    points -= 0.01 * 0.25 * 10.0 * (3.0 + level);
   } else if (StrEqual(stat, "aspd")) {
-      item.Item_as += 0.01;
-      points -= 0.01 * 0.25 * 15.0 * (9.0 + level);
+    item.Item_as += 0.01;
+    points -= 0.01 * 0.25 * 15.0 * (9.0 + level);
   } else if (StrEqual(stat, "parry")) {
-      item.Item_parry += 0.01;
-      points -= 2;
+    item.Item_parry += 0.01;
+    points -= 2;
   } else if (StrEqual(stat, "acc")) {
-      item.Item_acc += 0.01;
-      points -= 0.01 * 0.25 * 9.5 * (10.0 + level);
+    item.Item_acc += 0.01;
+    points -= 0.01 * 0.25 * 9.5 * (10.0 + level);
+  }
+  else if (StrEqual(stat, "block")) {
+    item.Item_block += 0.01;
+    points -= 3;
+  }
+  else if (StrEqual(stat, "block_str")) {
+    item.Item_block_strength += 1;
+    points -= 3;
   }
 }
 
@@ -2219,6 +2276,8 @@ AddItem(UniqueItem adding, UniqueItem ret) {
   ret.Item_ai += adding.Item_ai;
   ret.Item_haste += adding.Item_haste;
   ret.Item_parry += adding.Item_parry;
+  ret.Item_block += adding.Item_block;
+  ret.Item_block_strength += adding.Item_block_strength;
   ret.Item_as += adding.Item_as;
   ret.Item_cs += adding.Item_cs;
   ret.Item_speed += adding.Item_speed;
@@ -2277,6 +2336,14 @@ ItemCompare(UniqueItem newitem, UniqueItem olditem,client)
   if((newitem.Item_haste-olditem.Item_parry)!=0)
   {
     Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name parry",client,newitem.Item_parry-olditem.Item_parry);
+  }
+  if((newitem.Item_block-olditem.Item_block)!=0)
+  {
+    Format(buffer,sizeof(buffer),"%s %T %d\%,",buffer,"name block",client,RoundToNearest((newitem.Item_block-olditem.Item_block)*100.0));
+  }
+  if((newitem.Item_block_strength-olditem.Item_block_strength)!=0)
+  {
+    Format(buffer,sizeof(buffer),"%s %T %i,",buffer,"name block strength",client,newitem.Item_block_strength-olditem.Item_block_strength);
   }
   if((newitem.Item_as-olditem.Item_as)!=0)
   {
