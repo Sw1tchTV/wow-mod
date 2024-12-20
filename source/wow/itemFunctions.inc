@@ -1689,7 +1689,7 @@ public bool:TGivePlayerRandomItem(id, Handle:pack) {
 
   //Level?
   new level = GetLevel(client);
-  level = GetRandomInt(level-6, 85);
+  level = GetRandomInt(level-3, 85);
   if(level == GetLevel(client) && level < 85-1) {
     level += GetRandomInt(0,2);
   }
@@ -1964,7 +1964,7 @@ stock SetRandomValues(UniqueItem item) {
     float ws = GetRandomFloat(0.95, 1.10);
     if(item.Item_2hand == 1)
     {
-      ws = GetRandomFloat(0.8, 1.0);
+      ws = GetRandomFloat(0.75, 0.95);
     }
     if(race == 2 && item.Item_2hand == 1)
     {
