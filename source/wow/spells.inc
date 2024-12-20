@@ -511,7 +511,9 @@ public wcRunSpell_6_1(spellid,race,victim,attacker,&totaldmg) //Shaman Shield Bl
     decl Float:location[3];
     GetClientAbsOrigin(victim,location);
     EmitAmbientSound("wc/spells/shieldwall.wav",location);
-    totaldmg=0;
+    totaldmg-=GetBlockStrength(victim);
+    if (totaldmg < 0)
+      totaldmg = 0;
     AddEMsgAff("blocked damage", true);
   }
   return totaldmg;
@@ -992,7 +994,9 @@ public wcRunSpell_1_1(spellid,race,victim,attacker,&totaldmg) //Warrior Shield B
     decl Float:location[3];
     GetClientAbsOrigin(victim,location);
     EmitAmbientSound("wc/spells/shieldwall.wav",location);
-    totaldmg=0;
+    totaldmg-=GetBlockStrength(victim);
+    if (totaldmg < 0)
+      totaldmg = 0;
 
     AddEMsgAff("blocked damage", true);
   }
@@ -4211,7 +4215,9 @@ public wcRunSpell_4_1(spellid,race,victim,attacker,&totaldmg) //Paladin Shield B
     decl Float:location[3];
     GetClientAbsOrigin(victim,location);
     EmitAmbientSound("wc/spells/shieldwall.wav",location);
-    totaldmg=0;
+    totaldmg-=GetBlockStrength(victim);
+    if (totaldmg < 0)
+      totaldmg = 0;
 
     AddEMsgAff("blocked damage", true);
   }
@@ -4621,7 +4627,7 @@ wcRunSpell_4_11(client)   {
 stock Float:GetBlockChance(client, bool:extra=true, attacker = 0) {
   if(!HasShield(client))
   return 0.0;
-  new Float:chance = 0.10;
+  new Float:chance = 0.10+wcClientsBonusStats[client][BLOCK];
   if(!extra)
   return chance;
   new Float:talentbonus =0.0;

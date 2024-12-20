@@ -17,6 +17,8 @@
     "pen" "50"
     "parry" "50"
     "res" "50"
+    "block" "50"
+    "block_str" "50"
   }
   "2" //rogue
   {
@@ -35,6 +37,8 @@
     "pen" "73"
     "parry" "27"
     "res" "27"
+    "block" "0"
+    "block_str" "0"
   }
   "3" //mage
   {
@@ -53,6 +57,8 @@
     "pen" "0"
     "parry" "0"
     "res" "30"
+    "block" "0"
+    "block_str" "0"
   }
   "4" //paladin
   {
@@ -71,6 +77,8 @@
     "pen" "70"
     "parry" "50"
     "res" "50"
+    "block" "50"
+    "block_str" "50"
   }
   "5" //priest
   {
@@ -89,6 +97,8 @@
     "pen" "0"
     "parry" "35"
     "res" "35"
+    "block" "0"
+    "block_str" "0"
   }
   "6" //shaman
   {
@@ -107,6 +117,8 @@
     "pen" "50"
     "parry" "30"
     "res" "30"
+    "block" "30"
+    "block_str" "30"
   }
   "7" //warlock
   {
@@ -125,6 +137,8 @@
     "pen" "0"
     "parry" "0"
     "res" "50"
+    "block" "0"
+    "block_str" "0"
   }
   "8" //DK
   {
@@ -143,6 +157,8 @@
     "pen" "50"
     "parry" "50"
     "res" "50"
+    "block" "0"
+    "block_str" "0"
   }
   "9" //Monk
   {
@@ -161,6 +177,8 @@
     "pen" "42"
     "parry" "24"
     "res" "24"
+    "block" "0"
+    "block_str" "0"
   }
 }
 

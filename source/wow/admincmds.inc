@@ -1042,7 +1042,9 @@ public InvPrint(client,rarity,category)
             case 17: {if(item.Item_res      >0) {Format(line, sizeof(line),                "%s%d Resistance\n",line,item.Item_res)         ;}}  //res
             case 18: {if(item.Item_resilence>0) {Format(line, sizeof(line),                "%s%d Resilience\n",line,item.Item_resilence)   ;}}  //resil
             case 19: {if(item.Item_parry    >0) {Format(line, sizeof(line),                   "%s%.0f Parry\n",line,item.Item_parry*100.0) ;}}  //parry
-            case 20: {Format(line, sizeof(line), "%s\n",line);} //add a new line after every equipment
+            case 20: {if(item.Item_block    >0) {Format(line, sizeof(line),                   "%s%.0f Block\n",line,item.Item_block*100.0) ;}}  //block
+            case 21: {if(item.Item_block_strength    >0) {Format(line, sizeof(line),                   "%s%.0f Block Strength\n",line,item.Item_block_strength*100.0) ;}}  //block strength
+            case 22: {Format(line, sizeof(line), "%s\n",line);} //add a new line after every equipment
           }
           if (strlen(line)>950)
           {
