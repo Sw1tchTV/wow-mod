@@ -392,9 +392,7 @@ stock ItemDropBalancer(client, victim=0)  {
       case 1: chance *= BOT_HIGH_RATE;
       case 2: chance *= BOT_NORMAL_RATE;
     }
-    PrintToChatAll("Bot kill, chance: %f", chance);
   }
-  PrintToChatAll("Item chance %f, needed %f", chance, 1.0*GLOBAL_DROP);
   if(GetRandomFloat(1.0,100.0)/chance >= 1.0*GLOBAL_DROP)  return;
   
   /*new dropped = GetDroppedItems(client);*/   //No more needed to limit total amount
@@ -403,7 +401,6 @@ stock ItemDropBalancer(client, victim=0)  {
   /*new epicChance=(GetRandomInt(1,100)<=10)?4:3;*/
   char name[50];
   GetClientName(client,name,50);
-  PrintToChatAll("Item drop for %s", name);
   GivePlayerRandomItem(client);
 
   //Item request from SQL
