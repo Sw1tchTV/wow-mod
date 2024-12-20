@@ -459,7 +459,7 @@ Float:GetItemRating(UniqueItem item)  {
   return rating;
 }
 
-public wcRecalculateStats(client) { //Stats
+public wcRecalculateStats(client) { //Stats, recalculating stats
   new id=GetPlayerID(client);
   char line[255];
   if(IsZombie(client))
@@ -468,11 +468,10 @@ public wcRecalculateStats(client) { //Stats
     return;
   }
 
-  wcClientsStats[id][ARMORIGNORE]=(float(GetBonusAgi(client))+float(GetAgi(client)))/4.5+wcClientsBonusStats[id][ARMORIGNORE];
-  wcClientsStats[id][ATTACKSPEED]=GetWeaponSpeed(client, false)-1+(float(1)+(float(GetAgi(client)+GetBonusAgi(client)))/(30.0 * float(GetLevel(client)) + 22.0)+wcClientsBonusStats[id][ATTACKSPEED]);
-
+  wcClientsStats[id][ARMORIGNORE]=(float(GetBonusAgi(client))+float(GetAgi(client)))/2.0+wcClientsBonusStats[id][ARMORIGNORE];
+  wcClientsStats[id][ATTACKSPEED]=GetWeaponSpeed(client, false)*(float(1)+(float(GetAgi(client)+GetBonusAgi(client)))/(30.0 * float(GetLevel(client)) + 22.0)+wcClientsBonusStats[id][ATTACKSPEED]);
   float multi = 1.0;
-  if(CheckRequirements(client,2,2,2,4) || CheckRequirements(client,6,2,2,4)) //AP / Attack Power Scaling talents
+  if(CheckRequirements(client,2,2,2,4) || CheckRequirements(client,6,2,2,4)) //AP, Attack Power Scaling talents
   {
     new class=GetClass(client);
     switch(class)
@@ -522,7 +521,7 @@ public wcRecalculateStats(client) { //Stats
   //cs
   wcClientsStats[id][CRITCHANCE]=wcClientsBonusStats[id][CRITCHANCE]+0.05+float(GetAgi(client)+GetBonusAgi(client))/( 0.125 * float(GetLevel(client)) + 0.8)/100.0 + float(GetInt(client)+GetBonusInt(client))/(0.25 * float(GetLevel ( client )) +  3.0) / 100.0;
   //parry
-  wcClientsStats[id][PARRY] = 0.05 + wcClientsBonusStats[id][PARRY];
+  wcClientsStats[id][PARRY] = 0.05 + wcClientsBonusStats[id][PARRY] + (float(GetStr(client)+GetBonusStr(client)) / 6.66)*0.01;
   //block
   wcClientsStats[id][BLOCK] = wcClientsBonusStats[id][BLOCK];
   //block strength
@@ -937,8 +936,6 @@ public GetMana(client)
 
 public wcSetMana(client,amount)
 {
-  if(CheckRequirements(client,8,2,1,4))
-  wcRunTalent_8_PowerOfFrost(client,amount);
   if((GetMaxMana(client) > 0) && (GetMaxMana(client) < amount))
   amount = GetMaxMana(client);
   wcClientsStats[GetPlayerID(client)][CURMP]=float(amount);
@@ -1876,23 +1873,25 @@ public wcRunSpell(spellid,race,&tmp1,&tmp2,&tmp3,&any:tmp4,&tmp5,&tmp6,&tmp7,&tm
             if(tmp9==2)
               wcRunSpell_8_3(spellid,race,tmp2,tmp1,tmp3); //plague strike
           case 4:
-            wcRunSpell_8_4(spellid,race,tmp1); //icy touch
+            wcRunSpell_8_4(spellid,race,tmp2,tmp1,tmp3); //icy touch
           case 5:
             if(tmp9==2)
               wcRunSpell_8_5(spellid,race,tmp2,tmp1,tmp3); //death Strike
           case 6:
-            wcRunSpell_8_6(spellid,race,tmp1); //death coil
+            wcRunSpell_8_6(spellid,race,tmp2,tmp1,tmp3); //death coil
           case 7:
             wcRunSpell_8_7(tmp1,tmp3); //Anti-Magic Shell
           case 8:
             wcRunSpell_8_8(spellid,race,tmp1); //Mind Freeze
           case 9:
             wcRunSpell_8_9(spellid,race,tmp1); //Raise Ally
-          case 10:
-            if(tmp9==1)
-              wcRunSpell_8_10(spellid,race,tmp2,tmp1,tmp3); //Necrotic Strike
           case 11:
             wcRunSpell_8_11(spellid, race, tmp1); //Death and Decay
+          case 15:
+            wcRunSpell_8_15(spellid, race, tmp1); //Remorseless Winter
+          case 16:
+            if(tmp9==2)
+              wcRunSpell_8_16(spellid, race, tmp2, tmp1, tmp3);
         }
       }
       case 9: // Monk
@@ -3149,13 +3148,8 @@ bool:GetViewPoint(client,Float:distance,Float:end[3]) {
 
 Float:GetHasteEffect(client)
 {
-  //new level = GetLevel(client);
-  //new Float:haste = wcClientsStats[client][HASTE] + wcClientsBonusStats[client][HASTE];
-  //new Float:reduction = haste/(haste + (level*5) + 25);
-
-  //  22haste = 10% cooldown, 100haste=33% cooldown
-  new Float:cap = 0.35;
-  new Float:haste = wcClientsStats[client][HASTE] + wcClientsBonusStats[client][HASTE];
+  float cap = 0.80;
+  float haste = wcClientsStats[client][HASTE] + wcClientsBonusStats[client][HASTE];
   if (GetClass(client) == 3)
   {
     decl String:line[255];

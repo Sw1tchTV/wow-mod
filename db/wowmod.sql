@@ -778,7 +778,7 @@ CREATE TABLE `wc_Players` (
   `referrer` int(11) DEFAULT NULL,
   `loaded` smallint(6) DEFAULT '0',
   `bound` smallint(6) DEFAULT '0',
-  `expansions` int(11) DEFAULT '0',
+  `expansions` int(11) DEFAULT '14',
   `add_honor` int(11) DEFAULT '0',
   `slides` int(11) DEFAULT '0',
   `usekeyspellbar` smallint(6) DEFAULT '1',

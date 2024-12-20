@@ -288,11 +288,16 @@ WCMenu(client)
     SetMenuTitle(menu_main,title);
     Format(line, sizeof(line), "%T", "wc shops", client);
     AddMenuItem(menu_main, line, line);
-
     Format(line,sizeof(line),"%T","wc playerstats menu",client);
     AddMenuItem(menu_main,line,line);
-    Format(line,sizeof(line),"%T","mclass",client);
-    AddMenuItem(menu_main,line,line);
+
+    char buffer[255];
+    char Srace[255];
+    int race=GetClass(client);
+    wcClassToName(client,race,Srace,sizeof(Srace), client);
+    Format(line,sizeof(line), "%s Menu",Srace);
+    IntToString(client,buffer,sizeof(buffer));
+    AddMenuItem(menu_main,buffer,line);
     Format(line,sizeof(line),"%T","wc gold menu",client);
     AddMenuItem(menu_main,line,line);
     Format(line,sizeof(line),"%T","wc other players",client);
@@ -301,16 +306,11 @@ WCMenu(client)
     AddMenuItem(menu_main,line,line);
     Format(line,sizeof(line),"%T","wc main arena",client);
     AddMenuItem(menu_main,line,line);
-    /*Format(line,sizeof(line),"%T","wc ranking page",client);*/
-    /*if(RANKING_ENABLE)*/
-    /*AddMenuItem(menu_main,line,line);*/
-    /*else*/
-    /*AddMenuItem(menu_main,line,line,ITEMDRAW_DISABLED);*/
-    /*Format(line,sizeof(line),"%T","wc account page",client);*/
-    /*if(PASS_ENABLED)*/
-    /*AddMenuItem(menu_main,line,line);*/
-    /*else*/
-    /*AddMenuItem(menu_main,line,line,ITEMDRAW_DISABLED);*/
+
+
+
+
+
 
     DisplayMenu(menu_main,client,MENU_TIME_FOREVER);
   }
@@ -1606,8 +1606,6 @@ public ProfessionLevelUpMenuHandle(Handle:menu, //rename
     CloseHandle(menu);
 
 }
-
-
 
 stock ProfessionBonusesMenu(client, bool:all=false)
 {
@@ -5382,40 +5380,12 @@ public CategoryMenu(client)
    SetMenuExitBackButton(menu_category,true);
    Format(buffer, sizeof(buffer), "%T", "select category", client);
    SetMenuTitle(menu_category,buffer);
-   //Screw that overcomplicated shop menu
-   /*AddMenuItem(menu_category,"22","Weapons");*/
-   /*AddMenuItem(menu_category,"18","Shields");*/
-   /*AddMenuItem(menu_category,"11","Chests");*/
-   /*AddMenuItem(menu_category,"10","Backs");*/
-   /*AddMenuItem(menu_category,"12","Feet");*/
-   /*AddMenuItem(menu_category,"13","Hands");*/
-   /*AddMenuItem(menu_category,"14","Helmets");*/
-   /*AddMenuItem(menu_category,"15","Legs");*/
-   /*AddMenuItem(menu_category,"16","Necks");*/
-   /*AddMenuItem(menu_category,"17","Rings");*/
-   /*AddMenuItem(menu_category,"19","Shoulders");*/
-   /*AddMenuItem(menu_category,"20","Trinkets");*/
-   /*AddMenuItem(menu_category,"21","Waists");*/
-   /*AddMenuItem(menu_category,"23","Wrists");*/
-   //Add person's class item first!
    if(GetClass(client)>0) {
       decl String:sClass[50];
       Format(sClass,sizeof(sClass),"class_%i",GetClass(client));
       Format(sClass,sizeof(sClass),"%T %T",sClass,client, "for you", client);
-      decl String:sCat[10];
+      decl String:sCat[50];
       Format(sCat,sizeof(sCat),"%i",100+GetClass(client));
-      AddMenuItem(menu_category,sCat,sClass);
-
-   }
-   Format(buffer,sizeof(buffer),"%T","reagents",client);
-   AddMenuItem(menu_category,"8",buffer);
-   for(new i=1;i<=8;i++)   {
-      if(GetClass(client) == i) continue;
-      decl String:sClass[50];
-      Format(sClass,sizeof(sClass),"class_%i",i);
-      Format(sClass,sizeof(sClass),"%T",sClass,client);
-      decl String:sCat[10];
-      Format(sCat,sizeof(sCat),"%i",i+100);
       AddMenuItem(menu_category,sCat,sClass);
    }
    Format(buffer,sizeof(buffer),"%T","patterns for blacksmith",client);
@@ -5449,8 +5419,7 @@ public CategoryHandle(Handle:menu_category,MenuAction:action,client,slot)
     if(cat >=100) {
       //Pick type
       g_ffPreItems[client][0]=cat;
-
-      PreItemsMenu1(client);
+      ItemsMenu(client, g_ffPreItems[client][0], false, g_ffPreItems[client][1]);
     }
     else
       ItemsMenu(client,cat);
@@ -5462,18 +5431,18 @@ public CategoryHandle(Handle:menu_category,MenuAction:action,client,slot)
       CloseHandle(menu_category);
 }
 
-PreItemsMenu1(client) {
+/*PreItemsMenu1(client) {
 
   new Handle:menu=CreateMenu(PreItemsMenu1Handler);
   SetMenuExitBackButton(menu,true);
 
-  /*** Title ***/
+
   decl String:title[128];
   Format(title,sizeof(title),"%T","wc preitems1 menu",client);
   SetMenuTitle(menu,title);
 
 
-  /*** Menu Items ***/
+
   decl String:buffer[200];
   Format(buffer, sizeof(buffer), "%T", "item_shop", client, GetMoney(client));
   AddMenuItem(menu,"1",buffer);
@@ -5490,7 +5459,7 @@ PreItemsMenu1(client) {
 
 
 
-  /*** Send to client ***/
+
   DisplayMenu(menu,client,MENU_TIME_FOREVER);
 
 }
@@ -5513,7 +5482,7 @@ public PreItemsMenu1Handler(Handle:menu, //rename
   if(action == MenuAction_End)
     CloseHandle(menu);
 
-}
+}*/
 
 
 
@@ -5593,7 +5562,7 @@ stock ItemsMenu(client,category, bool:goldshop=false, special=0)
      else  {
        new bool:pass=false;
        //Finding classes
-       new classes[12];
+       new classes[55];
        decl String:Sclass[55];
        KvGetString(items,"class",Sclass,sizeof(Sclass),"0");
        decl String:Stemp[50];
@@ -5673,22 +5642,11 @@ stock ItemsMenu(client,category, bool:goldshop=false, special=0)
          IntToString(itemar[x],info,sizeof(info));
          KvJumpToKey(items,info);
          KvGetString(items, "name", name,sizeof(name));
-         new classes[10];
-         new clamount=GetClasses(itemar[x],classes);
+         new classes[55];
+         GetClasses(itemar[x],classes);
          if (classes[1]>0)
          {
-            decl String:cl_n[255];
-            Format(cl_n,sizeof(cl_n),"(");
-            for(new y=1;y<=clamount;y++)
-            {
-              decl String:Scl[255];
-              wcClassToName(client,classes[y],Scl,sizeof(Scl));
-              Format(cl_n,sizeof(cl_n),"%s%s",cl_n,Scl);
-              if(y<clamount)
-                Format(cl_n,sizeof(cl_n),"%s ",cl_n);
-            }
-            Format(cl_n,sizeof(cl_n),"%s)",cl_n);
-            Format(buffer,sizeof(buffer),"%s %i %s",name,itemlvlar[x],cl_n);
+            Format(buffer,sizeof(buffer),"%s %i %s",name,itemlvlar[x], "");
          }
          else
          {

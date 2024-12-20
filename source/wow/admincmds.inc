@@ -36,6 +36,11 @@ public RegAdminCommands()
   RegAdminCmd("wc_gold",AdminCmd_Gold,ADMFLAG_CUSTOM4);
   RegAdminCmd("wc_scramble", AdminCmd_Scramble, ADMFLAG_CUSTOM5);
   RegAdminCmd("wc_reloadpds", AdminCmd_reload_pds, ADMFLAG_CUSTOM5);
+
+  //New ones
+  RegAdminCmd("wc_hp",AdminCmd_Hp,ADMFLAG_CUSTOM4);
+
+
   //Pretty dangerous.
   //RegAdminCmd("wc_mailall",AdminCmd_MailAll,ADMFLAG_CUSTOM5);
   //RegConsoleCmd("testfade", FadeCmd);
@@ -2225,5 +2230,41 @@ public Action:HNSModCmd(client, argc)
   g_hns_itemId= item;
   g_hns_itemAmount= amount;
 
+  return Plugin_Handled;
+}
+
+public Action:AdminCmd_Hp(client,argc)
+{
+  if(argc==2)
+  {
+    decl String:target[64];
+    GetCmdArg(1,target,64);
+    new clients[MAXPLAYERS];
+    new count=FindMatchingPlayers(target,clients);
+    for(new x=0;x<count;x++)
+    {
+      if(IsClientInGame(clients[x]))
+      {
+        decl String:Samount[8],String:adminname[64],String:name[64];
+        GetCmdArg(2,Samount,8);
+        int amount=StringToInt(Samount);
+        GetClientName(client,adminname,64);
+        GetClientName(clients[x],name,64);
+        _setModHealth(client, amount);
+        if(amount < 1)
+          ForcePlayerSuicide(client);
+        else
+          updateGameHealth(client);
+        PrintToChat(clients[x],"%c[WC] %c%t",COLOR_GREEN,COLOR_DEFAULT,"Admin hp set",adminname,amount);
+        LogAction(client,
+			  clients[x],
+			  "\"%L\" [WC] set %s hp to %i value",client,name,amount);
+      }
+    }
+    if(count==0)
+      ReplyToCommand(client,"%c[WC] %c%t",COLOR_GREEN,COLOR_DEFAULT,"adm inv player");
+  }
+  else
+    ReplyToCommand(client,"%c[WC] %c%t",COLOR_GREEN,COLOR_DEFAULT,"adm cmd hp syntax");
   return Plugin_Handled;
 }

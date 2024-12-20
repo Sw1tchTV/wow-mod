@@ -132,7 +132,7 @@
   }
   "kings cast"
   {
-    "en"     "You cast @greenBlessing of Kings @defaultand increase your base stats."
+    "en"     "You cast @greenBlessing of Kings @defaultand increase your @greenbase stats."
   }
   "kings cast all"
   {
@@ -140,7 +140,7 @@
   }
   "kings aff"
   {
-    "en"     "You are affected by @greenBlessing of Kings@default, your base stats are increased by @lightgreen20@perc@default"
+    "en"     "You are affected by @greenBlessing of Kings@default, your @greenbase stats @defaultare increased by @lightgreen20@perc@default"
   }
   "Divine Shield info"
   {
@@ -201,7 +201,7 @@
   "profession change to"
   {
     "#format" "{1:s}"
-    "en"     "UNlearn profession{1} and learn new:"
+    "en"     "Unlearn profession {1} and learn new:"
   }
   "profession select sort"
   {
@@ -223,7 +223,7 @@
   }
   "wrong profession"
   {
-    "en"  "You do not have required profession."
+    "en"  "You do not have the required profession."
   }
   "wc make item"
   {
@@ -231,19 +231,19 @@
   }
   "no free/no reagents"
   {
-    "en"  "No reagents or no free slot."
+    "en"  "No reagents or no free slots."
   }
   "no free slots"
   {
-    "en"  "@lightgreen!!!You have No Free Slots in the Inventory!!!"
+    "en"  "@lightgreen!!!You have no free slots in your inventory!!!"
   }
   "prof warning"
   {
-    "en"  "YOU WILL LOOSE SKILLS AND KNOWLEDGE OF CURRENT"
+    "en"  "YOU WILL LOSE SKILLS AND KNOWLEDGE OF CURRENT PROFESSIONS"
   }
   "prof_0"
   {
-    "en"  "No Profession yet"
+    "en"  "No professions yet"
   }
   "prof_1"
   {
@@ -279,7 +279,7 @@
   }
   "prof_10"
   {
-    "en"  "Herbalism (For Inscription)"
+    "en"  "Herbalism (for Inscription)"
   }
   "prof_9"
   {
@@ -287,7 +287,7 @@
   }
   "no recipes"
   {
-    "en"  "No recipes are known yet."
+    "en"  "No recipes learned yet."
   }
   "no bonuses"
   {
@@ -295,7 +295,7 @@
   }
   "you already know"
   {
-    "en"  "You already know it."
+    "en"  "You already know this recipe."
   }
   "create item"
   {
@@ -335,11 +335,11 @@
 
   "change prof1"
   {
-    "en"  "Change Profession !1!, YOU WILL LOOSE SKILL"
+    "en"  "Change Profession 1, YOU WILL LOSE SKILL"
   }
   "change prof2"
   {
-    "en"  "Change Profession !2!, YOU WILL LOOSE SKILL"
+    "en"  "Change Profession 2, YOU WILL LOSE SKILL"
   }
   "failed drop"
   {
@@ -981,7 +981,7 @@
   }
   "wc other players"
   {
-    "en"    "Other player's characters"
+    "en"    "Other players' characters"
   }
   "no player found"
   {
@@ -1579,7 +1579,7 @@
   "show xp"
   {
     "#format"	"{1:i},{2:i},{3:i}"
-    "en"			"Your @greenLevel: @lightgreen{1} @green(@lightgreen{2}@green/@lightgreen{3}@green)"
+    "en"			"@greenLevel: @lightgreen{1} @green(@lightgreen{2}@green/@lightgreen{3}@green)"
   }
   "LowLevelRound"
   {
@@ -1589,7 +1589,7 @@
   "RoundStats"
   {
     "#format"	"{1:i},{2:s},{3:i},{4:s},{5:i},{6:s}"
-    "en"			"The Most: \n@greenDamage: @lightgreen{1}@default by @green{2} @green\nTaken: @lightgreen{3} @defaultby @green{4} @green\nHealing: @lightgreen{5} @defaultby @green{6}"
+    "en"			"The most: \n@greenDamage: @lightgreen{1}@default by @green{2} @green\nTaken: @lightgreen{3} @defaultby @green{4} @green\nHealing: @lightgreen{5} @defaultby @green{6}"
   }
   "XpForDamage"
   {
@@ -1670,11 +1670,11 @@
   }
   "wc class spells"
   {
-    "en"     "Your Spell Bar"
+    "en"     "Your Spellbar"
   }
   "wc manage spells"
   {
-    "en"     "Manage your Spells Bar, Spells Book"
+    "en"     "Manage your Spellbar"
   }
   "wc buy spells"
   {
@@ -1682,7 +1682,7 @@
   }
   "spellbar"
   {
-    "en"     "Spell Bar"
+    "en"     "Spellbar"
   }
   "no spell"
   {
@@ -1690,7 +1690,7 @@
   }
   "manage spells"
   {
-    "en"     "Manage Your Spells Bar"
+    "en"     "Manage Your Spellbar"
   }
   "spell menu"
   {
@@ -1746,12 +1746,12 @@
   "wc spellbook2"
   {
     "#format"   "{1:d}"
-    "en"     "SpellBook. (Your Level: {1})"
+    "en"     "Spellbook. (Your Level: {1})"
   }
 
   "wc spellbook"
   {
-    "en"     "SpellBook"
+    "en"     "Spellbook"
   }
   "blocked damage"
   {
@@ -2003,7 +2003,7 @@
   "expose armor activated"
   {
     "#format" "{1:0.1f},{2:0.1f}"
-    "en"     "Your Armor Penetration for this round is increased by @lightgreen{1} @defaultto @lightgreen {2} @defaultpoints."
+    "en"     "Your @greenArmor Penetration @defaultfor this round is increased by @lightgreen{1} @defaultto @lightgreen {2} @defaultpoints."
   }
   "Cloak of Shadow info"
   {
@@ -2012,7 +2012,7 @@
   "cloak of shadow activated"
   {
     "#format" "{1:0.1f},{2:0.1f}"
-    "en"     "Cloak of Shadow increased your resistance by @lightgreen{1} @defaultto @lightgreen{2} @defaultpoints."
+    "en"     "@greenCloak of Shadow @defaultincreases your resistance by @lightgreen{1} @defaultto @lightgreen{2} @defaultpoints."
   }
   "Stealth info"
   {
@@ -2350,7 +2350,7 @@
   }
   "Windfury info"
   {
-    "en"     "<Passive> Your physical attacks have a 20%% chance to deal 25%% additional damage"
+    "en"     "<Passive> Your physical attacks have a 25%% chance to deal 25%% additional damage"
   }
   "fear caster"
   {
@@ -2369,17 +2369,17 @@
   "demon skin cast"
   {
     "#format" "{1:i},{2:i}"
-    "en"     "@defaultYou cast @lightgreenDemon Skin@default and increase your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
+    "en"     "@defaultYou cast @greenDemon Skin@default and increase your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
   }
   "demon skin cast with talent"
   {
     "#format" "{1:i},{2:i}"
-    "en"     "@lightgreenFel Armor@default: You cast @lightgreenDemon Skin@default and increase your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
+    "en"     "@lightgreenFel Armor@default: You cast @greenDemon Skin@default and increase your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
   }
   "demon skin cast pet"
   {
     "#format" "{1:i},{2:i}"
-    "en"     "@lightgreenFel Armor@default: Your summoner casts @lightgreenDemon Skin@default and increases your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
+    "en"     "@lightgreenFel Armor@default: Your summoner casts @greenDemon Skin@default and increases your armor by @lightgreen{1}@default upto @lightgreen{2}@default total."
   }
   "Demon Skin info"
   {
@@ -2554,7 +2554,7 @@
   "intellect cast"
   {
     "#format" "{1:i}"
-    "en"     "You cast @greenArcane Intellect @defaultand increase your intellect by @lightgreen{1}."
+    "en"     "@greenArcane Intellect @defaultincreases your @greenintellect @defaultby @lightgreen{1}."
   }
   "Rockbiter Weapon info"
   {
@@ -2778,15 +2778,15 @@
   }
   "char data loaded"
   {
-    "en"  "Your data has successfuly loaded, enjoy playing on this realm."
+    "en"  "@lightgreenYour data has successfully loaded, enjoy playing on this realm."
   }
   "char not loaded"
   {
-    "en"  "@lightgreen!Your data is not loaded yet, please wait or try reconnecting if the error repeats contact administrator for help!"
+    "en"  "@lightgreenYour data is not loaded yet, please wait or try reconnecting if the error repeats contact administrator for help."
   }
   "can not load same"
   {
-    "en"  "@lightgreen!You are not allowed to load same character as you play now!"
+    "en"  "@lightgreenYou're not allowed to the character you're playing on!"
   }
   "reboot progress"
   {
@@ -4068,7 +4068,7 @@
   "lvl average info"
   {
     "#format" "{1:i},{2:i},{3:s},{4:i}"
-    "en"     "(Your level: @lightgreen{1}@default, Server average: @lightgreen{2}@default, @green{3}@default's level: @lightgreen{4}@default)"
+    "en"     "@green(Your level: @lightgreen{1}@default, Server average: @lightgreen{2}@default, @green{3}@default's level: @lightgreen{4}@green)"
   }
   "debug kpr info"
   {
@@ -4154,7 +4154,7 @@
   }
   "wc preitems1 menu"
   {
-    "en"  "Choose Type of items you want"
+    "en"  "Choose type of items you want"
   }
   "stamina cast all"
   {
@@ -4615,21 +4615,21 @@
   }
   "Obliterate info"
   {
-    "en"    "Has a chance to increase your melee damage on targets who are slowed. Gives 10 Runic Power.\n    Rank 1: +20%% damage\n    Rank 2: +40%% damage"
+    "en"    "Placeholder"
   }
   "Blood Strike info"
   {
-    "en"    "Increases your melee damage by 15%% and generates 15 Runic Power.\n15%% chance to cast on hit."
+    "en"    "Increases your physical damage by 15%% and generates 15 Runic Power.\n15%% chance to cast on hit."
   }
   "death grip caster"
   {
     "#format" "{1:s}"
-    "en"     "You cast @lightgreenDeath Grip@default at @green{1} @default and push him towards you."
+    "en"     "You cast @greenDeath Grip@default at @green{1} @default and pull him towards you."
   }
   "death grip target"
   {
     "#format" "{1:s}"
-    "en"     "@green{1} @default has pushed you towards him with @lightgreenDeath Grip."
+    "en"     "@green{1} @default has pulled you towards him with @greenDeath Grip."
   }
   "Death Grip info"
   {
@@ -4645,7 +4645,7 @@
   }
   "Plague Strike info"
   {
-    "en"    "Has a chance of increasing melee damage by 20%\nand put a strong debuff on a victim which has AOE effect and ticks 3 times over 9 seconds.\nAlso generates Runic Power"
+    "en"    "Has a chance of increasing physical damage by 20%\nand put a strong debuff on a victim which has AOE effect and ticks 3 times over 9 seconds.\nAlso generates Runic Power"
   }
   "icy touch caster"
   {
@@ -4659,7 +4659,7 @@
   }
   "Icy Touch info"
   {
-    "en"    "At cost of 1 rune you slowdown enemy\n to 80 percent speed for 4 seconds and\napply a poison for 4 seconds\nGenerates 10 Runic Power, 50% more if in Frost Presence"
+    "en"    "Slows your opponent by 20%% and applies a damage over time effect on them."
   }
   "death strike"
   {
@@ -4667,7 +4667,7 @@
   }
   "Death Strike info"
   {
-    "en"    "A moderate chance on hit to increase your melee damage by 10%%, also:\nHeals you for 10%% of your maximum health\nGenerates Runic Power."
+    "en"    "If you are below 85%% health, your next attack activates Death Strike. Death Strike\n  deals 15% increased damage and heals you for 15% of your maximum health.\n  Generates runic power."
   }
   "death coil caster"
   {
@@ -5191,14 +5191,6 @@
     "#format" "{1:i}"
     "en"     "You take {1} damage from @lightgreenHeartfire@default"
   }
-  "necrotic strike ef"
-  {
-    "en"     "Necrotic Strike"
-  }
-  "Necrotic Strike info"
-  {
-    "en"     "Necrotic Strike gives your weapons 8 percent chance to\ndecrease victim's healing received by 30%% for 8 seconds."
-  }
   "Death and Decay info"
   {
     "en"     "Curses the land under cursor which will deal\ndamage to all enemies on this land during 8 seconds.\nDamage depends on your DPS\nCosts 1 Rune and generates 10 Runic Power"
@@ -5206,7 +5198,7 @@
   "death and decay caster"
   {
     "#format"   "{1:i}"
-    "en"     "You cast @lightgreenDeath and Decay @defaultspell which will periodically deal @green{1} @defaultdamage."
+    "en"     "You cast @greenDeath and Decay, @defaultwhich will periodically deal @lightgreen{1} damage."
   }
   "hypothermia caster"
   {
@@ -5519,7 +5511,7 @@
   }
   "select category"
   {
-    "en"  "Select Category"
+    "en"  "Select category"
   }
   "special items"
   {
@@ -5547,7 +5539,7 @@
   }
   "for you"
   {
-    "en"    "(For you)"
+    "en"    "equipment"
   }
   "affected by"
   {
@@ -7216,7 +7208,7 @@
   }
   "Improved Frost Bolt info"
   {
-    "en"		"<Passive> Increases the damage multiplier of Frostbolt and reduces cooldown its cooldown.\n    Rank 1: +6%% multiplier, -0.1 seconds cooldown\n    Rank 2: +13%% multiplier, -0.3 seconds cooldown\n    Rank 3: +20%% multiplier, -0.5 seconds cooldown"
+    "en"		"<Passive> Increases the damage of Frostbolt and reduces its cooldown.\n    Rank 1: +10%% damage, -0.1 seconds cooldown\n    Rank 2: +20%% damage, -0.3 seconds cooldown\n    Rank 3: +30%% damage, -0.5 seconds cooldown"
   }
   "Permafrost info"
   {
@@ -7792,7 +7784,7 @@
   }
   "Shamanistic Rage info"
   {
-    "en"		"<Passive> Your successful attacks restore a portion of your max mana.\n     Rank 1: 0.5%%\n     Rank 2: 1.0%\n     Rank 3: 1.5%%"
+    "en"		"<Passive> Your successful attacks restore a portion of your max mana.\n     Rank 1: 0.66%%\n     Rank 2: 1.33%\n     Rank 3: 2.0%%"
   }
   "Ghost Wolf info"
   {
@@ -8010,10 +8002,6 @@
   {
     "en"		"Your critical spell hits will deal 15/30/45%% of their damage as AoE"
   }
-//"Shadow Well info"
-//{
-//  "en"		"Casts beneath the feet of the target, slowing and reducing healing of all nearby targets.\nThe closer they are to the center of the spell the higher effect Last 8 seconds."
-//}
   "Blade Barrier info"
   {
     "en" "<Passive> Reduces damage taken depending on how many runes you are missing.\n    Rank 1: -1/2/3%% damage\n    Rank 2: -2/4/7%% damage\n    Rank 3: -3/7/10%% damage"
@@ -8032,7 +8020,7 @@
   }
   "Butchery info"
   {
-    "en"		"<Passive> Every kill you get will heal you for a percentage of your maximum health.\n    Rank 1: heal 7%% max health\n    Rank 2: heal 14%% max health"
+    "en"		"<Passive> Every kill you get will heal you for a percentage of your maximum health.\n    Rank 1: heal 7.5%% max health\n    Rank 2: heal 15%% max health"
   }
   "Vampiric Blood info"
   {
@@ -8104,7 +8092,7 @@
   }
   "Frost Strike info"
   {
-    "en" "20%% chance to deal additional magic damage on the target, scales from attack power.\n    Costs 10 runic power and has a 50%% higher chance to proc with a 2-handed weapon.\n    Rank 1: 15%% damage\n    Rank 2: 30%% damage"
+    "en" "Placeholder"
   }
   "Power of Frost info"
   {
@@ -8112,7 +8100,7 @@
   }
   "Hypothermia info"
   {
-    "en"		"Deal a massive amount of spell damage upon a target enemy, consuming all runic power. Costs 1 rune."
+    "en"		"Placeholder"
   }
   "Virulance info"
   {
@@ -8156,7 +8144,7 @@
   }
   "Bone Shield info"
   {
-    "en"   "Reduces damage taken from melee hits by 10. Maximum 5 charges. Gains 1 charge each 5 seconds."
+    "en"   "Reduces damage taken from physical hits by 10. Maximum 5 charges. Gains 1 charge each 5 seconds."
   }
   "Morbidity info"
   {
@@ -8605,7 +8593,7 @@
   }
   "wc shops"
   {
-    "en"  "Items"
+    "en"  "Items and shop"
   }
   "item compare"
   {
@@ -8972,7 +8960,7 @@
   }
   "arcaneint cast all"
   {
-    "en"     "You cast Arcane Intellect at @lightgreeneveryone @defaultin your team for half of its effect."
+    "en"     "@greenArcane Intellect increases the @greenintellect @default of @lightgreeneveryone @default in your team."
   }
   "arcaneint aff"
   {
@@ -9068,7 +9056,7 @@
   "You won gold"
   {
     "#format"  "{1:s}"
-    "en"  "You won {1} gold for being active player (and lucky)!"
+    "en"  "@greenYou won @lightgreen{1} @greengold for being an active player (and lucky)!"
   }
   "Progress"
   {
@@ -9184,7 +9172,7 @@
   }
   "Wc Tips Msg 1"
   {
-    "en"  "Welcome to the Official @lightgreenWoW mod @defaultServer!"
+    "en"  "@greenType @lightgreen'wcmenu' @greento access all the cool things we have to offer!"
   }
   "Wc Tips Msg 2"
   {
@@ -9192,7 +9180,7 @@
   }
   "Wc Tips Msg 3"
   {
-    "en"  "Remember there are menu shortcuts for many things, why not try typing one of these into chat? @lightgreen'professions' | 'mail' | 'inventory' | 'spells' | 'changerace' | 'talents'"
+    "en"  "@greenWhy not try typing one of these into chat? @lightgreen'professions' | 'mail' | 'inventory' | 'spells' | 'changerace' | 'talents'"
   }
   "Wc Tips Msg 4"
   {
@@ -9216,67 +9204,11 @@
   }
   "Wc Tips Msg 9"
   {
-    "en"  "Our Site and forum adress is: @lightgreenhttp://wowmod.eu"
+    "en"  "@greenIf you find a bug, please contact us on @lightgreenDiscord!"
   }
   "Wc Tips Msg 10"
   {
     "en"  "@lightgreensm_usekeyspellbar @defaultwill toggle on or off the @lightgreenspellbar @defaultfrom your +use key."
-  }
-  "Wc Tips Msg 11"
-  {
-    "en"  "Type @lightgreen/changelog @defaultto see the latest changes made to the @lightgreenWoW mod @defaultright in-game!"
-  }
-  "Wc Tips Msg 12"
-  {
-    "en"  "Not sure what to do? type:  @lightgreen'/todo' @defaultin chat to see a list of your available tasks." //again?
-  }
-  "Wc Tips Msg 13"
-  {
-    "en"  "If you discover a bug, please report it on the forums at @lightgreenwowmod.eu! @defaultWe'll be delighted!"
-  }
-  "Wc Tips Msg 14"
-  {
-    "en"  "Don't forget that you can donate for gold with @lightgreen$1 = 1gold. @defaultDonate by typing in chat 'donate' and follow steps. (Supports only paypal at the moment)"
-  }
-  "Wc Tips Msg 15"
-  {
-    "en"  "Our servers and unique mod are donation based. Feel free to donate by typing 'donate' in chat."
-  }
-  "Wc Tips Msg 16"
-  {
-    "en"  "Please respect all of your fellow members, and do not forget to read our rules at @lightgreenhttp://wiki.wowmod.eu/index.php/Rules!"
-  }
-  "Wc Tips Msg 17"
-  {
-    "en"  "Spamming AoE spells through the walls is usually NOT the definition of fun!"
-  }
-  "Wc Tips Msg 18"
-  {
-    "en"  "You can earn @lightgreengold @defaultby playing! Every 10 minutes one random player gets 0.1g!"
-  }
-  "Wc Tips Msg 19"
-  {
-    "en"  "If you're a @lightgreenNo-Steam @defaultplayer and purchase Cs:S at a later date, you can get your characters transferred!"
-  }
-  "Wc Tips Msg 20"
-  {
-    "en"  "Did you know @lightgreenScout @defaulthas increased damage? It's pretty deadly with Rogue's @lightgreenShadow Blades!"
-  }
-  "Wc Tips Msg 21"
-  {
-    "en"  "It's not everyday you see a @lightgreenDeath Knight. @defaultYou usually get to see them once a month!"
-  }
-  "Wc Tips Msg 22"
-  {
-    "en"  "Did you know we used to have a @lightgreenUSA server? @defaultWell, we don't anymore! So donate!"
-  }
-  "Wc Tips Msg 23"
-  {
-    "en"  "There's two kinds of people in this world: Those who like @lightgreenWoWmod, @defaultand those who don't matter."
-  }
-  "Wc Tips Msg 24"
-  {
-    "en"  "The @lightgreenPriest @defaultclaimed to not have had any sexual relations with the young @lightgreenPaladin @defaultapprentice, but we all know better."
   }
   //Referrer
   "Say Refferrer ID"
@@ -10178,7 +10110,7 @@
   }
   "chi burst cast"
   {
-    "en" "@lightgreenChi Burst is unleashed"
+    "en" "@greenChi Burst @defaultis unleashed"
   }
   "Stance of the Ox name"
   {
@@ -10223,12 +10155,12 @@
   "chi burst ally"
   {
     "#format" "{1:s},{2:i}"
-    "en"     "@lightgreen{1}@default's Chi Burst went past you and healed you for @lightgreen{2} health."
+    "en"     "@green{1}'s Chi Burst @defaultwent past you and healed you for @lightgreen{2} health."
   }
   "chi burst enemy"
   {
     "#format" "{1:s},{2:i}"
-    "en"     "@lightgreen{1}@default's Chi Burst went past you and hit you for @lightgreen{2} damage."
+    "en"     "@green{1}'s Chi Burst @defaultwent past you and hit you for @lightgreen{2} damage."
   }
   "chi burst caster ally"
   {
@@ -10254,7 +10186,7 @@
   }
   "Sparring info"
   {
-    "en" "<Passive> Increases your Parry chance against attackers from the front."
+    "en" "<Passive> Increases your Parry chance."
   }
   "Sparring name"
   {
@@ -10518,7 +10450,7 @@
   }
   "Lava Lash victim aoe"
   {
-    "#format" "{1:s},{2:i}"
+    "#format" "{1:i},{2:s}"
     "en"     "@green{1:s}@default's @greenLava Lash exploded@default, dealing @lightgreen{2:i} @greendamage @defaultto you."
   }
   "Lava Lash attacker"
@@ -10567,5 +10499,129 @@
   "Unholy Presence info"
   {
     "en"     "Increases your attack speed by 10%%, your movement speed by 10%%, and your haste by 15%%\n  Unlocked by putting most of your points in the Unholy talent tree."
+  }
+  "Remorseless Winter name"
+  {
+    "en"     "Remorseless Winter"
+  }
+  "Remorseless Winter info"
+  {
+    "en"     "You become the embodiment of frost, damaging\n  all nearby enemies for the next 6 seconds.\n  Costs 1 rune."
+  }
+  "Soul Reaper name"
+  {
+    "en"     "Soul Reaper"
+  }
+  "Soul Reaper info"
+  {
+    "en"     "Your attacks have a chance to afflict the target with Soul Reaper.\nSoul Reaper expires after five seconds, dealing a large amount of magic damage.\nCosts 1 rune. Rune is refunded if target dies before damage is dealt."
+  }
+  "Soul Reaper vic"
+  {
+    "en"     "@att's @greenSoul Reaper @defaultdamages you for @dmg damage."
+  }
+  "Soul Reaper att"
+  {
+    "en"     "@greenSoul Reaper @defaultdamaged @vic @defaultfor @dmg damage."
+  }
+  "Admin hp set"
+  {
+    "#format" "{1:s},{2:1.i}"
+    "en"    "Admin {1} set your hp to {2}."
+  }
+  "adm cmd hp syntax"
+  {
+    "en"    "wc_hp <player (@all,@ct,@t,#userid)> <amount>"
+  }
+  "mind freeze caster imp"
+  {
+    "#format" "{1:s},{2:i},{3:0.2f}"
+    "en"     "You cast @greenMind Freeze @defaultat @lightgreen{1}, @defaultdamaging them for @lightgreen{2} magic damage @defaultand @greensilencing @defaultthem for @lightgreen{3} seconds."
+  }
+  "mind freeze target imp"
+  {
+    "#format" "{1:s},{2:i},{3:0.2f}"
+    "en"     "@lightgreen{1} @defaultcasts @greenMind Freeze @defaultat you, damaging you for @lightgreen{2} magic damage @defaultand @greensilencing @defaultfor @lightgreen{3} seconds."
+  }
+  "Brain Freeze name"
+  {
+    "en"     "Brain Freeze"
+  }
+  "Brain Freeze info"
+  {
+    "en"     "Placeholder"
+  }
+
+  "Permafrost DK name"
+  {
+    "en"     "Permafrost"
+  }
+  "Permafrost DK info"
+  {
+    "en"     "Placeholder"
+  }
+  "Chilblains name"
+  {
+    "en"     "Chilblains"
+  }
+  "Chilblains info"
+  {
+    "en"     "Placeholder"
+  }
+  "Runic Mastery name"
+  {
+    "en"     "Runic Mastery"
+  }
+  "Runic Mastery info"
+  {
+    "en"     "Placeholder"
+  }
+  "Icy Talons Threat of Thassarian name"
+  {
+    "en"     "Icy Talons / Threat of Thassarian"
+  }
+  "Icy Talons Threat of Thassarian info"
+  {
+    "en"     "Placeholder"
+  }
+  "Rune of Razorice name"
+  {
+    "en"     "Rune of Razorice"
+  }
+  "Rune of Razorice info"
+  {
+    "en"     "Placeholder"
+  }
+  "Runic Empowerment name"
+  {
+    "en"     "Runic Empowerment"
+  }
+  "Runic Empowerment info"
+  {
+    "en"     "Placeholder"
+  }
+  "Pillar of Frost name"
+  {
+    "en"     "Pillar of Frost"
+  }
+  "Pillar of Frost info"
+  {
+    "en"     "Placeholder"
+  }
+  "Howling Blast name"
+  {
+    "en"     "Howling Blast"
+  }
+  "Howling Blast info"
+  {
+    "en"     "Placeholder"
+  }
+  "Arctic Assault name"
+  {
+    "en"     "Arctic Assault"
+  }
+  "Arctic Assault info"
+  {
+    "en"     "Placeholder"
   }
 }

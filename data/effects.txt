@@ -306,7 +306,7 @@
     "bonuses"    "13752"
     "duration"   "12.0"
 	  "stacks"	"0"
-    "translate" "Equip: When receiving a melee attack, you have a chance to gain +217 armor for 12 seconds."
+    "translate" "Equip: When receiving a physical attack, you have a chance to gain +217 armor for 12 seconds."
     "modifierName" "Memories"
   }
 	"217" // (200-299 possibles)

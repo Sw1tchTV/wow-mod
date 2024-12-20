@@ -326,12 +326,8 @@ public wcGiveXp(client,amount,bool:display)
     return;
 
 
-   if(isClientPDModule(client, PDModule:PDM_xp)) {
-    new pdbonus = RoundToNearest(float(amount)*0.35);
-    if(pdbonus>10)
-      WCMessage(client, "pdm xp increased", client, pdbonus);
-    amount+=pdbonus;
-   }
+   if(isClientPDModule(client, PDModule:PDM_xp))
+     amount+=RoundToNearest(float(amount)*0.35);
 
 
    new reqxp=GetReqXp(client);
@@ -1904,21 +1900,6 @@ TriggerBossDrop() {
             new targets[65];
             new pamount=FindMatchingPlayers("@ct",targets);
             new winner=RollBetween(targets,pamount);
-            
-            //This breaks bossmod, DO NOT UNCOMMENT WITHOUT FIXING
-            /*new bool:foundwinner=false;
-            while(!foundwinner)
-            {
-              winner=RollBetween(targets,pamount);
-
-              if(wcDamageDone[winner]<g_iBossDropDmgMin && wcHealingDone[winner]<g_iBossDropHealMin)
-              {
-                PrintToChat(winner,"Ineligible for boss drops.");
-                foundwinner=false;
-              }
-              else
-                foundwinner=true;
-            }*/
 
             if(winner==0)
             LogError("[WC] Could not roll for item");
@@ -2130,7 +2111,7 @@ GetRequiredSkill(item)
    return 0;
 }
 
-GetClasses(item,classes[10])
+GetClasses(item,classes[55])
 {
   KvRewind(items);
   new String:info[50];

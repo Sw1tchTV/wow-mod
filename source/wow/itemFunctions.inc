@@ -1961,14 +1961,14 @@ stock SetRandomValues(UniqueItem item) {
 
   if(item.Item_category == 22) {
     //Give random Weapon Speed
-    new Float:ws = GetRandomFloat(0.95, 1.14);
+    float ws = GetRandomFloat(0.95, 1.10);
     if(item.Item_2hand == 1)
     {
       ws = GetRandomFloat(0.8, 1.0);
     }
     if(race == 2 && item.Item_2hand == 1)
     {
-      ws = GetRandomFloat(1.20, 1.35);
+      ws = 1.20; //Rogue daggers are always 1.2 AS. Used to be random between 1.2 and 1.4, but AS is now multiplicative.
       item.Item_2hand = 0; //Removed 2handedness after naming has determined it was a dagger.
     }
     item.Item_ws = ws;
