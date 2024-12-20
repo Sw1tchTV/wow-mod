@@ -287,6 +287,8 @@ enum struct UniqueItem
   float Item_speed;
   float Item_acc;
   float Item_parry;
+  float Item_block;
+  int Item_block_strength;
 
   int Item_resilence;
   int Item_armor;      //Non weapon
